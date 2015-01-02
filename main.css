@@ -1,0 +1,43 @@
+body{
+	font-size: 14px;
+	font-family: Arial;
+}
+button{
+	display: block;
+	margin: 0 0 0 1px;
+	font-size: 14px;
+}
+#pageContentOuter{
+	overflow:auto;
+	margin:0 auto 0 auto;
+	width:642;
+	height:962;
+	background-color:grey;
+}
+#pageContent{
+	overflow:auto;
+	margin:1px auto 0 auto;
+	width:640;
+	height:960;
+	background-color:white;
+}
+.formRow{
+	overflow:auto;
+	margin:10px 0 0 1px;
+	width:98%;
+}
+.formRow > label {
+	display:block;
+	margin:0 0 1px 0;
+}
+.formRow > input[type=text] {
+	font-size: 14px;
+	display: block;
+	margin:0 0 2px 0;
+	padding:4px;
+	border:1px solid grey;
+	border-radius:4px;
+}
+.inputSmall {
+	width:50px;
+}
