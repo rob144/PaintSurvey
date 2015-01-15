@@ -1,0 +1,82 @@
+<html>
+
+	<head>
+		<link rel="stylesheet" type="text/css" href="static/main.css">
+        <script stype="text/javascript" src="static/jquery-1.11.2.min.js"></script>
+        <script>
+            $$( document ).ready(function() {
+                $$('#btnCalculate').click( calculate );    
+            });
+            function calculate() {
+                //Grab the values from the inputs and do calculations.
+                var results ='';
+                var rmLength = parseFloat($$('#roomLength').val());
+                var rmWidth = parseFloat($$('#roomWidth').val());
+                var rmHeight = parseFloat($$('#roomHeight').val());
+                var doorQty = parseFloat($$('#doorQty').val());
+                var doorWidth = parseFloat($$('#doorWidth').val());
+                var doorHeight = parseFloat($$('#doorHeight').val());
+                var doorSpace = doorQty * doorWidth * doorHeight;
+                var windowQty = parseFloat($$('#windowQty').val());
+                var windowWidth = parseFloat($$('#windowWidth').val());
+                var windowHeight = parseFloat($$('#windowHeight').val());
+                var windowSpace = windowQty * windowWidth * windowHeight;
+                var ceilingSpace = (rmLength * rmWidth); 
+                var wallSpace = (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
+
+                results += ('RESULTS');
+                results += ('<br/>CEILING: ' + ceilingSpace + ' m2');
+                results += ('<br/>WALL: ' + wallSpace + ' m2');
+                $$('#results').html(results);
+            }
+        </script>
+	</head>
+
+	<body>
+		<div id='pageContentOuter'>
+			<div id='pageContent'>
+				<h1 id='appTitle'>Paint Survey</h1>
+                <div class='colRight'> 
+                    <div id='results'>RESULTS</div>
+                </div>
+                <div class='colLeft'>
+                    <button id='btnCalculate'>Calculate</button>
+                    
+                    <div class='formRow'>
+                        <label for='roomLength'>Room</label>
+                        <input id='roomLength' type='text' placeholder='length (m)' value='4.50'/>
+                        <input id='roomWidth' type='text' placeholder='width (m)' value='4.00'/>
+                        <input id='roomHeight' type='text' placeholder='height (m)' value='2.50'/>
+                    </div>
+
+                    <div class='formRow'>
+                        <label for='doorWidth'>Door</label>
+                        <input id='doorQty' class='inputSmall' type='text' placeholder='units' value='1'/>
+                        <input id='doorWidth' type='text' placeholder='width (m)' value='0.9'/>
+                        <input id='doorHeight' type='text' placeholder='height (m)' value='2.0'/>
+                    </div>
+
+                    <div class='formRow'>
+                        <label for='windowWidth'>Window</label>
+                        <input id='windowQty' class='inputSmall' type='text' placeholder='units' value='1'/>
+                        <input id='windowWidth' type='text' placeholder='width (m)' value='1.0'/>
+                        <input id='windowHeight' type='text' placeholder='height (m)' value='1.0'/>
+                    </div>
+
+                    <div class='formRow'>
+                        <label for='roomHeight'>Radiator</label>
+                        <input id='radiatorQty' class='inputSmall' type='text' placeholder='units' value='1'/>
+                        <input id='radiatorWidth' type='text' placeholder='width (m)' value='1.00'/>
+                        <input id='radiatorHeight' type='text' placeholder='height (m)' value='0.7'/>
+                    </div>
+
+                    <div class='formRow'>
+                        <label for='roomHeight'>Skirting</label>
+                        <input id='skirting' type='text' placeholder='length (m)' value='16.0'/>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</body>
+
+</html>

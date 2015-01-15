@@ -2,6 +2,22 @@ body{
 	font-size: 14px;
 	font-family: Arial;
 }
+#appTitle{
+    padding:5px;
+    background-color:cyan;
+}
+.colLeft {
+    width:49%;
+    float:left;
+}
+.colRight {
+    width:49%;
+    float:right;
+    background-color: yellow;
+}
+#results{
+    padding:5px;
+}
 button{
 	display: block;
 	margin: 0 0 0 1px;
