@@ -1,9 +1,22 @@
-body{
-	font-size: 14px;
-	font-family: Arial;
+body{ 
+    font-size:42pt;
+    font-family: Arial;
+}
+input[type="text"]{
+    font-size:42pt;
+}
+label{
+    font-weight:bold;
+}
+button{
+    display: block;
+    margin: 0 0 0 1px;
+    font-size:42pt;
 }
 #appTitle{
-    padding:5px;
+    margin:0;
+    padding:20px;
+    font-size:48pt;
     background-color:cyan;
 }
 .colLeft {
@@ -13,29 +26,22 @@ body{
 .colRight {
     width:49%;
     float:right;
-    background-color: yellow;
 }
 #results{
+    clear:both;
     padding:5px;
-}
-button{
-	display: block;
-	margin: 0 0 0 1px;
-	font-size: 14px;
+    background-color: yellow;
 }
 #pageContentOuter{
 	overflow:auto;
 	margin:0 auto 0 auto;
-	width:642;
-	height:962;
 	background-color:grey;
 }
 #pageContent{
-	overflow:auto;
-	margin:1px auto 0 auto;
-	width:640;
-	height:960;
-	background-color:white;
+    overflow:auto;
+    margin:1px auto 0 auto;
+    padding:20px;
+    background-color:white;
 }
 .formRow{
 	overflow:auto;
@@ -47,13 +53,16 @@ button{
 	margin:0 0 1px 0;
 }
 .formRow > input[type=text] {
-	font-size: 14px;
 	display: block;
-	margin:0 0 2px 0;
+	width:300px;
+	margin:0 0 5px 0;
 	padding:4px;
 	border:1px solid grey;
 	border-radius:4px;
 }
 .inputSmall {
 	width:50px;
+}
+#btnCalculate{
+    float:right;
 }
