@@ -1,4 +1,2 @@
-paint-survey
-============
-
-Mobile web app for painting contractors to estimate costs
+Paint Survey
+App to help painting contractors estimate costs.

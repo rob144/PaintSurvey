@@ -4,22 +4,22 @@
 		<link rel="stylesheet" type="text/css" href="static/main.css">
         <script stype="text/javascript" src="static/jquery-1.11.2.min.js"></script>
         <script>
-            $$( document ).ready(function() {
-                $$('#btnCalculate').click( calculate );    
+            $( document ).ready(function() {
+                $('#btnCalculate').click( calculate );    
             });
             function calculate() {
                 //Grab the values from the inputs and do calculations.
                 var results ='';
-                var rmLength = parseFloat($$('#roomLength').val());
-                var rmWidth = parseFloat($$('#roomWidth').val());
-                var rmHeight = parseFloat($$('#roomHeight').val());
-                var doorQty = parseFloat($$('#doorQty').val());
-                var doorWidth = parseFloat($$('#doorWidth').val());
-                var doorHeight = parseFloat($$('#doorHeight').val());
+                var rmLength = parseFloat($('#roomLength').val());
+                var rmWidth = parseFloat($('#roomWidth').val());
+                var rmHeight = parseFloat($('#roomHeight').val());
+                var doorQty = parseFloat($('#doorQty').val());
+                var doorWidth = parseFloat($('#doorWidth').val());
+                var doorHeight = parseFloat($('#doorHeight').val());
                 var doorSpace = doorQty * doorWidth * doorHeight;
-                var windowQty = parseFloat($$('#windowQty').val());
-                var windowWidth = parseFloat($$('#windowWidth').val());
-                var windowHeight = parseFloat($$('#windowHeight').val());
+                var windowQty = parseFloat($('#windowQty').val());
+                var windowWidth = parseFloat($('#windowWidth').val());
+                var windowHeight = parseFloat($('#windowHeight').val());
                 var windowSpace = windowQty * windowWidth * windowHeight;
                 var ceilingSpace = (rmLength * rmWidth); 
                 var wallSpace = (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
@@ -27,7 +27,7 @@
                 results += ('RESULTS');
                 results += ('<br/>CEILING: ' + ceilingSpace + ' m2');
                 results += ('<br/>WALL: ' + wallSpace + ' m2');
-                $$('#results').html(results);
+                $('#results').html(results);
             }
         </script>
 	</head>
