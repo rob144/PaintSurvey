@@ -2,7 +2,7 @@
     font-size:42pt;
     font-family: Arial;
 }
-input{
+div input{
     font-size:42pt;
 }
 label{
@@ -39,13 +39,10 @@ button{
     padding:20px;
     background-color:white;
 }
-.group-label{
-
-}
 .input-group {
     margin:0 0 15px 0;
 }
-.input-group .input-group-addon{
+.input-group .input-group-addon, .group-label span{
     font-size:42pt;
 }
 .input-group .addon-label{
