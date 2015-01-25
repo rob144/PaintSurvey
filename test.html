@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <title>Multipage example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+<div data-role="page" id="page-home">
+    <div data-role="header">
+      <h1>Page Home</h1>
+    </div>
+    <div role="main" class="ui-content">
+      <a href="javascript:$.mobile.pageContainer.pagecontainer('change', '#page-left-1', {transition: 'slide', reverse: 'true'});" class="ui-btn ui-corner-all ui-btn-inline">Go To Page L1</a>
+      <a href="javascript:$.mobile.pageContainer.pagecontainer('change', '#page-right-1', {transition: 'slide'});" class="ui-btn ui-corner-all ui-btn-inline">Go To Page R1</a>
+    </div>
+  </div>
+  <div data-role="page" id="page-left-1">
+    <div data-role="header">
+      <h1>Page Left 1</h1>
+    </div>
+    <div role="main" class="ui-content">
+      <a href="javascript:$.mobile.pageContainer.pagecontainer('change', '#page-home', {transition: 'slide'});" class="ui-btn ui-corner-all ui-btn-inline">Go To Page Home</a>
+    </div>
+  </div>
+  <div data-role="page" id="page-right-1">
+    <div data-role="header">
+      <h1>Page Right 1</h1>
+    </div>
+    <div role="main" class="ui-content">
+      <a href="javascript:$.mobile.pageContainer.pagecontainer('change', '#page-home', {transition: 'slide', reverse: 'true'});" class="ui-btn ui-corner-all ui-btn-inline">Go To Page Home</a>
+    </div>
+    {{ include_file('file.txt') }}
+  </div>
+</body>
+</html>
