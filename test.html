@@ -3,39 +3,51 @@
 <head>
   <title>Multipage example</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" type="text/css" href="static/main.css">
-  <link rel="stylesheet" href="static/bootstrap331/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/main.css" />
+  <link rel="stylesheet" type="text/css" href="static/owl-carousel/owl.carousel.css" />
+  <link rel="stylesheet" href="static/owl-carousel/owl.theme.css" />
   <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-  <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="static/owl-carousel/owl.carousel.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#owl-example").owlCarousel(
+        { 
+          navigation : true, // Show next and prev buttons
+          slideSpeed : 300,
+          paginationSpeed : 400,
+          singleItem:true,
+          afterInit : function(elem){
+            var that = this
+            that.owlControls.prependTo(elem)
+            this.jumpTo(1);
+          }
+        }
+      ); 
+    });
+  </script>
 </head>
 <body>
-<div data-role="page" id="page-home">
-    <div data-role="header">
-      <h1>Paint Survey</h1>
+  <h1 id="appTitle">Paint Survey</h1>
+  <div id="owl-example" class="owl-carousel">
+    <div id="page-left-2">
+      <h2>Production Rates Defaults</h2>
+      <div>{{ include_file('page-l2.html') }}</div>
     </div>
-    <div role="main" class="ui-content">
-      <a href="javascript:$.mobile.pageContainer.pagecontainer('change', '#page-left-1', {transition: 'slide', reverse: 'true'});" class="ui-btn ui-corner-all ui-btn-inline" >Go To Page L1</a>
-      <a href="javascript:$.mobile.pageContainer.pagecontainer('change', '#page-right-1', {transition: 'slide'});" class="ui-btn ui-corner-all ui-btn-inline">Go To Page R1</a>
-      {{ include_file('page-home.html') }}
+    <div id="page-left-1">
+      <h2>Room Settings Defaults</h2>
+      <div>{{ include_file('page-l1.html') }}</div>
     </div>
-  </div>
-  <div data-role="page" id="page-left-1">
-    <div data-role="header">
-      <h1>Page Left 1</h1>
+    <div id="page-home">
+      <h2>Room 1</h2>
+      <div>{{ include_file('page-home.html') }}</div>
     </div>
-    <div role="main" class="ui-content">
-      <a href="javascript:$.mobile.pageContainer.pagecontainer('change', '#page-home', {transition: 'slide'});" class="ui-btn ui-corner-all ui-btn-inline">Go To Page Home</a>
-      {{ include_file('page-l1.html') }}
+    <div id="page-right-1">
+      <h2>Room 2</h2>
+      <div>{{ include_file('page-r1.html') }}</div>
     </div>
-  </div>
-  <div data-role="page" id="page-right-1">
-    <div data-role="header">
-      <h1>Page Right 1</h1>
-    </div>
-    <div role="main" class="ui-content">
-      <a href="javascript:$.mobile.pageContainer.pagecontainer('change', '#page-home', {transition: 'slide', reverse: 'true'});" class="ui-btn ui-corner-all ui-btn-inline">Go To Page Home</a>
-      {{ include_file('page-r1.html') }}
+    <div id="page-right-2">
+      <h2>Room 3</h2>
+      <div>{{ include_file('page-r2.html') }}</div>
     </div>
   </div>
 </body>

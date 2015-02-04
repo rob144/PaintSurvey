@@ -1,9 +1,8 @@
-#body{ 
-    font-size:42pt;
-    font-family: Arial;
-}
-div input{
-    font-size:42pt;
+body{ 
+    font:-webkit-small-control;
+    font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
+    font-size:14px;
+    margin:0;
 }
 label{
     font-weight:bold;
@@ -11,76 +10,112 @@ label{
 button{
     display: block;
     margin: 0 0 0 1px;
-    font-size:42pt;
+    
 }
 #appTitle{
     margin:0;
-    padding:20px;
-    font-size:48pt;
+    font-size: 18pt;
+    padding:5px;
     background-color:cyan;
 }
-.colLeft {
+h2{
+    margin:5px;
 }
-.colRight {
+/* CAROUSEL */
+.owl-theme > .owl-controls > .owl-pagination > .owl-page > span {
+    width:20px;
+    height:20px;
 }
+.owl-theme .owl-controls .owl-buttons div {
+    position: absolute;
+}
+.owl-theme .owl-controls .owl-buttons .owl-prev {
+    left: 10px;
+    top: 0;
+    margin:0;
+    padding:10px;
+}
+.owl-theme .owl-controls .owl-buttons .owl-next {
+    right: 10px;
+    top: 0;
+    margin:0;
+    padding:10px;
+}
+/* PAGE CONTENT */
 #results{
     clear:both;
+    margin:0 0 10px 0;
     padding:5px;
     background-color: yellow;
+    border-radius: 4px;
+    border:1px solid blue;
 }
 #pageContentOuter{
 	overflow:auto;
 	margin:0 auto 0 auto;
-	background-color:grey;
 }
 #pageContent{
     overflow:auto;
     margin:1px auto 0 auto;
-    padding:20px;
+    padding:10px;
     background-color:white;
 }
+/* FORMS */
+.group-label{
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
 .input-group {
+    width:215px;
+}
+.input-group-inner {
+    display:block;
     margin:0 0 15px 0;
+    border:1px solid #ccc;
+    border-radius: 4px;
+    background-color: #eee;
+    overflow:auto;
 }
-.input-group .input-group-addon, .group-label span{
-    font-size:42pt;
-}
-.input-group .addon-label{
-    width:90px;
-}
-.formControl{
-    display: block;
-    width: 180px;
+.input-group-inner > div, .input-group-inner > input {
+    display:block;
+    font-size:14px;
     padding: 6px 12px;
-    line-height: 1.42857143;
     color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
-.formRow{
+.control-label{
+    float:left;
+    min-width:20px;
+    text-align: center;
+}
+.form-control{
+    float:right;
+    width: 140px;
+    background-color: #fff;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top:none;
+    border-right:none;
+    border-bottom:none;
+    border-left:1px solid #ccc; 
+}
+.form-row{
 	overflow:auto;
 	margin:10px 0 0 1px;
 	width:98%;
 }
-.formRow > label {
+.form-row > label {
 	display:block;
 	margin:0 0 1px 0;
 }
-.formRow > input[type=text] {
+.form-row > input[type=text] {
 	width:250px;
 	margin:0 0 5px 0;
 	padding:4px;
 	border:1px solid grey;
 	border-radius:4px;
 }
-.inputSmall {
-	width:110px;
+select{
+    width:150px;
 }
 #btnCalculate{
     float:right;

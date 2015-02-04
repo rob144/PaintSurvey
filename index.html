@@ -1,126 +1,91 @@
+<!doctype html>
 <html>
+<head>
+  <title>Multipage example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="static/main.css" />
+  <link rel="stylesheet" type="text/css" href="static/owl-carousel/owl.carousel.css" />
+  <link rel="stylesheet" href="static/owl-carousel/owl.theme.css" />
+  <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="static/owl-carousel/owl.carousel.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#owl-example").owlCarousel(
+        { 
+          navigation : true, // Show next and prev buttons
+          slideSpeed : 300,
+          paginationSpeed : 400,
+          singleItem:true,
+          afterInit : function(elem){
+            var that = this
+            that.owlControls.prependTo(elem)
+            this.jumpTo(1);
+          }
+        }
+      ); 
+    });
+  </script>
+</head>
+  <body>
+    <h1 id="appTitle">Paint Survey</h1>
+    <div id="owl-example" class="owl-carousel">
+      <div id="page-left-2">
+        <h2>Production Rates Defaults</h2>
+        <div>{{ include_file('page-l2.html') }}</div>
+      </div>
+      <div id="page-left-1">
+        <h2>Room Settings Defaults</h2>
+        <div>{{ include_file('page-l1.html') }}</div>
+      </div>
+      <div id="page-home">
+        <h2>Room 1</h2>
+        <div>{{ include_file('page-home.html') }}</div>
+      </div>
+      <div id="page-right-1">
+        <h2>Room 2</h2>
+        <div>{{ include_file('page-r1.html') }}</div>
+      </div>
+      <div id="page-right-2">
+        <h2>Room 3</h2>
+        <div>{{ include_file('page-r2.html') }}</div>
+      </div>
+    </div>
+    <script>
+      $('#btnCalculate').click( calculate );    
+        function calculate() {
+            //Grab the values from the inputs and do calculations.
+            var results = '';
+            var rmLength =      parseFloat($('#roomLength').val());
+            var rmWidth =       parseFloat($('#roomWidth').val());
+            var rmHeight =      parseFloat($('#roomHeight').val());
+            var doorQty =       parseFloat($('#doorQty').val());
+            var doorWidth =     parseFloat($('#doorWidth').val());
+            var doorHeight =    parseFloat($('#doorHeight').val());
+            var windowQty =     parseFloat($('#windowQty').val());
+            var windowWidth =   parseFloat($('#windowWidth').val());
+            var windowHeight =  parseFloat($('#windowHeight').val());
+            var radiatorQty =     parseFloat($('#radiatorQty').val());
+            var radiatorWidth =   parseFloat($('#radiatorWidth').val());
+            var radiatorHeight =  parseFloat($('#radiatorHeight').val());
 
-	<head>
-		<link rel="stylesheet" type="text/css" href="static/main.css">
-        <link rel="stylesheet" href="static/bootstrap331/css/bootstrap.min.css">
-        <script stype="text/javascript" src="static/jquery-1.11.2.min.js"></script>
-        <script>
-            $( document ).ready(function() {
-                $('#btnCalculate').click( calculate );    
-            });
-            function calculate() {
-                //Grab the values from the inputs and do calculations.
-                var results ='';
-                var rmLength = parseFloat($('#roomLength').val());
-                var rmWidth = parseFloat($('#roomWidth').val());
-                var rmHeight = parseFloat($('#roomHeight').val());
-                var doorQty = parseFloat($('#doorQty').val());
-                var doorWidth = parseFloat($('#doorWidth').val());
-                var doorHeight = parseFloat($('#doorHeight').val());
-                var doorSpace = doorQty * doorWidth * doorHeight;
-                var windowQty = parseFloat($('#windowQty').val());
-                var windowWidth = parseFloat($('#windowWidth').val());
-                var windowHeight = parseFloat($('#windowHeight').val());
-                var windowSpace = windowQty * windowWidth * windowHeight;
-                var ceilingSpace = (rmLength * rmWidth); 
-                var wallSpace = (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
+            var doorSpace =     doorQty * doorWidth * doorHeight;
+            var windowSpace =   windowQty * windowWidth * windowHeight;
+            var ceilingSpace =  (rmLength * rmWidth); 
+            var wallSpace =     (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
+            var skirtingSpace = (rmLength + rmWidth) * 2 - doorWidth * doorQty;
+            var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
 
-                results += ('RESULTS');
-                results += ('<br/>CEILING: ' + ceilingSpace + ' m2');
-                results += ('<br/>WALL: ' + wallSpace + ' m2');
-                $('#results').html(results);
-                window.scrollTo(0,0);
-            }
-        </script>
-	</head>
+            results += ('RESULTS');
+            results += ('<br/>CEILING: ' + ceilingSpace + ' m2');
+            results += ('<br/>WALL: ' + wallSpace + ' m2');
+            results += ('<br/>DOOR: ' + wallSpace + ' m2');
+            results += ('<br/>WINDOW: ' + wallSpace + ' m2');
+            results += ('<br/>RADIATOR: ' + radiatorSpace + ' m2');
+            results += ('<br/>SKIRTING: ' + skirtingSpace);
+            $('#results').html(results);
 
-	<body id='body'>
-		<div id='pageContentOuter'>
-            <h1 id='appTitle'>Paint Survey</h1>
-                <div id='pageContent'>
-                <div class='colRight'> 
-                    <div id='results'>RESULTS</div>
-                </div>
-                <div class='colLeft'>
-                    <form class='form'> 
-                        <div class='group-label'>
-                            <span>Room</span>
-                        </div>
-                        <div class='form-group'>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>L</div>
-                                <input id='roomLength' type='text' class='formControl' value='4.50'>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>W</div>
-                                <input id='roomWidth' type='text' class='formControl' value='4.50'>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>H</div>
-                                <input id='roomHeight' type='text' class='formControl' value='2.50'>
-                            </div>
-                        </div>
-
-                        <div class='group-label'>
-                            <span>Door</span>
-                        </div>
-                        <div class='form-group'>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>#</div>
-                                <input id='doorQty' type='number' class='inputSmall' value='1'>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>W</div>
-                                <input id='doorWidth' type='text' class='formControl' value='0.9'>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>H</div>
-                                <input id='doorHeight' type='text' class='formControl' value='2.0'>
-                            </div>
-                        </div>
-
-                        <div class='group-label'>
-                            <span>Window</span>
-                        </div>
-                        <div class='form-group'>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>#</div>
-                                <input id='windowQty' class='inputSmall' type='number' value='1'/>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>W</div>
-                                <input id='windowWidth' type='text' class='formControl' value='1.0'/>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>H</div>
-                                <input id='windowHeight' type='text' class='formControl' value='1.0'/>
-                            </div>
-                        </div>
-
-                        <div class='group-label'>
-                            <span>Radiator</span>
-                        </div>
-                        <div class='formRow'>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>#</div>
-                                <input id='radiatorQty' class='inputSmall' type='number'value='1'/>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>W</div>
-                                <input id='radiatorWidth' type='text' class='formControl' value='1.00'/>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-addon addon-label'>H</div>
-                                <input id='radiatorHeight' type='text' class='formControl' value='0.7'/>
-                            </div>
-                        </div>
-
-                        <input type='button' id='btnCalculate' value='Calculate'/>
-
-                    </form>
-                </div>
-			</div>
-		</div>
-	</body>
-
+            window.scrollTo(0,0);
+        }
+    </script>
+  </body>
 </html>
