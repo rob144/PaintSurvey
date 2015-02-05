@@ -42,7 +42,16 @@ h2{
     padding:10px;
 }
 /* PAGE CONTENT */
-#results{
+th {
+    text-align: left;
+}
+td {
+    padding: 0 10px 0 0;
+}
+td.result {
+    text-align: right;
+}
+.results{
     clear:both;
     margin:0 0 10px 0;
     padding:5px;
@@ -50,11 +59,11 @@ h2{
     border-radius: 4px;
     border:1px solid blue;
 }
-#pageContentOuter{
+.pageContentOuter{
 	overflow:auto;
 	margin:0 auto 0 auto;
 }
-#pageContent{
+.pageContent{
     overflow:auto;
     margin:1px auto 0 auto;
     padding:10px;
@@ -76,7 +85,7 @@ h2{
     background-color: #eee;
     overflow:auto;
 }
-.input-group-inner > div, .input-group-inner > input {
+.input-group-inner > div, input {
     display:block;
     font-size:14px;
     padding: 6px 12px;
@@ -105,7 +114,7 @@ h2{
 }
 .form-row > label {
 	display:block;
-	margin:0 0 1px 0;
+	margin:0 0 5px 0;
 }
 .form-row > input[type=text] {
 	width:250px;
@@ -114,8 +123,12 @@ h2{
 	border:1px solid grey;
 	border-radius:4px;
 }
-select{
-    width:150px;
+select {
+    display:block;
+    margin:0 0 0 1px;
+    min-width:150px;
+    max-width:300px;
+    font-size:14px;
 }
 #btnCalculate{
     float:right;

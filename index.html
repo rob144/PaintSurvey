@@ -1,91 +1,100 @@
 <!doctype html>
 <html>
-<head>
-  <title>Multipage example</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" type="text/css" href="static/main.css" />
-  <link rel="stylesheet" type="text/css" href="static/owl-carousel/owl.carousel.css" />
-  <link rel="stylesheet" href="static/owl-carousel/owl.theme.css" />
-  <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-  <script src="static/owl-carousel/owl.carousel.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $("#owl-example").owlCarousel(
-        { 
-          navigation : true, // Show next and prev buttons
-          slideSpeed : 300,
-          paginationSpeed : 400,
-          singleItem:true,
-          afterInit : function(elem){
-            var that = this
-            that.owlControls.prependTo(elem)
-            this.jumpTo(1);
-          }
-        }
-      ); 
-    });
-  </script>
-</head>
+  <head>
+    <title>Paint Survey</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="static/main.css" />
+    <link rel="stylesheet" type="text/css" href="static/owl-carousel/owl.carousel.css" />
+    <link rel="stylesheet" href="static/owl-carousel/owl.theme.css" />
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="static/owl-carousel/owl.carousel.js"></script>
+  </head>
   <body>
     <h1 id="appTitle">Paint Survey</h1>
     <div id="owl-example" class="owl-carousel">
       <div id="page-left-2">
         <h2>Production Rates Defaults</h2>
-        <div>{{ include_file('page-l2.html') }}</div>
+        {{ include_file('page-prod-rates.html') }}
       </div>
       <div id="page-left-1">
         <h2>Room Settings Defaults</h2>
-        <div>{{ include_file('page-l1.html') }}</div>
+        {{ include_file('page-room-defaults.html') }}
       </div>
       <div id="page-home">
         <h2>Room 1</h2>
-        <div>{{ include_file('page-home.html') }}</div>
+        {{ include_file('page-room.html') }}
       </div>
       <div id="page-right-1">
         <h2>Room 2</h2>
-        <div>{{ include_file('page-r1.html') }}</div>
+        {{ include_file('page-room.html') }}
       </div>
       <div id="page-right-2">
         <h2>Room 3</h2>
-        <div>{{ include_file('page-r2.html') }}</div>
+        {{ include_file('page-room.html') }}
       </div>
     </div>
     <script>
-      $('#btnCalculate').click( calculate );    
-        function calculate() {
-            //Grab the values from the inputs and do calculations.
-            var results = '';
-            var rmLength =      parseFloat($('#roomLength').val());
-            var rmWidth =       parseFloat($('#roomWidth').val());
-            var rmHeight =      parseFloat($('#roomHeight').val());
-            var doorQty =       parseFloat($('#doorQty').val());
-            var doorWidth =     parseFloat($('#doorWidth').val());
-            var doorHeight =    parseFloat($('#doorHeight').val());
-            var windowQty =     parseFloat($('#windowQty').val());
-            var windowWidth =   parseFloat($('#windowWidth').val());
-            var windowHeight =  parseFloat($('#windowHeight').val());
-            var radiatorQty =     parseFloat($('#radiatorQty').val());
-            var radiatorWidth =   parseFloat($('#radiatorWidth').val());
-            var radiatorHeight =  parseFloat($('#radiatorHeight').val());
+      $(document).ready(function() {
+        $("#owl-example").owlCarousel(
+          { 
+            navigation : true, // Show next and prev buttons
+            slideSpeed : 300,
+            paginationSpeed : 400,
+            singleItem:true,
+            afterInit : function(elem){
+              var that = this
+              that.owlControls.prependTo(elem)
+              this.jumpTo(1);
+            }
+          }
+        );
+        $('.numbersOnly').keyup(function () {
+            var result = this.value.replace(/[^0-9\.]/g, '');
+            if (this.value != result) {
+               this.value = result;
+            }
+        }); 
+      });
+      $('.btn-room-calculate').click(
+        function calculate(event) {
+            
+            var page = $(event.target).closest('.pageContent');
+
+            var rmLength =      parseFloat(page.find('#roomLength').first().val());
+            var rmWidth =       parseFloat(page.find('#roomWidth').first().val());
+            var rmHeight =      parseFloat(page.find('#roomHeight').first().val());
+            var doorQty =       parseFloat(page.find('#doorQty').first().val());
+            var doorWidth =     parseFloat(page.find('#doorWidth').first().val());
+            var doorHeight =    parseFloat(page.find('#doorHeight').first().val());
+            var windowQty =     parseFloat(page.find('#windowQty').first().val());
+            var windowWidth =   parseFloat(page.find('#windowWidth').first().val());
+            var windowHeight =  parseFloat(page.find('#windowHeight').first().val());
+            var radiatorQty =     parseFloat(page.find('#radiatorQty').first().val());
+            var radiatorWidth =   parseFloat(page.find('#radiatorWidth').first().val());
+            var radiatorHeight =  parseFloat(page.find('#radiatorHeight').first().val());
 
             var doorSpace =     doorQty * doorWidth * doorHeight;
+            var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
             var windowSpace =   windowQty * windowWidth * windowHeight;
             var ceilingSpace =  (rmLength * rmWidth); 
             var wallSpace =     (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
             var skirtingSpace = (rmLength + rmWidth) * 2 - doorWidth * doorQty;
             var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
 
-            results += ('RESULTS');
-            results += ('<br/>CEILING: ' + ceilingSpace + ' m2');
-            results += ('<br/>WALL: ' + wallSpace + ' m2');
-            results += ('<br/>DOOR: ' + wallSpace + ' m2');
-            results += ('<br/>WINDOW: ' + wallSpace + ' m2');
-            results += ('<br/>RADIATOR: ' + radiatorSpace + ' m2');
-            results += ('<br/>SKIRTING: ' + skirtingSpace);
-            $('#results').html(results);
-
+            var results = '<table><tr><th>Part</th><th>Result</th></tr>';
+            results += ('<tr><td>CEILING:</td><td class="result">'    + ceilingSpace.toFixed(2)  + ' m2</td></tr>');
+            results += ('<tr><td>WALL:</td><td class="result">'       + wallSpace.toFixed(2)     + ' m2</td></tr>');
+            results += ('<tr><td>DOOR:</td><td class="result">'       + doorSpace.toFixed(2)     + ' m2</td></tr>');
+            results += ('<tr><td>DOORFRAME:</td><td class="result">'  + doorFrame.toFixed(2)     + '</td></tr>');
+            results += ('<tr><td>WINDOW:</td><td class="result">'     + wallSpace.toFixed(2)     + ' m2</td></tr>');
+            results += ('<tr><td>RADIATOR:</td><td class="result">'   + radiatorSpace.toFixed(2) + ' m2</td></tr>');
+            results += ('<tr><td>SKIRTING:</td><td class="result">'   + skirtingSpace.toFixed(2) + '</td></tr>');
+            results += '</table>';
+            
+            page.find('.results').first().html(results);
             window.scrollTo(0,0);
         }
+      );
     </script>
   </body>
 </html>
