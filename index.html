@@ -60,18 +60,18 @@
             
             var page = $(event.target).closest('.pageContent');
 
-            var rmLength =      parseFloat(page.find('#roomLength').first().val());
-            var rmWidth =       parseFloat(page.find('#roomWidth').first().val());
-            var rmHeight =      parseFloat(page.find('#roomHeight').first().val());
-            var doorQty =       parseFloat(page.find('#doorQty').first().val());
-            var doorWidth =     parseFloat(page.find('#doorWidth').first().val());
-            var doorHeight =    parseFloat(page.find('#doorHeight').first().val());
-            var windowQty =     parseFloat(page.find('#windowQty').first().val());
-            var windowWidth =   parseFloat(page.find('#windowWidth').first().val());
-            var windowHeight =  parseFloat(page.find('#windowHeight').first().val());
-            var radiatorQty =     parseFloat(page.find('#radiatorQty').first().val());
-            var radiatorWidth =   parseFloat(page.find('#radiatorWidth').first().val());
-            var radiatorHeight =  parseFloat(page.find('#radiatorHeight').first().val());
+            var rmLength =      parseFloat(page.find('#roomLength:first').val());
+            var rmWidth =       parseFloat(page.find('#roomWidth:first').val());
+            var rmHeight =      parseFloat(page.find('#roomHeight:first').val());
+            var doorQty =       parseFloat(page.find('#doorQty:first').val());
+            var doorWidth =     parseFloat(page.find('#doorWidth:first').val());
+            var doorHeight =    parseFloat(page.find('#doorHeight:first').val());
+            var windowQty =     parseFloat(page.find('#windowQty:first').val());
+            var windowWidth =   parseFloat(page.find('#windowWidth:first').val());
+            var windowHeight =  parseFloat(page.find('#windowHeight:first').val());
+            var radiatorQty =     parseFloat(page.find('#radiatorQty:first').val());
+            var radiatorWidth =   parseFloat(page.find('#radiatorWidth:first').val());
+            var radiatorHeight =  parseFloat(page.find('#radiatorHeight:first').val());
 
             var doorSpace =     doorQty * doorWidth * doorHeight;
             var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
@@ -91,7 +91,7 @@
             results += ('<tr><td>SKIRTING:</td><td class="result">'   + skirtingSpace.toFixed(2) + '</td></tr>');
             results += '</table>';
             
-            page.find('.results').first().html(results);
+            page.find('.results:first').html(results);
             window.scrollTo(0,0);
         }
       );
