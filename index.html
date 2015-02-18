@@ -22,7 +22,21 @@
             </div>
             <div id="page-left-1">
                 <h2>Projects</h2>
-                {{ include_file('page-projects.html') }}
+                <div class='pageContentOuter'>
+                    <div class='pageContent'>
+                      <form id='form-projects' action='/createproject' method='post'>
+                          <div class='form-row'>  
+                            <label>Select Existing</label>
+                            <select id='select-project'></select>
+                          </div>
+                          <div class='form-row'>
+                              <label>Create New</label>
+                              <input type='text' placeholder='Enter Project Name'/>
+                          </div>
+                          <input type='submit' value='Confirm'/>
+                      </form>
+                    </div>
+                </div>
             </div>
             <div id="page-home">
                 <h2>Room 1</h2>
@@ -39,6 +53,7 @@
         </div>
         <script>
             $(document).ready(function() {
+              
               $("#owl-example").owlCarousel(
                 { 
                   navigation : true, // Show next and prev buttons
@@ -52,13 +67,27 @@
                   }
                 }
               );
+              
               $('.numbersOnly').keyup(function () {
                   var result = this.value.replace(/[^0-9\.]/g, '');
                   if (this.value != result) {
                      this.value = result;
                   }
               }); 
+
+              //Add the projects to the select list
+              var projects = {{ projects|safe }};   
+              for(var i=0; i<projects.length; i++){
+                  $('#select-project')
+                    .append(
+                        $('<option></option>')
+                          .attr('value',projects[i].id)
+                          .text(projects[i].title)
+                    ); 
+              }
+
             });
+            
             $('.btn-room-calculate').click(
               function calculate(event) {
                   
