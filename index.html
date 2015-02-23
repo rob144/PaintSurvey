@@ -10,7 +10,7 @@
         <script src="static/owl-carousel/owl.carousel.js"></script>
     </head>
     <body>
-        <h1 id='appTitle'>Paint Survey</h1>
+        <h1 id='app-title'>Paint Survey</h1>
         <div id='owl-example' class='owl-carousel'>
             <div id='page-left-3'>
                 <h2>Production Rates Defaults</h2>
@@ -31,7 +31,7 @@
                         <input id='btn-select-project' type='button' value='Confirm'/>
                         <div class='form-row'>
                             <label>Create New</label>
-                            <input type='text' placeholder='Enter Project Name'/>
+                            <input id='new-project-title' type='text' placeholder='Enter Project Title'/>
                         </div>
                         <input id='btn-create-project' type='button' value='Confirm'/>
                     </div>
@@ -51,100 +51,122 @@
             </div>
         </div>
         <script>
+            //Global variable to store current project data
+            var CURRENT_PROJECT = {};
+
+            //Add the projects to the select list
+            function funcPopulateProjects(projects){
+                $('#select-project').find('option').remove();
+                for(var i=0; i<projects.length; i++){
+                    $('#select-project')
+                      .append(
+                          $('<option></option>')
+                            .attr('value',projects[i].id)
+                            .text(projects[i].title + ' (' 
+                              + projects[i].date_created.split('.')[0]
+                                .replace('T',' ') + ')'
+                            )
+                      ); 
+                }
+            }
+
             $(document).ready(function() {
               
-              $("#owl-example").owlCarousel(
-                { 
-                  navigation : true, // Show next and prev buttons
-                  slideSpeed : 300,
-                  paginationSpeed : 400,
-                  singleItem:true,
-                  afterInit : function(elem){
-                    var that = this
-                    that.owlControls.prependTo(elem)
-                    this.jumpTo(2);
+                $("#owl-example").owlCarousel(
+                  { 
+                    navigation : true, // Show next and prev buttons
+                    slideSpeed : 300,
+                    paginationSpeed : 400,
+                    singleItem:true,
+                    afterInit : function(elem){
+                      var that = this
+                      that.owlControls.prependTo(elem)
+                      this.jumpTo(2);
+                    }
                   }
-                }
-              );
+                );
+                
+                $('.numbersOnly').keyup(function () {
+                    var result = this.value.replace(/[^0-9\.]/g, '');
+                    if (this.value != result) {
+                       this.value = result;
+                    }
+                }); 
+
+                var projects = {{ projects|safe }}; 
+                funcPopulateProjects(projects);
+
+                $('#btn-select-project').click( function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/getproject',
+                        data: { projectid: $('#select-project').val() },
+                        success: function(data){ 
+                            CURRENT_PROJECT = JSON.parse(data);
+                            $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
+                            alert('Project selected: ' + CURRENT_PROJECT.title ); 
+                            //TODO: fetch and populate the room data according to whichever project is selected
+                        }
+                    });
+                })
+
+                $('#btn-create-project').click( function(){
+                    if($('#new-project-title').val().match(/\S/g)){
+                        $.ajax({
+                            type: 'POST',
+                            url: '/createproject',
+                            data: { projectTitle: $('#new-project-title').val() },
+                            success: function(data){ 
+                              alert('Project created successfully.'); 
+                              funcPopulateProjects(JSON.parse(data)); 
+                            }
+                        });
+                    }else{
+                        alert('Project title can not be blank!');
+                    }
+                })
+
+              });
               
-              $('.numbersOnly').keyup(function () {
-                  var result = this.value.replace(/[^0-9\.]/g, '');
-                  if (this.value != result) {
-                     this.value = result;
-                  }
-              }); 
-
-              //Add the projects to the select list
-              var projects = {{ projects|safe }};   
-              for(var i=0; i<projects.length; i++){
-                  $('#select-project')
-                    .append(
-                        $('<option></option>')
-                          .attr('value',projects[i].id)
-                          .text(projects[i].title)
-                    ); 
-              }
-
-              //TODO: fetch the room data according to whichever project is selected
-              $('#btn-select-project').click( function(){
-                  $.ajax({
-                      type: 'POST',
-                      url: '/getproject',
-                      data: { projectid: '2' },
-                      success: function(data){ alert('success ' + data ); }
-                  });
-              })
-
-              $('#btn-create-project').click( function(){
-                  $.ajax({
-                      type: 'POST',
-                      url: '/createproject',
-                      data: { projectid: '2' },
-                      success: function(data){ alert('success ' + data); }
-                  });
-              })
-
-            });
-            
-            $('.btn-room-calculate').click(
-              function calculate(event) {
-                  
-                  var page = $(event.target).closest('.pageContent');
-            
-                  var rmLength =      parseFloat(page.find('#roomLength:first').val());
-                  var rmWidth =       parseFloat(page.find('#roomWidth:first').val());
-                  var rmHeight =      parseFloat(page.find('#roomHeight:first').val());
-                  var doorQty =       parseFloat(page.find('#doorQty:first').val());
-                  var doorWidth =     parseFloat(page.find('#doorWidth:first').val());
-                  var doorHeight =    parseFloat(page.find('#doorHeight:first').val());
-                  var windowQty =     parseFloat(page.find('#windowQty:first').val());
-                  var windowWidth =   parseFloat(page.find('#windowWidth:first').val());
-                  var windowHeight =  parseFloat(page.find('#windowHeight:first').val());
-                  var radiatorQty =     parseFloat(page.find('#radiatorQty:first').val());
-                  var radiatorWidth =   parseFloat(page.find('#radiatorWidth:first').val());
-                  var radiatorHeight =  parseFloat(page.find('#radiatorHeight:first').val());
-            
-                  var doorSpace =     doorQty * doorWidth * doorHeight;
-                  var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
-                  var windowSpace =   windowQty * windowWidth * windowHeight;
-                  var ceilingSpace =  (rmLength * rmWidth); 
-                  var wallSpace =     (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
-                  var skirtingSpace = (rmLength + rmWidth) * 2 - doorWidth * doorQty;
-                  var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
-            
-                  var results = '<table><tr><th>Part</th><th>Result</th></tr>';
-                  results += ('<tr><td>CEILING:</td><td class="result">'    + ceilingSpace.toFixed(2)  + ' m2</td></tr>');
-                  results += ('<tr><td>WALL:</td><td class="result">'       + wallSpace.toFixed(2)     + ' m2</td></tr>');
-                  results += ('<tr><td>DOOR:</td><td class="result">'       + doorSpace.toFixed(2)     + ' m2</td></tr>');
-                  results += ('<tr><td>DOORFRAME:</td><td class="result">'  + doorFrame.toFixed(2)     + '</td></tr>');
-                  results += ('<tr><td>WINDOW:</td><td class="result">'     + wallSpace.toFixed(2)     + ' m2</td></tr>');
-                  results += ('<tr><td>RADIATOR:</td><td class="result">'   + radiatorSpace.toFixed(2) + ' m2</td></tr>');
-                  results += ('<tr><td>SKIRTING:</td><td class="result">'   + skirtingSpace.toFixed(2) + '</td></tr>');
-                  results += '</table>';
-                  
-                  page.find('.results:first').html(results);
-                  window.scrollTo(0,0);
-              }
+              $('.btn-room-calculate').click(
+                  function calculate(event) {
+                    
+                      var page = $(event.target).closest('.pageContent');
+                
+                      var rmLength =      parseFloat(page.find('#roomLength:first').val());
+                      var rmWidth =       parseFloat(page.find('#roomWidth:first').val());
+                      var rmHeight =      parseFloat(page.find('#roomHeight:first').val());
+                      var doorQty =       parseFloat(page.find('#doorQty:first').val());
+                      var doorWidth =     parseFloat(page.find('#doorWidth:first').val());
+                      var doorHeight =    parseFloat(page.find('#doorHeight:first').val());
+                      var windowQty =     parseFloat(page.find('#windowQty:first').val());
+                      var windowWidth =   parseFloat(page.find('#windowWidth:first').val());
+                      var windowHeight =  parseFloat(page.find('#windowHeight:first').val());
+                      var radiatorQty =     parseFloat(page.find('#radiatorQty:first').val());
+                      var radiatorWidth =   parseFloat(page.find('#radiatorWidth:first').val());
+                      var radiatorHeight =  parseFloat(page.find('#radiatorHeight:first').val());
+                
+                      var doorSpace =     doorQty * doorWidth * doorHeight;
+                      var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
+                      var windowSpace =   windowQty * windowWidth * windowHeight;
+                      var ceilingSpace =  (rmLength * rmWidth); 
+                      var wallSpace =     (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
+                      var skirtingSpace = (rmLength + rmWidth) * 2 - doorWidth * doorQty;
+                      var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
+                
+                      var results = '<table><tr><th>Part</th><th>Result</th></tr>';
+                      results += ('<tr><td>CEILING:</td><td class="result">'    + ceilingSpace.toFixed(2)  + ' m2</td></tr>');
+                      results += ('<tr><td>WALL:</td><td class="result">'       + wallSpace.toFixed(2)     + ' m2</td></tr>');
+                      results += ('<tr><td>DOOR:</td><td class="result">'       + doorSpace.toFixed(2)     + ' m2</td></tr>');
+                      results += ('<tr><td>DOORFRAME:</td><td class="result">'  + doorFrame.toFixed(2)     + '</td></tr>');
+                      results += ('<tr><td>WINDOW:</td><td class="result">'     + wallSpace.toFixed(2)     + ' m2</td></tr>');
+                      results += ('<tr><td>RADIATOR:</td><td class="result">'   + radiatorSpace.toFixed(2) + ' m2</td></tr>');
+                      results += ('<tr><td>SKIRTING:</td><td class="result">'   + skirtingSpace.toFixed(2) + '</td></tr>');
+                      results += '</table>';
+                      
+                      page.find('.results:first').html(results);
+                      window.scrollTo(0,0);
+                }
             );
         </script>
     </body>

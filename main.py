@@ -3,6 +3,7 @@ import webapp2
 import jinja2
 from google.appengine.ext import ndb
 from datetime import datetime
+import time
 import json
 
 loader = jinja2.FileSystemLoader(os.path.dirname(__file__))
@@ -49,14 +50,16 @@ class HomeHandler(webapp2.RequestHandler):
 
 class CreateProjectHandler(webapp2.RequestHandler):
     def post(self):
-        #TODO: if project title not null add code to save project to the datastore.
-        self.response.write('CREATE PROJECT')
+        project_title = self.request.get('projectTitle')
+        Project(id=3, username='Test', title=project_title, date_created=datetime.now()).put()
+        time.sleep(1)#Allow time for project to save to datastore
+        self.response.write(get_projects_as_json())
 
 class GetProjectHandler(webapp2.RequestHandler):
     def post(self):
-        #TODO: get project by ID
-        id = self.request.get('projectid')
-        self.response.write('GET PROJECT ' + id)
+        project_id = int(self.request.get('projectid'))
+        json_data = json.dumps(Project.query(Project.id == project_id).fetch(1)[0].to_dict(), default=json_serial) 
+        self.response.write(json_data)
 
 application = webapp2.WSGIApplication([
     ('/', HomeHandler),
