@@ -55,7 +55,7 @@
             var CURRENT_PROJECT = {};
 
             //Add the projects to the select list
-            function funcPopulateProjects(projects){
+            function populateProjects(projects){
                 $('#select-project').find('option').remove();
                 for(var i=0; i<projects.length; i++){
                     $('#select-project')
@@ -70,20 +70,28 @@
                 }
             }
 
+            function populateRoomDefaults(room_defaults){
+                for (var key in room_defaults) {
+                    if (room_defaults.hasOwnProperty(key)) {
+                        $('#default-'+key.replace('_','-')).val(room_defaults[key]);
+                    }
+                }
+            }
+
             $(document).ready(function() {
               
                 $("#owl-example").owlCarousel(
-                  { 
-                    navigation : true, // Show next and prev buttons
-                    slideSpeed : 300,
-                    paginationSpeed : 400,
-                    singleItem:true,
-                    afterInit : function(elem){
-                      var that = this
-                      that.owlControls.prependTo(elem)
-                      this.jumpTo(2);
+                    { 
+                        navigation : true, // Show next and prev buttons
+                        slideSpeed : 300,
+                        paginationSpeed : 400,
+                        singleItem:true,
+                        afterInit : function(elem){
+                          var that = this;
+                          that.owlControls.prependTo(elem);
+                          this.jumpTo(2);
+                        }
                     }
-                  }
                 );
                 
                 $('.numbersOnly').keyup(function () {
@@ -93,8 +101,8 @@
                     }
                 }); 
 
-                var projects = {{ projects|safe }}; 
-                funcPopulateProjects(projects);
+                populateRoomDefaults({{ default_room|safe }});
+                populateProjects({{ projects|safe }});
 
                 $('#btn-select-project').click( function(){
                     $.ajax({
@@ -118,7 +126,7 @@
                             data: { projectTitle: $('#new-project-title').val() },
                             success: function(data){ 
                               alert('Project created successfully.'); 
-                              funcPopulateProjects(JSON.parse(data)); 
+                              populateProjects(JSON.parse(data)); 
                             }
                         });
                     }else{
