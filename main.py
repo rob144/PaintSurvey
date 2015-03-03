@@ -50,17 +50,17 @@ class Room(ndb.Model):
 
 def create_default_room():
     return Room(
-        room_length = 4.5,
-        room_width = 4.5,
+        room_length = 5.0,
+        room_width = 5.0,
         room_height = 2.5,
         door_quantity = 1,
         door_width = 0.9,
-        door_height = 2,
+        door_height = 2.0,
         window_quantity = 1,
-        window_width = 1,
-        window_height = 1,
+        window_width = 1.5,
+        window_height = 1.0,
         radiator_quantity = 1,
-        radiator_width = 1,
+        radiator_width = 1.5,
         radiator_height = 0.7,
         is_default = True
     )
@@ -75,11 +75,13 @@ class HandlerHome(webapp2.RequestHandler):
             Project(username='Test', title='Test One', date_created=datetime.now()).put()
             Project(username='Test', title='Test Two', date_created=datetime.now()).put()
             Project(username='Test', title='Test Three', date_created=datetime.now()).put()
-       
+
         #Create room defaults if not there already.
         if(Room.query(Room.is_default == True).count() <= 0):
             default_room = create_default_room()
             default_room.put()
+
+        time.sleep(2)
 
         self.response.write( 
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 

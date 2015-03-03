@@ -7,11 +7,12 @@
         <link rel="stylesheet" type="text/css" href="static/owl-carousel/owl.carousel.css" />
         <link rel="stylesheet" href="static/owl-carousel/owl.theme.css" />
         <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="static/jquery.validate.min.js"></script>
         <script src="static/owl-carousel/owl.carousel.js"></script>
     </head>
     <body>
         <h1 id='app-title'>Paint Survey</h1>
-        <div id='owl-example' class='owl-carousel'>
+        <div id='owl-carousel' class='owl-carousel'>
             <div id='page-left-3'>
                 <h2>Production Rates Defaults</h2>
                 <div class='pageContentOuter'>
@@ -19,53 +20,57 @@
                         <form id='form-production-rates'>
                           <div class='form-row'>
                             <label>Ceilings</label>
-                            <select>
-                              <option value="test">1 Vinyl Matt</option>
-                              <option value="test">2 Vinyl Matt</option>
-                              <option value="test">2 Eggshell</option>
+                            <select id='select-ceiling-prod-rate'>
+                              <option value="20">1 Vinyl Matt (20)</option>
+                              <option value="10">2 Vinyl Matt (10)</option>
+                              <option value="9">2 Eggshell (9)</option>
                             </select>
                           </div>
                           <div class='form-row'>
                             <label>Walls</label>
-                            <select>
-                              <option value="test">Wallpaper</option>
-                              <option value="test">2 Vinyl Matt</option>
-                              <option value="test">2 Eggshell</option>
+                            <select id='select-wall-prod-rate'>
+                              <option value="4.5">Wallpaper (4.5)</option>
+                              <option value="10">2 Vinyl Matt (10)</option>
+                              <option value="9">2 Eggshell (9)</option>
                             </select>
                           </div>
                           <div class='form-row'>
-                            <label>Doors</label>
-                            <select>
-                              <option value="test">General surface</option>
-                              <option value="test">Glazed med pane</option>
-                              <option value="test">Glazed small pane</option>
+                            <label>Door Area</label>
+                            <select id='select-door-area-prod-rate'>
+                              <option value="4">General surface (4)</option>
+                              <option value="3.5">Glazed med pane (3.5)</option>
+                              <option value="2.5">Glazed small pane (2.5)</option>
                             </select>
                           </div>
-                          <div class='form-row'>  
-                            <label>Architraves</label>
-                            <select>
-                              <option value="test">150 Girth</option>
+                          <div class='form-row'>
+                            <label>Door Frame</label>
+                            <select id='select-door-frame-prod-rate'>
+                              <option value="4">General surface (4)</option>
+                              <option value="3.5">Glazed med pane (3.5)</option>
+                              <option value="2.5">Glazed small pane (2.5)</option>
                             </select>
                           </div>
                           <div class='form-row'>  
                             <label>Windows</label>
-                            <select>
-                              <option value="test">Large pane</option>
-                              <option value="test">Med pane</option>
-                              <option value="test">Small pane</option>
+                            <select id='select-window-prod-rate'>
+                              <option value="5">Large pane (5)</option>
+                              <option value="4">Med pane (4)</option>
+                              <option value="3">Small pane (3)</option>
                             </select>
                           </div>
                           <div class='form-row'>  
                             <label>Radiators</label>
-                            <select>
-                              <option value="test">Panel</option>
-                              <option value="test">Column</option>
+                            <select id='select-radiator-prod-rate'>
+                              <option value="4">Panel (4)</option>
+                              <option value="2">Column (2)</option>
                             </select>
                           </div>
                           <div class='form-row'>  
                             <label>Skirtings</label>
-                            <select>
-                              <option value="test">150 Girth</option>
+                            <select id='select-skirting-prod-rate'>
+                              <option value="15">100 Girth (15)</option>
+                              <option value="12">150 Girth (12)</option>
+                              <option value="10">300 Girth (10)</option>
                             </select>
                           </div>
                         </form>
@@ -78,20 +83,8 @@
                     <div class='pageContent'>
                       <form id='form-production-rates'>
                         <div class='form-row'>
-                          <label>Room length</label>
-                          <input id='default-room-length' type='text' class='numbersOnly'/>
-                        </div>
-                        <div class='form-row'>
-                          <label>Room width</label>
-                          <input id='default-room-width' type='text' class='numbersOnly'/>
-                        </div>
-                        <div class='form-row'>
                           <label>Room height</label>
                           <input id='default-room-height' type='text' class='numbersOnly'/>
-                        </div>
-                        <div class='form-row'>  
-                          <label>Door quantity</label>
-                          <input id='default-door-quantity' type='text' class='numbersOnly'/>
                         </div>
                         <div class='form-row'>  
                           <label>Door width</label>
@@ -102,20 +95,12 @@
                           <input id='default-door-height' type='text' class='numbersOnly'/>
                         </div>
                         <div class='form-row'>  
-                          <label>Window quantity</label>
-                          <input id='default-window-quantity' type='text' class='numbersOnly'/>
-                        </div>
-                        <div class='form-row'>  
                           <label>Window width</label>
                           <input id='default-window-width' type='text' class='numbersOnly'/>
                         </div>
                         <div class='form-row'>  
                           <label>Window height</label>
                           <input id='default-window-height' type='text' class='numbersOnly'/>
-                        </div>
-                        <div class='form-row'>  
-                          <label>Radiator quantity</label>
-                          <input id='default-radiator-quantity' type='text' class='numbersOnly'/>
                         </div>
                         <div class='form-row'>  
                           <label>Radiator width</label>
@@ -150,147 +135,309 @@
                     </div>
                 </div>
             </div>
-            <div id='page-home'>
+            <div id='page-room-1' class='page-room'>
                 <h2 class="room-title" data-room-number="1">Room 1</h2>
-                {{ include_file('page-room.html') }}
-            </div>
-            <div id='page-right-1'>
-                <h2 class="room-title" data-room-number="2">Room 2</h2>
-                {{ include_file('page-room.html') }}
-            </div>
-            <div id='page-right-2'>
-                <h2 class="room-title" data-room-number="3">Room 3</h2>
-                {{ include_file('page-room.html') }}
+                <div class='pageContentOuter'>
+                  <div class='pageContent'>
+                      <div class='results'>RESULTS</div>
+                      <div class='colLeft'>
+                          <form class='room-form'> 
+                              <div class='group-label'>
+                                  <span>Room</span>
+                              </div>
+                              <div class='form-group'>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>L</div>
+                                          <input id='room-length' name='room-length' type='text' placeholder='enter length' class='form-control required numbersOnly'>
+                                      </div>
+                                  </div>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>W</div>
+                                          <input id='room-width' name='room-width' type='text' placeholder='enter width' class='form-control required numbersOnly'>
+                                      </div>
+                                  </div>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>H</div>
+                                          <input id='room-height' name='room-height' type='text' class='form-control required numbersOnly' value='2.5'>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class='group-label'>
+                                  <span>Door</span>
+                              </div>
+                              <div class='form-group'>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>#</div>
+                                          <input id='door-qty' name='door-qty'type='number' class='form-control required numbersOnly' value='1'>
+                                      </div>
+                                  </div>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>W</div>
+                                          <input id='door-width' name='door-width' type='text' class='form-control required numbersOnly' value='0.9'>
+                                      </div>
+                                  </div>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>H</div>
+                                          <input id='door-height' name='door-height' type='text' class='form-control required numbersOnly' value='2.0'>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class='group-label'>
+                                  <span>Window</span>
+                              </div>
+                              <div class='form-group'>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>#</div>
+                                          <input id='window-qty' name='window-qty' class='form-control required numbersOnly' type='number' value='1'/>
+                                      </div>
+                                  </div>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>W</div>
+                                          <input id='window-width' name='window-width' type='text' class='form-control required numbersOnly' value='1.5'/>
+                                      </div>
+                                  </div>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>H</div>
+                                          <input id='window-height' name='window-height' type='text' class='form-control required numbersOnly' value='1.0'/>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class='group-label'>
+                                  <span>Radiator</span>
+                              </div>
+                              <div class='formRow'>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>#</div>
+                                          <input id='radiator-qty' name='radiator-qty' class='form-control required numbersOnly' type='number' value='1'/>
+                                      </div>
+                                  </div>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>W</div>
+                                          <input id='radiator-width' name='radiator-width' type='text' class='form-control required numbersOnly' value='1.50'/>
+                                      </div>
+                                  </div>
+                                  <div class='input-group'>
+                                      <div class="input-group-inner">
+                                          <div class='control-label'>H</div>
+                                          <input id='radiator-height' name='radiator-height' type='text' class='form-control required numbersOnly' value='0.7'/>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <input type='button' id='btnCalculate' class='btn-room-calculate' value='Calculate'/>
+
+                          </form>
+                      </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <script>
-            //Global variable to store current project data
-            var CURRENT_PROJECT = {};
+<script>
+    //Global variable to store current project data
+    var CURRENT_PROJECT = {};
 
-            //Add the projects to the select list
-            function populateProjects(projects){
-                $('#select-project').find('option').remove();
-                for(var i=0; i<projects.length; i++){
-                    $('#select-project')
-                      .append(
-                          $('<option></option>')
-                            .attr('value',projects[i].id)
-                            .text(projects[i].title + ' (' 
-                              + projects[i].date_created.split('.')[0]
-                                .replace('T',' ') + ')'
-                            )
-                      ); 
+    //Add the projects to the select list
+    function populateProjects(projects){
+        $('#select-project').find('option').remove();
+        for(var i=0; i<projects.length; i++){
+            $('#select-project')
+              .append(
+                  $('<option></option>')
+                    .attr('value',projects[i].id)
+                    .text(projects[i].title + ' (' 
+                      + projects[i].date_created.split('.')[0]
+                        .replace('T',' ') + ')'
+                    )
+              ); 
+        }
+    }
+
+    function populateRoomDefaults(){
+        {% for key, value in default_room.to_dict().iteritems() if key != 'is_default'%}
+        $('#default-{{key.replace("_","-")}}' ).val( {{ value }} );
+        {% endfor %}
+    }
+
+    function selectProject(){
+        $.ajax({
+            type: 'POST',
+            url: '/getproject',
+            data: { project_key: $('#select-project').val() },
+            success: function(data){ 
+                CURRENT_PROJECT = JSON.parse(data);
+                $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
+                alert('Project selected: ' + CURRENT_PROJECT.title ); 
+                //TODO: fetch and populate the room data according to whichever project is selected
+            }
+        });
+    }
+
+    function createProject(){
+        if($('#new-project-title').val().match(/\S/g)){
+            $.ajax({
+                type: 'POST',
+                url: '/createproject',
+                data: { projectTitle: $('#new-project-title').val() },
+                success: function(data){ 
+                  alert('Project created successfully.'); 
+                  populateProjects(JSON.parse(data));
+
+                  //selectProject();
                 }
-            }
-
-            function populateRoomDefaults(){
-                {% for key, value in default_room.to_dict().iteritems() if key != 'is_default'%}
-                $('#default-{{key.replace("_","-")}}' ).val( {{ value }} );
-                {% endfor %}
-            }
-
-            function selectProject(){
-                $.ajax({
-                    type: 'POST',
-                    url: '/getproject',
-                    data: { project_key: $('#select-project').val() },
-                    success: function(data){ 
-                        CURRENT_PROJECT = JSON.parse(data);
-                        $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
-                        alert('Project selected: ' + CURRENT_PROJECT.title ); 
-                        //TODO: fetch and populate the room data according to whichever project is selected
-                    }
-                });
-            }
-
-            function createProject(){
-                if($('#new-project-title').val().match(/\S/g)){
-                    $.ajax({
-                        type: 'POST',
-                        url: '/createproject',
-                        data: { projectTitle: $('#new-project-title').val() },
-                        success: function(data){ 
-                          alert('Project created successfully.'); 
-                          populateProjects(JSON.parse(data));
-
-                          //selectProject();
-                        }
-                    });
-                }else{
-                    alert('Project title can not be blank!');
-                }
-            }
-
-            function calculateWorkForRoom(){
-                var page = $(event.target).closest('.pageContent');
-                
-                var rmLength =      parseFloat(page.find('#roomLength:first').val());
-                var rmWidth =       parseFloat(page.find('#roomWidth:first').val());
-                var rmHeight =      parseFloat(page.find('#roomHeight:first').val());
-                var doorQty =       parseFloat(page.find('#doorQty:first').val());
-                var doorWidth =     parseFloat(page.find('#doorWidth:first').val());
-                var doorHeight =    parseFloat(page.find('#doorHeight:first').val());
-                var windowQty =     parseFloat(page.find('#windowQty:first').val());
-                var windowWidth =   parseFloat(page.find('#windowWidth:first').val());
-                var windowHeight =  parseFloat(page.find('#windowHeight:first').val());
-                var radiatorQty =     parseFloat(page.find('#radiatorQty:first').val());
-                var radiatorWidth =   parseFloat(page.find('#radiatorWidth:first').val());
-                var radiatorHeight =  parseFloat(page.find('#radiatorHeight:first').val());
-          
-                var doorSpace =     doorQty * doorWidth * doorHeight;
-                var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
-                var windowSpace =   windowQty * windowWidth * windowHeight;
-                var ceilingSpace =  (rmLength * rmWidth); 
-                var wallSpace =     (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
-                var skirtingSpace = (rmLength + rmWidth) * 2 - doorWidth * doorQty;
-                var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
-          
-                var results = '<table><tr><th>Part</th><th>Result</th></tr>';
-                results += ('<tr><td>CEILING:</td><td class="result">'    + ceilingSpace.toFixed(2)  + ' m2</td></tr>');
-                results += ('<tr><td>WALL:</td><td class="result">'       + wallSpace.toFixed(2)     + ' m2</td></tr>');
-                results += ('<tr><td>DOOR:</td><td class="result">'       + doorSpace.toFixed(2)     + ' m2</td></tr>');
-                results += ('<tr><td>DOORFRAME:</td><td class="result">'  + doorFrame.toFixed(2)     + '</td></tr>');
-                results += ('<tr><td>WINDOW:</td><td class="result">'     + wallSpace.toFixed(2)     + ' m2</td></tr>');
-                results += ('<tr><td>RADIATOR:</td><td class="result">'   + radiatorSpace.toFixed(2) + ' m2</td></tr>');
-                results += ('<tr><td>SKIRTING:</td><td class="result">'   + skirtingSpace.toFixed(2) + '</td></tr>');
-                results += '</table>';
-                
-                page.find('.results:first').html(results);
-                window.scrollTo(0,0);
-            }
-
-            function initOwlCarousel(){
-                $("#owl-example").owlCarousel(
-                    { 
-                        navigation : true, // Show next and prev buttons
-                        slideSpeed : 300,
-                        paginationSpeed : 400,
-                        singleItem:true,
-                        afterInit : function(elem){
-                          var that = this;
-                          that.owlControls.prependTo(elem);
-                          this.jumpTo(2);
-                        }
-                    }
-                );
-            }
-
-            $(document).ready(function() {
-              
-                initOwlCarousel();
-                populateRoomDefaults();
-
-                $('.numbersOnly').keyup(function () {
-                    var result = this.value.replace(/[^0-9\.]/g, '');
-                    if (this.value != result) {
-                        this.value = result;
-                    }
-                }); 
-
-                $('#btn-select-project').click( selectProject );
-                $('#btn-create-project').click( createProject );
-                $('.btn-room-calculate').click( calculateWorkForRoom );
             });
-        </script>
+        }else{
+            alert('Project title can not be blank!');
+        }
+    }
+
+    function populateRoomWithDefaults(){
+        $('#roomHeight').val(parseFloat($('#default-room-height').val()).toFixed(2));
+        $('#doorQty').val(1);
+        $('#doorWidth').val(parseFloat($('#default-door-width').val()).toFixed(2));
+        $('#doorHeight').val(parseFloat($('#default-door-height').val()).toFixed(2));
+        $('#windowQty').val(1);
+        $('#windowWidth').val(parseFloat($('#default-window-width').val()).toFixed(2));
+        $('#windowHeight').val(parseFloat($('#default-window-height').val()).toFixed(2));
+        $('#radiatorQty').val(1);
+        $('#radiatorWidth').val(parseFloat($('#default-radiator-width').val()).toFixed(2));
+        $('#radiatorHeight').val(parseFloat($('#default-radiator-height').val()).toFixed(2));
+    }
+
+    function calculateWorkForRoom(event){
+        var page = $(event.target).closest('.pageContent');
+        
+        var rmLength =      parseFloat(page.find('#room-length:first').val());
+        var rmWidth =       parseFloat(page.find('#room-width:first').val());
+        var rmHeight =      parseFloat(page.find('#room-height:first').val());
+        var doorQty =       parseFloat(page.find('#door-qty:first').val());
+        var doorWidth =     parseFloat(page.find('#door-width:first').val());
+        var doorHeight =    parseFloat(page.find('#door-height:first').val());
+        var windowQty =     parseFloat(page.find('#window-qty:first').val());
+        var windowWidth =   parseFloat(page.find('#window-width:first').val());
+        var windowHeight =  parseFloat(page.find('#window-height:first').val());
+        var radiatorQty =     parseFloat(page.find('#radiator-qty:first').val());
+        var radiatorWidth =   parseFloat(page.find('#radiator-width:first').val());
+        var radiatorHeight =  parseFloat(page.find('#radiator-height:first').val());
+  
+        var doorSpace =     doorQty * doorWidth * doorHeight;
+        var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
+        var windowSpace =   windowQty * windowWidth * windowHeight;
+        var ceilingSpace =  (rmLength * rmWidth); 
+        var wallSpace =     (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
+        var skirtingSpace = (rmLength + rmWidth) * 2 - (doorWidth * doorQty);
+        var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
+
+        var tableData = [
+            { title: 'DOOR AREA',   amount: doorSpace,       units: 'm2', hours: doorSpace / parseInt($('#select-door-area-prod-rate').val()) },
+            { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrame / parseInt($('#select-door-frame-prod-rate').val()) },
+            { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowSpace / parseInt($('#select-window-prod-rate').val()) },
+            { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / parseInt($('#select-ceiling-prod-rate').val()) },
+            { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / parseInt($('#select-wall-prod-rate').val()) },
+            { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-skirting-prod-rate').val()) },
+            { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiator-prod-rate').val()) }
+        ];
+
+        page.find('.results:first').html(buildResultsTable(tableData));
+
+        window.scrollTo(0,0);
+    }
+
+    function buildResultsTable(tableData){
+        var results = '<table><tr><th>Part</th><th>Amount</th><th></th><th>Hours</th></tr>';
+        var totalHours = 0;
+        
+        for (i = 0; i < tableData.length; ++i) {
+            obj = tableData[i];
+            results += '<tr>';
+            for (var key in obj){
+                if (obj.hasOwnProperty(key)) {
+                    var val = 0;
+                    var cssClass = 'class="tdRightAlign"';
+                    if(key == 'amount' ){
+                        val = roundAndFix(obj[key], 2);
+                    }else if(key == 'hours'){
+                        val = roundAndFix(obj[key], 2);
+                        totalHours += parseFloat(val);
+                    }else{
+                        val = obj[key];
+                        cssClass = '';
+                    }
+                    results += '<td ' + cssClass + '>' + val + '</td>';
+                }
+            }
+            results += '</tr>';
+        }
+
+        results += '<tr class="rowTotalHours"><td>TOTAL:</td><td></td><td></td><td class="tdRightAlign">' + totalHours.toFixed(2) + '</td></tr>';
+        results += '</table>';
+        return results;
+    }
+
+    function initOwlCarousel(){
+        $("#owl-carousel").owlCarousel(
+            { 
+                navigation : true, // Show next and prev buttons
+                slideSpeed : 300,
+                paginationSpeed : 400,
+                singleItem: true,
+                afterInit : function(elem){
+                  var that = this;
+                  that.owlControls.prependTo(elem);
+                  this.jumpTo(2);
+                }
+            }
+        );
+    }
+
+    function roundAndFix (number, precision) {
+        var multiplier = Math.pow (10, precision);
+        var result = Math.round (number * multiplier) / multiplier;
+        return result.toFixed(precision);
+    }
+
+    $(document).ready(function() {
+      
+        initOwlCarousel();
+        populateRoomDefaults();
+        populateRoomWithDefaults();
+
+        $('.numbersOnly').keyup(function () {
+            var result = this.value.replace(/[^0-9\.]/g, '');
+            if (this.value != result) {
+                this.value = result;
+            }
+        }); 
+
+        $('#btn-select-project').click( selectProject );
+        $('#btn-create-project').click( createProject );
+
+        $('.btn-room-calculate').click( 
+            function(){
+                var options = {
+                    errorPlacement: function(error, element) {
+                        error.insertAfter(element.closest('.input-group'));
+                    }
+                };
+                if($(event.target).closest('.room-form').validate(options).form()){
+                    calculateWorkForRoom(event); 
+                }
+            }
+        );
+    });
+</script>
     </body>
 </html>
