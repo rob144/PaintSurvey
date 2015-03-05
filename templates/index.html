@@ -84,31 +84,31 @@
                       <form id='form-production-rates'>
                         <div class='form-row'>
                           <label>Room height</label>
-                          <input id='default-room-height' type='text' class='numbersOnly'/>
+                          <input id='default-room-height' type='number' step='any' min='0' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Door width</label>
-                          <input id='default-door-width' type='text' class='numbersOnly'/>
+                          <input id='default-door-width' type='number' step='any' min='0' class='decimal' />
                         </div>
                         <div class='form-row'>  
                           <label>Door height</label>
-                          <input id='default-door-height' type='text' class='numbersOnly'/>
+                          <input id='default-door-height' type='number' step='any' min='0' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Window width</label>
-                          <input id='default-window-width' type='text' class='numbersOnly'/>
+                          <input id='default-window-width' type='number' step='any' min='0' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Window height</label>
-                          <input id='default-window-height' type='text' class='numbersOnly'/>
+                          <input id='default-window-height' type='number' step='any' min='0' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Radiator width</label>
-                          <input id='default-radiator-width' type='text' class='numbersOnly'/>
+                          <input id='default-radiator-width' type='number' step='any' min='0' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Radiator height</label>
-                          <input id='default-radiator-height' type='text' class='numbersOnly'/>
+                          <input id='default-radiator-height' type='number' step='any' min='0' class='decimal'/>
                         </div>
                       </form>
                     </div>
@@ -149,19 +149,19 @@
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>L</div>
-                                          <input id='room-length' name='room-length' type='text' placeholder='enter length' class='form-control required numbersOnly'>
+                                          <input id='room-length' name='room-length' type='text' placeholder='enter length' class='form-control required decimal'>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='room-width' name='room-width' type='text' placeholder='enter width' class='form-control required numbersOnly'>
+                                          <input id='room-width' name='room-width' type='text' placeholder='enter width' class='form-control required decimal'>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='room-height' name='room-height' type='text' class='form-control required numbersOnly' value='2.5'>
+                                          <input id='room-height' name='room-height' type='text' class='form-control required decimal' value='2.5'>
                                       </div>
                                   </div>
                               </div>
@@ -173,19 +173,19 @@
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>#</div>
-                                          <input id='door-qty' name='door-qty'type='number' class='form-control required numbersOnly' value='1'>
+                                          <input id='door-qty' name='door-qty'type='number' class='form-control required integer' value='1'>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='door-width' name='door-width' type='text' class='form-control required numbersOnly' value='0.9'>
+                                          <input id='door-width' name='door-width' type='text' class='form-control required decimal' value='0.9'>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='door-height' name='door-height' type='text' class='form-control required numbersOnly' value='2.0'>
+                                          <input id='door-height' name='door-height' type='text' class='form-control required decimal' value='2.0'>
                                       </div>
                                   </div>
                               </div>
@@ -197,19 +197,19 @@
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>#</div>
-                                          <input id='window-qty' name='window-qty' class='form-control required numbersOnly' type='number' value='1'/>
+                                          <input id='window-qty' name='window-qty' class='form-control required integer' type='number' step='1' value='1'/>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='window-width' name='window-width' type='text' class='form-control required numbersOnly' value='1.5'/>
+                                          <input id='window-width' name='window-width' type='text' class='form-control required decimal' value='1.5'/>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='window-height' name='window-height' type='text' class='form-control required numbersOnly' value='1.0'/>
+                                          <input id='window-height' name='window-height' type='text' class='form-control required decimal' value='1.0'/>
                                       </div>
                                   </div>
                               </div>
@@ -221,19 +221,19 @@
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>#</div>
-                                          <input id='radiator-qty' name='radiator-qty' class='form-control required numbersOnly' type='number' value='1'/>
+                                          <input id='radiator-qty' name='radiator-qty' class='form-control required integer' type='number' value='1'/>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='radiator-width' name='radiator-width' type='text' class='form-control required numbersOnly' value='1.50'/>
+                                          <input id='radiator-width' name='radiator-width' type='text' class='form-control required decimal' value='1.50'/>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='radiator-height' name='radiator-height' type='text' class='form-control required numbersOnly' value='0.7'/>
+                                          <input id='radiator-height' name='radiator-height' type='text' class='form-control required decimal' value='0.7'/>
                                       </div>
                                   </div>
                               </div>
@@ -409,18 +409,57 @@
         return result.toFixed(precision);
     }
 
+    function allowOnlyDecimalInput(event){
+        // Allow: backspace, delete, tab, escape, enter, ctrl+A
+        if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+             // Allow: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) || 
+             // Allow: home, end, left, right
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+
+        var numeric = /[0-9]/.test(String.fromCharCode(event.keyCode));
+        if(numeric) return;
+        
+        var decimalAlready = (event.keyCode == 190 && /\./.test(this.value));
+        if(!decimalAlready) return;
+
+        event.preventDefault();  
+    }
+
+    function allowOnlyIntegerInput(event){
+        // Allow: backspace, delete, tab, escape, enter, ctrl+A
+        if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+             // Allow: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) || 
+             // Allow: home, end, left, right
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+
+        var numeric = /[0-9]/.test(String.fromCharCode(event.keyCode));
+        if(numeric) return;
+
+        event.preventDefault();  
+    }
+
     $(document).ready(function() {
       
         initOwlCarousel();
         populateRoomDefaults();
         populateRoomWithDefaults();
 
-        $('.numbersOnly').keyup(function () {
-            var result = this.value.replace(/[^0-9\.]/g, '');
-            if (this.value != result) {
-                this.value = result;
-            }
-        }); 
+        $('.integer').keydown( allowOnlyIntegerInput ); 
+        $('.decimal').keydown( allowOnlyDecimalInput );
+
+        $( ".decimal" ).blur(function() {
+            if(this.value.length >= 1){
+                this.value = parseFloat(this.value).toFixed(2);
+            } 
+        });
 
         $('#btn-select-project').click( selectProject );
         $('#btn-create-project').click( createProject );
