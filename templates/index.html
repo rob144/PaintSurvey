@@ -486,6 +486,12 @@
                 }
             }
         );
+
+        $(".owl-item").bind("touchstart click", function (event) {
+            if(event.target.tagName.toLowerCase() != 'input'){
+                $(':focus').blur()
+            }
+        });
     });
 </script>
     </body>
