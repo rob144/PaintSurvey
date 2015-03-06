@@ -84,31 +84,31 @@
                       <form id='form-production-rates'>
                         <div class='form-row'>
                           <label>Room height</label>
-                          <input id='default-room-height' type='number' step='any' min='0' class='decimal'/>
+                          <input id='default-room-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Door width</label>
-                          <input id='default-door-width' type='number' step='any' min='0' class='decimal' />
+                          <input id='default-door-width' type='number' step='any' min='0' placeholder='enter width' class='decimal' />
                         </div>
                         <div class='form-row'>  
                           <label>Door height</label>
-                          <input id='default-door-height' type='number' step='any' min='0' class='decimal'/>
+                          <input id='default-door-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Window width</label>
-                          <input id='default-window-width' type='number' step='any' min='0' class='decimal'/>
+                          <input id='default-window-width' type='number' step='any' min='0' placeholder='enter width' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Window height</label>
-                          <input id='default-window-height' type='number' step='any' min='0' class='decimal'/>
+                          <input id='default-window-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Radiator width</label>
-                          <input id='default-radiator-width' type='number' step='any' min='0' class='decimal'/>
+                          <input id='default-radiator-width' type='number' step='any' min='0' placeholder='enter width' class='decimal'/>
                         </div>
                         <div class='form-row'>  
                           <label>Radiator height</label>
-                          <input id='default-radiator-height' type='number' step='any' min='0' class='decimal'/>
+                          <input id='default-radiator-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
                         </div>
                       </form>
                     </div>
@@ -149,19 +149,19 @@
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>L</div>
-                                          <input id='room-length' name='room-length' type='text' placeholder='enter length' class='form-control required decimal'>
+                                          <input id='room-length' name='room-length' type='number' step='any' min='0' placeholder='enter length' class='form-control required decimal'>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='room-width' name='room-width' type='text' placeholder='enter width' class='form-control required decimal'>
+                                          <input id='room-width' name='room-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='room-height' name='room-height' type='text' class='form-control required decimal' value='2.5'>
+                                          <input id='room-height' name='room-height' type='number' step='any' min='0'  placeholder='enter height' class='form-control required decimal'>
                                       </div>
                                   </div>
                               </div>
@@ -173,19 +173,19 @@
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>#</div>
-                                          <input id='door-qty' name='door-qty'type='number' class='form-control required integer' value='1'>
+                                          <input id='door-qty' name='door-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control required integer' value='1'>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='door-width' name='door-width' type='text' class='form-control required decimal' value='0.9'>
+                                          <input id='door-width' name='door-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='door-height' name='door-height' type='text' class='form-control required decimal' value='2.0'>
+                                          <input id='door-height' name='door-height' type='number' step='any' min='0' placeholder='enter width'  class='form-control required decimal'>
                                       </div>
                                   </div>
                               </div>
@@ -197,19 +197,19 @@
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>#</div>
-                                          <input id='window-qty' name='window-qty' class='form-control required integer' type='number' step='1' value='1'/>
+                                          <input id='window-qty' name='window-qty' type='number' step='1' min='0' value='1' placeholder='enter quantity' class='form-control required integer' value='1' />
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='window-width' name='window-width' type='text' class='form-control required decimal' value='1.5'/>
+                                          <input id='window-width' name='window-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'/>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='window-height' name='window-height' type='text' class='form-control required decimal' value='1.0'/>
+                                          <input id='window-height' name='window-height' type='number' step='any' min='0' placeholder='enter height' class='form-control required decimal'/>
                                       </div>
                                   </div>
                               </div>
@@ -221,19 +221,19 @@
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>#</div>
-                                          <input id='radiator-qty' name='radiator-qty' class='form-control required integer' type='number' value='1'/>
+                                          <input id='radiator-qty' name='radiator-qty' type='number' step='any' min='0' placeholder='enter quantity' value='1' class='form-control required integer' value='1' />
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='radiator-width' name='radiator-width' type='text' class='form-control required decimal' value='1.50'/>
+                                          <input id='radiator-width' name='radiator-width' type='number' step='any' min='0' placeholder='enter width' value='1.50' class='form-control required decimal'/>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='radiator-height' name='radiator-height' type='text' class='form-control required decimal' value='0.7'/>
+                                          <input id='radiator-height' name='radiator-height' type='number' step='any' min='0' placeholder='enter height' value='0.7' class='form-control required decimal' />
                                       </div>
                                   </div>
                               </div>
@@ -305,16 +305,16 @@
     }
 
     function populateRoomWithDefaults(){
-        $('#roomHeight').val(parseFloat($('#default-room-height').val()).toFixed(2));
-        $('#doorQty').val(1);
-        $('#doorWidth').val(parseFloat($('#default-door-width').val()).toFixed(2));
-        $('#doorHeight').val(parseFloat($('#default-door-height').val()).toFixed(2));
-        $('#windowQty').val(1);
-        $('#windowWidth').val(parseFloat($('#default-window-width').val()).toFixed(2));
-        $('#windowHeight').val(parseFloat($('#default-window-height').val()).toFixed(2));
-        $('#radiatorQty').val(1);
-        $('#radiatorWidth').val(parseFloat($('#default-radiator-width').val()).toFixed(2));
-        $('#radiatorHeight').val(parseFloat($('#default-radiator-height').val()).toFixed(2));
+        $('#room-height').val(parseFloat($('#default-room-height').val()).toFixed(2));
+        $('#door-qty').val(1);
+        $('#door-width').val(parseFloat($('#default-door-width').val()).toFixed(2));
+        $('#door-height').val(parseFloat($('#default-door-height').val()).toFixed(2));
+        $('#window-qty').val(1);
+        $('#window-width').val(parseFloat($('#default-window-width').val()).toFixed(2));
+        $('#window-height').val(parseFloat($('#default-window-height').val()).toFixed(2));
+        $('#radiator-qty').val(1);
+        $('#radiator-width').val(parseFloat($('#default-radiator-width').val()).toFixed(2));
+        $('#radiator-height').val(parseFloat($('#default-radiator-height').val()).toFixed(2));
     }
 
     function calculateWorkForRoom(event){
@@ -410,6 +410,7 @@
     }
 
     function allowOnlyDecimalInput(event){
+
         // Allow: backspace, delete, tab, escape, enter, ctrl+A
         if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
              // Allow: Ctrl+A
@@ -420,13 +421,18 @@
                  return;
         }
 
-        var numeric = /[0-9]/.test(String.fromCharCode(event.keyCode));
-        if(numeric) return;
-        
-        var decimalAlready = (event.keyCode == 190 && /\./.test(this.value));
-        if(!decimalAlready) return;
+        //If not number or decimal point, prevent.
+        if(/[^0-9]/.test(String.fromCharCode(event.keyCode))
+          && event.keyCode != 190 ){
+            event.preventDefault();
+            return;
+        };
 
-        event.preventDefault();  
+        //if already decimal point, prevent.
+        if(event.keyCode == 190 && /\./.test(this.value)) {
+            event.preventDefault();
+            return;
+        }
     }
 
     function allowOnlyIntegerInput(event){
@@ -440,8 +446,8 @@
                  return;
         }
 
-        var numeric = /[0-9]/.test(String.fromCharCode(event.keyCode));
-        if(numeric) return;
+        //If not number, prevent
+        if(/[0-9]/.test(String.fromCharCode(event.keyCode))) return;
 
         event.preventDefault();  
     }
@@ -455,10 +461,14 @@
         $('.integer').keydown( allowOnlyIntegerInput ); 
         $('.decimal').keydown( allowOnlyDecimalInput );
 
-        $( ".decimal" ).blur(function() {
-            if(this.value.length >= 1){
+        $( ".decimal" ).bind('blur', function() {
+            //Enforce 2 decimal places.
+            if(this.value.trim() == '.') this.value = '0.00';
+            if(this.value.length >= 1 && parseFloat(this.value) > 0){
                 this.value = parseFloat(this.value).toFixed(2);
-            } 
+            }else{
+                this.value = '';
+            }
         });
 
         $('#btn-select-project').click( selectProject );
