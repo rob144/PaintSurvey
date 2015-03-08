@@ -217,28 +217,36 @@
                               <div class='group-label'>
                                   <span>Radiator</span>
                               </div>
-                              <div class='formRow'>
+                              <div class='form-row'>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>#</div>
-                                          <input id='radiator-qty' name='radiator-qty' type='number' step='any' min='0' placeholder='enter quantity' value='1' class='form-control required integer' value='1' />
+                                          <input id='radiator-qty' name='radiator-qty' type='number' step='any' min='0' placeholder='enter quantity' class='form-control required integer' value='1' />
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>W</div>
-                                          <input id='radiator-width' name='radiator-width' type='number' step='any' min='0' placeholder='enter width' value='1.50' class='form-control required decimal'/>
+                                          <input id='radiator-width' name='radiator-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal' value='1.50'/>
                                       </div>
                                   </div>
                                   <div class='input-group'>
                                       <div class="input-group-inner">
                                           <div class='control-label'>H</div>
-                                          <input id='radiator-height' name='radiator-height' type='number' step='any' min='0' placeholder='enter height' value='0.7' class='form-control required decimal' />
+                                          <input id='radiator-height' name='radiator-height' type='number' step='any' min='0' placeholder='enter height' class='form-control required decimal' value='0.70'/>
                                       </div>
                                   </div>
                               </div>
 
-                              <input type='button' id='btnCalculate' class='btn-room-calculate' value='Calculate'/>
+                              <div class='group-label'>
+                                  <span>Bay or Breast</span>
+                              </div>
+                              <div class='form-row'>
+                                  <input id='baybreast-depth' name='baybreast-depth' type='number' step='any' placeholder='enter depth' value='0.40' class='required decimal'/>
+                                  <input id='baybreast-width' name='baybreast-width' type='number' step='any' placeholder='enter width' value='0.40' class='required decimal'/>
+                              </div>
+
+                              <input type='button' id='btn-calculate' class='btn-room-calculate' value='Calculate'/>
 
                           </form>
                       </div>
@@ -322,9 +330,9 @@
     function calculateWorkForRoom(event){
         var page = $(event.target).closest('.pageContent');
         
-        var rmLength =      parseFloat(page.find('#room-length:first').val());
-        var rmWidth =       parseFloat(page.find('#room-width:first').val());
-        var rmHeight =      parseFloat(page.find('#room-height:first').val());
+        var roomLength =      parseFloat(page.find('#room-length:first').val());
+        var roomWidth =       parseFloat(page.find('#room-width:first').val());
+        var roomHeight =      parseFloat(page.find('#room-height:first').val());
         var doorQty =       parseFloat(page.find('#door-qty:first').val());
         var doorWidth =     parseFloat(page.find('#door-width:first').val());
         var doorHeight =    parseFloat(page.find('#door-height:first').val());
@@ -334,13 +342,15 @@
         var radiatorQty =     parseFloat(page.find('#radiator-qty:first').val());
         var radiatorWidth =   parseFloat(page.find('#radiator-width:first').val());
         var radiatorHeight =  parseFloat(page.find('#radiator-height:first').val());
+        var baybreastWidth =   parseFloat(page.find('#baybreast-width:first').val());
+        var baybreastDepth =  parseFloat(page.find('#baybreast-depth:first').val());
   
         var doorSpace =     doorQty * doorWidth * doorHeight;
         var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
         var windowSpace =   windowQty * windowWidth * windowHeight;
-        var ceilingSpace =  (rmLength * rmWidth); 
-        var wallSpace =     (rmLength + rmWidth) * 2 * rmHeight - doorSpace - windowSpace; 
-        var skirtingSpace = (rmLength + rmWidth) * 2 - (doorWidth * doorQty);
+        var ceilingSpace =  (roomLength * roomWidth) + (baybreastWidth * baybreastDepth); 
+        var wallSpace =     (roomLength + roomWidth) * 2 * roomHeight - doorSpace - windowSpace + (2 * baybreastDepth * roomHeight); 
+        var skirtingSpace = (roomLength + roomWidth) * 2 - (doorWidth * doorQty) + (2 * baybreastDepth);
         var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
 
         var tableData = [
