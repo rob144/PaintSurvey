@@ -267,8 +267,11 @@
     }
 
     function populateRoomDefaults(){
+        var $elem;
         {% for key, value in default_room.to_dict().iteritems() if key != 'is_default'%}
-        $('#default-{{key.replace("_","-")}}' ).val( {{ value }} );
+        $elem = $('#default-{{key.replace("_","-")}}' );
+        $elem.val( {{ value }} );
+        $elem.blur();//Trigger blur event handler to ensure two decimal places.
         {% endfor %}
     }
 
@@ -295,7 +298,6 @@
                 success: function(data){ 
                   alert('Project created successfully.'); 
                   populateProjects(JSON.parse(data));
-
                   //selectProject();
                 }
             });
@@ -387,22 +389,6 @@
         return results;
     }
 
-    function initOwlCarousel(){
-        $("#owl-carousel").owlCarousel(
-            { 
-                navigation : true, // Show next and prev buttons
-                slideSpeed : 300,
-                paginationSpeed : 400,
-                singleItem: true,
-                afterInit : function(elem){
-                  var that = this;
-                  that.owlControls.prependTo(elem);
-                  this.jumpTo(2);
-                }
-            }
-        );
-    }
-
     function roundAndFix (number, precision) {
         var multiplier = Math.pow (10, precision);
         var result = Math.round (number * multiplier) / multiplier;
@@ -452,11 +438,25 @@
         event.preventDefault();  
     }
 
+    function initOwlCarousel(){
+        $("#owl-carousel").owlCarousel(
+            { 
+                navigation : true, // Show next and prev buttons
+                slideSpeed : 300,
+                paginationSpeed : 400,
+                singleItem: true,
+                afterInit : function(elem){
+                  var that = this;
+                  that.owlControls.prependTo(elem);
+                  this.jumpTo(2);
+                }
+            }
+        );
+    }
+
     $(document).ready(function() {
       
         initOwlCarousel();
-        populateRoomDefaults();
-        populateRoomWithDefaults();
 
         $('.integer').keydown( allowOnlyIntegerInput ); 
         $('.decimal').keydown( allowOnlyDecimalInput );
@@ -489,9 +489,12 @@
 
         $(".owl-item").bind("touchstart click", function (event) {
             if(event.target.tagName.toLowerCase() != 'input'){
-                $(':focus').blur()
+                $(':focus').blur();
             }
         });
+
+        populateRoomDefaults();
+        populateRoomWithDefaults();
     });
 </script>
     </body>
