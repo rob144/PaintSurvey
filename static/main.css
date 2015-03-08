@@ -103,7 +103,8 @@ td.result {
     font-weight: bold;
 }
 .input-group {
-    width:215px;
+    width:185px;
+    overflow:auto;
 }
 .input-group-inner {
     display:block;
@@ -129,7 +130,7 @@ input[type="radio"]{
 }
 .form-control{
     float:right;
-    width: 140px;
+    width: 110px;
     background-color: #fff;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
@@ -154,6 +155,20 @@ input[type="radio"]{
 	border:1px solid grey;
 	border-radius:4px;
 }
-#btnCalculate{
+#baybreast-depth {
+    float:left;
+    width:100px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border:1px solid #ccc; 
+}
+#baybreast-width {
+    float:left;
+    width:100px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border:1px solid #ccc; 
+}
+#btn-calculate{
     float:right;
 }
