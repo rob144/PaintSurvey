@@ -1,37 +1,36 @@
-body{ 
+body { 
     font:-webkit-small-control;
     font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
-    font-size:14px;
+    font-size:15px;
     margin:0;
 }
-label{
+h2{
+    margin:10px 0 0 0;
+}
+label {
     font-weight:bold;
 }
-input[type="button"]{
+input[type="button"] {
     font:-webkit-small-control;
     font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
-    font-size: 14pt;
+    font-size: 15pt;
 }
 select {
     display:block;
     margin:0 0 5px 0;
-    min-width:150px;
+    min-width:200px;
     max-width:300px;
-    font-size:14px;
+    font-size:15px;
 }
-button{
+button {
     display: block;
     margin: 0 0 0 1px;
-    
 }
-#app-title{
+#app-title {
     margin:0;
     font-size: 18pt;
     padding:5px;
     background-color:cyan;
-}
-h2{
-    margin:5px;
 }
 /* CAROUSEL */
 .owl-theme > .owl-controls > .owl-pagination > .owl-page > span {
@@ -54,6 +53,13 @@ h2{
     padding:10px;
 }
 /* PAGE CONTENT */
+.room-title {
+    width:calc(100% - 14px);
+    min-width: 100px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius:4px;
+    border:1px solid #ccc;}
 th {
     text-align: left;
 }
@@ -63,50 +69,53 @@ td {
 td.result {
     text-align: right;
 }
-.results{
+.results {
     clear:both;
-    margin:0 0 10px 0;
-    padding:5px;
+    margin:10px 0 10px 0;
+    padding:6px;
     background-color: yellow;
     border-radius: 4px;
     border:1px solid blue;
 }
-.results table{
+.results table {
     border-collapse: collapse;
 }
-.results table td, .results table th{
+.results table td, .results table th {
     padding:2px 6px; 2px 0;
 }
-.tdRightAlign{
+.tdRightAlign {
     text-align: right;
 }
-.rowTotalHours td{
+.rowTotalHours td {
     border-top:1px solid black;
 }
-.pageContentOuter{
+.pageContentOuter {
 	overflow:auto;
 	margin:0 auto 0 auto;
 }
-.pageContent{
+.pageContent {
     overflow:auto;
     margin:1px auto 0 auto;
-    padding:10px;
+    padding:0 10px 10px 10px;
     background-color:white;
 }
 /* FORMS */
-.error{
+.error {
     color:red;
     font-weight: normal;
 }
-.group-label{
+.input-group {
+    overflow: auto;
+}
+.group-label {
     margin: 10px 0 10px 0;
     font-weight: bold;
 }
-.input-group {
+.input-pill {
     width:185px;
     overflow:auto;
 }
-.input-group-inner {
+.input-pill-inner {
     display:block;
     margin:5px 0 5px 0;
     border:1px solid #ccc;
@@ -114,21 +123,21 @@ td.result {
     background-color: #eee;
     overflow:auto;
 }
-.input-group-inner > div, input {
+.input-pill-inner > div, input {
     display:block;
     font-size:14px;
-    padding: 6px 12px;
+    padding: 6px;
     color: #555;
 }
-input[type="radio"]{
+input[type="radio"] {
     display:inline;
 }
-.control-label{
+.control-label {
     float:left;
     min-width:20px;
     text-align: center;
 }
-.form-control{
+.form-control {
     float:right;
     width: 110px;
     background-color: #fff;
@@ -139,7 +148,7 @@ input[type="radio"]{
     border-bottom:none;
     border-left:1px solid #ccc; 
 }
-.form-row{
+.form-row {
 	overflow:auto;
 	margin:10px 0 0 0;
 	width:98%;
@@ -148,27 +157,51 @@ input[type="radio"]{
 	display:block;
 	margin:0 0 5px 0;
 }
-.form-row > input[type=text] {
-	width:250px;
-	margin:0 0 5px 0;
-	padding:4px;
-	border:1px solid grey;
+.ceiling-adjust-simple, .wall-adjust-simple {
+	border:1px solid #ccc;
 	border-radius:4px;
+    width:105px;
+    margin:0 0 5px 0;
 }
-#baybreast-depth {
+.input-row {
+    overflow:auto;
+    margin:0 0 10px 0;
+}
+.baybreast-depth, .baybreast-width, 
+.ceiling-adjust-dim1, .ceiling-adjust-dim2,
+.wall-adjust-dim1, .wall-adjust-dim2 {
     float:left;
-    width:100px;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+    width:105px;
     border:1px solid #ccc; 
 }
-#baybreast-width {
-    float:left;
-    width:100px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border:1px solid #ccc; 
+.baybreast-depth, .ceiling-adjust-dim1, .wall-adjust-dim1 {
+    border-top-left-radius:4px;
+    border-bottom-left-radius:4px;
 }
-#btn-calculate{
+.baybreast-width, .ceiling-adjust-dim2, .wall-adjust-dim2 {
+    border-top-right-radius:4px;
+    border-bottom-right-radius:4px;
+    border-left:none;
+}
+.btn-add-row, .btn-remove-row {
+    float:left;
+    width:30px;
+    height:30px;
+    margin:0 0 0 10px;
+    padding:0;
+    background-color: #fff;
+    border:none;
+    cursor:pointer;
+}
+.btn-add-row {
+    background-image: url(/static/plus.png);
+}
+.btn-remove-row{
+    background-image: url(/static/minus.png);
+}
+.btn-remove-row {
+    display:none;
+}
+#btn-calculate {
     float:right;
 }

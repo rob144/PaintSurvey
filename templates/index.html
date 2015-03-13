@@ -14,9 +14,9 @@
         <h1 id='app-title'>Paint Survey</h1>
         <div id='owl-carousel' class='owl-carousel'>
             <div id='page-left-3'>
-                <h2>Production Rates Defaults</h2>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
+                        <h2>Production Rates Defaults</h2>
                         <form id='form-production-rates'>
                           <div class='form-row'>
                             <label>Ceilings</label>
@@ -78,46 +78,46 @@
                 </div>
             </div>
             <div id='page-left-2'>
-                <h2>Room Settings Defaults</h2>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
-                      <form id='form-production-rates'>
-                        <div class='form-row'>
-                          <label>Room height</label>
-                          <input id='default-room-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
-                        </div>
-                        <div class='form-row'>  
-                          <label>Door width</label>
-                          <input id='default-door-width' type='number' step='any' min='0' placeholder='enter width' class='decimal' />
-                        </div>
-                        <div class='form-row'>  
-                          <label>Door height</label>
-                          <input id='default-door-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
-                        </div>
-                        <div class='form-row'>  
-                          <label>Window width</label>
-                          <input id='default-window-width' type='number' step='any' min='0' placeholder='enter width' class='decimal'/>
-                        </div>
-                        <div class='form-row'>  
-                          <label>Window height</label>
-                          <input id='default-window-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
-                        </div>
-                        <div class='form-row'>  
-                          <label>Radiator width</label>
-                          <input id='default-radiator-width' type='number' step='any' min='0' placeholder='enter width' class='decimal'/>
-                        </div>
-                        <div class='form-row'>  
-                          <label>Radiator height</label>
-                          <input id='default-radiator-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
-                        </div>
-                      </form>
+                        <h2>Room Settings Defaults</h2>
+                        <form id='form-production-rates'>
+                            <div class='form-row'>
+                                <label>Room height</label>
+                                <input id='default-room-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
+                            </div>
+                            <div class='form-row'>  
+                                <label>Door width</label>
+                                <input id='default-door-width' type='number' step='any' min='0' placeholder='enter width' class='decimal' />
+                            </div>
+                            <div class='form-row'>  
+                                <label>Door height</label>
+                                <input id='default-door-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
+                            </div>
+                            <div class='form-row'>  
+                                <label>Window width</label>
+                                <input id='default-window-width' type='number' step='any' min='0' placeholder='enter width' class='decimal'/>
+                            </div>
+                            <div class='form-row'>  
+                                <label>Window height</label>
+                                <input id='default-window-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
+                            </div>
+                            <div class='form-row'>  
+                                <label>Radiator width</label>
+                                <input id='default-radiator-width' type='number' step='any' min='0' placeholder='enter width' class='decimal'/>
+                            </div>
+                            <div class='form-row'>  
+                                <label>Radiator height</label>
+                                <input id='default-radiator-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
             <div id='page-left-1'>
-                <h2>Projects</h2>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
+                        <h2>Projects</h2>
                         <div class='form-row'>  
                             <label>Select Existing</label>
                             <select id='select-project'>
@@ -136,120 +136,184 @@
                 </div>
             </div>
             <div id='page-room-1' class='page-room'>
-                <h2 class="room-title" data-room-number="1">Room 1</h2>
                 <div class='pageContentOuter'>
                   <div class='pageContent'>
+                      <h2 class='room-title-heading' data-room-number="1">
+                          <input name='room-title' type='text' placeholder='Enter Room Name' class='room-title' value='Room 1' />
+                      </h2>
                       <div class='results'>RESULTS</div>
-                      <div class='colLeft'>
-                          <form class='room-form'> 
-                              <div class='group-label'>
-                                  <span>Room</span>
-                              </div>
-                              <div class='form-group'>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>L</div>
-                                          <input id='room-length' name='room-length' type='number' step='any' min='0' placeholder='enter length' class='form-control required decimal'>
-                                      </div>
-                                  </div>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>W</div>
-                                          <input id='room-width' name='room-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'>
-                                      </div>
-                                  </div>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>H</div>
-                                          <input id='room-height' name='room-height' type='number' step='any' min='0'  placeholder='enter height' class='form-control required decimal'>
-                                      </div>
+                      <form class='room-form'> 
+                          <div class='group-label'>
+                              <span>Room</span>
+                          </div>
+                          <div class='form-group'>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>L</div>
+                                      <input id='room-length' name='room-length' type='number' step='any' min='0' placeholder='enter length' class='form-control required decimal'>
                                   </div>
                               </div>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>W</div>
+                                      <input id='room-width' name='room-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'>
+                                  </div>
+                              </div>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>H</div>
+                                      <input id='room-height' name='room-height' type='number' step='any' min='0'  placeholder='enter height' class='form-control required decimal'>
+                                  </div>
+                              </div>
+                          </div>
 
-                              <div class='group-label'>
-                                  <span>Door</span>
-                              </div>
-                              <div class='form-group'>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>#</div>
-                                          <input id='door-qty' name='door-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control required integer' value='1'>
-                                      </div>
-                                  </div>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>W</div>
-                                          <input id='door-width' name='door-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'>
-                                      </div>
-                                  </div>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>H</div>
-                                          <input id='door-height' name='door-height' type='number' step='any' min='0' placeholder='enter width'  class='form-control required decimal'>
-                                      </div>
+                          <div class='group-label'>
+                              <span>Door</span>
+                          </div>
+                          <div class='form-group'>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>#</div>
+                                      <input id='door-qty' name='door-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control required integer' value='1'>
                                   </div>
                               </div>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>W</div>
+                                      <input id='door-width' name='door-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'>
+                                  </div>
+                              </div>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>H</div>
+                                      <input id='door-height' name='door-height' type='number' step='any' min='0' placeholder='enter width'  class='form-control required decimal'>
+                                  </div>
+                              </div>
+                          </div>
 
-                              <div class='group-label'>
-                                  <span>Window</span>
-                              </div>
-                              <div class='form-group'>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>#</div>
-                                          <input id='window-qty' name='window-qty' type='number' step='1' min='0' value='1' placeholder='enter quantity' class='form-control required integer' value='1' />
-                                      </div>
-                                  </div>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>W</div>
-                                          <input id='window-width' name='window-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'/>
-                                      </div>
-                                  </div>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>H</div>
-                                          <input id='window-height' name='window-height' type='number' step='any' min='0' placeholder='enter height' class='form-control required decimal'/>
-                                      </div>
+                          <div class='group-label'>
+                              <span>Window</span>
+                          </div>
+                          <div class='form-group'>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>#</div>
+                                      <input id='window-qty' name='window-qty' type='number' step='1' min='0' value='1' placeholder='enter quantity' class='form-control required integer' value='1' />
                                   </div>
                               </div>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>W</div>
+                                      <input id='window-width' name='window-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'/>
+                                  </div>
+                              </div>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>H</div>
+                                      <input id='window-height' name='window-height' type='number' step='any' min='0' placeholder='enter height' class='form-control required decimal'/>
+                                  </div>
+                              </div>
+                          </div>
 
-                              <div class='group-label'>
-                                  <span>Radiator</span>
-                              </div>
-                              <div class='form-row'>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>#</div>
-                                          <input id='radiator-qty' name='radiator-qty' type='number' step='any' min='0' placeholder='enter quantity' class='form-control required integer' value='1' />
-                                      </div>
-                                  </div>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>W</div>
-                                          <input id='radiator-width' name='radiator-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal' value='1.50'/>
-                                      </div>
-                                  </div>
-                                  <div class='input-group'>
-                                      <div class="input-group-inner">
-                                          <div class='control-label'>H</div>
-                                          <input id='radiator-height' name='radiator-height' type='number' step='any' min='0' placeholder='enter height' class='form-control required decimal' value='0.70'/>
-                                      </div>
+                          <div class='group-label'>
+                              <span>Radiator</span>
+                          </div>
+                          <div class='form-row'>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>#</div>
+                                      <input id='radiator-qty' name='radiator-qty' type='number' step='any' min='0' placeholder='enter quantity' class='form-control required integer' value='1' />
                                   </div>
                               </div>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>W</div>
+                                      <input id='radiator-width' name='radiator-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal' value='1.50'/>
+                                  </div>
+                              </div>
+                              <div class='input-pill'>
+                                  <div class="input-pill-inner">
+                                      <div class='control-label'>H</div>
+                                      <input id='radiator-height' name='radiator-height' type='number' step='any' min='0' placeholder='enter height' class='form-control required decimal' value='0.70'/>
+                                  </div>
+                              </div>
+                          </div>
 
+                          <div class='input-group baybreast-group'>
                               <div class='group-label'>
                                   <span>Bay or Breast</span>
                               </div>
-                              <div class='form-row'>
-                                  <input id='baybreast-depth' name='baybreast-depth' type='number' step='any' placeholder='enter depth' value='0.40' class='required decimal'/>
-                                  <input id='baybreast-width' name='baybreast-width' type='number' step='any' placeholder='enter width' value='0.40' class='required decimal'/>
+                              <div class='input-row'>
+                                  <input name='baybreast-depth' type='number' step='any' placeholder='enter depth' value='0.40' class='baybreast-depth decimal'/>
+                                  <input name='baybreast-width' type='number' step='any' min='0' placeholder='enter width' value='2.00' class='baybreast-width decimal'/>
+                                  <button type='button' class='btn-add-row'>
+                                      <svg height='30' width='30'>
+                                          <circle cx='15' cy='15' r='15' fill='blue' />
+                                          <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
+                                      </svg>
+                                  </button>
+                                  <button type='button' class='btn-remove-row'>
+                                      <svg height='30' width='30'>
+                                          <circle cx='15' cy='15' r='15' fill='red' />
+                                          <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                      </svg>
+                                  </button>
                               </div>
+                          </div>
 
-                              <input type='button' id='btn-calculate' class='btn-room-calculate' value='Calculate'/>
+                          <div class='input-group ceiling-adjust-group'>
+                              <div class='group-label'>
+                                  <span>Ceiling Adjusts</span>
+                              </div>
+                              <div class='form-row'>
+                                  <input name='ceiling-adjust-simple' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-simple decimal'/>
+                              </div>
+                              <div class='input-row'>
+                                  <input name='ceiling-adjust-dim1' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-dim1 decimal'/>
+                                  <input name='ceiling-adjust-dim2' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-dim2 decimal'/>
+                                  <button type='button' class='btn-add-row'>
+                                      <svg height='30' width='30'>
+                                          <circle cx='15' cy='15' r='15' fill='blue' />
+                                          <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
+                                      </svg>
+                                  </button>
+                                  <button type='button' class='btn-remove-row'>
+                                      <svg height='30' width='30'>
+                                          <circle cx='15' cy='15' r='15' fill='red' />
+                                          <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                      </svg>
+                                  </button>
+                              </div>
+                          </div>
+                          
+                          <div class='input-group wall-adjust-group'>
+                              <div class='group-label'>
+                                  <span>Wall Adjusts</span>
+                              </div>
+                              <div class='form-row'>
+                                  <input name='wall-adjust-simple' type='number' step='any' placeholder='enter amount' class='wall-adjust-simple decimal'/>
+                              </div>
+                              <div class='input-row'>
+                                  <input name='wall-adjust-dim1' type='number' step='any' placeholder='enter amount' class='wall-adjust-dim1 decimal'/>
+                                  <input name='wall-adjust-dim2' type='number' step='any' placeholder='enter amount' class='wall-adjust-dim2 decimal'/>
+                                  <button type='button' class='btn-add-row'>
+                                      <svg height='30' width='30'>
+                                          <circle cx='15' cy='15' r='15' fill='blue' />
+                                          <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
+                                      </svg>
+                                  </button>
+                                  <button type='button' class='btn-remove-row'>
+                                      <svg height='30' width='30'>
+                                          <circle cx='15' cy='15' r='15' fill='red' />
+                                          <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                      </svg>
+                                  </button>
+                              </div>
+                          </div>
 
-                          </form>
-                      </div>
+                          <input type='button' id='btn-calculate' class='btn-room-calculate' value='Calculate'/>
+
+                      </form>
                     </div>
                 </div>
             </div>
@@ -327,30 +391,85 @@
         $('#radiator-height').val(parseFloat($('#default-radiator-height').val()).toFixed(2));
     }
 
+    function addInputRow(event){
+        var $group = $(event.target).closest('.input-group');
+        var $newRow = $group.find('.input-row:last').clone();
+        $newRow.find('.btn-add-row:first').remove();
+        $newRow.find('input').val('');
+        $newRow.find('input').keydown( allowOnlyDecimalInput );
+        $newRow.find('input').blur( blurDecimal );
+        $newRow.insertAfter($group.find('.input-row:last'));
+        $btnRemove = $newRow.find('.btn-remove-row:first');
+        $btnRemove.css('display','block');
+        $btnRemove.click(function(event){ $(event.target).closest('.input-row').remove(); });
+    }
+
     function calculateWorkForRoom(event){
-        var page = $(event.target).closest('.pageContent');
+
+        //Validate input first.
+        if(!$(event.target).closest('.room-form').validate({ 
+                errorPlacement: function(error, element) {
+                    error.insertAfter(element.closest('.input-pill'));
+                }
+            }).form()){
+            return;
+        }
+
+        var getf = function(elemId){
+            var $page = $(event.target).closest('.pageContent');
+            var floatVal = parseFloat($page.find(elemId).val());
+            return Math.abs(floatVal)>=0 ? floatVal : 0; 
+
+        }
+        var $page = $(event.target).closest('.pageContent');
         
-        var roomLength =      parseFloat(page.find('#room-length:first').val());
-        var roomWidth =       parseFloat(page.find('#room-width:first').val());
-        var roomHeight =      parseFloat(page.find('#room-height:first').val());
-        var doorQty =       parseFloat(page.find('#door-qty:first').val());
-        var doorWidth =     parseFloat(page.find('#door-width:first').val());
-        var doorHeight =    parseFloat(page.find('#door-height:first').val());
-        var windowQty =     parseFloat(page.find('#window-qty:first').val());
-        var windowWidth =   parseFloat(page.find('#window-width:first').val());
-        var windowHeight =  parseFloat(page.find('#window-height:first').val());
-        var radiatorQty =     parseFloat(page.find('#radiator-qty:first').val());
-        var radiatorWidth =   parseFloat(page.find('#radiator-width:first').val());
-        var radiatorHeight =  parseFloat(page.find('#radiator-height:first').val());
-        var baybreastWidth =   parseFloat(page.find('#baybreast-width:first').val());
-        var baybreastDepth =  parseFloat(page.find('#baybreast-depth:first').val());
-  
+        var roomLength =          getf('#room-length:first');
+        var roomWidth =           getf('#room-width:first');
+        var roomHeight =          getf('#room-height:first');
+        var doorQty =             getf('#door-qty:first');
+        var doorWidth =           getf('#door-width:first');
+        var doorHeight =          getf('#door-height:first');
+        var windowQty =           getf('#window-qty:first');
+        var windowWidth =         getf('#window-width:first');
+        var windowHeight =        getf('#window-height:first');
+        var radiatorQty =         getf('#radiator-qty:first');
+        var radiatorWidth =       getf('#radiator-width:first');
+        var radiatorHeight =      getf('#radiator-height:first');
+        var ceilingAdjust =       getf('.ceiling-adjust-simple');
+        var wallAdjust =          getf('.wall-adjust-simple');
+
+        var baybreastWall = 0;
+        var baybreastCeiling = 0;
+        var baybreastSkirting = 0;
+
+        $('.baybreast-group .input-row').each( function( index, elem ){
+            var bbDepth = parseFloat($(elem).find('.baybreast-depth').val());
+            var bbWidth = parseFloat($(elem).find('.baybreast-width').val());
+            if(Math.abs(bbDepth * bbWidth) > 0){
+                baybreastWall += (2 * bbDepth * roomHeight);
+                baybreastCeiling += (bbWidth * bbDepth);
+                baybreastSkirting += (2 * bbDepth);
+            }
+        });
+
+        $('.ceiling-adjust-group .input-row').each( function( index, elem ){
+            var dim1 = parseFloat($(elem).find('.ceiling-adjust-dim1').val());
+            var dim2 = parseFloat($(elem).find('.ceiling-adjust-dim2').val());
+            if(Math.abs(dim1 * dim2) > 0) ceilingAdjust += (dim1 * dim2);
+        });
+
+        $('.wall-adjust-group .input-row').each( function( index, elem ){
+            var dim1 = parseFloat($(elem).find('.wall-adjust-dim1').val());
+            var dim2 = parseFloat($(elem).find('.wall-adjust-dim2').val());
+            if(Math.abs(dim1 * dim2) > 0) wallAdjust += (dim1 * dim2);
+        });
+
         var doorSpace =     doorQty * doorWidth * doorHeight;
         var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
         var windowSpace =   windowQty * windowWidth * windowHeight;
-        var ceilingSpace =  (roomLength * roomWidth) + (baybreastWidth * baybreastDepth); 
-        var wallSpace =     (roomLength + roomWidth) * 2 * roomHeight - doorSpace - windowSpace + (2 * baybreastDepth * roomHeight); 
-        var skirtingSpace = (roomLength + roomWidth) * 2 - (doorWidth * doorQty) + (2 * baybreastDepth);
+        var ceilingSpace =  (roomLength * roomWidth) + baybreastCeiling + ceilingAdjust; 
+        var wallSpace =     (roomLength + roomWidth) * 2 * roomHeight - doorSpace - windowSpace + baybreastWall + wallAdjust; 
+        var skirtingSpace = (roomLength + roomWidth) * 2 - (doorWidth * doorQty) + baybreastSkirting;
         var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
 
         var tableData = [
@@ -363,7 +482,7 @@
             { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiator-prod-rate').val()) }
         ];
 
-        page.find('.results:first').html(buildResultsTable(tableData));
+        $(event.target).closest('.pageContent').find('.results:first').html(buildResultsTable(tableData));
 
         window.scrollTo(0,0);
     }
@@ -383,6 +502,7 @@
                         val = roundAndFix(obj[key], 2);
                     }else if(key == 'hours'){
                         val = roundAndFix(obj[key], 2);
+                        console.log(val);
                         totalHours += parseFloat(val);
                     }else{
                         val = obj[key];
@@ -448,6 +568,23 @@
         event.preventDefault();  
     }
 
+    function blurDecimal(){
+        //Enforce 2 decimal places.
+        if(this.value.trim() == '.') this.value = '0.00';
+        if(this.value.length >= 1 && Math.abs(parseFloat(this.value)) > 0){
+            this.value = parseFloat(this.value).toFixed(2);
+        }else{
+            this.value = '';
+        }
+    }
+
+    function blurInputFocus(event){
+        var tagName = event.target.tagName.toLowerCase();
+        if(tagName != 'input' && tagName != 'select'){
+            $(':focus').blur();
+        }
+    }
+
     function initOwlCarousel(){
         $("#owl-carousel").owlCarousel(
             { 
@@ -467,42 +604,14 @@
     $(document).ready(function() {
       
         initOwlCarousel();
-
         $('.integer').keydown( allowOnlyIntegerInput ); 
         $('.decimal').keydown( allowOnlyDecimalInput );
-
-        $( ".decimal" ).bind('blur', function() {
-            //Enforce 2 decimal places.
-            if(this.value.trim() == '.') this.value = '0.00';
-            if(this.value.length >= 1 && parseFloat(this.value) > 0){
-                this.value = parseFloat(this.value).toFixed(2);
-            }else{
-                this.value = '';
-            }
-        });
-
+        $('.decimal').bind( 'blur', blurDecimal );
         $('#btn-select-project').click( selectProject );
         $('#btn-create-project').click( createProject );
-
-        $('.btn-room-calculate').click( 
-            function(){
-                var options = {
-                    errorPlacement: function(error, element) {
-                        error.insertAfter(element.closest('.input-group'));
-                    }
-                };
-                if($(event.target).closest('.room-form').validate(options).form()){
-                    calculateWorkForRoom(event); 
-                }
-            }
-        );
-
-        $(".owl-item").bind("touchstart click", function (event) {
-            if(event.target.tagName.toLowerCase() != 'input'){
-                $(':focus').blur();
-            }
-        });
-
+        $('.btn-room-calculate').click( calculateWorkForRoom );
+        $('.btn-add-row').click( addInputRow );
+        $(".owl-item").bind("touchstart click", blurInputFocus );
         populateRoomDefaults();
         populateRoomWithDefaults();
     });
