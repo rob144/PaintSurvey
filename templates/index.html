@@ -3,11 +3,14 @@
     <head>
         <title>Paint Survey</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">-->
+        <!--<link rel="stylesheet" type="text/css" href="bootstrap-select.min.css">-->
         <link rel="stylesheet" type="text/css" href="static/main.css" />
         <link rel="stylesheet" type="text/css" href="static/owl-carousel/owl.carousel.css" />
         <link rel="stylesheet" href="static/owl-carousel/owl.theme.css" />
         <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="static/jquery.validate.min.js"></script>
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
         <script src="static/owl-carousel/owl.carousel.js"></script>
     </head>
     <body>
@@ -84,31 +87,31 @@
                         <form id='form-production-rates'>
                             <div class='form-row'>
                                 <label>Room height</label>
-                                <input id='default-room-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
+                                <input id='default-room-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Door width</label>
-                                <input id='default-door-width' type='number' step='any' min='0' placeholder='enter width' class='decimal' />
+                                <input id='default-door-width' type='number' step='any' min='0' placeholder='enter width' class='decimal round-corners-input' />
                             </div>
                             <div class='form-row'>  
                                 <label>Door height</label>
-                                <input id='default-door-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
+                                <input id='default-door-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Window width</label>
-                                <input id='default-window-width' type='number' step='any' min='0' placeholder='enter width' class='decimal'/>
+                                <input id='default-window-width' type='number' step='any' min='0' placeholder='enter width' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Window height</label>
-                                <input id='default-window-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
+                                <input id='default-window-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Radiator width</label>
-                                <input id='default-radiator-width' type='number' step='any' min='0' placeholder='enter width' class='decimal'/>
+                                <input id='default-radiator-width' type='number' step='any' min='0' placeholder='enter width' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Radiator height</label>
-                                <input id='default-radiator-height' type='number' step='any' min='0' placeholder='enter height' class='decimal'/>
+                                <input id='default-radiator-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
                             </div>
                         </form>
                     </div>
@@ -198,7 +201,7 @@
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <div class='control-label'>#</div>
-                                      <input id='window-qty' name='window-qty' type='number' step='1' min='0' value='1' placeholder='enter quantity' class='form-control required integer' value='1' />
+                                      <input id='window-qty' name='window-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control required integer' value='1' />
                                   </div>
                               </div>
                               <div class='input-pill'>
@@ -243,21 +246,23 @@
                               <div class='group-label'>
                                   <span>Bay or Breast</span>
                               </div>
-                              <div class='input-row'>
-                                  <input name='baybreast-depth' type='number' step='any' placeholder='enter depth' value='0.40' class='baybreast-depth decimal'/>
-                                  <input name='baybreast-width' type='number' step='any' min='0' placeholder='enter width' value='2.00' class='baybreast-width decimal'/>
-                                  <button type='button' class='btn-add-row'>
-                                      <svg height='30' width='30'>
-                                          <circle cx='15' cy='15' r='15' fill='blue' />
-                                          <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
-                                      </svg>
-                                  </button>
-                                  <button type='button' class='btn-remove-row'>
-                                      <svg height='30' width='30'>
-                                          <circle cx='15' cy='15' r='15' fill='red' />
-                                          <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
-                                      </svg>
-                                  </button>
+                              <div class='input-block'>
+                                  <div class='input-row'>
+                                      <input name='baybreast-depth' type='number' step='any' placeholder='enter depth' class='baybreast-depth decimal' value='0.40'/>
+                                      <input name='baybreast-width' type='number' step='any' min='0' placeholder='enter width' class='baybreast-width decimal' value='2.00'/>
+                                      <button type='button' class='btn-add-row'>
+                                          <svg height='30' width='30'>
+                                              <circle cx='15' cy='15' r='15' fill='blue' />
+                                              <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
+                                          </svg>
+                                      </button>
+                                      <button type='button' class='btn-remove-row'>
+                                          <svg height='30' width='30'>
+                                              <circle cx='15' cy='15' r='15' fill='red' />
+                                              <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                          </svg>
+                                      </button>
+                                  </div>
                               </div>
                           </div>
 
@@ -268,21 +273,23 @@
                               <div class='form-row'>
                                   <input name='ceiling-adjust-simple' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-simple decimal'/>
                               </div>
-                              <div class='input-row'>
-                                  <input name='ceiling-adjust-dim1' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-dim1 decimal'/>
-                                  <input name='ceiling-adjust-dim2' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-dim2 decimal'/>
-                                  <button type='button' class='btn-add-row'>
-                                      <svg height='30' width='30'>
-                                          <circle cx='15' cy='15' r='15' fill='blue' />
-                                          <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
-                                      </svg>
-                                  </button>
-                                  <button type='button' class='btn-remove-row'>
-                                      <svg height='30' width='30'>
-                                          <circle cx='15' cy='15' r='15' fill='red' />
-                                          <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
-                                      </svg>
-                                  </button>
+                              <div class='input-block'>
+                                  <div class='input-row'>
+                                      <input name='ceiling-adjust-dim1' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-dim1 decimal'/>
+                                      <input name='ceiling-adjust-dim2' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-dim2 decimal'/>
+                                      <button type='button' class='btn-add-row'>
+                                          <svg height='30' width='30'>
+                                              <circle cx='15' cy='15' r='15' fill='blue' />
+                                              <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
+                                          </svg>
+                                      </button>
+                                      <button type='button' class='btn-remove-row'>
+                                          <svg height='30' width='30'>
+                                              <circle cx='15' cy='15' r='15' fill='red' />
+                                              <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                          </svg>
+                                      </button>
+                                  </div>
                               </div>
                           </div>
                           
@@ -293,21 +300,76 @@
                               <div class='form-row'>
                                   <input name='wall-adjust-simple' type='number' step='any' placeholder='enter amount' class='wall-adjust-simple decimal'/>
                               </div>
-                              <div class='input-row'>
-                                  <input name='wall-adjust-dim1' type='number' step='any' placeholder='enter amount' class='wall-adjust-dim1 decimal'/>
-                                  <input name='wall-adjust-dim2' type='number' step='any' placeholder='enter amount' class='wall-adjust-dim2 decimal'/>
-                                  <button type='button' class='btn-add-row'>
-                                      <svg height='30' width='30'>
-                                          <circle cx='15' cy='15' r='15' fill='blue' />
-                                          <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
-                                      </svg>
-                                  </button>
-                                  <button type='button' class='btn-remove-row'>
-                                      <svg height='30' width='30'>
-                                          <circle cx='15' cy='15' r='15' fill='red' />
-                                          <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
-                                      </svg>
-                                  </button>
+                              <div class='input-block'>
+                                  <div class='input-row'>
+                                      <input name='wall-adjust-dim1' type='number' step='any' placeholder='enter amount' class='wall-adjust-dim1 decimal'/>
+                                      <input name='wall-adjust-dim2' type='number' step='any' placeholder='enter amount' class='wall-adjust-dim2 decimal'/>
+                                      <button type='button' class='btn-add-row'>
+                                          <svg height='30' width='30'>
+                                              <circle cx='15' cy='15' r='15' fill='blue' />
+                                              <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
+                                          </svg>
+                                      </button>
+                                      <button type='button' class='btn-remove-row'>
+                                          <svg height='30' width='30'>
+                                              <circle cx='15' cy='15' r='15' fill='red' />
+                                              <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                          </svg>
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class='input-group general-surface-group'>
+                              <div class='group-label'>
+                                  <span>General Surface</span>
+                              </div>
+                              <div class='input-block'>
+                                  <div class="dropdown">
+                                      <button class="dropdown-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                          <span class='dropdown-text'>Dropdown</span>
+                                          <input type='hidden' class='dropdown-value general-surface-prod-rate'/>
+                                          <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu" role="menu">
+                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='2'>Paint A</a></li>
+                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='4'>Paint B</a></li>
+                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='6'>Paint C</a></li>
+                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='8'>Paint D</a></li>
+                                      </ul>
+                                  </div>
+                                  <div class='input-pill-with-button'>
+                                      <div class='input-pill'>
+                                          <div class="input-pill-inner">
+                                              <div class='control-label'>#</div>
+                                              <input class='form-control general-surface-qty' name='general-surface-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control integer'/>
+                                          </div>
+                                      </div>
+                                      <button type='button' class='btn-add-row'>
+                                          <svg height='30' width='30'>
+                                              <circle cx='15' cy='15' r='15' fill='blue' />
+                                              <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
+                                          </svg>
+                                      </button>
+                                      <button type='button' class='btn-remove-row'>
+                                          <svg height='30' width='30'>
+                                              <circle cx='15' cy='15' r='15' fill='red' />
+                                              <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                          </svg>
+                                      </button>
+                                  </div>
+                                  <div class='input-pill'>
+                                      <div class="input-pill-inner">
+                                          <div class='control-label'>W</div>
+                                          <input class='form-control general-surface-width' name='general-surface-width' type='number' step='any' min='0' placeholder='enter width' class='form-control decimal'/>
+                                      </div>
+                                  </div>
+                                  <div class='input-pill'>
+                                      <div class="input-pill-inner">
+                                          <div class='control-label'>H</div>
+                                          <input class='form-control general-surface-height' name='general-surface-height' type='number' step='any' min='0' placeholder='enter height' class='form-control decimal'/>
+                                      </div>
+                                  </div>
                               </div>
                           </div>
 
@@ -379,29 +441,33 @@
     }
 
     function populateRoomWithDefaults(){
-        $('#room-height').val(parseFloat($('#default-room-height').val()).toFixed(2));
+        var getf = function(elemId){
+            return parseFloat($(elemId).val()).toFixed(2);
+        }
+        $('#room-height').val(getf('#default-room-height'));
         $('#door-qty').val(1);
-        $('#door-width').val(parseFloat($('#default-door-width').val()).toFixed(2));
-        $('#door-height').val(parseFloat($('#default-door-height').val()).toFixed(2));
+        $('#door-width').val(getf('#default-door-width'));
+        $('#door-height').val(getf('#default-door-height'));
         $('#window-qty').val(1);
-        $('#window-width').val(parseFloat($('#default-window-width').val()).toFixed(2));
-        $('#window-height').val(parseFloat($('#default-window-height').val()).toFixed(2));
+        $('#window-width').val(getf('#default-window-width'));
+        $('#window-height').val(getf('#default-window-height'));
         $('#radiator-qty').val(1);
-        $('#radiator-width').val(parseFloat($('#default-radiator-width').val()).toFixed(2));
-        $('#radiator-height').val(parseFloat($('#default-radiator-height').val()).toFixed(2));
+        $('#radiator-width').val(getf('#default-radiator-width'));
+        $('#radiator-height').val(getf('#default-radiator-height'));
     }
 
     function addInputRow(event){
         var $group = $(event.target).closest('.input-group');
-        var $newRow = $group.find('.input-row:last').clone();
-        $newRow.find('.btn-add-row:first').remove();
-        $newRow.find('input').val('');
-        $newRow.find('input').keydown( allowOnlyDecimalInput );
-        $newRow.find('input').blur( blurDecimal );
-        $newRow.insertAfter($group.find('.input-row:last'));
-        $btnRemove = $newRow.find('.btn-remove-row:first');
+        var $newBlock = $group.find('.input-block:last').clone();
+        $newBlock.find('.btn-add-row:first').remove();
+        $newBlock.find('input').val('');
+        $newBlock.find('input').keydown( allowOnlyDecimalInput );
+        $newBlock.find('input').blur( blurDecimal );
+        $newBlock.insertAfter($group.find('.input-block:last'));
+        initDropdowns();
+        $btnRemove = $newBlock.find('.btn-remove-row:first');
         $btnRemove.css('display','block');
-        $btnRemove.click(function(event){ $(event.target).closest('.input-row').remove(); });
+        $btnRemove.click(function(event){ $(event.target).closest('.input-block').remove(); });
     }
 
     function calculateWorkForRoom(event){
@@ -415,13 +481,11 @@
             return;
         }
 
-        var getf = function(elemId){
+        var getf = function(descendant){
             var $page = $(event.target).closest('.pageContent');
-            var floatVal = parseFloat($page.find(elemId).val());
+            var floatVal = parseFloat($page.find(descendant).val());
             return Math.abs(floatVal)>=0 ? floatVal : 0; 
-
         }
-        var $page = $(event.target).closest('.pageContent');
         
         var roomLength =          getf('#room-length:first');
         var roomWidth =           getf('#room-width:first');
@@ -442,7 +506,10 @@
         var baybreastCeiling = 0;
         var baybreastSkirting = 0;
 
-        $('.baybreast-group .input-row').each( function( index, elem ){
+        var genSurfSpace = 0;
+        var genSurfHours = 0;
+
+        $('.baybreast-group .input-block').each( function(index, elem){
             var bbDepth = parseFloat($(elem).find('.baybreast-depth').val());
             var bbWidth = parseFloat($(elem).find('.baybreast-width').val());
             if(Math.abs(bbDepth * bbWidth) > 0){
@@ -452,16 +519,28 @@
             }
         });
 
-        $('.ceiling-adjust-group .input-row').each( function( index, elem ){
+        $('.ceiling-adjust-group .input-block').each( function(index, elem){
             var dim1 = parseFloat($(elem).find('.ceiling-adjust-dim1').val());
             var dim2 = parseFloat($(elem).find('.ceiling-adjust-dim2').val());
             if(Math.abs(dim1 * dim2) > 0) ceilingAdjust += (dim1 * dim2);
         });
 
-        $('.wall-adjust-group .input-row').each( function( index, elem ){
+        $('.wall-adjust-group .input-block').each( function(index, elem){
             var dim1 = parseFloat($(elem).find('.wall-adjust-dim1').val());
             var dim2 = parseFloat($(elem).find('.wall-adjust-dim2').val());
             if(Math.abs(dim1 * dim2) > 0) wallAdjust += (dim1 * dim2);
+        });
+
+        $('.general-surface-group .input-block').each( function(index, elem){
+            var prodRate = parseFloat($(elem).find('.general-surface-prod-rate').val());
+            console.log('prod rate' + prodRate);
+            var quantity = parseFloat($(elem).find('.general-surface-qty').val());
+            var dim1 = parseFloat($(elem).find('.general-surface-width').val());
+            var dim2 = parseFloat($(elem).find('.general-surface-height').val());
+            if(Math.abs(quantity * dim1 * dim2) > 0) {
+                genSurfSpace += (quantity * dim1 * dim2);
+                genSurfHours += ((quantity * dim1 * dim2) / prodRate);
+            }
         });
 
         var doorSpace =     doorQty * doorWidth * doorHeight;
@@ -479,7 +558,8 @@
             { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / parseInt($('#select-ceiling-prod-rate').val()) },
             { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / parseInt($('#select-wall-prod-rate').val()) },
             { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-skirting-prod-rate').val()) },
-            { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiator-prod-rate').val()) }
+            { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiator-prod-rate').val()) },
+            { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours }
         ];
 
         $(event.target).closest('.pageContent').find('.results:first').html(buildResultsTable(tableData));
@@ -502,7 +582,6 @@
                         val = roundAndFix(obj[key], 2);
                     }else if(key == 'hours'){
                         val = roundAndFix(obj[key], 2);
-                        console.log(val);
                         totalHours += parseFloat(val);
                     }else{
                         val = obj[key];
@@ -568,6 +647,26 @@
         event.preventDefault();  
     }
 
+    function toggleDropDown(){
+        var $dropdown = $(this).closest('.dropdown');
+        var c = 'open';
+        if($dropdown.hasClass(c)){
+            $dropdown.removeClass(c);
+        }else{
+            $dropdown.addClass(c);
+        };
+    }
+
+    function selectDropDownItem(){
+        //find the closest drop down and set the value of the hidden input.
+        var $dropdown = $(this).closest('.dropdown');
+        var $clickedItem = $(this);
+        $dropdown.find('.dropdown-value').val($clickedItem.data('value'));
+        $dropdown.find('.dropdown-text').text($clickedItem.text());
+        $dropdown.removeClass('open');
+        return false;
+    }
+
     function blurDecimal(){
         //Enforce 2 decimal places.
         if(this.value.trim() == '.') this.value = '0.00';
@@ -582,6 +681,9 @@
         var tagName = event.target.tagName.toLowerCase();
         if(tagName != 'input' && tagName != 'select'){
             $(':focus').blur();
+        }
+        if(tagName != 'button'){
+            $('.dropdown.open').removeClass('open');
         }
     }
 
@@ -601,6 +703,19 @@
         );
     }
 
+    function initDropdowns(){
+        $('.dropdown').each( function(index, elem){
+            var selectedValue = $(elem).find('.dropdown-value').val();
+            if (typeof selectedValue === 'undefined' || selectedValue == ''){
+                var defaultItem = $(elem).find('.dropdown-menu a:first');
+                $(elem).find('.dropdown-value').val(defaultItem.data('value'));
+                $(elem).find('.dropdown-text').text(defaultItem.text());
+                $(elem).find('.dropdown-btn').click( toggleDropDown );
+                $(elem).find('.dropdown-menu a').click( selectDropDownItem );
+            }
+        });
+    }
+
     $(document).ready(function() {
       
         initOwlCarousel();
@@ -609,9 +724,10 @@
         $('.decimal').bind( 'blur', blurDecimal );
         $('#btn-select-project').click( selectProject );
         $('#btn-create-project').click( createProject );
-        $('.btn-room-calculate').click( calculateWorkForRoom );
         $('.btn-add-row').click( addInputRow );
-        $(".owl-item").bind("touchstart click", blurInputFocus );
+        $('.btn-room-calculate').click( calculateWorkForRoom );
+        initDropdowns();
+        $("body").bind("touchstart click", blurInputFocus );
         populateRoomDefaults();
         populateRoomWithDefaults();
     });
