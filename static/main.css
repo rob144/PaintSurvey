@@ -29,6 +29,11 @@ button {
 input[type="radio"] {
     display:inline;
 }
+.input-group, .input-block {
+    overflow: visible;
+    clear:left;
+    max-width: 280px;
+}
 .dropdown, .dropup {
     position: relative;
     overflow: visible;
@@ -37,7 +42,7 @@ input[type="radio"] {
     display: inline-block;
     overflow:auto;
     color: #333;
-    min-width: 200px;
+    min-width: 235px;
     background-color: #fff;
     padding: 6px 12px;
     margin:0 0 5px 0;
@@ -191,15 +196,12 @@ td.result {
     color:red;
     font-weight: normal;
 }
-.input-group, .input-block {
-    overflow: visible;
-    clear:left;
-}
 .group-label {
     margin: 10px 0 10px 0;
     font-weight: bold;
 }
 .input-pill {
+    clear:both;
     width:185px;
     overflow:auto;
 }
@@ -280,7 +282,7 @@ td.result {
     border-left:none;
 }
 .btn-add-row, .btn-remove-row {
-    float:left;
+    float:right;
     width:30px;
     height:30px;
     margin:0 0 0 10px;
