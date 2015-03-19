@@ -3,14 +3,11 @@
     <head>
         <title>Paint Survey</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">-->
-        <!--<link rel="stylesheet" type="text/css" href="bootstrap-select.min.css">-->
         <link rel="stylesheet" type="text/css" href="static/main.css" />
         <link rel="stylesheet" type="text/css" href="static/owl-carousel/owl.carousel.css" />
         <link rel="stylesheet" href="static/owl-carousel/owl.theme.css" />
         <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="static/jquery.validate.min.js"></script>
-        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
         <script src="static/owl-carousel/owl.carousel.js"></script>
     </head>
     <body>
@@ -80,11 +77,11 @@
                     </div>
                 </div>
             </div>
-            <div id='page-left-2'>
+            <div id='page-room-defaults'>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
                         <h2>Room Settings Defaults</h2>
-                        <form id='form-production-rates'>
+                        <form id='form-room-defaults'>
                             <div class='form-row'>
                                 <label>Room height</label>
                                 <input id='default-room-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
@@ -152,20 +149,20 @@
                           <div class='form-group'>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>L</div>
-                                      <input id='room-length' name='room-length' type='number' step='any' min='0' placeholder='enter length' class='form-control required decimal'>
+                                      <label class='control-label'>L</label>
+                                      <input name='room-length' class='room-length form-control decimal' type='number' step='any' min='0' placeholder='enter length' >
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>W</div>
-                                      <input id='room-width' name='room-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'>
+                                      <label class='control-label'>W</label>
+                                      <input name='room-width' class='room-width form-control decimal' type='number' step='any' min='0' placeholder='enter width'>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>H</div>
-                                      <input id='room-height' name='room-height' type='number' step='any' min='0'  placeholder='enter height' class='form-control required decimal'>
+                                      <label class='control-label'>H</label>
+                                      <input name='room-height' class='room-height form-control decimal' type='number' step='any' min='0' placeholder='enter height' >
                                   </div>
                               </div>
                           </div>
@@ -176,20 +173,20 @@
                           <div class='form-group'>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>#</div>
-                                      <input id='door-qty' name='door-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control required integer' value='1'>
+                                      <label class='control-label'>#</label>
+                                      <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='enter quantity'>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>W</div>
-                                      <input id='door-width' name='door-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'>
+                                      <label class='control-label'>W</label>
+                                      <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder='enter width'>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>H</div>
-                                      <input id='door-height' name='door-height' type='number' step='any' min='0' placeholder='enter width'  class='form-control required decimal'>
+                                      <label class='control-label'>H</label>
+                                      <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder='enter width'>
                                   </div>
                               </div>
                           </div>
@@ -200,20 +197,20 @@
                           <div class='form-group'>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>#</div>
-                                      <input id='window-qty' name='window-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control required integer' value='1' />
+                                      <label class='control-label'>#</label>
+                                      <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='enter quantity'/>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>W</div>
-                                      <input id='window-width' name='window-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal'/>
+                                      <label class='control-label'>W</label>
+                                      <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder='enter width' />
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>H</div>
-                                      <input id='window-height' name='window-height' type='number' step='any' min='0' placeholder='enter height' class='form-control required decimal'/>
+                                      <label class='control-label'>H</label>
+                                      <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder='enter height' />
                                   </div>
                               </div>
                           </div>
@@ -224,20 +221,20 @@
                           <div class='form-row'>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>#</div>
-                                      <input id='radiator-qty' name='radiator-qty' type='number' step='any' min='0' placeholder='enter quantity' class='form-control required integer' value='1' />
+                                      <label class='control-label'>#</label>
+                                      <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='any' min='0' placeholder='enter quantity'/>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>W</div>
-                                      <input id='radiator-width' name='radiator-width' type='number' step='any' min='0' placeholder='enter width' class='form-control required decimal' value='1.50'/>
+                                      <label class='control-label'>W</label>
+                                      <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' placeholder='enter width' />
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
-                                      <div class='control-label'>H</div>
-                                      <input id='radiator-height' name='radiator-height' type='number' step='any' min='0' placeholder='enter height' class='form-control required decimal' value='0.70'/>
+                                      <label class='control-label'>H</label>
+                                      <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder='enter height'/>
                                   </div>
                               </div>
                           </div>
@@ -248,8 +245,9 @@
                               </div>
                               <div class='input-block'>
                                   <div class='input-row'>
-                                      <input name='baybreast-depth' type='number' step='any' placeholder='enter depth' class='baybreast-depth decimal' value='0.40'/>
-                                      <input name='baybreast-width' type='number' step='any' min='0' placeholder='enter width' class='baybreast-width decimal' value='2.00'/>
+                                      <span class='positive-negative-first'>±</span>
+                                      <input name='baybreast-depth' class='baybreast-depth decimal' type='number' step='any' placeholder='depth'/>
+                                      <input name='baybreast-width' class='baybreast-width decimal' type='number' step='any' min='0' placeholder='width'/>
                                       <button type='button' class='btn-add-row'>
                                           <svg height='30' width='30'>
                                               <circle cx='15' cy='15' r='15' fill='blue' />
@@ -271,12 +269,15 @@
                                   <span>Ceiling Adjusts</span>
                               </div>
                               <div class='form-row'>
-                                  <input name='ceiling-adjust-simple' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-simple decimal'/>
+                                  <span class='positive-negative-first'>±</span>
+                                  <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
                               </div>
                               <div class='input-block'>
                                   <div class='input-row'>
-                                      <input name='ceiling-adjust-dim1' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-dim1 decimal'/>
-                                      <input name='ceiling-adjust-dim2' type='number' step='any' placeholder='enter amount' class='ceiling-adjust-dim2 decimal'/>
+                                      <span class='positive-negative-first'>±</span>
+                                      <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal' type='number' step='any' placeholder='amount'/>
+                                      <span class='positive-negative-second'>±</span>
+                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' step='any' placeholder='amount'/>
                                       <button type='button' class='btn-add-row'>
                                           <svg height='30' width='30'>
                                               <circle cx='15' cy='15' r='15' fill='blue' />
@@ -298,12 +299,15 @@
                                   <span>Wall Adjusts</span>
                               </div>
                               <div class='form-row'>
-                                  <input name='wall-adjust-simple' type='number' step='any' placeholder='enter amount' class='wall-adjust-simple decimal'/>
+                                  <span class='positive-negative-first'>±</span>
+                                  <input name='wall-adjust-simple' type='number' step='any' placeholder='amount' class='wall-adjust-simple decimal'/>
                               </div>
                               <div class='input-block'>
                                   <div class='input-row'>
-                                      <input name='wall-adjust-dim1' type='number' step='any' placeholder='enter amount' class='wall-adjust-dim1 decimal'/>
-                                      <input name='wall-adjust-dim2' type='number' step='any' placeholder='enter amount' class='wall-adjust-dim2 decimal'/>
+                                      <span class='positive-negative-first'>±</span>
+                                      <input name='wall-adjust-dim1' type='number' step='any' placeholder='amount' class='wall-adjust-dim1 decimal'/>
+                                      <span class='positive-negative-second'>±</span>
+                                      <input name='wall-adjust-dim2' type='number' step='any' placeholder='amount' class='wall-adjust-dim2 decimal'/>
                                       <button type='button' class='btn-add-row'>
                                           <svg height='30' width='30'>
                                               <circle cx='15' cy='15' r='15' fill='blue' />
@@ -350,23 +354,21 @@
                                       </button>
                                   </div>
                                   <div class='input-pill'>
-                                      <div class='input-pill'>
-                                          <div class="input-pill-inner">
-                                              <div class='control-label'>#</div>
-                                              <input class='form-control general-surface-qty' name='general-surface-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control integer'/>
-                                          </div>
+                                      <div class="input-pill-inner">
+                                          <label class='control-label'>#</label>
+                                          <input class='form-control general-surface-qty integer' name='general-surface-qty' type='number' step='1' min='0' placeholder='enter quantity'/>
                                       </div>
                                   </div>
                                   <div class='input-pill'>
                                       <div class="input-pill-inner">
-                                          <div class='control-label'>W</div>
-                                          <input class='form-control general-surface-width' name='general-surface-width' type='number' step='any' min='0' placeholder='enter width' class='form-control decimal'/>
+                                          <label class='control-label'>W</label>
+                                          <input class='form-control general-surface-width decimal' name='general-surface-width' type='number' step='any' min='0' placeholder='enter width'/>
                                       </div>
                                   </div>
                                   <div class='input-pill'>
                                       <div class="input-pill-inner">
-                                          <div class='control-label'>H</div>
-                                          <input class='form-control general-surface-height' name='general-surface-height' type='number' step='any' min='0' placeholder='enter height' class='form-control decimal'/>
+                                          <label class='control-label'>H</label>
+                                          <input class='form-control general-surface-height decimal' name='general-surface-height' type='number' step='any' min='0' placeholder='enter height'/>
                                       </div>
                                   </div>
                               </div>
@@ -404,15 +406,15 @@
                                   <div class='input-pill'>
                                       <div class='input-pill'>
                                           <div class="input-pill-inner">
-                                              <div class='control-label'>#</div>
-                                              <input class='form-control isolated-surface-qty' name='isolated-surface-qty' type='number' step='1' min='0' placeholder='enter quantity' class='form-control integer'/>
+                                              <label class='control-label'>#</label>
+                                              <input class='form-control isolated-surface-qty integer' name='isolated-surface-qty' type='number' step='1' min='0' placeholder='enter quantity'/>
                                           </div>
                                       </div>
                                   </div>
                                   <div class='input-pill'>
                                       <div class="input-pill-inner">
-                                          <div class='control-label'>L</div>
-                                          <input class='form-control isolated-surface-length' name='isolated-surface-length' type='number' step='any' min='0' placeholder='enter length' class='form-control decimal'/>
+                                          <label class='control-label'>L</label>
+                                          <input class='form-control isolated-surface-length decimal' name='isolated-surface-length' type='number' step='any' min='0' placeholder='enter length'/>
                                       </div>
                                   </div>
                               </div>
@@ -489,25 +491,24 @@
         var getf = function(elemId){
             return parseFloat($(elemId).val()).toFixed(2);
         }
-        $('#room-height').val(getf('#default-room-height'));
-        $('#door-qty').val(1);
-        $('#door-width').val(getf('#default-door-width'));
-        $('#door-height').val(getf('#default-door-height'));
-        $('#window-qty').val(1);
-        $('#window-width').val(getf('#default-window-width'));
-        $('#window-height').val(getf('#default-window-height'));
-        $('#radiator-qty').val(1);
-        $('#radiator-width').val(getf('#default-radiator-width'));
-        $('#radiator-height').val(getf('#default-radiator-height'));
+        $('.room-height').val(getf('#default-room-height'));
+        $('.door-width').val(getf('#default-door-width'));
+        $('.door-height').val(getf('#default-door-height'));
+        $('.window-width').val(getf('#default-window-width'));
+        $('.window-height').val(getf('#default-window-height'));
+        $('.radiator-width').val(getf('#default-radiator-width'));
+        $('.radiator-height').val(getf('#default-radiator-height'));
     }
 
-    function addInputRow(event){
+    function addInputBlock(event){
         var $group = $(event.target).closest('.input-group');
         var $newBlock = $group.find('.input-block:last').clone();
         $newBlock.find('.btn-add-row:first').remove();
         $newBlock.find('input').val('');
-        $newBlock.find('input').keydown( allowOnlyDecimalInput );
+        $newBlock.find('input').keydown( keydownDecimalInput );
         $newBlock.find('input').blur( blurDecimal );
+        $newBlock.find('dropdown').removeClass('open');
+        $newBlock.find('.positive-negative-first,.positive-negative-second').click( switchSign );
         $newBlock.insertAfter($group.find('.input-block:last'));
         initDropdowns();
         $btnRemove = $newBlock.find('.btn-remove-row:first');
@@ -533,18 +534,18 @@
             return Math.abs(floatVal)>=0 ? floatVal : 0; 
         }
         
-        var roomLength =          getf('#room-length:first');
-        var roomWidth =           getf('#room-width:first');
-        var roomHeight =          getf('#room-height:first');
-        var doorQty =             getf('#door-qty:first');
-        var doorWidth =           getf('#door-width:first');
-        var doorHeight =          getf('#door-height:first');
-        var windowQty =           getf('#window-qty:first');
-        var windowWidth =         getf('#window-width:first');
-        var windowHeight =        getf('#window-height:first');
-        var radiatorQty =         getf('#radiator-qty:first');
-        var radiatorWidth =       getf('#radiator-width:first');
-        var radiatorHeight =      getf('#radiator-height:first');
+        var roomLength =          getf('.room-length:first');
+        var roomWidth =           getf('.room-width:first');
+        var roomHeight =          getf('.room-height:first');
+        var doorQty =             getf('.door-qty:first');
+        var doorWidth =           getf('.door-width:first');
+        var doorHeight =          getf('.door-height:first');
+        var windowQty =           getf('.window-qty:first');
+        var windowWidth =         getf('.window-width:first');
+        var windowHeight =        getf('.window-height:first');
+        var radiatorQty =         getf('.radiator-qty:first');
+        var radiatorWidth =       getf('.radiator-width:first');
+        var radiatorHeight =      getf('.radiator-height:first');
         var ceilingAdjust =       getf('.ceiling-adjust-simple');
         var wallAdjust =          getf('.wall-adjust-simple');
 
@@ -610,13 +611,13 @@
         var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
 
         var tableData = [
+            { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / parseInt($('#select-ceiling-prod-rate').val()) },
+            { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / parseInt($('#select-wall-prod-rate').val()) },
             { title: 'DOOR AREA',   amount: doorSpace,       units: 'm2', hours: doorSpace / parseInt($('#select-door-area-prod-rate').val()) },
             { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrame / parseInt($('#select-door-frame-prod-rate').val()) },
             { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowSpace / parseInt($('#select-window-prod-rate').val()) },
-            { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / parseInt($('#select-ceiling-prod-rate').val()) },
-            { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / parseInt($('#select-wall-prod-rate').val()) },
-            { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-skirting-prod-rate').val()) },
             { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiator-prod-rate').val()) },
+            { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-skirting-prod-rate').val()) }, 
             { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours },
             { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours }
         ];
@@ -663,7 +664,9 @@
         return result.toFixed(precision);
     }
 
-    function allowOnlyDecimalInput(event){
+    function keydownDecimalInput(event){
+
+        var $elem = $(this);
 
         // Allow: backspace, delete, tab, escape, enter, ctrl+A
         if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
@@ -673,6 +676,18 @@
             (event.keyCode >= 35 && event.keyCode <= 39)) {
                  // let it happen, don't do anything
                  return;
+        }
+
+        //If the input allows negative numbers allow '-' minus sign.
+        if(event.keyCode == 189){
+            if(!$elem.attr('min') || parseFloat($elem.attr('min')) < 0){
+                //if already minus sign or number before, prevent.
+                //alert('start: '+this.selectionStart);
+                if(/[0-9\-]/.test($elem.val())) {
+                    event.preventDefault();
+                }
+                return
+            }
         }
 
         //If not number or decimal point, prevent.
@@ -689,7 +704,24 @@
         }
     }
 
-    function allowOnlyIntegerInput(event){
+    function keyupDecimalInput(event){
+        var $elem = $(this);
+        //If negative number, make text red.
+        //if(event.keyCode == 189) $elem.css('color','red');
+        //var color = 'red';
+        //$elem.css('color','red');
+
+        if($elem.val().length > 0){
+            if($elem.val() > 0){
+                $elem.css('color','black');
+            }else{
+                $elem.css('color','red');
+            }
+        }
+        
+    }
+
+    function keydownIntegerInput(event){
         // Allow: backspace, delete, tab, escape, enter, ctrl+A
         if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
              // Allow: Ctrl+A
@@ -734,20 +766,44 @@
         }else{
             this.value = '';
         }
+        //Set red color for negative values
+        var $elem = $(this);
+        if($elem.val().length > 0){
+            if($elem.val() > 0){
+                $elem.css('color','black');
+            }else{
+                $elem.css('color','red');
+            }
+        }
     }
 
     function blurInputFocus(event){
         var tagName = event.target.tagName.toLowerCase();
+        var role = event.target.getAttribute('role');
         if(tagName != 'input' && tagName != 'select'){
             $(':focus').blur();
         }
-        if(tagName != 'button'){
-            $('.dropdown.open').removeClass('open');
+        if(tagName != 'button' && role != 'menuitem'){
+           $('.dropdown.open').removeClass('open');
         }
     }
 
+    function roomDefaultsChange(){
+        //Update the corresponding input on the room 1 screen.
+        var $elem = $(this);
+        //alert('*' + $elem.attr('id'));
+        $('.' + $elem.attr('id').replace('default-','')).val($elem.val());
+    }
+
+    function switchSign(event){
+        $btn = $(this);
+        $input = $btn.next('input[type="number"]');
+        $input.val(-1 * $input.val());
+        $input.blur();
+    }
+
     function initOwlCarousel(){
-        $("#owl-carousel").owlCarousel(
+        $('#owl-carousel').owlCarousel(
             { 
                 navigation : true, // Show next and prev buttons
                 slideSpeed : 300,
@@ -770,7 +826,7 @@
                 $(elem).find('.dropdown-value').val(defaultItem.data('value'));
                 $(elem).find('.dropdown-text').text(defaultItem.text());
                 $(elem).find('.dropdown-btn').click( toggleDropDown );
-                $(elem).find('.dropdown-menu a').click( selectDropDownItem );
+                $(elem).find('.dropdown-menu a').bind('click touchstart', selectDropDownItem );
             }
         });
     }
@@ -778,15 +834,19 @@
     $(document).ready(function() {
       
         initOwlCarousel();
-        $('.integer').keydown( allowOnlyIntegerInput ); 
-        $('.decimal').keydown( allowOnlyDecimalInput );
+        $('.integer').keydown( keydownIntegerInput );
+        $('.decimal').keydown( keydownDecimalInput );
+        $('.decimal').keyup( keyupDecimalInput );
         $('.decimal').bind( 'blur', blurDecimal );
+        $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
+        //$('.page-room input[type="number"]').input( roomNumberInputChange );
         $('#btn-select-project').click( selectProject );
         $('#btn-create-project').click( createProject );
-        $('.btn-add-row').click( addInputRow );
+        $('.positive-negative-first,.positive-negative-second').click( switchSign );
+        $('.btn-add-row').click( addInputBlock );
         $('.btn-room-calculate').click( calculateWorkForRoom );
         initDropdowns();
-        $("body").bind("touchstart click", blurInputFocus );
+        $('body').bind('touchstart click', blurInputFocus );
         populateRoomDefaults();
         populateRoomWithDefaults();
     });
