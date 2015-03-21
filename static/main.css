@@ -284,7 +284,7 @@ td.result {
     height:22px;
     border:1px solid #ccc; 
 }
-.baybreast-width, .ceiling-adjust-dim2, .wall-adjust-dim2 {
+.baybreast-depth, .ceiling-adjust-dim2, .wall-adjust-dim2 {
     border-top-right-radius:4px;
     border-bottom-right-radius:4px;
     border-left:none;

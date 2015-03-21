@@ -16,7 +16,7 @@
             <div id='page-left-3'>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
-                        <h2>Production Rates Defaults</h2>
+                        <h2>Specification</h2>
                         <form id='form-production-rates'>
                             <div class='form-row'>
                                 <label>Ceilings</label>
@@ -35,7 +35,7 @@
                                 </select>
                             </div>
                             <div class='form-row'>
-                                <label>Door Area</label>
+                                <label>Doors</label>
                                 <select id='select-door-area-prod-rate'>
                                     <option value="4">General surface (4)</option>
                                     <option value="3.5">Glazed med pane (3.5)</option>
@@ -43,7 +43,7 @@
                                 </select>
                             </div>
                             <div class='form-row'>
-                                <label>Door Frame</label>
+                                <label>Door Frames</label>
                                 <select id='select-door-frame-prod-rate'>
                                     <option value="15">100 Girth (15)</option>
                                     <option value="12">150 Girth (12)</option>
@@ -80,7 +80,7 @@
             <div id='page-room-defaults'>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
-                        <h2>Room Settings Defaults</h2>
+                        <h2>Default Room Settings</h2>
                         <form id='form-room-defaults'>
                             <div class='form-row'>
                                 <label>Room height</label>
@@ -246,8 +246,8 @@
                               <div class='input-block'>
                                   <div class='input-row'>
                                       <span class='positive-negative-first'>±</span>
-                                      <input name='baybreast-depth' class='baybreast-depth decimal' type='number' step='any' placeholder='depth'/>
-                                      <input name='baybreast-width' class='baybreast-width decimal' type='number' step='any' min='0' placeholder='width'/>
+                                      <input name='baybreast-width' class='baybreast-width decimal' type='number' step='any' placeholder='width'/>
+                                      <input name='baybreast-depth' class='baybreast-depth decimal' type='number' step='any' min='0' placeholder='depth'/>
                                       <button type='button' class='btn-add-row'>
                                           <svg height='30' width='30'>
                                               <circle cx='15' cy='15' r='15' fill='blue' />
@@ -276,8 +276,7 @@
                                   <div class='input-row'>
                                       <span class='positive-negative-first'>±</span>
                                       <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal' type='number' step='any' placeholder='amount'/>
-                                      <span class='positive-negative-second'>±</span>
-                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' step='any' placeholder='amount'/>
+                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='amount'/>
                                       <button type='button' class='btn-add-row'>
                                           <svg height='30' width='30'>
                                               <circle cx='15' cy='15' r='15' fill='blue' />
@@ -306,8 +305,7 @@
                                   <div class='input-row'>
                                       <span class='positive-negative-first'>±</span>
                                       <input name='wall-adjust-dim1' type='number' step='any' placeholder='amount' class='wall-adjust-dim1 decimal'/>
-                                      <span class='positive-negative-second'>±</span>
-                                      <input name='wall-adjust-dim2' type='number' step='any' placeholder='amount' class='wall-adjust-dim2 decimal'/>
+                                      <input name='wall-adjust-dim2' type='number' min='0' step='any' placeholder='amount' class='wall-adjust-dim2 decimal'/>
                                       <button type='button' class='btn-add-row'>
                                           <svg height='30' width='30'>
                                               <circle cx='15' cy='15' r='15' fill='blue' />
