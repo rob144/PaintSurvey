@@ -13,11 +13,41 @@
     <body>
         <h1 id='app-title'>Paint Survey</h1>
         <div id='owl-carousel' class='owl-carousel'>
-            <div id='page-left-3'>
+            <div id='page-specification'>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
-                        <h2>Specification</h2>
-                        <form id='form-production-rates'>
+                            
+                        <form id='form-edit-spec'>
+                            <h2>Edit Specification</h2>
+                            <!-- show input boxes for each item with prod rate -->
+                            <!-- edit item name, prod rate and arrows for ordering -->
+                            <div class='input-group'>
+                                <div class='form-row group'>
+                                    <label>Item Name</label>
+                                    <input class='spec-item-name' type='text' placeholder='item name'/>
+                                    <button type='button' class='btn-add-row'>
+                                    <svg height='30' width='30'>
+                                        <circle cx='15' cy='15' r='15' fill='blue' />
+                                        <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
+                                    </svg>
+                                    </button>
+                                    <button type='button' class='btn-remove-row'>
+                                        <svg height='30' width='30'>
+                                            <circle cx='15' cy='15' r='15' fill='red' />
+                                            <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class='form-row'>
+                                    <label>Production Rater</label>
+                                    <input class='spec-item-rate decimal' type='number' step='any' min='0' placeholder='rate'/>
+                                </div>
+                            </div>
+                           
+                        </form>
+
+                        <form id='form-view-spec'>
+                            <h2>Specification</h2>
                             <div class='form-row'>
                                 <label>Ceilings</label>
                                 <div class="dropdown">
@@ -130,6 +160,7 @@
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -885,15 +916,17 @@
         });
     }
 
+    function showEditSpecView(){
+        $('#form-edit-spec').show();
+    }
+
     $(document).ready(function() {
-      
         initOwlCarousel();
         $('.integer').keydown( keydownIntegerInput );
         $('.decimal').keydown( keydownDecimalInput );
         $('.decimal').keyup( keyupDecimalInput );
         $('.decimal').bind( 'blur', blurDecimal );
         $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
-        //$('.page-room input[type="number"]').input( roomNumberInputChange );
         $('#btn-select-project').click( selectProject );
         $('#btn-create-project').click( createProject );
         $('.positive-negative-first,.positive-negative-second').click( switchSign );
@@ -903,6 +936,7 @@
         $('body').bind('touchstart click', blurInputFocus );
         populateRoomDefaults();
         populateRoomWithDefaults();
+        $('.btn-edit-spec').click( showEditSpecView );
     });
 </script>
     </body>

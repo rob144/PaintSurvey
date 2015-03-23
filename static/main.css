@@ -19,9 +19,10 @@ input[type="button"] {
     font-size: 15pt;
     cursor:pointer;
 }
-input[type="number"] {
+input[type="number"], input[type="text"] {
     height:22px;
     padding:6px;
+    margin:0;
 }
 select {
     display:block;
@@ -38,8 +39,13 @@ button {
 input[type="radio"] {
     display:inline;
 }
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .input-group {
-    margin:0 0 20px 0;
+    margin:20px 0 0 0;
 }
 .input-group, .input-block {
     overflow: visible;
@@ -249,8 +255,8 @@ td.result {
     float:right;
     width: 110px;
     background-color: #fff;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-top-right-radius:4px;
+    border-bottom-right-radius:4px;
     border-top:none;
     border-right:none;
     border-bottom:none;
@@ -258,7 +264,7 @@ td.result {
 }
 .form-row {
 	overflow:visible;
-	margin:10px 0 0 0;
+	margin:10px 0 5px 0;
 	max-width:280px;
 }
 .form-row > label {
@@ -321,7 +327,7 @@ td.result {
     height:30px;
     padding:0;
     background-color:#fff;
-    background-image: url(/static/edit3.png);
+    background-image:url(/static/edit3.png);
     border:none;
 }
 .positive-negative-first, .positive-negative-second {
@@ -339,4 +345,18 @@ td.result {
 .positive-negative-first {
     border-top-left-radius:4px;
     border-bottom-left-radius:4px;
+}
+#form-edit-spec{
+    display:none;
+}
+input.spec-item-name {
+    float:left;
+    width:220px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+input.spec-item-rate {
+    width:80px;
+    border:1px solid #ccc;
+    border-radius:4px;
 }
