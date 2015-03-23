@@ -7,6 +7,9 @@ body {
 h2 {
     margin:10px 0 0 0;
 }
+form {
+    overflow:visible;
+}
 label {
     font-weight:bold;
 }
@@ -14,6 +17,7 @@ input[type="button"] {
     font:-webkit-small-control;
     font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
     font-size: 15pt;
+    cursor:pointer;
 }
 input[type="number"] {
     height:22px;
@@ -29,6 +33,7 @@ select {
 button {
     display: block;
     margin:0 0 0 1px;
+    cursor:pointer;
 }
 input[type="radio"] {
     display:inline;
@@ -187,16 +192,15 @@ td.result {
     border-top:1px solid black;
 }
 .pageContentOuter {
-	overflow:auto;
+	overflow:visible;
 	margin:0 auto 0 auto;
 }
 .pageContent {
-    overflow:auto;
+    overflow:visible;
     margin:1px auto 0 auto;
     padding:0 10px 10px 10px;
     background-color:white;
 }
-/* FORMS */
 .error {
     /*display: block;*/
     margin: 0 0 5px 0;
@@ -253,9 +257,9 @@ td.result {
     border-left:1px solid #ccc; 
 }
 .form-row {
-	overflow:auto;
+	overflow:visible;
 	margin:10px 0 0 0;
-	width:98%;
+	max-width:280px;
 }
 .form-row > label {
 	display:block;
@@ -300,16 +304,25 @@ td.result {
     cursor:pointer;
 }
 .btn-add-row {
-    background-image: url(/static/plus.png);
+    background-image:url(/static/plus.png);
 }
-.btn-remove-row{
-    background-image: url(/static/minus.png);
+.btn-remove-row {
+    background-image:url(/static/minus.png);
 }
 .btn-remove-row {
     display:none;
 }
 #btn-calculate {
     float:right;
+}
+.btn-edit-spec {
+    float:right;
+    width:30px;
+    height:30px;
+    padding:0;
+    background-color:#fff;
+    background-image: url(/static/edit3.png);
+    border:none;
 }
 .positive-negative-first, .positive-negative-second {
     display:inline-block;
