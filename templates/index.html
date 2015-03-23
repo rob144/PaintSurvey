@@ -20,58 +20,114 @@
                         <form id='form-production-rates'>
                             <div class='form-row'>
                                 <label>Ceilings</label>
-                                <select id='select-ceiling-prod-rate'>
-                                    <option value="20">1 Vinyl Matt (20)</option>
-                                    <option value="10">2 Vinyl Matt (10)</option>
-                                    <option value="9">2 Eggshell (9)</option>
-                                </select>
+                                <div class="dropdown">
+                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class='dropdown-text'>Dropdown</span>
+                                        <input type='hidden' id='select-ceiling-prod-rate' class='dropdown-value'/>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class='dropdown-menu' role='menu'>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='20'>1 Vinyl Matt (20)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='10'>2 Vinyl Matt (10)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='19'>2 Eggshell (9)</a></li>
+                                    </ul>
+                                    <button type='button' class='btn-edit-spec'></button>
+                                </div>
                             </div>
                             <div class='form-row'>
                                 <label>Walls</label>
-                                <select id='select-wall-prod-rate'>
-                                    <option value="4.5">Wallpaper (4.5)</option>
-                                    <option value="10">2 Vinyl Matt (10)</option>
-                                    <option value="9">2 Eggshell (9)</option>
-                                </select>
+                                <div class="dropdown">
+                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class='dropdown-text'>Dropdown</span>
+                                        <input type='hidden' id='select-wall-prod-rate' class='dropdown-value'/>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class='dropdown-menu' role='menu'>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='4.5'>Wallpaper (4.5)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='10'>2 Vinyl Matt (10)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='9'>2 Eggshell (9)</a></li>
+                                    </ul>
+                                    <button type='button' class='btn-edit-spec'></button>
+                                </div>
                             </div>
                             <div class='form-row'>
                                 <label>Doors</label>
-                                <select id='select-door-area-prod-rate'>
-                                    <option value="4">General surface (4)</option>
-                                    <option value="3.5">Glazed med pane (3.5)</option>
-                                    <option value="2.5">Glazed small pane (2.5)</option>
-                                </select>
+                                <div class="dropdown">
+                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class='dropdown-text'>Dropdown</span>
+                                        <input type='hidden' id='select-door-area-prod-rate' class='dropdown-value'/>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class='dropdown-menu' role='menu'>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='4'>General surface (4)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='3.5'>Glazed med pane (3.5)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2.5'>Glazed small pane (2.5)</a></li>
+                                    </ul>
+                                    <button type='button' class='btn-edit-spec'></button>
+                                </div>
                             </div>
                             <div class='form-row'>
                                 <label>Door Frames</label>
-                                <select id='select-door-frame-prod-rate'>
-                                    <option value="15">100 Girth (15)</option>
-                                    <option value="12">150 Girth (12)</option>
-                                    <option value="10">300 Girth (10)</option>
-                                </select>
+                                <div class="dropdown">
+                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class='dropdown-text'>Dropdown</span>
+                                        <input type='hidden' id='select-door-frame-prod-rate' class='dropdown-value'/>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class='dropdown-menu' role='menu'>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='15'>100 Girth (15)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='12'>150 Girth (12)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='10'>300 Girth (10)</a></li>
+                                    </ul>
+                                    <button type='button' class='btn-edit-spec'></button>
+                                </div>
                             </div>
                             <div class='form-row'>  
                                 <label>Windows</label>
-                                <select id='select-window-prod-rate'>
-                                    <option value="5">Large pane (5)</option>
-                                    <option value="4">Med pane (4)</option>
-                                    <option value="3">Small pane (3)</option>
-                                </select>
+                                <div class="dropdown">
+                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class='dropdown-text'>Dropdown</span>
+                                        <input type='hidden' id='select-window-prod-rate' class='dropdown-value'/>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class='dropdown-menu' role='menu'>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='5'>Large pane (5)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='4'>Med pane (4)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='3'>Small pane (3)</a></li>
+                                    </ul>
+                                    <button type='button' class='btn-edit-spec'></button>
+                                </div>
                             </div>
                             <div class='form-row'>  
                                 <label>Radiators</label>
-                                <select id='select-radiator-prod-rate'>
-                                    <option value="4">Panel (4)</option>
-                                    <option value="2">Column (2)</option>
-                                </select>
+                                <div class="dropdown">
+                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class='dropdown-text'>Dropdown</span>
+                                        <input type='hidden' id='select-radiator-prod-rate' class='dropdown-value'/>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class='dropdown-menu' role='menu'>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='5'>Panel (4)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2'>Column (2)</a></li>
+                                    </ul>
+                                    <button type='button' class='btn-edit-spec'></button>
+                                </div>
                             </div>
                             <div class='form-row'>  
                                 <label>Skirtings</label>
-                                <select id='select-skirting-prod-rate'>
-                                    <option value="15">100 Girth (15)</option>
-                                    <option value="12">150 Girth (12)</option>
-                                    <option value="10">300 Girth (10)</option>
-                                </select>
+                                <div class="dropdown">
+                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class='dropdown-text'>Dropdown</span>
+                                        <input type='hidden' id='select-skirting-prod-rate' class='dropdown-value'/>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class='dropdown-menu' role='menu'>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='5'>100 Girth (15)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2'>150 Girth (12)</a></li>
+                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2'>300 Girth (10)</a></li>
+                                    </ul>
+                                    <button type='button' class='btn-edit-spec'></button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -334,9 +390,9 @@
                                           <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" role="menu">
-                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='4'>General surface (4)</a></li>
-                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='3.5'>Glazed med pane (3.5)</a></li>
-                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='2.5'>Glazed small pane (2.5)</a></li>
+                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='4'>General surface (4)</a></li>
+                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='3.5'>Glazed med pane (3.5)</a></li>
+                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2.5'>Glazed small pane (2.5)</a></li>
                                       </ul>
                                       <button type='button' class='btn-add-row'>
                                           <svg height='30' width='30'>
@@ -384,9 +440,9 @@
                                           <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" role="menu">
-                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='15'>100 Girth (15)</a></li>
-                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='3.5'>Glazed med pane (3.5)</a></li>
-                                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value='10'>G300 Girth (10)</a></li>
+                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='15'>100 Girth (15)</a></li>
+                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='3.5'>Glazed med pane (3.5)</a></li>
+                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='10'>G300 Girth (10)</a></li>
                                       </ul>
                                       <button type='button' class='btn-add-row'>
                                           <svg height='30' width='30'>
@@ -736,26 +792,6 @@
         event.preventDefault();  
     }
 
-    function toggleDropDown(){
-        var $dropdown = $(this).closest('.dropdown');
-        var c = 'open';
-        if($dropdown.hasClass(c)){
-            $dropdown.removeClass(c);
-        }else{
-            $dropdown.addClass(c);
-        };
-    }
-
-    function selectDropDownItem(){
-        //find the closest drop down and set the value of the hidden input.
-        var $dropdown = $(this).closest('.dropdown');
-        var $clickedItem = $(this);
-        $dropdown.find('.dropdown-value').val($clickedItem.data('value'));
-        $dropdown.find('.dropdown-text').text($clickedItem.text());
-        $dropdown.removeClass('open');
-        return false;
-    }
-
     function blurDecimal(){
         //Enforce 2 decimal places.
         if(this.value.trim() == '.') this.value = '0.00';
@@ -814,6 +850,26 @@
                 }
             }
         );
+    }
+
+    function toggleDropDown(){
+        var $dropdown = $(this).closest('.dropdown');
+        var c = 'open';
+        if($dropdown.hasClass(c)){
+            $dropdown.removeClass(c);
+        }else{
+            $dropdown.addClass(c);
+        };
+    }
+
+    function selectDropDownItem(){
+        //find the closest drop down and set the value of the hidden input.
+        var $clickedItem = $(this);
+        var $dropdown = $clickedItem.closest('.dropdown');
+        $dropdown.find('.dropdown-value').val( $clickedItem.data('value') );
+        $dropdown.find('.dropdown-text').text( $clickedItem.text() );
+        $dropdown.removeClass('open');
+        return false;
     }
 
     function initDropdowns(){
