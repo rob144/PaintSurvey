@@ -57,9 +57,12 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class='dropdown-menu' role='menu'>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='20'>1 Vinyl Matt (20)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='10'>2 Vinyl Matt (10)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='19'>2 Eggshell (9)</a></li>
+                                        {% for p in paints %}
+                                            {% if p.surface_type == 'Ceilings' %}
+                                                <li><a role='menuitem' tabindex="-1" href="#" data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
+                                                </li>
+                                            {% endif %} 
+                                        {% endfor %}
                                     </ul>
                                     <button type='button' class='btn-edit-spec'></button>
                                 </div>
@@ -73,9 +76,12 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class='dropdown-menu' role='menu'>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='4.5'>Wallpaper (4.5)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='10'>2 Vinyl Matt (10)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='9'>2 Eggshell (9)</a></li>
+                                        {% for p in paints %}
+                                            {% if p.surface_type == 'Walls' %}
+                                                <li><a role='menuitem' tabindex="-1" href="#" data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
+                                                </li>
+                                            {% endif %} 
+                                        {% endfor %}
                                     </ul>
                                     <button type='button' class='btn-edit-spec'></button>
                                 </div>
@@ -89,9 +95,12 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class='dropdown-menu' role='menu'>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='4'>General surface (4)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='3.5'>Glazed med pane (3.5)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2.5'>Glazed small pane (2.5)</a></li>
+                                       {% for p in paints %}
+                                            {% if p.surface_type == 'Doors' %}
+                                                <li><a role='menuitem' tabindex="-1" href="#" data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
+                                                </li>
+                                            {% endif %} 
+                                        {% endfor %}
                                     </ul>
                                     <button type='button' class='btn-edit-spec'></button>
                                 </div>
@@ -105,9 +114,12 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class='dropdown-menu' role='menu'>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='15'>100 Girth (15)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='12'>150 Girth (12)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='10'>300 Girth (10)</a></li>
+                                        {% for p in paints %}
+                                            {% if p.surface_type == 'Door Frames' %}
+                                                <li><a role='menuitem' tabindex="-1" href="#" data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
+                                                </li>
+                                            {% endif %} 
+                                        {% endfor %}
                                     </ul>
                                     <button type='button' class='btn-edit-spec'></button>
                                 </div>
@@ -121,9 +133,12 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class='dropdown-menu' role='menu'>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='5'>Large pane (5)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='4'>Med pane (4)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='3'>Small pane (3)</a></li>
+                                         {% for p in paints %}
+                                            {% if p.surface_type == 'Windows' %}
+                                                <li><a role='menuitem' tabindex='-1' href='#' data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
+                                                </li>
+                                            {% endif %} 
+                                        {% endfor %}
                                     </ul>
                                     <button type='button' class='btn-edit-spec'></button>
                                 </div>
@@ -137,8 +152,12 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class='dropdown-menu' role='menu'>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='5'>Panel (4)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2'>Column (2)</a></li>
+                                        {% for p in paints %}
+                                            {% if p.surface_type == 'Radiators' %}
+                                                <li><a role='menuitem' tabindex='-1' href='#' data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
+                                                </li>
+                                            {% endif %} 
+                                        {% endfor %}
                                     </ul>
                                     <button type='button' class='btn-edit-spec'></button>
                                 </div>
@@ -152,9 +171,12 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class='dropdown-menu' role='menu'>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='5'>100 Girth (15)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2'>150 Girth (12)</a></li>
-                                        <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2'>300 Girth (10)</a></li>
+                                        {% for p in paints %}
+                                            {% if p.surface_type == 'Skirtings' %}
+                                                <li><a role='menuitem' tabindex='-1' href='#' data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
+                                                </li>
+                                            {% endif %} 
+                                        {% endfor %}
                                     </ul>
                                     <button type='button' class='btn-edit-spec'></button>
                                 </div>
