@@ -48,6 +48,12 @@ class Room(ndb.Model):
     radiator_height = ndb.FloatProperty()
     is_default = ndb.BooleanProperty()
 
+class Paint(ndb.Model):
+    name = ndb.StringProperty()
+    prod_rate = ndb.FloatProperty()
+    surface_type = ndb.StringProperty()
+    order = ndb.IntegerProperty()
+
 def create_default_room():
     return Room(
         room_length = 5.0,
@@ -65,28 +71,64 @@ def create_default_room():
         is_default = True
     )
 
+def init_data():
+    #ndb.delete_multi(Project.query().fetch(keys_only=True))
+    #ndb.delete_multi(Room.query().fetch(keys_only=True))
+    #ndb.delete_multi(Paint.query().fetch(keys_only=True))
+    
+    #Create project test data if not there already.
+    if(Project.query(Project.username == 'Test').count() < 3):
+        Project(username='Test', title='Test One', date_created=datetime.now()).put()
+        Project(username='Test', title='Test Two', date_created=datetime.now()).put()
+        Project(username='Test', title='Test Three', date_created=datetime.now()).put()
+
+    #Create room defaults if not there already.
+    if(Room.query(Room.is_default == True).count() <= 0):
+        default_room = create_default_room()
+        default_room.put()
+
+    paint_data = [
+        ['1 Vinyl Matt', 20, 'Ceilings', 1],
+        ['2 Vinyl Matt', 10, 'Ceilings', 2],
+        ['2 Eggshell', 9, 'Ceilings', 3],
+        ['Wallpaper', 4.5, 'Walls', 1],
+        ['2 Vinyl Matt', 10, 'Walls', 2],
+        ['2 Eggshell', 9, 'Walls', 3],
+        ['General surface', 4, 'Doors', 1],
+        ['Glazed med pane', 3.5, 'Doors', 2],
+        ['Glazed small pane', 2.5, 'Doors', 3],
+        ['100 Girth', 15, 'Door Frames', 1],
+        ['150 Girth', 12, 'Door Frames', 2],
+        ['300 Girth', 10, 'Door Frames', 3],
+        ['Large pane', 5, 'Windows', 1],
+        ['Med pane', 4, 'Windows', 1],
+        ['Small pane', 3, 'Windows', 2],
+        ['Panel', 4, 'Radiators', 1],
+        ['Column', 3, 'Radiators', 2],
+        ['100 Girth', 15, 'Skirtings', 1],
+        ['150 Girth', 12, 'Skirtings', 2],
+        ['300 Girth', 10, 'Skirtings', 3]
+    ]
+
+    for p in paint_data:
+        qry = Paint.query(
+            Paint.name == p[0],
+            Paint.prod_rate == p[1],
+            Paint.surface_type == p[2]
+        )
+        if(qry.count() <= 0):
+            Paint(name=p[0], prod_rate=p[1], surface_type=p[2], order=p[3]).put()
+
+    time.sleep(3)
+
 class HandlerHome(webapp2.RequestHandler):
     def get(self):
-        #ndb.delete_multi(Project.query().fetch(keys_only=True))
-        #ndb.delete_multi(Room.query().fetch(keys_only=True))
-        
-        #Create project test data if not there already.
-        if(Project.query(Project.username == 'Test').count() < 3):
-            Project(username='Test', title='Test One', date_created=datetime.now()).put()
-            Project(username='Test', title='Test Two', date_created=datetime.now()).put()
-            Project(username='Test', title='Test Three', date_created=datetime.now()).put()
-
-        #Create room defaults if not there already.
-        if(Room.query(Room.is_default == True).count() <= 0):
-            default_room = create_default_room()
-            default_room.put()
-
-        time.sleep(2)
-
-        self.response.write( 
+        init_data()
+        self.response.write(
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
 	        	'default_room': Room.query(Room.is_default == True).fetch(1)[0],
-	        	'projects': Project.query().fetch(20) 
+	        	'projects': Project.query().fetch(20),
+                'paints': Paint.query().order(Paint.order).fetch(100) 
         	}) 
         )
 
