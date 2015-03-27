@@ -48,136 +48,15 @@
 
                         <form id='form-view-spec'>
                             <h2>Specification</h2>
-                            <div class='form-row'>
-                                <label>Ceilings</label>
+                            <div class='form-row spec-item-block hidden'>
+                                <label class='spec-item-title'>Ceilings</label>
                                 <div class="dropdown">
                                     <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
                                         <span class='dropdown-text'>Dropdown</span>
                                         <input type='hidden' id='select-ceiling-prod-rate' class='dropdown-value'/>
                                         <span class="caret"></span>
                                     </button>
-                                    <ul class='dropdown-menu' role='menu'>
-                                        {% for p in paints %}
-                                            {% if p.surface_type == 'Ceilings' %}
-                                                <li><a role='menuitem' tabindex="-1" href="#" data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
-                                                </li>
-                                            {% endif %} 
-                                        {% endfor %}
-                                    </ul>
-                                    <button type='button' class='btn-edit-spec'></button>
-                                </div>
-                            </div>
-                            <div class='form-row'>
-                                <label>Walls</label>
-                                <div class="dropdown">
-                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span class='dropdown-text'>Dropdown</span>
-                                        <input type='hidden' id='select-wall-prod-rate' class='dropdown-value'/>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class='dropdown-menu' role='menu'>
-                                        {% for p in paints %}
-                                            {% if p.surface_type == 'Walls' %}
-                                                <li><a role='menuitem' tabindex="-1" href="#" data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
-                                                </li>
-                                            {% endif %} 
-                                        {% endfor %}
-                                    </ul>
-                                    <button type='button' class='btn-edit-spec'></button>
-                                </div>
-                            </div>
-                            <div class='form-row'>
-                                <label>Doors</label>
-                                <div class="dropdown">
-                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span class='dropdown-text'>Dropdown</span>
-                                        <input type='hidden' id='select-door-area-prod-rate' class='dropdown-value'/>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class='dropdown-menu' role='menu'>
-                                       {% for p in paints %}
-                                            {% if p.surface_type == 'Doors' %}
-                                                <li><a role='menuitem' tabindex="-1" href="#" data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
-                                                </li>
-                                            {% endif %} 
-                                        {% endfor %}
-                                    </ul>
-                                    <button type='button' class='btn-edit-spec'></button>
-                                </div>
-                            </div>
-                            <div class='form-row'>
-                                <label>Door Frames</label>
-                                <div class="dropdown">
-                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span class='dropdown-text'>Dropdown</span>
-                                        <input type='hidden' id='select-door-frame-prod-rate' class='dropdown-value'/>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class='dropdown-menu' role='menu'>
-                                        {% for p in paints %}
-                                            {% if p.surface_type == 'Door Frames' %}
-                                                <li><a role='menuitem' tabindex="-1" href="#" data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
-                                                </li>
-                                            {% endif %} 
-                                        {% endfor %}
-                                    </ul>
-                                    <button type='button' class='btn-edit-spec'></button>
-                                </div>
-                            </div>
-                            <div class='form-row'>  
-                                <label>Windows</label>
-                                <div class="dropdown">
-                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span class='dropdown-text'>Dropdown</span>
-                                        <input type='hidden' id='select-window-prod-rate' class='dropdown-value'/>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class='dropdown-menu' role='menu'>
-                                         {% for p in paints %}
-                                            {% if p.surface_type == 'Windows' %}
-                                                <li><a role='menuitem' tabindex='-1' href='#' data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
-                                                </li>
-                                            {% endif %} 
-                                        {% endfor %}
-                                    </ul>
-                                    <button type='button' class='btn-edit-spec'></button>
-                                </div>
-                            </div>
-                            <div class='form-row'>  
-                                <label>Radiators</label>
-                                <div class="dropdown">
-                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span class='dropdown-text'>Dropdown</span>
-                                        <input type='hidden' id='select-radiator-prod-rate' class='dropdown-value'/>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class='dropdown-menu' role='menu'>
-                                        {% for p in paints %}
-                                            {% if p.surface_type == 'Radiators' %}
-                                                <li><a role='menuitem' tabindex='-1' href='#' data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
-                                                </li>
-                                            {% endif %} 
-                                        {% endfor %}
-                                    </ul>
-                                    <button type='button' class='btn-edit-spec'></button>
-                                </div>
-                            </div>
-                            <div class='form-row'>  
-                                <label>Skirtings</label>
-                                <div class="dropdown">
-                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span class='dropdown-text'>Dropdown</span>
-                                        <input type='hidden' id='select-skirting-prod-rate' class='dropdown-value'/>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class='dropdown-menu' role='menu'>
-                                        {% for p in paints %}
-                                            {% if p.surface_type == 'Skirtings' %}
-                                                <li><a role='menuitem' tabindex='-1' href='#' data-value='{{ p.prod_rate }}'>{{ p.name }} ({{ p.prod_rate }})</a>
-                                                </li>
-                                            {% endif %} 
-                                        {% endfor %}
-                                    </ul>
+                                    <ul class='dropdown-menu' role='menu'></ul>
                                     <button type='button' class='btn-edit-spec'></button>
                                 </div>
                             </div>
@@ -534,9 +413,11 @@
                 </div>
             </div>
         </div>
-<script>
+<script type='text/javascript'>
     //Global variable to store current project data
     var CURRENT_PROJECT = {};
+    var PAINTS = JSON.parse('{{ paints|safe }}');
+    var SURFACE_TYPES = ['Ceilings','Walls','Doors','Door Frames','Windows','Radiators','Skirtings'];
 
     //Add the projects to the select list
     function populateProjects(projects){
@@ -718,13 +599,13 @@
         var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
 
         var tableData = [
-            { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / parseInt($('#select-ceiling-prod-rate').val()) },
-            { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / parseInt($('#select-wall-prod-rate').val()) },
-            { title: 'DOOR AREA',   amount: doorSpace,       units: 'm2', hours: doorSpace / parseInt($('#select-door-area-prod-rate').val()) },
-            { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrame / parseInt($('#select-door-frame-prod-rate').val()) },
-            { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowSpace / parseInt($('#select-window-prod-rate').val()) },
-            { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiator-prod-rate').val()) },
-            { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-skirting-prod-rate').val()) }, 
+            { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / parseInt($('#select-ceilings-prod-rate').val()) },
+            { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / parseInt($('#select-walls-prod-rate').val()) },
+            { title: 'DOOR AREA',   amount: doorSpace,       units: 'm2', hours: doorSpace / parseInt($('#select-doors-prod-rate').val()) },
+            { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrame / parseInt($('#select-door-frames-prod-rate').val()) },
+            { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowSpace / parseInt($('#select-windows-prod-rate').val()) },
+            { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiators-prod-rate').val()) },
+            { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-skirtings-prod-rate').val()) }, 
             { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours },
             { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours }
         ];
@@ -813,11 +694,6 @@
 
     function keyupDecimalInput(event){
         var $elem = $(this);
-        //If negative number, make text red.
-        //if(event.keyCode == 189) $elem.css('color','red');
-        //var color = 'red';
-        //$elem.css('color','red');
-
         if($elem.val().length > 0){
             if($elem.val() > 0){
                 $elem.css('color','black');
@@ -927,23 +803,49 @@
 
     function initDropdowns(){
         $('.dropdown').each( function(index, elem){
-            var selectedValue = $(elem).find('.dropdown-value').val();
+            var $elem = $(elem);
+            var selectedValue = $elem.find('.dropdown-value').val();
             if (typeof selectedValue === 'undefined' || selectedValue == ''){
-                var defaultItem = $(elem).find('.dropdown-menu a:first');
-                $(elem).find('.dropdown-value').val(defaultItem.data('value'));
-                $(elem).find('.dropdown-text').text(defaultItem.text());
-                $(elem).find('.dropdown-btn').click( toggleDropDown );
-                $(elem).find('.dropdown-menu a').bind('click touchstart', selectDropDownItem );
+                var defaultItem = $elem.find('.dropdown-menu a:first');
+                $elem.find('.dropdown-value').val( defaultItem.data('value') );
+                $elem.find('.dropdown-text').text( defaultItem.text() );
+                $elem.find('.dropdown-btn').click( toggleDropDown );
+                $elem.find('.dropdown-menu a').bind( 'click touchstart', selectDropDownItem );
             }
         });
     }
 
     function showEditSpecView(){
+        var $clickedButton = $(this);
+        var $dropdown = $clickedButton.closest('.dropdown');
+        $dropdown.find('.dropdown-menu a');
         $('#form-edit-spec').show();
+    }
+
+    function initSpecificationPage(){
+        var $block = $('.spec-item-block:first');
+        //For each surface type, build the dropdown menus.
+        for(var i = 0; i < SURFACE_TYPES.length; i++){
+            $newBlock = $block.clone();
+            $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
+            $.each(PAINTS, function(j, obj) {
+                if (obj.surface_type == SURFACE_TYPES[i]) {
+                    $newBlock.find('.dropdown-value').attr('id',
+                        'select-' + obj.surface_type.toLowerCase().replace(' ', '-') + '-prod-rate');
+                    $newBlock.find('ul.dropdown-menu').append(
+                        '<li><a role="menuitem" data-value="' + obj.prod_rate + '" >' 
+                        + obj.name + ' (' + obj.prod_rate + ') </a></li>'
+                    );
+                }
+            });
+            $newBlock.removeClass('hidden');
+            $newBlock.appendTo('#form-view-spec');
+        }
     }
 
     $(document).ready(function() {
         initOwlCarousel();
+        initSpecificationPage();
         $('.integer').keydown( keydownIntegerInput );
         $('.decimal').keydown( keydownDecimalInput );
         $('.decimal').keyup( keyupDecimalInput );

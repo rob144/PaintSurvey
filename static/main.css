@@ -39,6 +39,9 @@ button {
 input[type="radio"] {
     display:inline;
 }
+.hidden {
+    display:none;
+}
 .group:after {
   content: "";
   display: table;
