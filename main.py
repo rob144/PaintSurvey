@@ -128,7 +128,7 @@ class HandlerHome(webapp2.RequestHandler):
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
 	        	'default_room': Room.query(Room.is_default == True).fetch(1)[0],
 	        	'projects': Project.query().fetch(20),
-                'paints': Paint.query().order(Paint.order).fetch(100) 
+                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(100)], default=json_serial) 
         	}) 
         )
 
