@@ -18,32 +18,35 @@
                     <div class='pageContent'>
                             
                         <form id='form-edit-spec'>
-                            <h2>Edit Specification</h2>
-                            <!-- show input boxes for each item with prod rate -->
-                            <!-- edit item name, prod rate and arrows for ordering -->
                             <div class='input-group'>
-                                <div class='form-row group'>
-                                    <label>Item Name</label>
-                                    <input class='spec-item-name' type='text' placeholder='item name'/>
-                                    <button type='button' class='btn-add-row'>
+                                <h2>Edit Specification
+                                <button type='button' id='btn-add-spec-item'>
                                     <svg height='30' width='30'>
                                         <circle cx='15' cy='15' r='15' fill='blue' />
                                         <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
                                     </svg>
-                                    </button>
-                                    <button type='button' class='btn-remove-row'>
-                                        <svg height='30' width='30'>
-                                            <circle cx='15' cy='15' r='15' fill='red' />
-                                            <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class='form-row'>
-                                    <label>Production Rater</label>
-                                    <input class='spec-item-rate decimal' type='number' step='any' min='0' placeholder='rate'/>
+                                </button>
+                                </h2>
+                                <div class='input-block hidden'>
+                                    <input type='hidden' class='spec-paint-key'/>
+                                    <div class='form-row group'>
+                                        <label>Item Name</label>
+                                        <input class='spec-item-name' type='text' placeholder='item name'/>
+                                        <button type='button' class='btn-remove-row'>
+                                            <svg height='30' width='30'>
+                                                <circle cx='15' cy='15' r='15' fill='red' />
+                                                <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class='form-row'>
+                                        <label>Production Rate</label>
+                                        <input class='spec-item-rate decimal' type='number' step='any' min='0' placeholder='rate'/>
+                                    </div>
                                 </div>
                             </div>
-                           
+                            <button type='button' class='btn-save'>Save</button>
+                            <button type='button' class='btn-cancel'>Cancel</button>
                         </form>
 
                         <form id='form-view-spec'>
@@ -437,10 +440,9 @@
 
     function populateRoomDefaults(){
         var $elem;
-        {% for key, value in default_room.to_dict().iteritems() if key != 'is_default'%}
+        {% for key, value in default_room.to_dict().iteritems() if (key != 'is_default' and key != 'key') %}
         $elem = $('#default-{{key.replace("_","-")}}' );
         $elem.val( {{ value }} );
-        $elem.blur();//Trigger blur event handler to ensure two decimal places.
         {% endfor %}
     }
 
@@ -452,7 +454,6 @@
             success: function(data){ 
                 CURRENT_PROJECT = JSON.parse(data);
                 $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
-                alert('Project selected: ' + CURRENT_PROJECT.title ); 
                 //TODO: fetch and populate the room data according to whichever project is selected
             }
         });
@@ -486,22 +487,6 @@
         $('.window-height').val(getf('#default-window-height'));
         $('.radiator-width').val(getf('#default-radiator-width'));
         $('.radiator-height').val(getf('#default-radiator-height'));
-    }
-
-    function addInputBlock(event){
-        var $group = $(event.target).closest('.input-group');
-        var $newBlock = $group.find('.input-block:last').clone();
-        $newBlock.find('.btn-add-row:first').remove();
-        $newBlock.find('input').val('');
-        $newBlock.find('input').keydown( keydownDecimalInput );
-        $newBlock.find('input').blur( blurDecimal );
-        $newBlock.find('dropdown').removeClass('open');
-        $newBlock.find('.positive-negative-first,.positive-negative-second').click( switchSign );
-        $newBlock.insertAfter($group.find('.input-block:last'));
-        initDropdowns();
-        $btnRemove = $newBlock.find('.btn-remove-row:first');
-        $btnRemove.css('display','block');
-        $btnRemove.click(function(event){ $(event.target).closest('.input-block').remove(); });
     }
 
     function calculateWorkForRoom(event){
@@ -670,7 +655,6 @@
         if(event.keyCode == 189){
             if(!$elem.attr('min') || parseFloat($elem.attr('min')) < 0){
                 //if already minus sign or number before, prevent.
-                //alert('start: '+this.selectionStart);
                 if(/[0-9\-]/.test($elem.val())) {
                     event.preventDefault();
                 }
@@ -817,16 +801,35 @@
 
     function showEditSpecView(){
         var $clickedButton = $(this);
-        var $dropdown = $clickedButton.closest('.dropdown');
-        $dropdown.find('.dropdown-menu a');
-        $('#form-edit-spec').show();
+        
+        var surface_type = $clickedButton.closest('.spec-item-block')
+                              .find('.spec-item-title').text();
+        //For each paint of this surface type, build the edit inputs.
+        $.each(PAINTS, function(i, paint) {  
+            if (paint.surface_type.toLowerCase() == surface_type.toLowerCase()) {
+                var $newBlock = $('#form-edit-spec .input-block:first').clone();
+                $newBlock.find('input.spec-paint-key').val(paint.key);
+                $newBlock.find('input.spec-item-name').val(paint.name);
+                $newBlock.find('input.spec-item-rate').val(paint.prod_rate);
+                $newBlock.removeClass('hidden');
+                $newBlock.insertAfter('#form-edit-spec .input-block:last');
+                $btnRemove = $newBlock.find('.btn-remove-row:first');
+                $btnRemove.css('display','block');
+                $btnRemove.click(function(event){ $(event.target).closest('.input-block').remove(); });
+            }
+        });
+        
+        initDecimalInputs();
+
+        $('#form-view-spec').fadeOut('fast', function(){
+            $('#form-edit-spec').fadeIn('fast');
+        });
     }
 
     function initSpecificationPage(){
-        var $block = $('.spec-item-block:first');
         //For each surface type, build the dropdown menus.
         for(var i = 0; i < SURFACE_TYPES.length; i++){
-            $newBlock = $block.clone();
+            $newBlock = $('.spec-item-block:first').clone();
             $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
             $.each(PAINTS, function(j, obj) {
                 if (obj.surface_type == SURFACE_TYPES[i]) {
@@ -841,20 +844,58 @@
             $newBlock.removeClass('hidden');
             $newBlock.appendTo('#form-view-spec');
         }
+        //Setup button click events for edit view
+        $('#form-edit-spec .btn-save').click( function(){ 
+            //TODO: make ajax save POST to server.
+            $('#form-edit-spec').fadeOut('fast', function(){
+                $('#form-edit-spec .input-block:not(.hidden)').remove();
+                $('#form-view-spec').fadeIn('fast');
+            });
+        });
+        $('#form-edit-spec .btn-cancel').click( function(){ 
+            $('#form-edit-spec').fadeOut('fast', function(){
+                $('#form-edit-spec .input-block:not(.hidden)').remove();
+                $('#form-view-spec').fadeIn('fast');
+            });
+        });
+    }
+
+    function initDecimalInputs(){
+        $('.decimal').keydown( keydownDecimalInput );
+        $('.decimal').keyup( keyupDecimalInput );
+        $('.decimal').bind( 'blur', blurDecimal );
+        $('.decimal').blur();
+    }
+
+    function initAddInputBlockButtons(){
+        $('#btn-add-spec-item,.btn-add-row').click( function(){
+            var $group = $(event.target).closest('.input-group');
+            var $newBlock = $group.find('.input-block:last').clone();
+            $newBlock.find('.btn-add-row:first').remove();
+            $newBlock.find('input').val('');
+            $newBlock.find('input').keydown( keydownDecimalInput );
+            $newBlock.find('input').blur( blurDecimal );
+            $newBlock.find('dropdown').removeClass('open');
+            $newBlock.find('.positive-negative-first,.positive-negative-second').click( switchSign );
+            $newBlock.removeClass('hidden');
+            $newBlock.insertAfter($group.find('.input-block:last'));
+            initDropdowns();
+            $btnRemove = $newBlock.find('.btn-remove-row:first');
+            $btnRemove.css('display','block');
+            $btnRemove.click(function(event){ $(event.target).closest('.input-block').remove(); });
+        });
     }
 
     $(document).ready(function() {
         initOwlCarousel();
         initSpecificationPage();
         $('.integer').keydown( keydownIntegerInput );
-        $('.decimal').keydown( keydownDecimalInput );
-        $('.decimal').keyup( keyupDecimalInput );
-        $('.decimal').bind( 'blur', blurDecimal );
+        initDecimalInputs();
         $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
         $('#btn-select-project').click( selectProject );
         $('#btn-create-project').click( createProject );
         $('.positive-negative-first,.positive-negative-second').click( switchSign );
-        $('.btn-add-row').click( addInputBlock );
+        initAddInputBlockButtons();
         $('.btn-room-calculate').click( calculateWorkForRoom );
         initDropdowns();
         $('body').bind('touchstart click', blurInputFocus );
