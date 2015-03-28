@@ -26,14 +26,20 @@ def json_serial(obj):
         serial = obj.isoformat()
         return serial
 
-class Project(ndb.Model):
+class ModelUtils(object):
+    def to_dict(self):
+        result = super(ModelUtils,self).to_dict()
+        result['key'] = self.key.urlsafe()
+        return result
+
+class Project(ModelUtils, ndb.Model):
     id = ndb.IntegerProperty()
     username = ndb.StringProperty()
     title = ndb.StringProperty()
     rooms = ndb.KeyProperty(kind='Room', repeated=True)
     date_created = ndb.DateTimeProperty(auto_now_add=True)
 
-class Room(ndb.Model):
+class Room(ModelUtils, ndb.Model):
     room_length = ndb.FloatProperty()
     room_width = ndb.FloatProperty()
     room_height = ndb.FloatProperty()
@@ -48,7 +54,7 @@ class Room(ndb.Model):
     radiator_height = ndb.FloatProperty()
     is_default = ndb.BooleanProperty()
 
-class Paint(ndb.Model):
+class Paint(ModelUtils, ndb.Model):
     name = ndb.StringProperty()
     prod_rate = ndb.FloatProperty()
     surface_type = ndb.StringProperty()
@@ -121,7 +127,7 @@ def init_data():
 
     time.sleep(3)
 
-class HandlerHome(webapp2.RequestHandler):
+class Home(webapp2.RequestHandler):
     def get(self):
         init_data()
         self.response.write(
@@ -132,7 +138,7 @@ class HandlerHome(webapp2.RequestHandler):
         	}) 
         )
 
-class HandlerCreateProject(webapp2.RequestHandler):
+class CreateProject(webapp2.RequestHandler):
     def post(self):
         project_title = self.request.get('projectTitle')
         new_project = Project(id=3, username='Test', title=project_title, date_created=datetime.now())
@@ -141,19 +147,19 @@ class HandlerCreateProject(webapp2.RequestHandler):
         time.sleep(1) #Allow time for project to save to datastore
         self.response.write( json.dumps([p.to_dict() for p in Project.query().fetch(20)], default=json_serial) )
 
-class HandlerGetProject(webapp2.RequestHandler):
+class GetProject(webapp2.RequestHandler):
     def post(self):
         project = ndb.Key(urlsafe=self.request.get('project_key')).get()
         self.response.write(json.dumps(project.to_dict(), default=json_serial))
 
-class HandlerSaveRoom(webapp2.RequestHandler):
+class SaveRoom(webapp2.RequestHandler):
     def post(self):
         room_data = self.request.get('room')
         #TODO: find the room with the given key
 
 application = webapp2.WSGIApplication([
-    ('/', HandlerHome),
-    ('/createproject', HandlerCreateProject),
-    ('/getproject', HandlerGetProject),
-    ('/saveroom', HandlerSaveRoom)
+    ('/', Home),
+    ('/createproject', CreateProject),
+    ('/getproject', GetProject),
+    ('/saveroom', SaveRoom)
 ], debug=True)
