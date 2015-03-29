@@ -20,24 +20,14 @@
                         <form id='form-edit-spec'>
                             <div class='input-group'>
                                 <h2>Edit Specification
-                                <button type='button' id='btn-add-spec-item'>
-                                    <svg height='30' width='30'>
-                                        <circle cx='15' cy='15' r='15' fill='blue' />
-                                        <polygon points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white' />
-                                    </svg>
-                                </button>
+                                <button type='button' id='btn-add-spec-item'></button>
                                 </h2>
                                 <div class='input-block hidden'>
                                     <input type='hidden' class='spec-paint-key'/>
                                     <div class='form-row group'>
                                         <label>Item Name</label>
                                         <input class='spec-item-name' type='text' placeholder='item name'/>
-                                        <button type='button' class='btn-remove-row'>
-                                            <svg height='30' width='30'>
-                                                <circle cx='15' cy='15' r='15' fill='red' />
-                                                <polygon points='6,12 24,12 24,18 6,18 6,12' fill='white' />
-                                            </svg>
-                                        </button>
+                                        <button type='button' class='btn-remove-row'></button>
                                     </div>
                                     <div class='form-row'>
                                         <label>Production Rate</label>
@@ -827,6 +817,7 @@
     }
 
     function initSpecificationPage(){
+
         //For each surface type, build the dropdown menus.
         for(var i = 0; i < SURFACE_TYPES.length; i++){
             $newBlock = $('.spec-item-block:first').clone();
@@ -867,7 +858,40 @@
         $('.decimal').blur();
     }
 
+    function svgEl(tagName) {
+        return document.createElementNS("http://www.w3.org/2000/svg", tagName);
+    }
+
+    function addSvgElems(containerIds, svgElemData){
+        for(var i=0;i<containerIds.length;i++){
+            var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            $(containerIds[i]).append($(svg).attr({ 'width':30, 'height':30 }));
+            for(var j=0;j<svgElemData.length;j++){
+                $(containerIds[i] + ' > svg').append($(svgEl(svgElemData[j]['tagName'])).attr(svgElemData[j]));
+            }
+        }
+    }
+
     function initAddInputBlockButtons(){
+
+        //Init 'add block' svg button icons
+        addSvgElems(
+            [ '#btn-add-spec-item','.btn-add-row' ],
+            [
+              { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'blue'},
+              { 'tagName':'polygon','points':'12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12', 'fill':'white' }
+            ]
+        );
+
+        //Init 'remove block' svg button icons
+        addSvgElems(
+            [ '.btn-remove-row' ],
+            [
+              { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'red'},
+              { 'tagName':'polygon','points':'6,12 24,12 24,18 6,18 6,12', 'fill':'white' }
+            ]
+        );
+
         $('#btn-add-spec-item,.btn-add-row').click( function(){
             var $group = $(event.target).closest('.input-group');
             var $newBlock = $group.find('.input-block:last').clone();
