@@ -275,7 +275,34 @@
 			"file": "main.py",
 			"settings":
 			{
-				"buffer_size": 5660,
+				"buffer_size": 6100,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "templates/index.html",
+			"settings":
+			{
+				"buffer_size": 47640,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "console.log('test');",
+			"file": "static/subdir/test.js",
+			"file_size": 20,
+			"file_write_time": 130722070870000000,
+			"settings":
+			{
+				"buffer_size": 20,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app.yaml",
+			"settings":
+			{
+				"buffer_size": 251,
 				"line_ending": "Unix"
 			}
 		}
@@ -310,8 +337,14 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/Users/rdunn/dev/paint-survey",
+		"/Users/rdunn/dev/paint-survey/templates"
+	],
 	"file_history":
 	[
+		"/Users/rdunn/dev/paint-survey/static/main.js",
 		"/Users/rdunn/dev/paint-survey/main.py",
 		"/Users/rdunn/dev/paint-survey/static/main.css",
 		"/Users/rdunn/dev/paint-survey/templates/index.html",
@@ -389,7 +422,7 @@
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -405,6 +438,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"each",
+			"elem",
 			"btn-remove-row",
 			"initAddInputBlockButtons",
 			"addInputBlock",
@@ -530,9 +565,7 @@
 			"zero",
 			"sub include",
 			"t_submit_js.inc",
-			"teacher.pm",
-			"sub svrRedirect",
-			"svrRedirect"
+			"teacher.pm"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -586,15 +619,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5660,
+						"buffer_size": 6100,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								4927,
+								4927
 							]
 						],
 						"settings":
@@ -604,10 +637,98 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1836.0,
+						"translation.y": 1764.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "templates/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 47640,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								44288,
+								44288
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 12992.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "static/subdir/test.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								20,
+								20
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app.yaml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 251,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								115,
+								115
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -615,11 +736,11 @@
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 22.0
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 30.0
 	},
 	"layout":
 	{
@@ -652,7 +773,7 @@
 	"project": "paint-survey.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -698,7 +819,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 182.0,
+	"side_bar_width": 223.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
