@@ -138,6 +138,16 @@ class Home(webapp2.RequestHandler):
         	}) 
         )
 
+class SaveSpec(webapp2.RequestHandler):
+    def post(self):
+        #paint = ndb.Key(urlsafe=self.request.get('key')).get()
+        print('BODY:' + self.request.body)
+        objs = json.loads(self.request.POST.items()[0][0])
+        for p in objs:
+            print(p['name'])
+            #TODO: see if the paint exists and update it or add it in the datastore.
+        self.response.write('todo...')
+        
 class CreateProject(webapp2.RequestHandler):
     def post(self):
         project_title = self.request.get('projectTitle')
@@ -161,5 +171,6 @@ application = webapp2.WSGIApplication([
     ('/', Home),
     ('/createproject', CreateProject),
     ('/getproject', GetProject),
-    ('/saveroom', SaveRoom)
+    ('/saveroom', SaveRoom),
+    ('/savespec', SaveSpec)
 ], debug=True)
