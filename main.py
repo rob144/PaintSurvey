@@ -151,16 +151,16 @@ class SaveSpec(webapp2.RequestHandler):
         paints = json.loads(self.request.POST.get('paints'))
         resp_paints = []
         paint_keys = []
+        
         #Do adds and updates
         for obj in paints:
             paint_keys.append(obj['key'])
             if(obj['key'] != ""):
-                print('KEY:  '+obj['key'])
-                print('OBJ:  '+str(obj))
                 #Update existing paint
                 paint = ndb.Key(urlsafe=obj['key']).get()
                 paint.name = obj['name'];
                 paint.prod_rate = float(obj['prod_rate']);
+                paint.order = int(obj['order']);
                 resp_paints.append(paint.put().get())
             else:
                 #Create new paint
