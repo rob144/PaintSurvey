@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"GetP",
+				"GetPaints"
+			],
+			[
+				"suf",
+				"surface_type"
+			],
+			[
+				"pain",
+				"paint_keys"
+			],
+			[
 				"initD",
 				"initDecimalInputs"
 			],
@@ -272,10 +284,13 @@
 	"buffers":
 	[
 		{
+			"contents": "import os\nimport webapp2\nimport jinja2\nfrom google.appengine.ext import ndb\nfrom datetime import datetime\nimport time\nimport json\n\nTEMPLATES_DIR = 'templates/'\n\nloader = jinja2.FileSystemLoader(os.path.dirname(__file__))\n\nJINJA_ENV = jinja2.Environment(\n    loader = loader,\n    extensions = ['jinja2.ext.autoescape'],\n    autoescape = True)\n\ndef include_file(filename):\n    return jinja2.Markup(loader.get_source(JINJA_ENV, TEMPLATES_DIR + filename)[0])\n\nJINJA_ENV.globals['include_file'] = include_file\n\ndef json_serial(obj):\n    \"\"\"JSON serializer for objects not serializable by default json code\"\"\"\n    if isinstance(obj, datetime):\n        serial = obj.isoformat()\n        return serial\n\nclass ModelUtils(object):\n    def to_dict(self):\n        result = super(ModelUtils,self).to_dict()\n        result['key'] = self.key.urlsafe()\n        return result\n\nclass Project(ModelUtils, ndb.Model):\n    id = ndb.IntegerProperty()\n    username = ndb.StringProperty()\n    title = ndb.StringProperty()\n    rooms = ndb.KeyProperty(kind='Room', repeated=True)\n    date_created = ndb.DateTimeProperty(auto_now_add=True)\n\nclass Room(ModelUtils, ndb.Model):\n    room_length = ndb.FloatProperty()\n    room_width = ndb.FloatProperty()\n    room_height = ndb.FloatProperty()\n    door_quantity = ndb.IntegerProperty()\n    door_width = ndb.FloatProperty()\n    door_height = ndb.FloatProperty()\n    window_quantity = ndb.IntegerProperty()\n    window_width = ndb.FloatProperty()\n    window_height = ndb.FloatProperty()\n    radiator_quantity = ndb.IntegerProperty()\n    radiator_width = ndb.FloatProperty()\n    radiator_height = ndb.FloatProperty()\n    is_default = ndb.BooleanProperty()\n\nclass Paint(ModelUtils, ndb.Model):\n    name = ndb.StringProperty()\n    prod_rate = ndb.FloatProperty()\n    surface_type = ndb.StringProperty()\n    order = ndb.IntegerProperty()\n\ndef create_default_room():\n    return Room(\n        room_length = 5.0,\n        room_width = 5.0,\n        room_height = 2.5,\n        door_quantity = 1,\n        door_width = 0.9,\n        door_height = 2.0,\n        window_quantity = 1,\n        window_width = 1.5,\n        window_height = 1.0,\n        radiator_quantity = 1,\n        radiator_width = 1.5,\n        radiator_height = 0.7,\n        is_default = True\n    )\n\ndef init_data():\n    #ndb.delete_multi(Project.query().fetch(keys_only=True))\n    #ndb.delete_multi(Room.query().fetch(keys_only=True))\n    #ndb.delete_multi(Paint.query().fetch(keys_only=True))\n    \n    #Create project test data if not there already.\n    if(Project.query(Project.username == 'Test').count() < 3):\n        Project(username='Test', title='Test One', date_created=datetime.now()).put()\n        Project(username='Test', title='Test Two', date_created=datetime.now()).put()\n        Project(username='Test', title='Test Three', date_created=datetime.now()).put()\n\n    #Create room defaults if not there already.\n    if(Room.query(Room.is_default == True).count() <= 0):\n        default_room = create_default_room()\n        default_room.put()\n\n    paint_data = [\n        ['1 Vinyl Matt', 20, 'Ceilings', 1],\n        ['2 Vinyl Matt', 10, 'Ceilings', 2],\n        ['2 Eggshell', 9, 'Ceilings', 3],\n        ['Wallpaper', 4.5, 'Walls', 1],\n        ['2 Vinyl Matt', 10, 'Walls', 2],\n        ['2 Eggshell', 9, 'Walls', 3],\n        ['General surface', 4, 'Doors', 1],\n        ['Glazed med pane', 3.5, 'Doors', 2],\n        ['Glazed small pane', 2.5, 'Doors', 3],\n        ['100 Girth', 15, 'Door Frames', 1],\n        ['150 Girth', 12, 'Door Frames', 2],\n        ['300 Girth', 10, 'Door Frames', 3],\n        ['Large pane', 5, 'Windows', 1],\n        ['Med pane', 4, 'Windows', 1],\n        ['Small pane', 3, 'Windows', 2],\n        ['Panel', 4, 'Radiators', 1],\n        ['Column', 3, 'Radiators', 2],\n        ['100 Girth', 15, 'Skirtings', 1],\n        ['150 Girth', 12, 'Skirtings', 2],\n        ['300 Girth', 10, 'Skirtings', 3]\n    ]\n\n    for p in paint_data:\n        qry = Paint.query(\n            Paint.name == p[0],\n            Paint.prod_rate == p[1],\n            Paint.surface_type == p[2]\n        )\n        if(qry.count() <= 0):\n            Paint(name=p[0], prod_rate=p[1], surface_type=p[2], order=p[3]).put()\n\n    time.sleep(3)\n\nclass Home(webapp2.RequestHandler):\n    def get(self):\n        init_data()\n        self.response.write(\n        	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ \n	        	'default_room': Room.query(Room.is_default == True).fetch(1)[0],\n	        	'projects': Project.query().fetch(20),\n                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(200)],\n                 default=json_serial) \n        	}) \n        )\n\nclass GetPaints(webapp2.RequestHandler):\n    def get(self):\n        self.response.write(\n            json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(200)])\n        )\n\nclass SaveSpec(webapp2.RequestHandler):\n    def post(self):\n        surface_type = self.request.POST.get('surface_type')\n        paints = json.loads(self.request.POST.get('paints'))\n        new_paints = []\n        paint_keys = []\n\n        #Do adds and updates\n        for obj in paints:\n            paint_keys.append(obj['key'])\n            if(obj['key'] != \"\"):\n                print('KEY:  '+obj['key'])\n                print('OBJ:  '+str(obj))\n                #Update existing paint\n                paint = ndb.Key(urlsafe=obj['key']).get()\n                paint.name = obj['name'];\n                paint.prod_rate = float(obj['prod_rate']);\n                paint.put()\n            else:\n                #Create new paint\n                Paint(name = obj['name'],\n                    surface_type = surface_type,\n                    prod_rate = float(obj['prod_rate']),\n                    order = Paint.query().order(-Paint.order).fetch(1)[0].order + 1\n                ).put()\n\n        #Do deletions\n        all_paints = Paint.query(Paint.surface_type == surface_type).fetch(200)\n        for p in all_paints:\n            if p.key.urlsafe() not in paint_keys:\n                p.key.delete()\n\n        self.response.write('DONE')\n        \nclass CreateProject(webapp2.RequestHandler):\n    def post(self):\n        project_title = self.request.get('projectTitle')\n        new_project = Project(id=3, username='Test', title=project_title, date_created=datetime.now())\n        new_project.put()\n        create_default_room().put()\n        time.sleep(1) #Allow time for project to save to datastore\n        self.response.write( json.dumps([p.to_dict() for p in Project.query().fetch(20)], default=json_serial) )\n\nclass GetProject(webapp2.RequestHandler):\n    def post(self):\n        project = ndb.Key(urlsafe=self.request.get('project_key')).get()\n        self.response.write(json.dumps(project.to_dict(), default=json_serial))\n\nclass SaveRoom(webapp2.RequestHandler):\n    def post(self):\n        room_data = self.request.get('room')\n        #TODO: find the room with the given key\n\napplication = webapp2.WSGIApplication([\n    ('/', Home),\n    ('/createproject', CreateProject),\n    ('/getproject', GetProject),\n    ('/saveroom', SaveRoom),\n    ('/savespec', SaveSpec),\n    ('/getpaints', GetPaints)\n], debug=True)\n",
 			"file": "main.py",
+			"file_size": 7144,
+			"file_write_time": 130722743830000000,
 			"settings":
 			{
-				"buffer_size": 6100,
+				"buffer_size": 7168,
 				"line_ending": "Unix"
 			}
 		},
@@ -283,7 +298,7 @@
 			"file": "templates/index.html",
 			"settings":
 			{
-				"buffer_size": 47640,
+				"buffer_size": 48034,
 				"line_ending": "Unix"
 			}
 		},
@@ -339,8 +354,7 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/rdunn/dev/paint-survey",
-		"/Users/rdunn/dev/paint-survey/templates"
+		"/Users/rdunn/dev/paint-survey"
 	],
 	"file_history":
 	[
@@ -438,6 +452,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"query",
 			"each",
 			"elem",
 			"btn-remove-row",
@@ -564,8 +579,7 @@
 			"category",
 			"zero",
 			"sub include",
-			"t_submit_js.inc",
-			"teacher.pm"
+			"t_submit_js.inc"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -619,15 +633,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6100,
+						"buffer_size": 7168,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4927,
-								4927
+								5063,
+								5063
 							]
 						],
 						"settings":
@@ -637,7 +651,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1764.0,
+						"translation.y": 2034.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -649,15 +663,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 47640,
+						"buffer_size": 48034,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								44288,
-								44288
+								42460,
+								42460
 							]
 						],
 						"settings":
@@ -667,7 +681,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 12992.0,
+						"translation.y": 12069.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
