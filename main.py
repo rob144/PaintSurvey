@@ -134,19 +134,52 @@ class Home(webapp2.RequestHandler):
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
 	        	'default_room': Room.query(Room.is_default == True).fetch(1)[0],
 	        	'projects': Project.query().fetch(20),
-                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(100)], default=json_serial) 
+                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(200)],
+                 default=json_serial) 
         	}) 
+        )
+
+class GetPaints(webapp2.RequestHandler):
+    def get(self):
+        self.response.write(
+            json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(200)])
         )
 
 class SaveSpec(webapp2.RequestHandler):
     def post(self):
-        #paint = ndb.Key(urlsafe=self.request.get('key')).get()
-        print('BODY:' + self.request.body)
-        objs = json.loads(self.request.POST.items()[0][0])
-        for p in objs:
-            print(p['name'])
-            #TODO: see if the paint exists and update it or add it in the datastore.
-        self.response.write('todo...')
+        surface_type = self.request.POST.get('surface_type')
+        paints = json.loads(self.request.POST.get('paints'))
+        resp_paints = []
+        paint_keys = []
+        #Do adds and updates
+        for obj in paints:
+            paint_keys.append(obj['key'])
+            if(obj['key'] != ""):
+                print('KEY:  '+obj['key'])
+                print('OBJ:  '+str(obj))
+                #Update existing paint
+                paint = ndb.Key(urlsafe=obj['key']).get()
+                paint.name = obj['name'];
+                paint.prod_rate = float(obj['prod_rate']);
+                resp_paints.append(paint.put().get())
+            else:
+                #Create new paint
+                resp_paints.append(
+                    Paint(name = obj['name'],
+                        surface_type = surface_type,
+                        prod_rate = float(obj['prod_rate']),
+                        order = Paint.query().order(-Paint.order).fetch(1)[0].order + 1
+                    ).put().get()
+                )
+        #Do deletions
+        all_paints = Paint.query(Paint.surface_type == surface_type).fetch(200)
+        for p in all_paints:
+            if p.key.urlsafe() not in paint_keys:
+                p.key.delete()
+
+        self.response.write(
+            json.dumps([p.to_dict() for p in resp_paints])
+        )
         
 class CreateProject(webapp2.RequestHandler):
     def post(self):
@@ -172,5 +205,6 @@ application = webapp2.WSGIApplication([
     ('/createproject', CreateProject),
     ('/getproject', GetProject),
     ('/saveroom', SaveRoom),
-    ('/savespec', SaveSpec)
+    ('/savespec', SaveSpec),
+    ('/getpaints', GetPaints)
 ], debug=True)

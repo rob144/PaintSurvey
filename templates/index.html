@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/static/owl-carousel/owl.theme.css" />
         <script src="/static/lib/jquery-1.11.2.min.js"></script>
         <script src="/static/lib/jquery.validate.min.js"></script>
+        <script src="/static/lib/Sortable.js"></script>
         <script src="/static/owl-carousel/owl.carousel.js"></script>
     </head>
     <body>
@@ -18,7 +19,7 @@
                     <div class='pageContent'>
                             
                         <form id='form-edit-spec'>
-                            <div class='input-group'>
+                            <div id='spec-list' class='input-group'>
                                 <h2>Edit Specification
                                 <button type='button' id='btn-add-spec-item'></button>
                                 </h2>
@@ -41,18 +42,19 @@
 
                         <form id='form-view-spec'>
                             <h2>Specification</h2>
-                            <div class='form-row spec-item-block hidden'>
-                                <label class='spec-item-title'>Ceilings</label>
-                                <div class="dropdown">
-                                    <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span class='dropdown-text'>Dropdown</span>
-                                        <input type='hidden' id='select-ceiling-prod-rate' class='dropdown-value'/>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class='dropdown-menu' role='menu'></ul>
-                                    <button type='button' class='btn-edit-spec'></button>
+                                <div class='form-row spec-item-block hidden'>
+                                    <label class='spec-item-title'>Surface Type Title</label>
+                                    <div class="dropdown">
+                                        <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                            <span class='dropdown-text'>Dropdown</span>
+                                            <input type='hidden' id='select-ceiling-prod-rate' class='dropdown-value'/>
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class='dropdown-menu' role='menu'></ul>
+                                        <button type='button' class='btn-edit-spec'></button>
+                                    </div>
                                 </div>
-                            </div>
+                            </ul>
                         </form>
 
                     </div>
@@ -811,15 +813,27 @@ function showEditSpecView(){
     });
     
     initDecimalInputs();
+    var el = document.getElementById('spec-list');
+    var sortable = Sortable.create(el);
 
     $('#form-view-spec').fadeOut('fast', function(){
         $('#form-edit-spec').fadeIn('fast');
     });
 }
 
+function getPaints(){
+    $.ajax({
+        type: 'GET',
+        url: '/getpaints',
+        success:  function(data, status, xhttp){
+                      PAINTS = JSON.parse(data);    
+                  }
+    });
+}
+
 function initSpecificationPage(){
 
-    //For each surface type, build the dropdown menus.
+    //Display view, for each surface type, build the dropdown menus.
     for(var i = 0; i < SURFACE_TYPES.length; i++){
         $newBlock = $('.spec-item-block:first').clone();
         $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
@@ -836,6 +850,7 @@ function initSpecificationPage(){
         $newBlock.removeClass('hidden');
         $newBlock.appendTo('#form-view-spec');
     }
+    
     //Click events for edit view
     $('#form-edit-spec .btn-save, #form-edit-spec .btn-cancel').click( function(){ 
         
@@ -851,14 +866,12 @@ function initSpecificationPage(){
                     name: $elemBlock.find('.spec-item-name').val(),
                     prod_rate: $elemBlock.find('.spec-item-rate').val()
                 });
-                console.log(arrSpecItemData[arrSpecItemData.length-1]);
             });
-
             $.ajax({
                 type: 'POST',
                 url: '/savespec',
-                data: JSON.stringify(arrSpecItemData),
-                success: function(){ console.log('ok' + arrSpecItemData.length); }
+                data: { surface_type: "Ceilings", paints: JSON.stringify(arrSpecItemData) },
+                success: function(data, status, xhr){ PAINTS = JSON.parse(data); }
             });
         }
 
@@ -867,6 +880,7 @@ function initSpecificationPage(){
             $('#form-view-spec').fadeIn('fast');
         });
     });
+
 }
 
 function initDecimalInputs(){
@@ -917,8 +931,8 @@ function initAddInputBlockButtons(){
         var $newBlock = $group.find('.input-block:last').clone();
         $newBlock.find('.btn-add-row:first').remove();
         $newBlock.find('input').val('');
-        $newBlock.find('input').keydown( keydownDecimalInput );
-        $newBlock.find('input').blur( blurDecimal );
+        $newBlock.find('input.decimal').keydown( keydownDecimalInput );
+        $newBlock.find('input.decimal').blur( blurDecimal );
         $newBlock.find('dropdown').removeClass('open');
         $newBlock.find('.positive-negative-first,.positive-negative-second').click( switchSign );
         $newBlock.removeClass('hidden');
