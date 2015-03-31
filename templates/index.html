@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="/static/owl-carousel/owl.theme.css" />
         <script src="/static/lib/jquery-1.11.2.min.js"></script>
         <script src="/static/lib/jquery.validate.min.js"></script>
-        <script src="/static/lib/Sortable.js"></script>
         <script src="/static/owl-carousel/owl.carousel.js"></script>
     </head>
     <body>
@@ -19,20 +18,26 @@
                     <div class='pageContent'>
                             
                         <form id='form-edit-spec'>
-                            <div id='spec-list' class='input-group'>
-                                <h2>Edit Specification
+                            <div class='input-group'>
+                                <h2 class='group'>Edit Specification
                                 <button type='button' id='btn-add-spec-item'></button>
                                 </h2>
-                                <div class='input-block hidden'>
-                                    <input type='hidden' class='spec-paint-key'/>
-                                    <div class='form-row group'>
-                                        <label>Item Name</label>
-                                        <input class='spec-item-name' type='text' placeholder='item name'/>
-                                        <button type='button' class='btn-remove-row'></button>
-                                    </div>
-                                    <div class='form-row'>
-                                        <label>Production Rate</label>
-                                        <input class='spec-item-rate decimal' type='number' step='any' min='0' placeholder='rate'/>
+                                <input type='text' id='spec-surface-type' value='surface type' disabled="disabled" />
+                                <div id='spec-list'>
+                                    <div class='input-block hidden'>
+                                        <input type='hidden' class='spec-item-key'/>
+                                        <input type='hidden' class='spec-item-order'/>
+                                        <div class='form-row group'>
+                                            <label>Item Name</label>
+                                            <input class='spec-item-name' type='text' placeholder='item name'/>
+                                            <button type='button' class='btn-remove-row'></button>
+                                        </div>
+                                        <div class='form-row group'>
+                                            <label>Production Rate</label>
+                                            <input class='spec-item-rate decimal' type='number' step='any' min='0' placeholder='rate'/>
+                                            <button type='button' class='btn-reorder-item-up'></button>
+                                            <button type='button' class='btn-reorder-item-down'></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -792,16 +797,32 @@ function initDropdowns(){
     });
 }
 
+function swapElements(elm1, elm2) {
+    var parent1, next1,
+        parent2, next2;
+
+    parent1 = elm1.parentNode;
+    next1   = elm1.nextSibling;
+    parent2 = elm2.parentNode;
+    next2   = elm2.nextSibling;
+
+    parent1.insertBefore(elm2, next1);
+    parent2.insertBefore(elm1, next2);
+}
+
 function showEditSpecView(){
     var $clickedButton = $(this);
     
     var surface_type = $clickedButton.closest('.spec-item-block')
                           .find('.spec-item-title').text();
+    $('#spec-surface-type').val(surface_type);
+
     //For each paint of this surface type, build the edit inputs.
     $.each(PAINTS, function(i, paint) {  
         if (paint.surface_type.toLowerCase() == surface_type.toLowerCase()) {
             var $newBlock = $('#form-edit-spec .input-block:first').clone();
-            $newBlock.find('input.spec-paint-key').val(paint.key);
+            $newBlock.find('input.spec-item-key').val(paint.key);
+            $newBlock.find('input.spec-item-order').val(paint.order);
             $newBlock.find('input.spec-item-name').val(paint.name);
             $newBlock.find('input.spec-item-rate').val(paint.prod_rate);
             $newBlock.removeClass('hidden');
@@ -809,12 +830,34 @@ function showEditSpecView(){
             $btnRemove = $newBlock.find('.btn-remove-row:first');
             $btnRemove.css('display','block');
             $btnRemove.click(function(event){ $(event.target).closest('.input-block').remove(); });
+            $btnReorderUp = $newBlock.find('.btn-reorder-item-up');
+            $btnReorderDown = $newBlock.find('.btn-reorder-item-down');
+            $btnReorderUp.click( function(){ 
+                var $thisBlock = $(this).closest('.input-block');
+                var $partnerBlock = $thisBlock.prev('.input-block:not(.hidden)');
+                if(typeof $partnerBlock.get(0) != 'undefined'){
+                    swapElements($thisBlock.get(0), $partnerBlock.get(0));
+                    var order1 = $thisBlock.find('input.spec-item-order').val();
+                    var order2 = $partnerBlock.find('input.spec-item-order').val();
+                    $thisBlock.find('input.spec-item-order').val(order2)
+                    $partnerBlock.find('input.spec-item-order').val(order1);
+                }
+            });
+            $btnReorderDown.click( function(){ 
+                var $thisBlock = $(this).closest('.input-block');
+                var $partnerBlock = $thisBlock.next('.input-block:not(.hidden)');
+                if(typeof $partnerBlock.get(0) != 'undefined'){
+                    swapElements($thisBlock.get(0), $partnerBlock.get(0));
+                    var order1 = $thisBlock.find('input.spec-item-order').val();
+                    var order2 = $partnerBlock.find('input.spec-item-order').val();
+                    $thisBlock.find('input.spec-item-order').val(order2)
+                    $partnerBlock.find('input.spec-item-order').val(order1);
+                } 
+            });
         }
     });
     
     initDecimalInputs();
-    var el = document.getElementById('spec-list');
-    var sortable = Sortable.create(el);
 
     $('#form-view-spec').fadeOut('fast', function(){
         $('#form-edit-spec').fadeIn('fast');
@@ -862,9 +905,11 @@ function initSpecificationPage(){
             $('#form-edit-spec .input-block:not(.hidden)').each( function(index, elem){
                 var $elemBlock = $(elem);
                 arrSpecItemData.push({ 
-                    key: $elemBlock.find('.spec-paint-key').val(),
+                    key: $elemBlock.find('.spec-item-key').val(),
+                    order: $elemBlock.find('.spec-item-order').val(),
                     name: $elemBlock.find('.spec-item-name').val(),
-                    prod_rate: $elemBlock.find('.spec-item-rate').val()
+                    prod_rate: $elemBlock.find('.spec-item-rate').val(),
+                    surface_type: $elemBlock.find('#spec-surface-type').val()
                 });
             });
             $.ajax({
@@ -923,6 +968,24 @@ function initAddInputBlockButtons(){
         [
           { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'red'},
           { 'tagName':'polygon','points':'6,12 24,12 24,18 6,18 6,12', 'fill':'white' }
+        ]
+    );
+
+    //Init item reorder up button icons
+    addSvgElems(
+        [ '.btn-reorder-item-up' ],
+        [
+          { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'black'},
+          { 'tagName':'polygon','points':'15,7 23,20 7,20', 'fill':'white' }
+        ]
+    );
+
+    //Init item reorder down button icons
+    addSvgElems(
+        [ '.btn-reorder-item-down' ],
+        [
+          { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'black'},
+          { 'tagName':'polygon','points':'15,23 23,10 7,10', 'fill':'white' }
         ]
     );
 
