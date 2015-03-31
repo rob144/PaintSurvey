@@ -151,7 +151,7 @@ class SaveSpec(webapp2.RequestHandler):
         paints = json.loads(self.request.POST.get('paints'))
         resp_paints = []
         paint_keys = []
-        
+
         #Do adds and updates
         for obj in paints:
             paint_keys.append(obj['key'])
@@ -176,6 +176,11 @@ class SaveSpec(webapp2.RequestHandler):
         for p in all_paints:
             if p.key.urlsafe() not in paint_keys:
                 p.key.delete()
+
+        #Combine all the paints so we send all the most up to date data to the client
+        other_paints = Paint.query(Paint.surface_type != surface_type).fetch(1000)
+        for p in other_paints:
+            resp_paints.append(p)
 
         self.response.write(
             json.dumps([p.to_dict() for p in resp_paints])
