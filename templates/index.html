@@ -736,7 +736,6 @@ function blurInputFocus(event){
 function roomDefaultsChange(){
     //Update the corresponding input on the room 1 screen.
     var $elem = $(this);
-    //alert('*' + $elem.attr('id'));
     $('.' + $elem.attr('id').replace('default-','')).val($elem.val());
 }
 
