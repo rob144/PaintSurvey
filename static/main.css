@@ -92,7 +92,7 @@ input[type="radio"] {
     display: inline-block;
     overflow:auto;
     color: #333;
-    min-width: 235px;
+    min-width: 230px;
     background-color: #fff;
     padding: 6px 12px;
     margin:0 0 5px 0;
@@ -334,8 +334,6 @@ td.result {
 .btn-add-row, .btn-remove-row, #btn-add-spec-item, 
 .btn-reorder-item-up, .btn-reorder-item-down {
     float:right;
-    width:30px;
-    height:30px;
     margin:0 0 0 10px;
     padding:0;
     background-color: #fff;
@@ -343,10 +341,10 @@ td.result {
     cursor:pointer;
 }
 .btn-add-row {
-    background-image:url(/static/plus.png);
+    /*background-image:url(/static/plus.png);*/
 }
 .btn-remove-row {
-    background-image:url(/static/minus.png);
+    /*background-image:url(/static/minus.png);*/
 }
 .btn-remove-row {
     display:none;
@@ -386,12 +384,14 @@ td.result {
     max-width:280px;
 }
 #spec-surface-type{
-    border: none;
-    font-weight: bold;
-    font-size: 20px;
-    padding: 0px;
-    margin: 0 0 5px 0;
-    padding: 0px 0 5px 0;
+    height:28px;
+    font-weight:bold;
+    font-size:20px;
+    padding:0px;
+    margin:0 0 5px 0;
+    padding:0px 0 5px 0;
+    border:none;
+    background:none;
 }
 input.spec-item-name {
     float:left;
