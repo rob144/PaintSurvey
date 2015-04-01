@@ -19,7 +19,7 @@ input[type="button"] {
     font-size: 15pt;
     cursor:pointer;
 }
-input[type="number"], input[type="text"] {
+input[type="number"]:not(:disabled), input[type="text"]:not(:disabled) {
     height:22px;
     padding:6px;
     margin:0;
@@ -36,7 +36,7 @@ button {
     margin:0 0 0 1px;
     cursor:pointer;
 }
-.btn-save, .btn-cancel {
+.btn-save, .btn-cancel, .btn-room-calculate, .btn-room-save {
     display: inline-block;
     min-width: 100px;
     min-height: 40px;
@@ -77,12 +77,6 @@ input[type="radio"] {
     overflow: visible;
     clear:left;
     max-width: 280px;
-}
-#form-edit-spec .input-block {
-    border-top:2px solid #ccc;
-}
-#spec-list .input-block {
-    margin:0 0 10px 0;
 }
 .dropdown, .dropup {
     position: relative;
@@ -192,42 +186,14 @@ input[type="radio"] {
     margin:0;
     padding:10px;
 }
-/* PAGE CONTENT */
-.room-title {
-    width:calc(100% - 14px);
-    min-width: 100px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius:4px;
-    border:1px solid #ccc;}
 th {
     text-align: left;
 }
 td {
     padding: 0 10px 0 0;
 }
-td.result {
-    text-align: right;
-}
-.results {
-    clear:both;
-    margin:10px 0 10px 0;
-    padding:6px;
-    background-color: yellow;
-    border-radius: 4px;
-    border:1px solid blue;
-}
-.results table {
-    border-collapse: collapse;
-}
-.results table td, .results table th {
-    padding:2px 6px; 2px 0;
-}
 .tdRightAlign {
     text-align: right;
-}
-.rowTotalHours td {
-    border-top:1px solid black;
 }
 .pageContentOuter {
 	overflow:visible;
@@ -248,32 +214,6 @@ td.result {
 .group-label {
     margin: 10px 0 10px 0;
     font-weight: bold;
-}
-.input-pill {
-    clear:both;
-    width:185px;
-    overflow:auto;
-}
-.input-pill-with-button {
-    overflow:auto;
-}
-.input-pill-with-button .input-pill {
-    float:left;
-    clear:left;
-}
-.input-pill-inner {
-    display:table;
-    margin:0 0 5px 0;
-    border:1px solid #ccc;
-    border-radius: 4px;
-    background-color: #eee;
-    overflow:auto;
-}
-.input-pill-inner > div, input {
-    display:block;
-    font-size:14px;
-    padding: 6px;
-    color: #555;
 }
 .control-label {
     display:table-cell;
@@ -306,13 +246,6 @@ td.result {
 .round-corners-input {
     border-radius: 4px;
     border: 1px solid #ccc;
-}
-.ceiling-adjust-simple, .wall-adjust-simple {
-	border:1px solid #ccc;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    width:80px;
-    margin:0 0 5px 0;
 }
 .input-row {
     overflow:auto;
@@ -349,18 +282,6 @@ td.result {
 .btn-remove-row {
     display:none;
 }
-#btn-calculate {
-    float:right;
-}
-.btn-edit-spec {
-    float:right;
-    width:30px;
-    height:30px;
-    padding:0;
-    background-color:#fff;
-    background-image:url(/static/edit3.png);
-    border:none;
-}
 .positive-negative-first, .positive-negative-second {
     display:inline-block;
     vertical-align:center;
@@ -377,11 +298,27 @@ td.result {
     border-top-left-radius:4px;
     border-bottom-left-radius:4px;
 }
+/* ********************* Specification Page ********************* */
+#form-edit-spec .input-block {
+    border-top:2px solid #ccc;
+}
+#spec-list .input-block {
+    margin:0 0 10px 0;
+}
 #form-edit-spec{
     display:none;
 }
 #form-edit-spec > h2 {
     max-width:280px;
+}
+.btn-edit-spec {
+    float:right;
+    width:30px;
+    height:30px;
+    padding:0;
+    background-color:#fff;
+    background-image:url(/static/edit3.png);
+    border:none;
 }
 #spec-surface-type{
     height:28px;
@@ -404,4 +341,100 @@ input.spec-item-rate {
     width:80px;
     border:1px solid #ccc;
     border-radius:4px;
+}
+/* ********************* Room Page ********************* */
+td.result {
+    text-align: right;
+}
+.results {
+    display:none;
+    clear:both;
+    margin:10px 0 10px 0;
+    padding:6px;
+    background-color: yellow;
+    border-radius: 4px;
+    border:1px solid blue;
+}
+.results table {
+    border-collapse: collapse;
+}
+.results table td, .results table th {
+    padding:2px 6px; 2px 0;
+}
+.ceiling-adjust-simple, .wall-adjust-simple {
+    border:1px solid #ccc;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width:80px;
+    margin:0 0 5px 0;
+}
+.input-pill {
+    clear:both;
+    width:185px;
+    overflow:auto;
+}
+.input-pill-with-button {
+    overflow:auto;
+}
+.input-pill-with-button .input-pill {
+    float:left;
+    clear:left;
+}
+.input-pill-inner {
+    display:table;
+    margin:0 0 5px 0;
+    border:1px solid #ccc;
+    border-radius: 4px;
+    background-color: #eee;
+    overflow:auto;
+}
+.input-pill-inner > div, input {
+    display:block;
+    font-size:14px;
+    padding: 6px;
+    color: #555;
+}
+.room-title {
+    width:calc(100% - 14px);
+    min-width: 100px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius:4px;
+    border:1px solid #ccc;
+}
+.rowTotalHours td {
+    border-top:1px solid black;
+}
+.btn-room-calculate, .btn-room-save {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+/* ********************* Projects Page ********************* */
+ul#projects-list {
+    list-style-type:none;
+    padding:0px;
+}
+ul#projects-list li {
+    margin:10px 0 0 0;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    cursor:pointer;
+}
+.project-title, .project-date-created {
+    border:none;
+    padding:0;
+}
+.project-controls {
+    height:0;
+}
+.project-controls button {
+    min-width: 80px;
+    display: inline-block;
+    margin: 10px 10px 0 0;
+    height: 25px;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
