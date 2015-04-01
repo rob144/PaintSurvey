@@ -26,6 +26,9 @@ def json_serial(obj):
         serial = obj.isoformat()
         return serial
 
+def str2bool(s):
+    return s.lower() in ("yes", "true", "t", "1")
+
 class ModelUtils(object):
     def to_dict(self):
         result = super(ModelUtils,self).to_dict()
@@ -40,6 +43,7 @@ class Project(ModelUtils, ndb.Model):
     date_created = ndb.DateTimeProperty(auto_now_add=True)
 
 class Room(ModelUtils, ndb.Model):
+    name = ndb.StringProperty()
     room_length = ndb.FloatProperty()
     room_width = ndb.FloatProperty()
     room_height = ndb.FloatProperty()
@@ -129,11 +133,10 @@ class Home(webapp2.RequestHandler):
         init_data()
         self.response.write(
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
-	        	#'default_room': Room.query(Room.is_default == True).fetch(1)[0],
                 'default_room': json.dumps(Room.query(Room.is_default == True).fetch(1)[0].to_dict()),
-	        	'projects': Project.query().fetch(20),
-                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(200)],
-                 default=json_serial) 
+                'rooms': json.dumps([r.to_dict() for r in Room.query(Room.is_default == False).fetch(300)]),
+	        	'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], default=json_serial),
+                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(300)]) 
         	}) 
         )
 
@@ -201,7 +204,14 @@ class GetProject(webapp2.RequestHandler):
 class SaveRoom(webapp2.RequestHandler):
     def post(self):
         obj_room = json.loads(self.request.POST.get('room'))
-        ent_room = ndb.Key(urlsafe=obj_room['key']).get()
+        ent_room = Room()
+        
+        if(obj_room['key'] != ""):
+            ent_room = ndb.Key(urlsafe=obj_room['key']).get()
+        
+        ent_room.name = obj_room['name'];
+        ent_room.room_width = obj_room['room_width'];
+        ent_room.room_length = obj_room['room_length'];
         ent_room.room_height = obj_room['room_height'];
         ent_room.door_width = obj_room['door_width'];
         ent_room.door_height = obj_room['door_height'];
@@ -209,8 +219,11 @@ class SaveRoom(webapp2.RequestHandler):
         ent_room.window_height = obj_room['window_height'];
         ent_room.radiator_width = obj_room['radiator_width'];
         ent_room.radiator_height = obj_room['radiator_height'];
-        ent_room.put()
-        self.response.write('OK')
+        ent_room.is_default = obj_room['is_default'];
+
+        room = ent_room.put().get()
+        print('save room: ' + room.name + ' ' + str(room.is_default));
+        self.response.write('DONE')
 
 application = webapp2.WSGIApplication([
     ('/', Home),

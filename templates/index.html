@@ -108,15 +108,19 @@
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
                         <h2>Projects</h2>
-                        <div class='form-row'>  
-                            <label>Select Existing</label>
-                            <select id='select-project'>
-                                {% for p in projects %}
-                                <option value='{{ p.key.urlsafe() }}'>{{ p.title }} {{ p.date_created }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <input id='btn-select-project' type='button' value='Confirm'/>
+                        <ul id='projects-list'>
+                            <li class='project-item hidden'>
+                                <input type='hidden' class='project-key' />
+                                <input type='text' class='project-title' disabled="disabled" value='Project Title'/>
+                                <div class='project-date-created'>Date Created</div>
+                                <div class='project-controls hidden'>
+                                    <button class='btn-select-project' type='button'>Select</button>
+                                    <button class='btn-edit-project' type='button'>Edit</button>
+                                    <button class='btn-delete-project' type='button'>Delete</button>
+                                </div>
+                            </li>
+                        </ul>
+
                         <div class='form-row'>
                             <label>Create New</label>
                             <input id='new-project-title' type='text' placeholder='Enter Project Title'/>
@@ -131,6 +135,7 @@
                       <h2 class='room-title-heading' data-room-number="1">
                           <input name='room-title' type='text' placeholder='Enter Room Name' class='room-title' value='Room 1' />
                       </h2>
+                      <input type='hidden' class='room-key' />
                       <div class='results'>RESULTS</div>
                       <form class='room-form'> 
                           <div class='group-label'>
@@ -356,7 +361,8 @@
                               </div>
                           </div>
 
-                          <input type='button' id='btn-calculate' class='btn-room-calculate' value='Calculate'/>
+                          <button type='button' id='btn-calculate' class='btn-room-calculate'>Calculate</button>
+                          <button type='button' class='btn-room-save'>Save</button>
 
                       </form>
                     </div>
@@ -364,11 +370,15 @@
             </div>
         </div>
     </body>
+
 <script>
 //Global variable to store current project data
-var CURRENT_PROJECT = {};
-var PAINTS = JSON.parse('{{ paints|safe }}');
-var SURFACE_TYPES = ['Ceilings','Walls','Doors','Windows','Radiators','Isolated Surfaces'];
+var CURRENT_PROJECT =   {};
+var PROJECTS        =   JSON.parse('{{ projects|safe }}');
+var SURFACE_TYPES   =   ['Ceilings','Walls','Doors','Windows','Radiators','Isolated Surfaces'];
+var PAINTS          =   JSON.parse('{{ paints|safe }}');
+var DEFAULT_ROOM    =   JSON.parse('{{ default_room|safe }}');
+var ROOMS           =   JSON.parse('{{ rooms|safe }}');
 
 $.fn.hasAncestor = function(a) {
     return this.filter(function() {
@@ -376,33 +386,63 @@ $.fn.hasAncestor = function(a) {
     });
 };
 
-//Add the projects to the select list
+//Add the projects to the list
 function populateProjects(projects){
-    $('#select-project').find('option').remove();
     for(var i=0; i<projects.length; i++){
-        $('#select-project')
-          .append(
-              $('<option></option>')
-                .attr('value',projects[i].id)
-                .text(projects[i].title + ' (' 
-                  + projects[i].date_created.split('.')[0]
-                    .replace('T',' ') + ')'
-                )
-          ); 
+        var $newBlock = $('.project-item:first').clone();
+        $newBlock.find('.project-key').val( projects[i].key );
+        $newBlock.find('.project-title').val( projects[i].title );
+        $newBlock.find('.project-date-created').val(
+            projects[i].date_created.split('.')[0].replace('T',' ')
+        );
+        $newBlock.removeClass('hidden');
+
+        //Animate show/hide controls
+        $newBlock.click( function(){ 
+            var $controls = $(this).find('.project-controls');
+            if($controls.css('display') == 'block'){
+                $controls.animate(
+                    {height:0},200,'swing',
+                    function(){$controls.addClass('hidden');
+                });
+            }else{
+                $controls.removeClass('hidden');
+                $controls.animate(
+                    {height:30},200,'swing',
+                    function(){}
+                );
+            }
+        });
+        
+        //Setup click events for the controls.
+        $newBlock.find('.btn-select-project').click(function(){
+            console.log('select');
+            selectProject( 
+                $(this).closest('.project-item').find('.project-key').val()
+            );
+        });
+        $newBlock.find('.btn-edit-project').click(function(){
+            console.log('edit');
+            event.stopPropagation();
+        });
+        $newBlock.find('.btn-delete-project').click(function(){
+            console.log('delete');
+            event.stopPropagation();
+        });
+
+        $newBlock.appendTo('#projects-list'); 
     }
 }
 
-function selectProject(){
-    $.ajax({
-        type: 'POST',
-        url: '/getproject',
-        data: { project_key: $('#select-project').val() },
-        success: function(data){ 
-            CURRENT_PROJECT = JSON.parse(data);
-            $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
-            //TODO: fetch and populate the room data according to whichever project is selected
+function selectProject(projectKey){
+    for(var i=0; i < PROJECTS.length; i++){
+        if(PROJECTS[i].key == projectKey){
+            CURRENT_PROJECT = PROJECTS[i];
+            break;
         }
-    });
+    }
+    $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
+    //TODO: fetch and populate the room data according to whichever project is selected
 }
 
 function createProject(){
@@ -528,7 +568,9 @@ function calculateWorkForRoom(event){
         { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours }
     ];
 
-    $(event.target).closest('.pageContent').find('.results:first').html(buildResultsTable(tableData));
+    var $resultsElem = $(event.target).closest('.pageContent').find('.results:first');
+    $resultsElem.html(buildResultsTable(tableData));
+    $resultsElem.fadeIn(500);
 
     window.scrollTo(0,0);
 }
@@ -883,46 +925,56 @@ function initSpecificationPage(){
 
 }
 
+function saveRoom(room){
+    //Do an ajax call to save the room data
+    $.ajax({
+        type: 'POST',
+        url: '/saveroom',
+        data: { room: JSON.stringify( room ) },
+        success:  function(data, status, xhr){
+                      console.log('SAVED ROOM OK.');
+                  },
+        async: true
+    });
+
+}
+
 function initRoomDefaultsPage(){
     
-    var defRm = JSON.parse('{{ default_room|safe }}');
-    //TODO: save the key of the default room to a hidden input.
-    $('#default-room-key').val( defRm.key );
-    $('#default-room-height').val( defRm.room_height );
-    $('#default-door-width').val( defRm.door_width );
-    $('#default-door-height').val( defRm.door_height );
-    $('#default-window-width').val( defRm.window_width );
-    $('#default-window-height').val( defRm.window_height );
-    $('#default-radiator-width').val( defRm.radiator_width );
-    $('#default-radiator-height').val( defRm.radiator_height );
+    var drm = DEFAULT_ROOM;
+
+    $('#default-room-key').val( drm.key );
+    $('#default-room-height').val( drm.room_height );
+    $('#default-door-width').val( drm.door_width );
+    $('#default-door-height').val( drm.door_height );
+    $('#default-window-width').val( drm.window_width );
+    $('#default-window-height').val( drm.window_height );
+    $('#default-radiator-width').val( drm.radiator_width );
+    $('#default-radiator-height').val( drm.radiator_height );
     
     $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
 
     $('#form-room-defaults .btn-save').click( function(){
-
-        //Do an ajax call to save the default room data
-        $.ajax({
-            type: 'POST',
-            url: '/saveroom',
-            data: { 
-                room: JSON.stringify({
-                    key: $('#default-room-key').val(),
-                    room_height: parseFloat($('#default-room-height').val()),
-                    door_width: parseFloat($('#default-door-width').val()),
-                    door_height: parseFloat($('#default-door-height').val()),
-                    window_width: parseFloat($('#default-window-width').val()),
-                    window_height: parseFloat($('#default-window-height').val()),
-                    radiator_width: parseFloat($('#default-radiator-width').val()),
-                    radiator_height: parseFloat($('#default-radiator-height').val())
-                }) 
-            },
-            success:  function(data, status, xhr){
-                          console.log('SAVED DEFAULT ROOM OK.');
-                      },
-            async: true
+        saveRoom({
+            key: $('#default-room-key').val(),
+            name: 'Default Room',
+            room_width: 0,
+            room_length: 0,
+            room_height: parseFloat($('#default-room-height').val()),
+            door_width: parseFloat($('#default-door-width').val()),
+            door_height: parseFloat($('#default-door-height').val()),
+            window_width: parseFloat($('#default-window-width').val()),
+            window_height: parseFloat($('#default-window-height').val()),
+            radiator_width: parseFloat($('#default-radiator-width').val()),
+            radiator_height: parseFloat($('#default-radiator-height').val()),
+            is_default: true
         });
+    });      
+}
 
-    });
+function initProjectsPage(){
+    populateProjects(PROJECTS);
+    $('#btn-create-project').click( createProject );
 }
 
 function initRoomPage(){
@@ -955,6 +1007,22 @@ function initRoomPage(){
     });
 
     $('.btn-room-calculate').click( calculateWorkForRoom );
+    $('.btn-room-save').click( function(){
+        saveRoom({
+            key: $('.room-key').val(),
+            name: $('.room-title').val(),
+            room_length: parseFloat($('.room-length').val()),
+            room_width: parseFloat($('.room-width').val()),
+            room_height: parseFloat($('.room-height').val()),
+            door_width: parseFloat($('.door-width').val()),
+            door_height: parseFloat($('.door-height').val()),
+            window_width: parseFloat($('.window-width').val()),
+            window_height: parseFloat($('.window-height').val()),
+            radiator_width: parseFloat($('.radiator-width').val()),
+            radiator_height: parseFloat($('.radiator-height').val()),
+            is_default: false
+        });
+    });
 }
 
 function initDecimalInputs(){
@@ -1045,10 +1113,9 @@ $(document).ready(function() {
     initSpecificationPage();
     $('.integer').keydown( keydownIntegerInput );
     initDecimalInputs();
-    $('#btn-select-project').click( selectProject );
-    $('#btn-create-project').click( createProject );
     $('body').bind('touchstart click', blurInputFocus );
     initRoomDefaultsPage();
+    initProjectsPage();
     initRoomPage();
     initAddInputBlockButtons();
     initDropdowns();
