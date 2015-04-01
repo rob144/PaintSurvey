@@ -103,17 +103,14 @@ def init_data():
         ['General surface', 4, 'Doors', 1],
         ['Glazed med pane', 3.5, 'Doors', 2],
         ['Glazed small pane', 2.5, 'Doors', 3],
-        ['100 Girth', 15, 'Door Frames', 1],
-        ['150 Girth', 12, 'Door Frames', 2],
-        ['300 Girth', 10, 'Door Frames', 3],
         ['Large pane', 5, 'Windows', 1],
         ['Med pane', 4, 'Windows', 1],
         ['Small pane', 3, 'Windows', 2],
         ['Panel', 4, 'Radiators', 1],
         ['Column', 3, 'Radiators', 2],
-        ['100 Girth', 15, 'Skirtings', 1],
-        ['150 Girth', 12, 'Skirtings', 2],
-        ['300 Girth', 10, 'Skirtings', 3]
+        ['100 Girth', 15, 'Isolated Surfaces', 1],
+        ['150 Girth', 12, 'Isolated Surfaces', 2],
+        ['300 Girth', 10, 'Isolated Surfaces', 3]
     ]
 
     for p in paint_data:
@@ -132,7 +129,8 @@ class Home(webapp2.RequestHandler):
         init_data()
         self.response.write(
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
-	        	'default_room': Room.query(Room.is_default == True).fetch(1)[0],
+	        	#'default_room': Room.query(Room.is_default == True).fetch(1)[0],
+                'default_room': json.dumps(Room.query(Room.is_default == True).fetch(1)[0].to_dict()),
 	        	'projects': Project.query().fetch(20),
                 'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(200)],
                  default=json_serial) 
@@ -157,11 +155,11 @@ class SaveSpec(webapp2.RequestHandler):
             paint_keys.append(obj['key'])
             if(obj['key'] != ""):
                 #Update existing paint
-                paint = ndb.Key(urlsafe=obj['key']).get()
-                paint.name = obj['name'];
-                paint.prod_rate = float(obj['prod_rate']);
-                paint.order = int(obj['order']);
-                resp_paints.append(paint.put().get())
+                ent_paint = ndb.Key(urlsafe=obj['key']).get()
+                ent_paint.name = obj['name'];
+                ent_paint.prod_rate = float(obj['prod_rate']);
+                ent_paint.order = int(obj['order']);
+                resp_paints.append(ent_paint.put().get())
             else:
                 #Create new paint
                 resp_paints.append(
@@ -202,8 +200,17 @@ class GetProject(webapp2.RequestHandler):
 
 class SaveRoom(webapp2.RequestHandler):
     def post(self):
-        room_data = self.request.get('room')
-        #TODO: find the room with the given key
+        obj_room = json.loads(self.request.POST.get('room'))
+        ent_room = ndb.Key(urlsafe=obj_room['key']).get()
+        ent_room.room_height = obj_room['room_height'];
+        ent_room.door_width = obj_room['door_width'];
+        ent_room.door_height = obj_room['door_height'];
+        ent_room.window_width = obj_room['window_width'];
+        ent_room.window_height = obj_room['window_height'];
+        ent_room.radiator_width = obj_room['radiator_width'];
+        ent_room.radiator_height = obj_room['radiator_height'];
+        ent_room.put()
+        self.response.write('OK')
 
 application = webapp2.WSGIApplication([
     ('/', Home),

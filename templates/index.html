@@ -70,6 +70,7 @@
                     <div class='pageContent'>
                         <h2>Default Room Settings</h2>
                         <form id='form-room-defaults'>
+                            <input id='default-room-key' type='hidden'/>
                             <div class='form-row'>
                                 <label>Room height</label>
                                 <input id='default-room-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
@@ -98,6 +99,7 @@
                                 <label>Radiator height</label>
                                 <input id='default-radiator-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
                             </div>
+                            <button type='button' class='btn-save'>Save</button>
                         </form>
                     </div>
                 </div>
@@ -332,9 +334,7 @@
                                           <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" role="menu">
-                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='15'>100 Girth (15)</a></li>
-                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='3.5'>Glazed med pane (3.5)</a></li>
-                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='10'>G300 Girth (10)</a></li>
+                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='15'>Menu Item</a></li>
                                       </ul>
                                       <button type='button' class='btn-add-row'></button>
                                       <button type='button' class='btn-remove-row'></button>
@@ -368,7 +368,13 @@
 //Global variable to store current project data
 var CURRENT_PROJECT = {};
 var PAINTS = JSON.parse('{{ paints|safe }}');
-var SURFACE_TYPES = ['Ceilings','Walls','Doors','Door Frames','Windows','Radiators','Skirtings'];
+var SURFACE_TYPES = ['Ceilings','Walls','Doors','Windows','Radiators','Isolated Surfaces'];
+
+$.fn.hasAncestor = function(a) {
+    return this.filter(function() {
+        return !!$(this).closest(a).length;
+    });
+};
 
 //Add the projects to the select list
 function populateProjects(projects){
@@ -384,14 +390,6 @@ function populateProjects(projects){
                 )
           ); 
     }
-}
-
-function populateRoomDefaults(){
-    var $elem;
-    {% for key, value in default_room.to_dict().iteritems() if (key != 'is_default' and key != 'key') %}
-    $elem = $('#default-{{key.replace("_","-")}}' );
-    $elem.val( {{ value }} );
-    {% endfor %}
 }
 
 function selectProject(){
@@ -422,19 +420,6 @@ function createProject(){
     }else{
         alert('Project title can not be blank!');
     }
-}
-
-function populateRoomWithDefaults(){
-    var getf = function(elemId){
-        return parseFloat($(elemId).val()).toFixed(2);
-    }
-    $('.room-height').val(getf('#default-room-height'));
-    $('.door-width').val(getf('#default-door-width'));
-    $('.door-height').val(getf('#default-door-height'));
-    $('.window-width').val(getf('#default-window-width'));
-    $('.window-height').val(getf('#default-window-height'));
-    $('.radiator-width').val(getf('#default-radiator-width'));
-    $('.radiator-height').val(getf('#default-radiator-height'));
 }
 
 function calculateWorkForRoom(event){
@@ -535,10 +520,10 @@ function calculateWorkForRoom(event){
         { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / parseInt($('#select-ceilings-prod-rate').val()) },
         { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / parseInt($('#select-walls-prod-rate').val()) },
         { title: 'DOOR AREA',   amount: doorSpace,       units: 'm2', hours: doorSpace / parseInt($('#select-doors-prod-rate').val()) },
-        { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrame / parseInt($('#select-door-frames-prod-rate').val()) },
+        { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrame / parseInt($('#select-isolated-surfaces-prod-rate').val()) },
         { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowSpace / parseInt($('#select-windows-prod-rate').val()) },
         { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiators-prod-rate').val()) },
-        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-skirtings-prod-rate').val()) }, 
+        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-isolated-surfaces-prod-rate').val()) }, 
         { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours },
         { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours }
     ];
@@ -673,12 +658,12 @@ function blurDecimal(){
 }
 
 function blurInputFocus(event){
+    var $elem = $(this);
     var tagName = event.target.tagName.toLowerCase();
-    var role = event.target.getAttribute('role');
     if(tagName != 'input' && tagName != 'select'){
         $(':focus').blur();
     }
-    if(tagName != 'button' && role != 'menuitem'){
+    if(!$elem.hasAncestor('.dropdown')){
        $('.dropdown.open').removeClass('open');
     }
 }
@@ -715,10 +700,15 @@ function initOwlCarousel(){
 function toggleDropDown(){
     var $dropdown = $(this).closest('.dropdown');
     var c = 'open';
+
     if($dropdown.hasClass(c)){
+       console.log('has');
         $dropdown.removeClass(c);
+        console.log($dropdown.attr('class'));
     }else{
+       console.log('add');
         $dropdown.addClass(c);
+        console.log($dropdown.attr('class'));
     };
 }
 
@@ -736,11 +726,13 @@ function initDropdowns(){
     $('.dropdown').each( function(index, elem){
         var $elem = $(elem);
         var selectedValue = $elem.find('.dropdown-value').val();
-        if ($elem.find('.dropdown-text').text() == 'Dropdown' 
+        var dropdownText = $elem.find('.dropdown-text').text().toLowerCase();
+        if (dropdownText == 'dropdown' || dropdownText == 'menu item' 
           || typeof selectedValue === 'undefined' || selectedValue == ''){
             var defaultItem = $elem.find('.dropdown-menu a:first');
             $elem.find('.dropdown-value').val( defaultItem.data('value') );
             $elem.find('.dropdown-text').text( defaultItem.text() );
+            $elem.find('.dropdown-btn').unbind('click');
             $elem.find('.dropdown-btn').click( toggleDropDown );
             $elem.find('.dropdown-menu a').bind( 'click touchstart', selectDropDownItem );
         }
@@ -834,7 +826,7 @@ function initSpecificationPage(){
         $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
         $.each(PAINTS, function(j, obj) {
             if (obj.surface_type == SURFACE_TYPES[i]) {
-                console.log('surface_type ' + obj.surface_type + 'name ' + obj.name + ' order ' + obj.order)
+                //console.log('surface_type ' + obj.surface_type + 'name ' + obj.name + ' order ' + obj.order)
                 $newBlock.find('.dropdown-value').attr('id',
                     'select-' + obj.surface_type.toLowerCase().replace(' ', '-') + '-prod-rate');
                 $newBlock.find('ul.dropdown-menu').append(
@@ -889,6 +881,80 @@ function initSpecificationPage(){
         });
     });
 
+}
+
+function initRoomDefaultsPage(){
+    
+    var defRm = JSON.parse('{{ default_room|safe }}');
+    //TODO: save the key of the default room to a hidden input.
+    $('#default-room-key').val( defRm.key );
+    $('#default-room-height').val( defRm.room_height );
+    $('#default-door-width').val( defRm.door_width );
+    $('#default-door-height').val( defRm.door_height );
+    $('#default-window-width').val( defRm.window_width );
+    $('#default-window-height').val( defRm.window_height );
+    $('#default-radiator-width').val( defRm.radiator_width );
+    $('#default-radiator-height').val( defRm.radiator_height );
+    
+    $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
+
+    $('#form-room-defaults .btn-save').click( function(){
+
+        //Do an ajax call to save the default room data
+        $.ajax({
+            type: 'POST',
+            url: '/saveroom',
+            data: { 
+                room: JSON.stringify({
+                    key: $('#default-room-key').val(),
+                    room_height: parseFloat($('#default-room-height').val()),
+                    door_width: parseFloat($('#default-door-width').val()),
+                    door_height: parseFloat($('#default-door-height').val()),
+                    window_width: parseFloat($('#default-window-width').val()),
+                    window_height: parseFloat($('#default-window-height').val()),
+                    radiator_width: parseFloat($('#default-radiator-width').val()),
+                    radiator_height: parseFloat($('#default-radiator-height').val())
+                }) 
+            },
+            success:  function(data, status, xhr){
+                          console.log('SAVED DEFAULT ROOM OK.');
+                      },
+            async: true
+        });
+
+    });
+}
+
+function initRoomPage(){
+    var getf = function(elemId){
+        return parseFloat($(elemId).val()).toFixed(2);
+    }
+    $('.room-height').val(getf('#default-room-height'));
+    $('.door-width').val(getf('#default-door-width'));
+    $('.door-height').val(getf('#default-door-height'));
+    $('.window-width').val(getf('#default-window-width'));
+    $('.window-height').val(getf('#default-window-height'));
+    $('.radiator-width').val(getf('#default-radiator-width'));
+    $('.radiator-height').val(getf('#default-radiator-height'));
+    
+    $('.positive-negative-first,.positive-negative-second').click( switchSign );
+
+    var $isolDropdown = $('.isolated-surface-group ul.dropdown-menu');
+    $isolDropdown.empty();
+    $.each(PAINTS, function(j, paint) {
+        if (paint.surface_type == 'Isolated Surfaces') {
+            console.log('surface_type ' + paint.surface_type 
+              + 'name ' + paint.name + ' order ' + paint.order);
+            $isolDropdown.append(
+                '<li><a role="menuitem" data-value="' 
+                + paint.prod_rate + '" >' 
+                + paint.name + ' (' + paint.prod_rate 
+                + ') </a></li>'
+            );
+        }
+    });
+
+    $('.btn-room-calculate').click( calculateWorkForRoom );
 }
 
 function initDecimalInputs(){
@@ -952,6 +1018,8 @@ function initAddInputBlockButtons(){
         ]
     );
 
+    //Buttons to allow user to add groups of inputs.
+    //Sets up events for various inputs in the new block if present.
     $('#btn-add-spec-item,.btn-add-row').click( function(){
         var $group = $(this).closest('.input-group');
         var $newBlock = $group.find('.input-block:last').clone();
@@ -966,7 +1034,9 @@ function initAddInputBlockButtons(){
         initDropdowns();
         $btnRemove = $newBlock.find('.btn-remove-row:first');
         $btnRemove.css('display','block');
-        $btnRemove.click(function(event){ $(event.target).closest('.input-block').remove(); });
+        $btnRemove.click(function(event){ 
+            $(event.target).closest('.input-block').remove(); 
+        });
     });
 }
 
@@ -975,16 +1045,13 @@ $(document).ready(function() {
     initSpecificationPage();
     $('.integer').keydown( keydownIntegerInput );
     initDecimalInputs();
-    $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
     $('#btn-select-project').click( selectProject );
     $('#btn-create-project').click( createProject );
-    $('.positive-negative-first,.positive-negative-second').click( switchSign );
-    initAddInputBlockButtons();
-    $('.btn-room-calculate').click( calculateWorkForRoom );
-    initDropdowns();
     $('body').bind('touchstart click', blurInputFocus );
-    populateRoomDefaults();
-    populateRoomWithDefaults();
+    initRoomDefaultsPage();
+    initRoomPage();
+    initAddInputBlockButtons();
+    initDropdowns();
 });
 </script>
 </html>
