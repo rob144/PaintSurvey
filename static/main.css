@@ -36,7 +36,13 @@ button {
     margin:0 0 0 1px;
     cursor:pointer;
 }
-.btn-save, .btn-cancel, .btn-room-calculate, .btn-room-save {
+#loadingDiv{
+    display:none;
+}
+#owl-pages{
+    display:none;
+}
+.btn-save, .btn-cancel, .btn-room-calculate, .btn-save-room, .btn-delete-room {
     display: inline-block;
     min-width: 100px;
     min-height: 40px;
@@ -405,7 +411,7 @@ td.result {
 .rowTotalHours td {
     border-top:1px solid black;
 }
-.btn-room-calculate, .btn-room-save {
+.btn-room-calculate, .btn-save-room, .btn-delete-room {
     color: #333;
     background-color: #fff;
     border-color: #ccc;
