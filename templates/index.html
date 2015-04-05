@@ -12,8 +12,10 @@
     </head>
     <body>
         <h1 id='app-title'>Paint Survey</h1>
-        <div id='owl-carousel' class='owl-carousel'>
-            <div id='page-specification'>
+        <div id='owl-carousel' class='owl-carousel'></div>
+
+        <div id='owl-pages'>
+            <div id='page-specification' class='owl-page'>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
                             
@@ -65,7 +67,7 @@
                     </div>
                 </div>
             </div>
-            <div id='page-room-defaults'>
+            <div id='page-room-defaults' class='owl-page'>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
                         <h2>Default Room Settings</h2>
@@ -73,38 +75,38 @@
                             <input id='default-room-key' type='hidden'/>
                             <div class='form-row'>
                                 <label>Room height</label>
-                                <input id='default-room-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
+                                <input id='default-room-height' type='number' step='any' min='0' placeholder='height' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Door width</label>
-                                <input id='default-door-width' type='number' step='any' min='0' placeholder='enter width' class='decimal round-corners-input' />
+                                <input id='default-door-width' type='number' step='any' min='0' placeholder='width' class='decimal round-corners-input' />
                             </div>
                             <div class='form-row'>  
                                 <label>Door height</label>
-                                <input id='default-door-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
+                                <input id='default-door-height' type='number' step='any' min='0' placeholder='height' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Window width</label>
-                                <input id='default-window-width' type='number' step='any' min='0' placeholder='enter width' class='decimal round-corners-input'/>
+                                <input id='default-window-width' type='number' step='any' min='0' placeholder='width' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Window height</label>
-                                <input id='default-window-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
+                                <input id='default-window-height' type='number' step='any' min='0' placeholder='height' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Radiator width</label>
-                                <input id='default-radiator-width' type='number' step='any' min='0' placeholder='enter width' class='decimal round-corners-input'/>
+                                <input id='default-radiator-width' type='number' step='any' min='0' placeholder='width' class='decimal round-corners-input'/>
                             </div>
                             <div class='form-row'>  
                                 <label>Radiator height</label>
-                                <input id='default-radiator-height' type='number' step='any' min='0' placeholder='enter height' class='decimal round-corners-input'/>
+                                <input id='default-radiator-height' type='number' step='any' min='0' placeholder='height' class='decimal round-corners-input'/>
                             </div>
                             <button type='button' class='btn-save'>Save</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div id='page-left-1'>
+            <div id='page-left-1' class='owl-page'>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
                         <h2>Projects</h2>
@@ -123,17 +125,17 @@
 
                         <div class='form-row'>
                             <label>Create New</label>
-                            <input id='new-project-title' type='text' placeholder='Enter Project Title'/>
+                            <input id='new-project-title' type='text' placeholder='Project Title'/>
                         </div>
                         <input id='btn-create-project' type='button' value='Confirm'/>
                     </div>
                 </div>
             </div>
-            <div id='page-room-1' class='page-room'>
+            <div id='page-room-1' class='owl-page room-page'>
                 <div class='pageContentOuter'>
                   <div class='pageContent'>
                       <h2 class='room-title-heading' data-room-number="1">
-                          <input name='room-title' type='text' placeholder='Enter Room Name' class='room-title' value='Room 1' />
+                          <input name='room-title' type='text' placeholder='Room Name' class='room-title'/>
                       </h2>
                       <input type='hidden' class='room-key' />
                       <div class='results'>RESULTS</div>
@@ -145,19 +147,19 @@
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>L</label>
-                                      <input name='room-length' class='room-length form-control decimal' type='number' step='any' min='0' placeholder='enter length' >
+                                      <input name='room-length' class='room-length form-control decimal' type='number' step='any' min='0' placeholder='length' >
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>W</label>
-                                      <input name='room-width' class='room-width form-control decimal' type='number' step='any' min='0' placeholder='enter width'>
+                                      <input name='room-width' class='room-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>H</label>
-                                      <input name='room-height' class='room-height form-control decimal' type='number' step='any' min='0' placeholder='enter height' >
+                                      <input name='room-height' class='room-height form-control decimal' type='number' step='any' min='0' placeholder='height' >
                                   </div>
                               </div>
                           </div>
@@ -169,19 +171,19 @@
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>#</label>
-                                      <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='enter quantity'>
+                                      <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='quantity'>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>W</label>
-                                      <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder='enter width'>
+                                      <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>H</label>
-                                      <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder='enter width'>
+                                      <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder='width'>
                                   </div>
                               </div>
                           </div>
@@ -193,19 +195,19 @@
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>#</label>
-                                      <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='enter quantity'/>
+                                      <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='quantity'/>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>W</label>
-                                      <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder='enter width' />
+                                      <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>H</label>
-                                      <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder='enter height' />
+                                      <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder='height' />
                                   </div>
                               </div>
                           </div>
@@ -217,19 +219,19 @@
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>#</label>
-                                      <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='any' min='0' placeholder='enter quantity'/>
+                                      <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='any' min='0' placeholder='quantity'/>
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>W</label>
-                                      <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' placeholder='enter width' />
+                                      <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
                                   </div>
                               </div>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
                                       <label class='control-label'>H</label>
-                                      <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder='enter height'/>
+                                      <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder='height'/>
                                   </div>
                               </div>
                           </div>
@@ -309,19 +311,19 @@
                                   <div class='input-pill'>
                                       <div class="input-pill-inner">
                                           <label class='control-label'>#</label>
-                                          <input class='form-control general-surface-qty integer' name='general-surface-qty' type='number' step='1' min='0' placeholder='enter quantity'/>
+                                          <input class='form-control general-surface-qty integer' name='general-surface-qty' type='number' step='1' min='0' placeholder='quantity'/>
                                       </div>
                                   </div>
                                   <div class='input-pill'>
                                       <div class="input-pill-inner">
                                           <label class='control-label'>W</label>
-                                          <input class='form-control general-surface-width decimal' name='general-surface-width' type='number' step='any' min='0' placeholder='enter width'/>
+                                          <input class='form-control general-surface-width decimal' name='general-surface-width' type='number' step='any' min='0' placeholder='width'/>
                                       </div>
                                   </div>
                                   <div class='input-pill'>
                                       <div class="input-pill-inner">
                                           <label class='control-label'>H</label>
-                                          <input class='form-control general-surface-height decimal' name='general-surface-height' type='number' step='any' min='0' placeholder='enter height'/>
+                                          <input class='form-control general-surface-height decimal' name='general-surface-height' type='number' step='any' min='0' placeholder='height'/>
                                       </div>
                                   </div>
                               </div>
@@ -348,37 +350,65 @@
                                       <div class='input-pill'>
                                           <div class="input-pill-inner">
                                               <label class='control-label'>#</label>
-                                              <input class='form-control isolated-surface-qty integer' name='isolated-surface-qty' type='number' step='1' min='0' placeholder='enter quantity'/>
+                                              <input class='form-control isolated-surface-qty integer' name='isolated-surface-qty' type='number' step='1' min='0' placeholder='quantity'/>
                                           </div>
                                       </div>
                                   </div>
                                   <div class='input-pill'>
                                       <div class="input-pill-inner">
                                           <label class='control-label'>L</label>
-                                          <input class='form-control isolated-surface-length decimal' name='isolated-surface-length' type='number' step='any' min='0' placeholder='enter length'/>
+                                          <input class='form-control isolated-surface-length decimal' name='isolated-surface-length' type='number' step='any' min='0' placeholder='length'/>
                                       </div>
                                   </div>
                               </div>
                           </div>
 
                           <button type='button' id='btn-calculate' class='btn-room-calculate'>Calculate</button>
-                          <button type='button' class='btn-room-save'>Save</button>
+                          <button type='button' class='btn-save-room'>Save</button>
+                          <button type='button' class='btn-delete-room'>Delete</button>
 
                       </form>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div id='loadingDiv'></div>
     </body>
 
 <script>
 //Global variable to store current project data
+var CARO;
 var CURRENT_PROJECT =   {};
 var PROJECTS        =   JSON.parse('{{ projects|safe }}');
 var SURFACE_TYPES   =   ['Ceilings','Walls','Doors','Windows','Radiators','Isolated Surfaces'];
 var PAINTS          =   JSON.parse('{{ paints|safe }}');
 var DEFAULT_ROOM    =   JSON.parse('{{ default_room|safe }}');
 var ROOMS           =   JSON.parse('{{ rooms|safe }}');
+
+var MODEL = {
+    getDefaultRoom: function(){
+        for(var i=0; i < ROOMS.length - 1; i++){
+            if(ROOMS[i].is_default == true){
+                return rooms[i];
+            }
+        }
+    },
+    getRoomsForProject: function(project_key){
+      console.log('project key: ' + project_key);
+        var rooms = [];
+        for(var i=0; i <= ROOMS.length - 1; i++){
+            console.log('room key: ' + ROOMS[i].key);
+            console.log('room project: ' + ROOMS[i].project);  
+            if(ROOMS[i].project == project_key){
+                rooms.push(ROOMS[i]);
+            }
+        }
+        return rooms;
+    }
+
+};
+
 
 $.fn.hasAncestor = function(a) {
     return this.filter(function() {
@@ -388,6 +418,7 @@ $.fn.hasAncestor = function(a) {
 
 //Add the projects to the list
 function populateProjects(projects){
+    $('.project-item:not(.hidden)').remove();
     for(var i=0; i<projects.length; i++){
         var $newBlock = $('.project-item:first').clone();
         $newBlock.find('.project-key').val( projects[i].key );
@@ -415,17 +446,16 @@ function populateProjects(projects){
         });
         
         //Setup click events for the controls.
-        $newBlock.find('.btn-select-project').click(function(){
-            console.log('select');
+        $newBlock.find('.btn-select-project').click(function(event){
             selectProject( 
                 $(this).closest('.project-item').find('.project-key').val()
             );
         });
-        $newBlock.find('.btn-edit-project').click(function(){
+        $newBlock.find('.btn-edit-project').click(function(event){
             console.log('edit');
             event.stopPropagation();
         });
-        $newBlock.find('.btn-delete-project').click(function(){
+        $newBlock.find('.btn-delete-project').click(function(event){
             console.log('delete');
             event.stopPropagation();
         });
@@ -434,7 +464,13 @@ function populateProjects(projects){
     }
 }
 
-function selectProject(projectKey){
+function selectProject(projectKey, reload){
+
+    if(CURRENT_PROJECT.key == projectKey && reload != true){
+        alert('Project already selected.');
+        return;
+    }
+
     for(var i=0; i < PROJECTS.length; i++){
         if(PROJECTS[i].key == projectKey){
             CURRENT_PROJECT = PROJECTS[i];
@@ -442,7 +478,34 @@ function selectProject(projectKey){
         }
     }
     $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
-    //TODO: fetch and populate the room data according to whichever project is selected
+    
+    //Remove existing room pages
+    if(CARO.owl.owlItems){
+        while(CARO.owl.owlItems.length >= 4){
+            CARO.removeItem(CARO.owl.owlItems.length - 1);
+        }
+    }
+
+console.log('current project rooms length: ' + CURRENT_PROJECT.rooms.length);
+
+    if(CURRENT_PROJECT.rooms.length >= 1){
+        //Add a page for each room
+        var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
+        console.log('rooms' + rooms);
+        for(var i = 0; i <= rooms.length - 1; i++){
+            CARO.addItem($('#owl-pages .owl-page.room-page').html());
+            //Populate the room data in the inputs.
+            console.log(rooms[i].name);
+            initRoomPage(rooms[i]);
+        }
+
+    }else{
+        //just add the default blank room.
+        CARO.addItem($('#owl-pages .owl-page.room-page').html());
+        initRoomPage();
+    }
+    CARO.next();
+    
 }
 
 function createProject(){
@@ -724,6 +787,13 @@ function switchSign(event){
 }
 
 function initOwlCarousel(){
+    //Add the pages into the CARO
+    $('#owl-pages .owl-page').each(function(){
+        var $page = $(this);
+        if($page.hasClass('room-page') == false){
+            $page.appendTo('#owl-carousel');
+        }
+    })
     $('#owl-carousel').owlCarousel(
         { 
             navigation : true, // Show next and prev buttons
@@ -737,6 +807,7 @@ function initOwlCarousel(){
             }
         }
     );
+    CARO = $('#owl-carousel').data('owlCarousel');
 }
 
 function toggleDropDown(){
@@ -925,6 +996,25 @@ function initSpecificationPage(){
 
 }
 
+function deleteRoom(room){
+
+    //Do an ajax call to save the room data
+    $.ajax({
+        type: 'POST',
+        url: '/deleteroom',
+        data: { room: JSON.stringify( room ) },
+        dataType: 'json',
+        success:  function(data, status, xhr){
+                      console.log('DELETED ROOM OK.');
+                      CURRENT_PROJECT = data;
+                      console.log('current proj rooms: ' + CURRENT_PROJECT.rooms.length);
+                      selectProject(CURRENT_PROJECT.key, true);
+                  },
+        async: true
+    });
+
+}
+
 function saveRoom(room){
     //Do an ajax call to save the room data
     $.ajax({
@@ -977,52 +1067,100 @@ function initProjectsPage(){
     $('#btn-create-project').click( createProject );
 }
 
-function initRoomPage(){
+function initRoomPage(room){
     var getf = function(elemId){
         return parseFloat($(elemId).val()).toFixed(2);
     }
-    $('.room-height').val(getf('#default-room-height'));
-    $('.door-width').val(getf('#default-door-width'));
-    $('.door-height').val(getf('#default-door-height'));
-    $('.window-width').val(getf('#default-window-width'));
-    $('.window-height').val(getf('#default-window-height'));
-    $('.radiator-width').val(getf('#default-radiator-width'));
-    $('.radiator-height').val(getf('#default-radiator-height'));
-    
-    $('.positive-negative-first,.positive-negative-second').click( switchSign );
 
-    var $isolDropdown = $('.isolated-surface-group ul.dropdown-menu');
+    var $page = $('.owl-item:last');
+
+    //Use the default room settings if room object not passed in.
+    if(room == null){
+        room = {  
+            "radiator_height": getf('#default-radiator-height'),
+            "radiator_width": getf('#default-radiator-width'),
+            "door_quantity": '',
+            "window_width": getf('#default-window-width'),
+            "window_height": getf('#default-window-height'),
+            "room_length": 5,
+            "radiator_quantity": '',
+            "door_height": getf('#default-door-height'),
+            "name": "Default Room",
+            "room_height": getf('#default-room-height'),
+            "window_quantity": '',
+            "room_width": getf('#default-door-width'),
+            "door_width": 0.9
+        }
+    } 
+
+    $page.find('.room-title').val(room.name);
+    $page.find('.room-height').val(room.room_height);
+    $page.find('.room-width').val(room.room_width);
+    $page.find('.room-length').val(room.room_length);
+    if(room.door_quantity >= 1) console.log(room.door_quantity);
+    $page.find('.door-qty').val(room.door_quantity);
+    $page.find('.door-width').val(room.room_width);
+    $page.find('.door-height').val(room.door_height);
+    $page.find('.window-qty').val(room.window_quantity);
+    $page.find('.window-width').val(room.window_width);
+    $page.find('.window-height').val(room.window_height);
+    $page.find('.radiator-qty').val(room.radiator_quantity);
+    $page.find('.radiator-width').val(room.radiator_width);
+    $page.find('.radiator-height').val(room.radiator_height);
+    
+    $page.find('.positive-negative-first,.positive-negative-second').click( switchSign );
+
+    var $isolDropdown = $page.find('.isolated-surface-group ul.dropdown-menu');
     $isolDropdown.empty();
     $.each(PAINTS, function(j, paint) {
         if (paint.surface_type == 'Isolated Surfaces') {
-            console.log('surface_type ' + paint.surface_type 
-              + 'name ' + paint.name + ' order ' + paint.order);
             $isolDropdown.append(
-                '<li><a role="menuitem" data-value="' 
-                + paint.prod_rate + '" >' 
-                + paint.name + ' (' + paint.prod_rate 
-                + ') </a></li>'
+                '<li><a role="menuitem" data-value="' + paint.prod_rate + '" >' 
+                + paint.name + ' (' + paint.prod_rate + ') </a></li>'
             );
         }
     });
 
-    $('.btn-room-calculate').click( calculateWorkForRoom );
-    $('.btn-room-save').click( function(){
-        saveRoom({
-            key: $('.room-key').val(),
-            name: $('.room-title').val(),
-            room_length: parseFloat($('.room-length').val()),
-            room_width: parseFloat($('.room-width').val()),
-            room_height: parseFloat($('.room-height').val()),
-            door_width: parseFloat($('.door-width').val()),
-            door_height: parseFloat($('.door-height').val()),
-            window_width: parseFloat($('.window-width').val()),
-            window_height: parseFloat($('.window-height').val()),
-            radiator_width: parseFloat($('.radiator-width').val()),
-            radiator_height: parseFloat($('.radiator-height').val()),
-            is_default: false
-        });
+    $page.find('.btn-room-calculate').click( calculateWorkForRoom );
+    $page.find('.btn-delete-room').click( function(){
+        if(CURRENT_PROJECT.rooms.length >= 1){
+            deleteRoom(room);
+        }else{
+            alert('Room not saved yet.');
+        }
     });
+
+    $page.find('.btn-save-room').click( function(){
+        var $page = $(this).closest('.owl-item');
+        var getf = function(elemId){
+            return parseFloat($page.find(elemId).val());
+        }
+        if(isObjectEmpty(CURRENT_PROJECT)){
+            alert('Please select a project first.');
+        }else{
+          console.log('room name: '+$page.find('.room-title').val());
+            saveRoom({
+                key:                $page.find('.room-key').val(),
+                name:               $page.find('.room-title').val(),
+                room_length:        getf('.room-length'),
+                room_width:         getf('.room-width'),
+                room_height:        getf('.room-height'),
+                door_quantity:      getf('.door-qty'),
+                door_width:         getf('.door-width'),
+                door_height:        getf('.door-height'),
+                window_quantity:    getf('.window-qty'),
+                window_width:       getf('.window-width'),
+                window_height:      getf('.window-height'),
+                radiator_quantity:  getf('.radiator-qty'),
+                radiator_width:     getf('.radiator-width'),
+                radiator_height:    getf('.radiator-height'),
+                is_default:         false,
+                project:            CURRENT_PROJECT.key
+            });
+        }
+    });
+
+    initDecimalInputs();
 }
 
 function initDecimalInputs(){
@@ -1030,6 +1168,7 @@ function initDecimalInputs(){
     $('.decimal').keyup( keyupDecimalInput );
     $('.decimal').bind( 'blur', blurDecimal );
     $('.decimal').blur();
+    console.log('init dec');
 }
 
 function svgEl(tagName) {
@@ -1108,15 +1247,47 @@ function initAddInputBlockButtons(){
     });
 }
 
+function isObjectEmpty(object)
+{
+    if ('object' !== typeof object) {
+        throw new Error('Object must be specified.');
+    }
+
+    if (null === object) {
+        return true;
+    }
+
+    if ('undefined' !== Object.keys) {
+        // Using ECMAScript 5 feature.
+        return (0 === Object.keys(object).length);
+    } else {
+        // Using legacy compatibility mode.
+        for (var key in object) {
+            if (object.hasOwnProperty(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
 $(document).ready(function() {
+
+    var $loading = $('#loadingDiv');
+    $(document).ajaxStart(function () {
+        $loading.show();
+      }).ajaxStop(function () {
+        $loading.hide();
+    });
+
     initOwlCarousel();
     initSpecificationPage();
-    $('.integer').keydown( keydownIntegerInput );
-    initDecimalInputs();
-    $('body').bind('touchstart click', blurInputFocus );
     initRoomDefaultsPage();
     initProjectsPage();
-    initRoomPage();
+
+    $('.integer').keydown( keydownIntegerInput );
+    $('body').bind('touchstart click', blurInputFocus );
+    initDecimalInputs();
     initAddInputBlockButtons();
     initDropdowns();
 });

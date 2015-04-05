@@ -23,8 +23,9 @@ JINJA_ENV.globals['include_file'] = include_file
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
     if isinstance(obj, datetime):
-        serial = obj.isoformat()
-        return serial
+        return obj.isoformat()
+    if(str(type(obj)) == "<class 'google.appengine.ext.ndb.key.Key'>"):
+        return obj.urlsafe()
 
 def str2bool(s):
     return s.lower() in ("yes", "true", "t", "1")
@@ -57,6 +58,7 @@ class Room(ModelUtils, ndb.Model):
     radiator_width = ndb.FloatProperty()
     radiator_height = ndb.FloatProperty()
     is_default = ndb.BooleanProperty()
+    project = ndb.KeyProperty(kind='Project')
 
 class Paint(ModelUtils, ndb.Model):
     name = ndb.StringProperty()
@@ -88,7 +90,17 @@ def init_data():
     
     #Create project test data if not there already.
     if(Project.query(Project.username == 'Test').count() < 3):
-        Project(username='Test', title='Test One', date_created=datetime.now()).put()
+        p1_key = Project(username='Test', title='Test One', date_created=datetime.now()).put()
+        r1_key = create_default_room().put()
+        r1 = create_default_room().put().get()
+        r1.is_default = False
+        r1.project = p1_key
+        r1_key = r1.put()
+        p1 = p1_key.get()
+        p1.rooms.append(r1_key)
+        p1.put()
+        for r in p1.rooms:
+            print('room: ' + str(r))
         Project(username='Test', title='Test Two', date_created=datetime.now()).put()
         Project(username='Test', title='Test Three', date_created=datetime.now()).put()
 
@@ -133,8 +145,8 @@ class Home(webapp2.RequestHandler):
         init_data()
         self.response.write(
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
-                'default_room': json.dumps(Room.query(Room.is_default == True).fetch(1)[0].to_dict()),
-                'rooms': json.dumps([r.to_dict() for r in Room.query(Room.is_default == False).fetch(300)]),
+                'default_room': json.dumps(Room.query(Room.is_default == True).fetch(1)[0].to_dict(), default=json_serial),
+                'rooms': json.dumps([r.to_dict() for r in Room.query(Room.is_default == False).fetch(300)], default=json_serial),
 	        	'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], default=json_serial),
                 'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(300)]) 
         	}) 
@@ -204,32 +216,61 @@ class GetProject(webapp2.RequestHandler):
 class SaveRoom(webapp2.RequestHandler):
     def post(self):
         obj_room = json.loads(self.request.POST.get('room'))
-        ent_room = Room()
+        room = Room()
         
         if(obj_room['key'] != ""):
-            ent_room = ndb.Key(urlsafe=obj_room['key']).get()
-        
-        ent_room.name = obj_room['name'];
-        ent_room.room_width = obj_room['room_width'];
-        ent_room.room_length = obj_room['room_length'];
-        ent_room.room_height = obj_room['room_height'];
-        ent_room.door_width = obj_room['door_width'];
-        ent_room.door_height = obj_room['door_height'];
-        ent_room.window_width = obj_room['window_width'];
-        ent_room.window_height = obj_room['window_height'];
-        ent_room.radiator_width = obj_room['radiator_width'];
-        ent_room.radiator_height = obj_room['radiator_height'];
-        ent_room.is_default = obj_room['is_default'];
+            room = ndb.Key(urlsafe=obj_room['key']).get()
 
-        room = ent_room.put().get()
+        room.name = obj_room['name'];
+        room.room_width = obj_room['room_width'];
+        room.room_length = obj_room['room_length'];
+        room.room_height = obj_room['room_height'];
+        room.door_quantity = obj_room['door_quantity'];
+        room.door_width = obj_room['door_width'];
+        room.door_height = obj_room['door_height'];
+        room.window_quantity = obj_room['window_quantity'];
+        room.window_width = obj_room['window_width'];
+        room.window_height = obj_room['window_height'];
+        room.radiator_width = obj_room['radiator_width'];
+        room.radiator_height = obj_room['radiator_height'];
+        room.is_default = obj_room['is_default'];
+
+        room = room.put().get()
         print('save room: ' + room.name + ' ' + str(room.is_default));
+
+        if(obj_room['project'] != ""):
+            #Get the project entity and append the room.
+            room.project = ndb.Key(urlsafe=obj_room['project'])
+            print('save room to project ' + str(room.project))
+            project = room.project.get()
+            project.rooms.append(room.put())
+            project.put()
+
         self.response.write('DONE')
+
+class DeleteRoom(webapp2.RequestHandler):
+    def post(self):
+        obj_room = json.loads(self.request.POST.get('room'))
+        room = ndb.Key(urlsafe=obj_room['key']).get()
+        project = room.project.get()
+        print(room.key)
+        print(project.rooms)
+        if room.key in project.rooms:
+            idx = project.rooms.index(room.key)
+            del project.rooms[idx]
+            room.project = project.put()
+
+            print('Delete room ' + str(room.key.delete()))
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(project.to_dict(), default=json_serial))   
 
 application = webapp2.WSGIApplication([
     ('/', Home),
     ('/createproject', CreateProject),
     ('/getproject', GetProject),
     ('/saveroom', SaveRoom),
+    ('/deleteroom', DeleteRoom),
     ('/savespec', SaveSpec),
     ('/getpaints', GetPaints)
 ], debug=True)

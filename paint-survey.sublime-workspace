@@ -4,8 +4,24 @@
 		"selected_items":
 		[
 			[
+				"sel",
+				"selectElem"
+			],
+			[
+				"to",
+				"to_dict"
+			],
+			[
 				"drop",
-				"dropdown-menu"
+				"dropdown-btn"
+			],
+			[
+				"has",
+				"hasAncestor"
+			],
+			[
+				"isolated-surface",
+				"isolated-surface-group"
 			],
 			[
 				"ord",
@@ -62,10 +78,6 @@
 			[
 				"spec-item",
 				"spec-item-title"
-			],
-			[
-				"to",
-				"toLowerCase"
 			],
 			[
 				"SUR",
@@ -315,7 +327,7 @@
 			"file": "main.py",
 			"settings":
 			{
-				"buffer_size": 7536,
+				"buffer_size": 8569,
 				"line_ending": "Unix"
 			}
 		},
@@ -323,7 +335,7 @@
 			"file": "templates/index.html",
 			"settings":
 			{
-				"buffer_size": 47709,
+				"buffer_size": 52677,
 				"line_ending": "Unix"
 			}
 		},
@@ -331,7 +343,7 @@
 			"file": "static/main.css",
 			"settings":
 			{
-				"buffer_size": 7945,
+				"buffer_size": 8786,
 				"line_ending": "Unix"
 			}
 		}
@@ -373,6 +385,7 @@
 	],
 	"file_history":
 	[
+		"/Users/rdunn/dev/paint-survey/venv/lib/python2.7/site-packages/pip/_vendor/requests/models.py",
 		"/Users/rdunn/dev/paint-survey/app.yaml",
 		"/Users/rdunn/dev/paint-survey/static/subdir/test.js",
 		"/Users/rdunn/dev/paint-survey/static/main.js",
@@ -469,6 +482,92 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"key",
+			"btn-room-calculate",
+			"btn-room-calculate,",
+			"btn-room-calculate, ",
+			"btn-room-calculate",
+			"saveRoom",
+			"btn-save",
+			"btn-save-room",
+			"saveRoom",
+			"key",
+			"saveRoom",
+			"saveroom",
+			"default-",
+			"getf",
+			"initRoomPage",
+			"select-pr",
+			"select",
+			"DEFAULT_ROOM",
+			"%",
+			"project-item",
+			"CURRENT_PROJECT",
+			"select-project",
+			"project-title",
+			"controls",
+			"selectProject",
+			"select",
+			"btn-save",
+			"project-item",
+			"projectList",
+			"project-controls",
+			"project-item",
+			"projects-list",
+			".project-item",
+			"clone",
+			"project-item",
+			"projects-list",
+			"project",
+			"#projects-list",
+			"projects-list",
+			"hidden",
+			"projects-list",
+			"list",
+			"select-project",
+			"populateProjects",
+			"projects",
+			"proj",
+			"btn-save",
+			"calculateWorkForRoom",
+			"btn-room-calculate",
+			"btn-cal",
+			"btn-calculate",
+			"btn-calcu",
+			".btn-room-calculate",
+			"btn-calculate",
+			"btn-room-calculate",
+			".btn-room-calculate",
+			"initRoomPage",
+			"initDropdowns",
+			"default-room-key",
+			"default-room",
+			"default",
+			"default-room",
+			"key",
+			"initRoomDefaultsPage",
+			"btn-save",
+			"default_room",
+			"create_default_room",
+			"blurinput",
+			"role",
+			"blurinput",
+			"blurInputFocus",
+			"blurInput",
+			"blurInputFocus",
+			"initDropdowns",
+			"initDropdowns\n",
+			"initDrop",
+			"init",
+			"initDropdowns",
+			"initDrop",
+			"toggleDropDown",
+			"initDropdowns",
+			"initdropdowns",
+			"initdropdowns\ninitdropdowns",
+			"populateRoomWithDefaults",
+			"isolated-surface-prod-rate",
+			"spec-item-title",
 			"initdrop",
 			"click",
 			"btn-add",
@@ -510,93 +609,7 @@
 			"addInputBlock",
 			"blur",
 			"escape",
-			"order",
-			"page-left-3",
-			"form-production-rates",
-			"\"menuitem\"",
-			"\"presentation\"",
-			"general-surface-prod-rate",
-			"form-row",
-			"toggle",
-			"baybreast-width",
-			"intro",
-			"ks-logo",
-			"ks-log",
-			"intro",
-			"about",
-			"section1",
-			"relative",
-			"about",
-			"tracker",
-			"85",
-			"lab",
-			"type",
-			"alert",
-			"value='0'",
-			"value=",
-			"required ",
-			"hey",
-			"blurDecimal",
-			"addInputBlock",
-			"addInputRow",
-			"btn",
-			"toggleDropDown",
-			"dropdown-value",
-			"selectDropDownItem",
-			"input-row",
-			".input-row",
-			"input-row",
-			"selectDropDownItem",
-			"general-surface-group",
-			"general-surface-prod-rate",
-			"console",
-			"float:right;",
-			"general-surface",
-			"newRow",
-			"page",
-			"block",
-			"input-group",
-			"back",
-			"rmHeight",
-			"rmWidth",
-			"rmLength",
-			"roomLength",
-			"btnCalculate",
-			"formRow",
-			"numbersOnly",
-			".toFixed(2)",
-			"'windowHeight'",
-			"'windowWidth'",
-			"'windowQty'",
-			"'doorHeight'",
-			"'doorWidth'",
-			"'doorQty'",
-			"'roomLength'",
-			"'roomHeight'",
-			"'roomWidth'",
-			"owl-example",
-			"populateRoomDefaults",
-			"template",
-			"get_projects_as_json",
-			" db",
-			"get_projects_as_json",
-			"projects",
-			"appTitle",
-			"overflow-x",
-			"top",
-			"elemWidth",
-			"devTools",
-			"findPrevLineBreakPos",
-			"log",
-			"setCursorPostion",
-			"getContentBeforeCursor",
-			"cursorAnimation",
-			"getCursorPos",
-			"removeNewlineIndex",
-			"calcNewCursorPos",
-			"findPrevLineBreakPos",
-			"isWrap",
-			"addNewline"
+			"order"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -604,6 +617,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			".",
 			"form-specification",
 			"'menuitem'",
 			"'presentation'",
@@ -641,7 +655,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -650,15 +664,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7536,
+						"buffer_size": 8569,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6209,
-								6209
+								8190,
+								8190
 							]
 						],
 						"settings":
@@ -668,10 +682,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2375.0,
+						"translation.y": 2598.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -680,15 +694,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 47709,
+						"buffer_size": 52677,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								37456,
-								37456
+								46501,
+								46501
 							]
 						],
 						"settings":
@@ -698,10 +712,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 12141.0,
+						"translation.y": 13816.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -710,15 +724,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7945,
+						"buffer_size": 8786,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1701,
-								1701
+								763,
+								763
 							]
 						],
 						"settings":
@@ -728,7 +742,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 878.0,
+						"translation.y": 1554.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
@@ -776,7 +790,7 @@
 	"project": "paint-survey.sublime-project",
 	"replace":
 	{
-		"height": 40.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -822,7 +836,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 154.0,
+	"side_bar_width": 119.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
