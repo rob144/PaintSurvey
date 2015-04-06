@@ -37,7 +37,6 @@ class ModelUtils(object):
         return result
 
 class Project(ModelUtils, ndb.Model):
-    id = ndb.IntegerProperty()
     username = ndb.StringProperty()
     title = ndb.StringProperty()
     rooms = ndb.KeyProperty(kind='Room', repeated=True)
@@ -90,17 +89,7 @@ def init_data():
     
     #Create project test data if not there already.
     if(Project.query(Project.username == 'Test').count() < 3):
-        p1_key = Project(username='Test', title='Test One', date_created=datetime.now()).put()
-        r1_key = create_default_room().put()
-        r1 = create_default_room().put().get()
-        r1.is_default = False
-        r1.project = p1_key
-        r1_key = r1.put()
-        p1 = p1_key.get()
-        p1.rooms.append(r1_key)
-        p1.put()
-        for r in p1.rooms:
-            print('room: ' + str(r))
+        Project(username='Test', title='Test One', date_created=datetime.now()).put()
         Project(username='Test', title='Test Two', date_created=datetime.now()).put()
         Project(username='Test', title='Test Three', date_created=datetime.now()).put()
 
@@ -170,11 +159,11 @@ class SaveSpec(webapp2.RequestHandler):
             paint_keys.append(obj['key'])
             if(obj['key'] != ""):
                 #Update existing paint
-                ent_paint = ndb.Key(urlsafe=obj['key']).get()
-                ent_paint.name = obj['name'];
-                ent_paint.prod_rate = float(obj['prod_rate']);
-                ent_paint.order = int(obj['order']);
-                resp_paints.append(ent_paint.put().get())
+                paint = ndb.Key(urlsafe=obj['key']).get()
+                paint.name = obj['name'];
+                paint.prod_rate = float(obj['prod_rate']);
+                paint.order = int(obj['order']);
+                resp_paints.append(paint.put().get())
             else:
                 #Create new paint
                 resp_paints.append(
@@ -184,6 +173,7 @@ class SaveSpec(webapp2.RequestHandler):
                         order = Paint.query().order(-Paint.order).fetch(1)[0].order + 1
                     ).put().get()
                 )
+                
         #Do deletions
         all_paints = Paint.query(Paint.surface_type == surface_type).fetch(200)
         for p in all_paints:
@@ -204,7 +194,6 @@ class CreateProject(webapp2.RequestHandler):
         project_title = self.request.get('projectTitle')
         new_project = Project(id=3, username='Test', title=project_title, date_created=datetime.now())
         new_project.put()
-        create_default_room().put()
         time.sleep(1) #Allow time for project to save to datastore
         self.response.write( json.dumps([p.to_dict() for p in Project.query().fetch(20)], default=json_serial) )
 
@@ -221,19 +210,22 @@ class SaveRoom(webapp2.RequestHandler):
         if(obj_room['key'] != ""):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
-        room.name = obj_room['name'];
-        room.room_width = obj_room['room_width'];
-        room.room_length = obj_room['room_length'];
-        room.room_height = obj_room['room_height'];
-        room.door_quantity = obj_room['door_quantity'];
-        room.door_width = obj_room['door_width'];
-        room.door_height = obj_room['door_height'];
-        room.window_quantity = obj_room['window_quantity'];
-        room.window_width = obj_room['window_width'];
-        room.window_height = obj_room['window_height'];
-        room.radiator_width = obj_room['radiator_width'];
-        room.radiator_height = obj_room['radiator_height'];
-        room.is_default = obj_room['is_default'];
+        print('door qty' + str(obj_room['door_quantity']))
+        print('window qty' + str(obj_room['window_quantity']))
+
+        room.name = obj_room['name']
+        room.room_width = obj_room['room_width']
+        room.room_length = obj_room['room_length']
+        room.room_height = obj_room['room_height']
+        room.door_quantity = obj_room['door_quantity']
+        room.door_width = obj_room['door_width']
+        room.door_height = obj_room['door_height']
+        room.window_quantity = obj_room['window_quantity']
+        room.window_width = obj_room['window_width']
+        room.window_height = obj_room['window_height']
+        room.radiator_width = obj_room['radiator_width']
+        room.radiator_height = obj_room['radiator_height']
+        room.is_default = obj_room['is_default']
 
         room = room.put().get()
         print('save room: ' + room.name + ' ' + str(room.is_default));
@@ -246,15 +238,15 @@ class SaveRoom(webapp2.RequestHandler):
             project.rooms.append(room.put())
             project.put()
 
-        self.response.write('DONE')
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(room.to_dict(), default=json_serial))   
 
 class DeleteRoom(webapp2.RequestHandler):
     def post(self):
-        obj_room = json.loads(self.request.POST.get('room'))
-        room = ndb.Key(urlsafe=obj_room['key']).get()
+        room = ndb.Key(urlsafe=self.request.get('room_key')).get()
         project = room.project.get()
         print(room.key)
-        print(project.rooms)
+        print('before ' + str(project.rooms))
         if room.key in project.rooms:
             idx = project.rooms.index(room.key)
             del project.rooms[idx]
@@ -262,6 +254,7 @@ class DeleteRoom(webapp2.RequestHandler):
 
             print('Delete room ' + str(room.key.delete()))
 
+        print('after ' + str(project.rooms))
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(project.to_dict(), default=json_serial))   
 
