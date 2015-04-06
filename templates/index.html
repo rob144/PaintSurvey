@@ -301,9 +301,9 @@
                                           <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" role="menu">
-                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='4'>General surface (4)</a></li>
-                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='3.5'>Glazed med pane (3.5)</a></li>
-                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='2.5'>Glazed small pane (2.5)</a></li>
+                                          <li role='presentation'>
+                                              <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                          </li>
                                       </ul>
                                       <button type='button' class='btn-add-row'></button>
                                       <button type='button' class='btn-remove-row'></button>
@@ -341,7 +341,9 @@
                                           <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" role="menu">
-                                          <li role='presentation'><a role='menuitem' tabindex="-1" href="#" data-value='15'>Menu Item</a></li>
+                                          <li role='presentation'>
+                                              <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                          </li>
                                       </ul>
                                       <button type='button' class='btn-add-row'></button>
                                       <button type='button' class='btn-remove-row'></button>
@@ -363,7 +365,7 @@
                               </div>
                           </div>
 
-                          <button type='button' id='btn-calculate' class='btn-room-calculate'>Calculate</button>
+                          <button type='button' id='btn-calculate' class='btn-calculate-room'>Calculate</button>
                           <button type='button' class='btn-save-room'>Save</button>
                           <button type='button' class='btn-delete-room'>Delete</button>
 
@@ -373,7 +375,7 @@
             </div>
         </div>
 
-        <div id='loadingDiv'></div>
+        <div id='loadingDiv'>THIS IS THE LOADING DIV</div>
     </body>
 
 <script>
@@ -388,23 +390,87 @@ var ROOMS           =   JSON.parse('{{ rooms|safe }}');
 
 var MODEL = {
     getDefaultRoom: function(){
-        for(var i=0; i < ROOMS.length - 1; i++){
+        for(var i=0; i <= ROOMS.length - 1; i++){
             if(ROOMS[i].is_default == true){
                 return rooms[i];
             }
         }
     },
     getRoomsForProject: function(project_key){
-      console.log('project key: ' + project_key);
         var rooms = [];
         for(var i=0; i <= ROOMS.length - 1; i++){
-            console.log('room key: ' + ROOMS[i].key);
-            console.log('room project: ' + ROOMS[i].project);  
             if(ROOMS[i].project == project_key){
                 rooms.push(ROOMS[i]);
             }
         }
         return rooms;
+    },
+    getProject: function(project_key){
+        var project = false;
+        for(var i=0; i <= PROJECTS.length - 1; i++){ 
+            if(PROJECTS[i].key == project_keyy){
+                found = true;
+                project = PROJECTS[i];
+            }
+        }
+        return project;
+    },
+    updateProject: function(project){
+        var found = false;
+        for(var i=0; i <= PROJECTS.length - 1; i++){ 
+            if(PROJECTS[i].key == project.key){
+                found = true;
+                PROJECTS[i] = project;
+                for(var i=0; i < ROOMS.length - 1; i++){
+                    if(ROOMS[i].project == project.key 
+                      && $.inArray(ROOMS[i].key, project.rooms) == -1){
+                        /* The project is no longer assocatiated with
+                         the room, so remove the room -> project reference. */
+                        ROOMS[i].project = '';
+                    }
+                }
+            }
+        }
+        if(!found){
+            PROJECTS.push(project);
+        }
+    },
+    updateRoom: function(room){
+        var found = false;
+        for(var i=0; i <= ROOMS.length - 1; i++){ 
+            if(ROOMS[i].key == room.key){
+                ROOMS[i] = room;
+                found = true;
+            }
+        }
+        if(!found){
+          ROOMS.push(room);
+        }
+        //Add the room to the project
+        if(room.project != ''){
+            for(var i=0; i <= PROJECTS.length - 1; i++){ 
+                if( PROJECTS[i].key == room.project 
+                    && $.inArray(room.project, PROJECTS[i].rooms) == -1){
+                        PROJECTS[i].rooms.push(room.key);
+                }
+            }
+        }
+    },
+    deleteRoom: function(room_key){
+        for(var i=0; i <= ROOMS.length - 1; i++){
+            if(ROOMS[i].key == room_key){
+                
+                for(var j=0; j < PROJECTS.length - 1; j++){
+                    /* Remove the project -> room reference. */
+                    var idx = $.inArray(ROOMS[i].key, PROJECTS[j].rooms);
+                    if(idx >= 0) PROJECTS[j].rooms.splice(idx, 1);
+                }
+                /* Remove the room */
+                ROOMS.splice(i,1);
+                break;
+            }
+        }
+        return ROOMS;
     }
 
 };
@@ -471,12 +537,15 @@ function selectProject(projectKey, reload){
         return;
     }
 
-    for(var i=0; i < PROJECTS.length; i++){
-        if(PROJECTS[i].key == projectKey){
-            CURRENT_PROJECT = PROJECTS[i];
-            break;
+    if(CURRENT_PROJECT.key != projectKey){
+        for(var i=0; i < PROJECTS.length; i++){
+            if(PROJECTS[i].key == projectKey){
+                CURRENT_PROJECT = PROJECTS[i];
+                break;
+            }
         }
     }
+
     $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
     
     //Remove existing room pages
@@ -488,17 +557,15 @@ function selectProject(projectKey, reload){
 
 console.log('current project rooms length: ' + CURRENT_PROJECT.rooms.length);
 
+    //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
-        //Add a page for each room
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
         console.log('rooms' + rooms);
         for(var i = 0; i <= rooms.length - 1; i++){
             CARO.addItem($('#owl-pages .owl-page.room-page').html());
             //Populate the room data in the inputs.
-            console.log(rooms[i].name);
             initRoomPage(rooms[i]);
         }
-
     }else{
         //just add the default blank room.
         CARO.addItem($('#owl-pages .owl-page.room-page').html());
@@ -635,7 +702,7 @@ function calculateWorkForRoom(event){
     $resultsElem.html(buildResultsTable(tableData));
     $resultsElem.fadeIn(500);
 
-    window.scrollTo(0,0);
+    $("html, body").animate({ scrollTop: 0 }, "slow");
 }
 
 function buildResultsTable(tableData){
@@ -815,13 +882,9 @@ function toggleDropDown(){
     var c = 'open';
 
     if($dropdown.hasClass(c)){
-       console.log('has');
         $dropdown.removeClass(c);
-        console.log($dropdown.attr('class'));
     }else{
-       console.log('add');
         $dropdown.addClass(c);
-        console.log($dropdown.attr('class'));
     };
 }
 
@@ -836,10 +899,12 @@ function selectDropDownItem(){
 }
 
 function initDropdowns(){
+
     $('.dropdown').each( function(index, elem){
         var $elem = $(elem);
         var selectedValue = $elem.find('.dropdown-value').val();
         var dropdownText = $elem.find('.dropdown-text').text().toLowerCase();
+
         if (dropdownText == 'dropdown' || dropdownText == 'menu item' 
           || typeof selectedValue === 'undefined' || selectedValue == ''){
             var defaultItem = $elem.find('.dropdown-menu a:first');
@@ -929,8 +994,7 @@ function getPaints(){
     });
 }
 
-function initSpecificationPage(){
-
+function populateSpecDropdowns(){
     $('.spec-item-block:not(.hidden)').remove();
 
     //Display view, for each surface type, build the dropdown menus.
@@ -938,8 +1002,9 @@ function initSpecificationPage(){
         $newBlock = $('.spec-item-block:first').clone();
         $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
         $.each(PAINTS, function(j, obj) {
+            //TODO: fix ordering after save.
             if (obj.surface_type == SURFACE_TYPES[i]) {
-                //console.log('surface_type ' + obj.surface_type + 'name ' + obj.name + ' order ' + obj.order)
+                console.log('surface_type ' + obj.surface_type + 'name ' + obj.name + ' order ' + obj.order)
                 $newBlock.find('.dropdown-value').attr('id',
                     'select-' + obj.surface_type.toLowerCase().replace(' ', '-') + '-prod-rate');
                 $newBlock.find('ul.dropdown-menu').append(
@@ -951,63 +1016,66 @@ function initSpecificationPage(){
         $newBlock.removeClass('hidden');
         $newBlock.appendTo('#form-view-spec');
     }
-    
-    initDropdowns();
     $('.btn-edit-spec').click( showEditSpecView );
+    initDropdowns();
+}
 
-    //Click events for edit view
-    $('#form-edit-spec .btn-save, #form-edit-spec .btn-cancel').click( function(){ 
-        
-        var $btn = $(this);
-        if($btn.hasClass('btn-save')){
-            var $form = $($btn.closest('#form-edit-spec'));
-            var arrSpecItemData = [];
-            //build up the json data by grabbing values from the inputs
-            $('#form-edit-spec .input-block:not(.hidden)').each( function(index, elem){
-                var $elemBlock = $(elem);
-                arrSpecItemData.push({ 
-                    key: $elemBlock.find('.spec-item-key').val(),
-                    order: $elemBlock.find('.spec-item-order').val(),
-                    name: $elemBlock.find('.spec-item-name').val(),
-                    prod_rate: $elemBlock.find('.spec-item-rate').val(),
-                    surface_type: $('#spec-surface-type').val()
-                });
-            });
-            $.ajax({
-                type: 'POST',
-                url: '/savespec',
-                data: { 
-                  surface_type: $('#spec-surface-type').val(), 
-                  paints: JSON.stringify(arrSpecItemData) 
-                },
-                success: function(data, status, xhr){
-                              PAINTS = JSON.parse(data); 
-                          },
-                async: false
-            });
-        }
+function initSpecificationPage(){
+    populateSpecDropdowns();
+    $('#form-edit-spec .btn-save').click( onSpecSave );
+    $('#form-edit-spec .btn-cancel').click( fadeToViewSpec );
+}
 
-        $('#form-edit-spec').fadeOut('fast', function(){
-            $('#form-edit-spec .input-block:not(.hidden)').remove();
-            initSpecificationPage();
-            $('#form-view-spec').fadeIn('fast');
+function fadeToViewSpec(){
+    $('#form-edit-spec').fadeOut('fast', function(){
+        $('#form-edit-spec .input-block:not(.hidden)').remove();
+        populateSpecDropdowns();
+        $('#form-view-spec').fadeIn('fast');
+    });
+}
+
+function onSpecSave(){
+
+    var arrSpecItemData = [];
+    //build up the json data by grabbing values from the inputs
+    $('#form-edit-spec .input-block:not(.hidden)').each( function(index, elem){
+        var $elemBlock = $(elem);
+        arrSpecItemData.push({ 
+            key: $elemBlock.find('.spec-item-key').val(),
+            order: $elemBlock.find('.spec-item-order').val(),
+            name: $elemBlock.find('.spec-item-name').val(),
+            prod_rate: $elemBlock.find('.spec-item-rate').val(),
+            surface_type: $('#spec-surface-type').val()
         });
     });
 
+    $.ajax({
+        type: 'POST',
+        url: '/savespec',
+        data: { 
+          surface_type: $('#spec-surface-type').val(), 
+          paints: JSON.stringify(arrSpecItemData) 
+        },
+        success: function(data, status, xhr){
+                      PAINTS = JSON.parse(data);
+                      console.log('PAINTS saved.'); 
+                  },
+        complete: fadeToViewSpec,
+        async: true
+    });
+    
 }
 
-function deleteRoom(room){
+function deleteRoom(room_key){
 
     //Do an ajax call to save the room data
     $.ajax({
         type: 'POST',
         url: '/deleteroom',
-        data: { room: JSON.stringify( room ) },
-        dataType: 'json',
+        data: { room_key: room_key },
         success:  function(data, status, xhr){
-                      console.log('DELETED ROOM OK.');
+                      MODEL.deleteRoom(room_key);
                       CURRENT_PROJECT = data;
-                      console.log('current proj rooms: ' + CURRENT_PROJECT.rooms.length);
                       selectProject(CURRENT_PROJECT.key, true);
                   },
         async: true
@@ -1015,14 +1083,24 @@ function deleteRoom(room){
 
 }
 
-function saveRoom(room){
+function saveRoom(room, keyElem){
     //Do an ajax call to save the room data
     $.ajax({
         type: 'POST',
         url: '/saveroom',
         data: { room: JSON.stringify( room ) },
+        dataType: 'json',
         success:  function(data, status, xhr){
-                      console.log('SAVED ROOM OK.');
+                      if(status == 'success'){
+                          alert('Room saved.');
+                          MODEL.updateRoom(data);
+                          if(keyElem != null) {
+                            $(keyElem).val(data.key);
+                          }
+                      }else{
+                          alert('Error saving room.');
+                      }
+                      $("html, body").animate({ scrollTop: 0 }, "slow");
                   },
         async: true
     });
@@ -1077,29 +1155,29 @@ function initRoomPage(room){
     //Use the default room settings if room object not passed in.
     if(room == null){
         room = {  
+            "name": 'Default Room',
             "radiator_height": getf('#default-radiator-height'),
-            "radiator_width": getf('#default-radiator-width'),
-            "door_quantity": '',
+            "radiator_width": getf('#default-radiator-width'),           
             "window_width": getf('#default-window-width'),
             "window_height": getf('#default-window-height'),
-            "room_length": 5,
-            "radiator_quantity": '',
-            "door_height": getf('#default-door-height'),
-            "name": "Default Room",
+            "room_length": '',
+            "room_width": '',
             "room_height": getf('#default-room-height'),
+            "radiator_quantity": '',
+            "door_quantity": '',
+            "door_height": getf('#default-door-height'),    
+            "door_width": 0.9,        
             "window_quantity": '',
-            "room_width": getf('#default-door-width'),
-            "door_width": 0.9
         }
     } 
 
+    $page.find('.room-key').val(room.key);
     $page.find('.room-title').val(room.name);
     $page.find('.room-height').val(room.room_height);
     $page.find('.room-width').val(room.room_width);
     $page.find('.room-length').val(room.room_length);
-    if(room.door_quantity >= 1) console.log(room.door_quantity);
     $page.find('.door-qty').val(room.door_quantity);
-    $page.find('.door-width').val(room.room_width);
+    $page.find('.door-width').val(room.door_width);
     $page.find('.door-height').val(room.door_height);
     $page.find('.window-qty').val(room.window_quantity);
     $page.find('.window-width').val(room.window_width);
@@ -1109,6 +1187,17 @@ function initRoomPage(room){
     $page.find('.radiator-height').val(room.radiator_height);
     
     $page.find('.positive-negative-first,.positive-negative-second').click( switchSign );
+
+    var $genDropdown = $page.find('.general-surface-group ul.dropdown-menu');
+    $genDropdown.empty();
+    $.each(PAINTS, function(j, paint) {
+        if (paint.surface_type == 'Doors') {
+            $genDropdown.append(
+                '<li><a role="menuitem" data-value="' + paint.prod_rate + '" >' 
+                + paint.name + ' (' + paint.prod_rate + ') </a></li>'
+            );
+        }
+    });
 
     var $isolDropdown = $page.find('.isolated-surface-group ul.dropdown-menu');
     $isolDropdown.empty();
@@ -1121,46 +1210,57 @@ function initRoomPage(room){
         }
     });
 
-    $page.find('.btn-room-calculate').click( calculateWorkForRoom );
-    $page.find('.btn-delete-room').click( function(){
-        if(CURRENT_PROJECT.rooms.length >= 1){
-            deleteRoom(room);
-        }else{
-            alert('Room not saved yet.');
-        }
-    });
+    $page.find('.btn-calculate-room').click( calculateWorkForRoom );
+    $page.find('.btn-delete-room').click( onDeleteRoomClick );
+    $page.find('.btn-save-room').click( onSaveRoomClick );
 
-    $page.find('.btn-save-room').click( function(){
-        var $page = $(this).closest('.owl-item');
-        var getf = function(elemId){
-            return parseFloat($page.find(elemId).val());
-        }
-        if(isObjectEmpty(CURRENT_PROJECT)){
-            alert('Please select a project first.');
-        }else{
-          console.log('room name: '+$page.find('.room-title').val());
-            saveRoom({
-                key:                $page.find('.room-key').val(),
-                name:               $page.find('.room-title').val(),
-                room_length:        getf('.room-length'),
-                room_width:         getf('.room-width'),
-                room_height:        getf('.room-height'),
-                door_quantity:      getf('.door-qty'),
-                door_width:         getf('.door-width'),
-                door_height:        getf('.door-height'),
-                window_quantity:    getf('.window-qty'),
-                window_width:       getf('.window-width'),
-                window_height:      getf('.window-height'),
-                radiator_quantity:  getf('.radiator-qty'),
-                radiator_width:     getf('.radiator-width'),
-                radiator_height:    getf('.radiator-height'),
-                is_default:         false,
-                project:            CURRENT_PROJECT.key
-            });
-        }
-    });
-
+    initIntegerInputs();
     initDecimalInputs();
+    initDropdowns();
+}
+
+function onDeleteRoomClick(){
+    if(CURRENT_PROJECT.rooms.length >= 1){
+        deleteRoom($(this).closest('.owl-item').find('.room-key').val());
+    }else{
+        alert('Room not saved yet.');
+    }
+}
+
+function onSaveRoomClick(){
+
+    var $page = $(this).closest('.owl-item');
+    var getf = function(elemId){
+        return parseFloat($page.find(elemId).val());
+    }
+
+    if(isObjectEmpty(CURRENT_PROJECT)){
+        alert('Please select a project first.');
+    }else{
+        saveRoom({
+            key:                $page.find('.room-key').val(),
+            name:               $page.find('.room-title').val(),
+            room_length:        getf('.room-length'),
+            room_width:         getf('.room-width'),
+            room_height:        getf('.room-height'),
+            door_quantity:      getf('.door-qty'),
+            door_width:         getf('.door-width'),
+            door_height:        getf('.door-height'),
+            window_quantity:    getf('.window-qty'),
+            window_width:       getf('.window-width'),
+            window_height:      getf('.window-height'),
+            radiator_quantity:  getf('.radiator-qty'),
+            radiator_width:     getf('.radiator-width'),
+            radiator_height:    getf('.radiator-height'),
+            is_default:         false,
+            project:            CURRENT_PROJECT.key
+        }, '.room-key');
+    }
+
+}
+
+function initIntegerInputs(){
+    $('.integer').keydown( keydownIntegerInput );
 }
 
 function initDecimalInputs(){
@@ -1168,7 +1268,6 @@ function initDecimalInputs(){
     $('.decimal').keyup( keyupDecimalInput );
     $('.decimal').bind( 'blur', blurDecimal );
     $('.decimal').blur();
-    console.log('init dec');
 }
 
 function svgEl(tagName) {
@@ -1275,6 +1374,7 @@ $(document).ready(function() {
 
     var $loading = $('#loadingDiv');
     $(document).ajaxStart(function () {
+      console.log('start');
         $loading.show();
       }).ajaxStop(function () {
         $loading.hide();
@@ -1285,8 +1385,9 @@ $(document).ready(function() {
     initRoomDefaultsPage();
     initProjectsPage();
 
-    $('.integer').keydown( keydownIntegerInput );
     $('body').bind('touchstart click', blurInputFocus );
+
+    initIntegerInputs();
     initDecimalInputs();
     initAddInputBlockButtons();
     initDropdowns();
