@@ -45,7 +45,8 @@ button {
 #owl-pages{
     display:none;
 }
-.btn-save, .btn-cancel, .btn-calculate-room, .btn-save-room, .btn-delete-room {
+.btn-save, .btn-cancel, #btn-create-project, .btn-calculate-room, 
+.btn-save-room, .btn-delete-room {
     display: inline-block;
     min-width: 100px;
     min-height: 40px;
@@ -85,7 +86,7 @@ input[type="radio"] {
 .input-group, .input-block {
     overflow: visible;
     clear:left;
-    max-width: 280px;
+    /* max-width: 400px; */
 }
 .dropdown, .dropup {
     position: relative;
@@ -175,26 +176,6 @@ input[type="radio"] {
     padding:5px;
     background-color:cyan;
 }
-/* CAROUSEL */
-.owl-theme > .owl-controls > .owl-pagination > .owl-page > span {
-    width:20px;
-    height:20px;
-}
-.owl-theme .owl-controls .owl-buttons div {
-    position: absolute;
-}
-.owl-theme .owl-controls .owl-buttons .owl-prev {
-    left: 10px;
-    top: 0;
-    margin:0;
-    padding:10px;
-}
-.owl-theme .owl-controls .owl-buttons .owl-next {
-    right: 10px;
-    top: 0;
-    margin:0;
-    padding:10px;
-}
 th {
     text-align: left;
 }
@@ -246,7 +227,7 @@ td {
 .form-row {
 	overflow:visible;
 	margin:10px 0 5px 0;
-	max-width:280px;
+	/* max-width:400px; */
 }
 .form-row > label {
 	display:block;
@@ -307,6 +288,26 @@ td {
     border-top-left-radius:4px;
     border-bottom-left-radius:4px;
 }
+/* ********************** CAROUSEL ****************************** */
+.owl-theme > .owl-controls > .owl-pagination > .owl-page > span {
+    width:20px;
+    height:20px;
+}
+.owl-theme .owl-controls .owl-buttons div {
+    position: absolute;
+}
+.owl-theme .owl-controls .owl-buttons .owl-prev {
+    left: 10px;
+    top: 0;
+    margin:0;
+    padding:10px;
+}
+.owl-theme .owl-controls .owl-buttons .owl-next {
+    right: 10px;
+    top: 0;
+    margin:0;
+    padding:10px;
+}
 /* ********************* Specification Page ********************* */
 #form-edit-spec .input-block {
     border-top:2px solid #ccc;
@@ -318,7 +319,7 @@ td {
     display:none;
 }
 #form-edit-spec > h2 {
-    max-width:280px;
+    /* max-width:400px; */
 }
 .btn-edit-spec {
     float:right;
@@ -430,6 +431,16 @@ ul#projects-list li {
     border:1px solid #ccc;
     border-radius:4px;
     cursor:pointer;
+}
+input#new-project-title {
+    width:220px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+#btn-create-project {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
 }
 .project-title, .project-date-created {
     border:none;

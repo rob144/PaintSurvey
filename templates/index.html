@@ -110,6 +110,11 @@
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
                         <h2>Projects</h2>
+                        <div class='form-row'>
+                            <label>Create New</label>
+                            <input id='new-project-title' type='text' placeholder='Project Title'/>
+                        </div>
+                        <input id='btn-create-project' type='button' value='Create'/>
                         <ul id='projects-list'>
                             <li class='project-item hidden'>
                                 <input type='hidden' class='project-key' />
@@ -122,12 +127,6 @@
                                 </div>
                             </li>
                         </ul>
-
-                        <div class='form-row'>
-                            <label>Create New</label>
-                            <input id='new-project-title' type='text' placeholder='Project Title'/>
-                        </div>
-                        <input id='btn-create-project' type='button' value='Confirm'/>
                     </div>
                 </div>
             </div>
@@ -475,11 +474,8 @@ var MODEL = {
 
 };
 
-
 $.fn.hasAncestor = function(a) {
-    return this.filter(function() {
-        return !!$(this).closest(a).length;
-    });
+    return $(this).closest(a).length >= 1 ? true : false;
 };
 
 //Add the projects to the list
@@ -489,7 +485,7 @@ function populateProjects(projects){
         var $newBlock = $('.project-item:first').clone();
         $newBlock.find('.project-key').val( projects[i].key );
         $newBlock.find('.project-title').val( projects[i].title );
-        $newBlock.find('.project-date-created').val(
+        $newBlock.find('.project-date-created').text(
             projects[i].date_created.split('.')[0].replace('T',' ')
         );
         $newBlock.removeClass('hidden');
@@ -521,10 +517,7 @@ function populateProjects(projects){
             console.log('edit');
             event.stopPropagation();
         });
-        $newBlock.find('.btn-delete-project').click(function(event){
-            console.log('delete');
-            event.stopPropagation();
-        });
+        $newBlock.find('.btn-delete-project').click( deleteProject );
 
         $newBlock.appendTo('#projects-list'); 
     }
@@ -555,12 +548,9 @@ function selectProject(projectKey, reload){
         }
     }
 
-console.log('current project rooms length: ' + CURRENT_PROJECT.rooms.length);
-
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
-        console.log('rooms' + rooms);
         for(var i = 0; i <= rooms.length - 1; i++){
             CARO.addItem($('#owl-pages .owl-page.room-page').html());
             //Populate the room data in the inputs.
@@ -581,15 +571,33 @@ function createProject(){
             type: 'POST',
             url: '/createproject',
             data: { projectTitle: $('#new-project-title').val() },
+            dataType: 'json',
             success: function(data){ 
-              alert('Project created successfully.'); 
-              populateProjects(JSON.parse(data));
-              //selectProject();
+              PROJECTS = data;
+              populateProjects(PROJECTS);
             }
         });
     }else{
         alert('Project title can not be blank!');
     }
+}
+
+function deleteProject(){
+
+    var project_key = $(this).closest('.project-item').find('.project-key').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/deleteproject',
+        data: { project_key: project_key },
+        dataType: 'json',
+        success: function(data){ 
+          PROJECTS = data;
+          //TODO:update any orphan rooms.
+          populateProjects(PROJECTS);
+        },
+        async: true
+    });
 }
 
 function calculateWorkForRoom(event){
@@ -830,12 +838,14 @@ function blurDecimal(){
 }
 
 function blurInputFocus(event){
-    var $elem = $(this);
+
     var tagName = event.target.tagName.toLowerCase();
     if(tagName != 'input' && tagName != 'select'){
         $(':focus').blur();
     }
-    if(!$elem.hasAncestor('.dropdown')){
+    var $elem = $(event.target);
+    if($elem.hasAncestor('.dropdown-menu') == false
+      && $elem.hasAncestor('.dropdown-btn') == false){
        $('.dropdown.open').removeClass('open');
     }
 }
@@ -988,9 +998,8 @@ function getPaints(){
     $.ajax({
         type: 'GET',
         url: '/getpaints',
-        success:  function(data, status, xhttp){
-                      PAINTS = JSON.parse(data);    
-                  }
+        dataType: 'json',
+        success:  function(data, status, xhttp){ PAINTS = data; }
     });
 }
 
@@ -1002,9 +1011,7 @@ function populateSpecDropdowns(){
         $newBlock = $('.spec-item-block:first').clone();
         $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
         $.each(PAINTS, function(j, obj) {
-            //TODO: fix ordering after save.
             if (obj.surface_type == SURFACE_TYPES[i]) {
-                console.log('surface_type ' + obj.surface_type + 'name ' + obj.name + ' order ' + obj.order)
                 $newBlock.find('.dropdown-value').attr('id',
                     'select-' + obj.surface_type.toLowerCase().replace(' ', '-') + '-prod-rate');
                 $newBlock.find('ul.dropdown-menu').append(
@@ -1056,12 +1063,8 @@ function onSpecSave(){
           surface_type: $('#spec-surface-type').val(), 
           paints: JSON.stringify(arrSpecItemData) 
         },
-        success: function(data, status, xhr){
-                      PAINTS = JSON.parse(data);
-                       console.log('PAINTS saved.');
-                      console.log(JSON.stringify(PAINTS, null, 4));
-                      
-                  },
+        dataType: 'json',
+        success: function(data, status, xhr){ PAINTS = data; },
         complete: fadeToViewSpec,
         async: true
     });
@@ -1219,6 +1222,8 @@ function initRoomPage(room){
     initIntegerInputs();
     initDecimalInputs();
     initDropdowns();
+    initAddInputBlockButtons();
+
 }
 
 function onDeleteRoomClick(){
@@ -1288,9 +1293,8 @@ function addSvgElems(containerIds, svgElemData){
     }
 }
 
-function initAddInputBlockButtons(){
+function addSvgButtons(){
 
-    //Init 'add block' svg button icons
     addSvgElems(
         [ '#btn-add-spec-item','.btn-add-row' ],
         [
@@ -1326,8 +1330,13 @@ function initAddInputBlockButtons(){
         ]
     );
 
+}
+
+function initAddInputBlockButtons(){
+console.log('initAddInputBlockButtons');
+
     //Buttons to allow user to add groups of inputs.
-    //Sets up events for various inputs in the new block if present.
+    //Set up events for various inputs in the new block if present.
     $('#btn-add-spec-item,.btn-add-row').click( function(){
         var $group = $(this).closest('.input-group');
         var $newBlock = $group.find('.input-block:last').clone();
@@ -1388,6 +1397,7 @@ $(document).ready(function() {
     initProjectsPage();
 
     $('body').bind('touchstart click', blurInputFocus );
+    addSvgButtons();
 
     initIntegerInputs();
     initDecimalInputs();

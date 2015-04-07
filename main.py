@@ -21,10 +21,10 @@ def include_file(filename):
 JINJA_ENV.globals['include_file'] = include_file
 
 def json_serial(obj):
-    """JSON serializer for objects not serializable by default json code"""
+    #JSON serializer for objects not serializable by default json code
     if isinstance(obj, datetime):
         return obj.isoformat()
-    if(str(type(obj)) == "<class 'google.appengine.ext.ndb.key.Key'>"):
+    if(type(obj) == ndb.key.Key):
         return obj.urlsafe()
 
 def str2bool(s):
@@ -143,6 +143,7 @@ class Home(webapp2.RequestHandler):
 
 class GetPaints(webapp2.RequestHandler):
     def get(self):
+        self.response.headers['Content-Type'] = 'application/json'
         self.response.write(
             json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(200)])
         )
@@ -154,7 +155,6 @@ class SaveSpec(webapp2.RequestHandler):
         resp_paints = []
         paint_keys = []
 
-        #Do adds and updates
         for obj in paints:
             paint_keys.append(obj['key'])
             if(obj['key'] != ""):
@@ -180,29 +180,49 @@ class SaveSpec(webapp2.RequestHandler):
             if p.key.urlsafe() not in paint_keys:
                 p.key.delete()
 
-        #Combine all the paints so we send all the most up to date data to the client
-        other_paints = Paint.query(Paint.surface_type != surface_type).order(Paint.surface_type, Paint.order).fetch(1000)
+        #Combine the other types of paints so we send all the
+        #most up to date data to the client
+        other_paints = Paint.query(Paint.surface_type != surface_type).order(Paint.surface_type, Paint.order).fetch(500)
         for p in other_paints:
             resp_paints.append(p)
 
         resp_paints.sort(key=lambda x:x.order)
 
-        self.response.write(
-            json.dumps([p.to_dict() for p in resp_paints])
-        )
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps([p.to_dict() for p in resp_paints]))
         
 class CreateProject(webapp2.RequestHandler):
     def post(self):
         project_title = self.request.get('projectTitle')
-        new_project = Project(id=3, username='Test', title=project_title, date_created=datetime.now())
-        new_project.put()
-        time.sleep(1) #Allow time for project to save to datastore
-        self.response.write( json.dumps([p.to_dict() for p in Project.query().fetch(20)], default=json_serial) )
+        project = Project(username='Test', title=project_title, date_created=datetime.now())
+        project = project.put().get()
+        projects = Project.query().fetch(50)
+        
+        if(next((p for p in projects if p.key == project.key), None)) == None:
+            projects.append(project)
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write( json.dumps([p.to_dict() for p in projects], default=json_serial) )
 
 class GetProject(webapp2.RequestHandler):
     def post(self):
         project = ndb.Key(urlsafe=self.request.get('project_key')).get()
+
+        self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(project.to_dict(), default=json_serial))
+
+class DeleteProject(webapp2.RequestHandler):
+    def post(self):
+
+        project = ndb.Key(urlsafe=self.request.get('project_key')).get()
+        if(len(project.rooms) >= 1):
+            for room in project.rooms:
+                room.delete()
+        project.key.delete()
+
+        projects = Project.query().fetch(50)
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write( json.dumps([p.to_dict() for p in projects], default=json_serial) )
 
 class SaveRoom(webapp2.RequestHandler):
     def post(self):
@@ -212,30 +232,26 @@ class SaveRoom(webapp2.RequestHandler):
         if(obj_room['key'] != ""):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
-        print('door qty' + str(obj_room['door_quantity']))
-        print('window qty' + str(obj_room['window_quantity']))
-
-        room.name = obj_room['name']
-        room.room_width = obj_room['room_width']
-        room.room_length = obj_room['room_length']
-        room.room_height = obj_room['room_height']
-        room.door_quantity = obj_room['door_quantity']
-        room.door_width = obj_room['door_width']
-        room.door_height = obj_room['door_height']
-        room.window_quantity = obj_room['window_quantity']
-        room.window_width = obj_room['window_width']
-        room.window_height = obj_room['window_height']
-        room.radiator_width = obj_room['radiator_width']
-        room.radiator_height = obj_room['radiator_height']
-        room.is_default = obj_room['is_default']
+        room.name               = obj_room['name']
+        room.room_width         = obj_room['room_width']
+        room.room_length        = obj_room['room_length']
+        room.room_height        = obj_room['room_height']
+        room.door_quantity      = obj_room['door_quantity']
+        room.door_width         = obj_room['door_width']
+        room.door_height        = obj_room['door_height']
+        room.window_quantity    = obj_room['window_quantity']
+        room.window_width       = obj_room['window_width']
+        room.window_height      = obj_room['window_height']
+        room.radiator_quantity  = obj_room['radiator_quantity']
+        room.radiator_width     = obj_room['radiator_width']
+        room.radiator_height    = obj_room['radiator_height']
+        room.is_default         = obj_room['is_default']
 
         room = room.put().get()
-        print('save room: ' + room.name + ' ' + str(room.is_default));
 
         if(obj_room['project'] != ""):
             #Get the project entity and append the room.
             room.project = ndb.Key(urlsafe=obj_room['project'])
-            print('save room to project ' + str(room.project))
             project = room.project.get()
             project.rooms.append(room.put())
             project.put()
@@ -247,16 +263,11 @@ class DeleteRoom(webapp2.RequestHandler):
     def post(self):
         room = ndb.Key(urlsafe=self.request.get('room_key')).get()
         project = room.project.get()
-        print(room.key)
-        print('before ' + str(project.rooms))
         if room.key in project.rooms:
             idx = project.rooms.index(room.key)
             del project.rooms[idx]
             room.project = project.put()
 
-            print('Delete room ' + str(room.key.delete()))
-
-        print('after ' + str(project.rooms))
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(project.to_dict(), default=json_serial))   
 
@@ -264,6 +275,7 @@ application = webapp2.WSGIApplication([
     ('/', Home),
     ('/createproject', CreateProject),
     ('/getproject', GetProject),
+    ('/deleteproject', DeleteProject),
     ('/saveroom', SaveRoom),
     ('/deleteroom', DeleteRoom),
     ('/savespec', SaveSpec),
