@@ -173,7 +173,7 @@ class SaveSpec(webapp2.RequestHandler):
                         order = Paint.query().order(-Paint.order).fetch(1)[0].order + 1
                     ).put().get()
                 )
-                
+
         #Do deletions
         all_paints = Paint.query(Paint.surface_type == surface_type).fetch(200)
         for p in all_paints:
@@ -181,9 +181,11 @@ class SaveSpec(webapp2.RequestHandler):
                 p.key.delete()
 
         #Combine all the paints so we send all the most up to date data to the client
-        other_paints = Paint.query(Paint.surface_type != surface_type).fetch(1000)
+        other_paints = Paint.query(Paint.surface_type != surface_type).order(Paint.surface_type, Paint.order).fetch(1000)
         for p in other_paints:
             resp_paints.append(p)
+
+        resp_paints.sort(key=lambda x:x.order)
 
         self.response.write(
             json.dumps([p.to_dict() for p in resp_paints])

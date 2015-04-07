@@ -1058,7 +1058,9 @@ function onSpecSave(){
         },
         success: function(data, status, xhr){
                       PAINTS = JSON.parse(data);
-                      console.log('PAINTS saved.'); 
+                       console.log('PAINTS saved.');
+                      console.log(JSON.stringify(PAINTS, null, 4));
+                      
                   },
         complete: fadeToViewSpec,
         async: true
