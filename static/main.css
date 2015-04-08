@@ -36,11 +36,26 @@ button {
     margin:0 0 0 1px;
     cursor:pointer;
 }
-#loadingDiv{
+#loadingDivOuter{
     display:none;
-    position:absolute;
-    top:50px;
-    left:50px;
+    position:fixed;
+    width:84px;
+    height:94px;
+    padding:10px;
+    text-align:center;
+    background-color:#fff;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+#loadingDiv{
+    width:64px;
+    height:64px;
+    margin:10px auto 0 auto;
+    text-align:center;
+}
+#loadingDiv img {
+    width:64px;
+    height:64px;
 }
 #owl-pages{
     display:none;

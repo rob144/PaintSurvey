@@ -160,10 +160,11 @@ class SaveSpec(webapp2.RequestHandler):
             if(obj['key'] != ""):
                 #Update existing paint
                 paint = ndb.Key(urlsafe=obj['key']).get()
-                paint.name = obj['name'];
-                paint.prod_rate = float(obj['prod_rate']);
-                paint.order = int(obj['order']);
-                resp_paints.append(paint.put().get())
+                if(paint):
+                    paint.name = obj['name'];
+                    paint.prod_rate = float(obj['prod_rate']);
+                    paint.order = int(obj['order']);
+                    resp_paints.append(paint.put().get())
             else:
                 #Create new paint
                 resp_paints.append(
