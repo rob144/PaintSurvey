@@ -374,11 +374,18 @@
             </div>
         </div>
 
-        <div id='loadingDiv'>THIS IS THE LOADING DIV</div>
+        <div id='loadingDivOuter'>
+            <span>LOADING</span>
+            <div id='loadingDiv'>
+                <img src='/static/loading.gif' alt='loading' />
+            </div>
+        </div>
+
     </body>
 
 <script>
 //Global variable to store current project data
+var LOADING_START_TIME;
 var CARO;
 var CURRENT_PROJECT =   {};
 var PROJECTS        =   JSON.parse('{{ projects|safe }}');
@@ -474,10 +481,6 @@ var MODEL = {
 
 };
 
-$.fn.hasAncestor = function(a) {
-    return $(this).closest(a).length >= 1 ? true : false;
-};
-
 //Add the projects to the list
 function populateProjects(projects){
     $('.project-item:not(.hidden)').remove();
@@ -567,14 +570,15 @@ function selectProject(projectKey, reload){
 
 function createProject(){
     if($('#new-project-title').val().match(/\S/g)){
-        $.ajax({
-            type: 'POST',
+        doXhr({ 
+            httpMethod: 'POST', 
             url: '/createproject',
             data: { projectTitle: $('#new-project-title').val() },
             dataType: 'json',
-            success: function(data){ 
-              PROJECTS = data;
-              populateProjects(PROJECTS);
+            successFunc: function(data){ 
+                PROJECTS = data;
+                populateProjects(PROJECTS);
+                $('#new-project-title').val('');
             }
         });
     }else{
@@ -586,17 +590,16 @@ function deleteProject(){
 
     var project_key = $(this).closest('.project-item').find('.project-key').val();
 
-    $.ajax({
-        type: 'POST',
+    doXhr({
+        httpMethod: 'POST', 
         url: '/deleteproject',
         data: { project_key: project_key },
         dataType: 'json',
-        success: function(data){ 
-          PROJECTS = data;
-          //TODO:update any orphan rooms.
-          populateProjects(PROJECTS);
-        },
-        async: true
+        successFunc: function(data){
+            PROJECTS = data;
+            //TODO:update any orphan rooms.
+            populateProjects(PROJECTS);
+        }
     });
 }
 
@@ -995,11 +998,11 @@ function showEditSpecView(){
 }
 
 function getPaints(){
-    $.ajax({
-        type: 'GET',
+    doXhr({
+        httpMethod: 'GET',
         url: '/getpaints',
         dataType: 'json',
-        success:  function(data, status, xhttp){ PAINTS = data; }
+        successFunc: function(data){ PAINTS = data; }
     });
 }
 
@@ -1056,17 +1059,18 @@ function onSpecSave(){
         });
     });
 
-    $.ajax({
-        type: 'POST',
+    doXhr({
+        httpMethod: 'POST',
         url: '/savespec',
         data: { 
           surface_type: $('#spec-surface-type').val(), 
           paints: JSON.stringify(arrSpecItemData) 
         },
         dataType: 'json',
-        success: function(data, status, xhr){ PAINTS = data; },
-        complete: fadeToViewSpec,
-        async: true
+        successFunc: function(data){ 
+            PAINTS = data; 
+            fadeToViewSpec();
+        }
     });
     
 }
@@ -1074,40 +1078,38 @@ function onSpecSave(){
 function deleteRoom(room_key){
 
     //Do an ajax call to save the room data
-    $.ajax({
-        type: 'POST',
+    doXhr({
+        httpMethod: 'POST',
         url: '/deleteroom',
         data: { room_key: room_key },
-        success:  function(data, status, xhr){
-                      MODEL.deleteRoom(room_key);
-                      CURRENT_PROJECT = data;
-                      selectProject(CURRENT_PROJECT.key, true);
-                  },
-        async: true
+        successFunc: function(data){
+                          MODEL.deleteRoom(room_key);
+                          CURRENT_PROJECT = data;
+                          selectProject(CURRENT_PROJECT.key, true);
+                      }
     });
 
 }
 
 function saveRoom(room, keyElem){
     //Do an ajax call to save the room data
-    $.ajax({
-        type: 'POST',
+    doXhr({
+        httpMethod: 'POST',
         url: '/saveroom',
         data: { room: JSON.stringify( room ) },
         dataType: 'json',
-        success:  function(data, status, xhr){
-                      if(status == 'success'){
-                          alert('Room saved.');
-                          MODEL.updateRoom(data);
-                          if(keyElem != null) {
-                            $(keyElem).val(data.key);
+        successFunc:  function(data, status){
+                          if(status == 'success'){
+                              alert('Room saved.');
+                              MODEL.updateRoom(data);
+                              if(keyElem != null) {
+                                  $(keyElem).val(data.key);
+                              }
+                          }else{
+                              alert('Error saving room.');
                           }
-                      }else{
-                          alert('Error saving room.');
+                          $("html, body").animate({ scrollTop: 0 }, "slow");
                       }
-                      $("html, body").animate({ scrollTop: 0 }, "slow");
-                  },
-        async: true
     });
 
 }
@@ -1143,7 +1145,8 @@ function initRoomDefaultsPage(){
             radiator_quantity: 0,
             radiator_width: parseFloat($('#default-radiator-width').val()),
             radiator_height: parseFloat($('#default-radiator-height').val()),
-            is_default: true
+            is_default: true,
+            project: ''
         });
     });      
 }
@@ -1336,7 +1339,6 @@ function addSvgButtons(){
 }
 
 function initAddInputBlockButtons(){
-console.log('initAddInputBlockButtons');
 
     //Buttons to allow user to add groups of inputs.
     //Set up events for various inputs in the new block if present.
@@ -1359,6 +1361,22 @@ console.log('initAddInputBlockButtons');
         });
     });
 }
+
+$(document).ready(function() {
+
+    initOwlCarousel();
+    initSpecificationPage();
+    initRoomDefaultsPage();
+    initProjectsPage();
+
+    $('body').bind('touchstart click', blurInputFocus );
+    addSvgButtons();
+
+    initIntegerInputs();
+    initDecimalInputs();
+    initAddInputBlockButtons();
+    initDropdowns();
+});
 
 function isObjectEmpty(object)
 {
@@ -1384,28 +1402,58 @@ function isObjectEmpty(object)
     }
 }
 
-$(document).ready(function() {
+function doXhr(params) {
 
-    var $loading = $('#loadingDiv');
-    $(document).ajaxStart(function () {
-      console.log('start');
-        $loading.show();
-      }).ajaxStop(function () {
-        $loading.hide();
+  var $loading = $('#loadingDivOuter');
+  var success = false;
+
+  return $.ajax({
+      url:        params.url,
+      type:       params.httpMethod,
+      data:       params.data,
+      dataType:   params.dataType,
+      beforeSend: function(){
+          LOADING_START_TIME = new Date($.now());
+          $loading.center();
+          $loading.show();
+      },
+      success: function(data, status, xhr){
+          success = true;
+          var elapsed = new Date($.now()) - LOADING_START_TIME;
+          setTimeout(
+              function(){
+                  params.successFunc(data, status, xhr);
+                  $loading.hide(); 
+              }, 1000 - elapsed
+          );
+      }
+  }).always(function() {
+      if(!success){
+          var elapsed = new Date($.now()) - LOADING_START_TIME;
+          setTimeout(
+              function(){
+                  params.successFunc(data, status, xhr);
+                  $loading.hide(); 
+              }, 1000 - elapsed
+          );
+      }
+  })
+
+}
+
+$.fn.hasAncestor = function(a) {
+    return $(this).closest(a).length >= 1 ? true : false;
+};
+
+$.fn.center = function() {
+    var container = $(window);
+    var top = -this.outerHeight() / 2;
+    var left = -this.outerWidth() / 2;
+    return this.css('position', 'fixed').css({
+      'margin-left': left + 'px', 
+      'margin-top': top + 'px', 
+      'left': '50%', 'top': '50%'
     });
-
-    initOwlCarousel();
-    initSpecificationPage();
-    initRoomDefaultsPage();
-    initProjectsPage();
-
-    $('body').bind('touchstart click', blurInputFocus );
-    addSvgButtons();
-
-    initIntegerInputs();
-    initDecimalInputs();
-    initAddInputBlockButtons();
-    initDropdowns();
-});
+}
 </script>
 </html>
