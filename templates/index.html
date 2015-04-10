@@ -54,7 +54,7 @@
                                     <div class="dropdown">
                                         <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
                                             <span class='dropdown-text'>Dropdown</span>
-                                            <input type='hidden' id='select-ceiling-prod-rate' class='dropdown-value'/>
+                                            <input type='hidden' id='select-paint-prod-rate' class='dropdown-value'/>
                                             <span class="caret"></span>
                                         </button>
                                         <ul class='dropdown-menu' role='menu'></ul>
@@ -296,7 +296,7 @@
                                   <div class="dropdown">
                                       <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
                                           <span class='dropdown-text'>Dropdown</span>
-                                          <input type='hidden' class='dropdown-value general-surface-prod-rate'/>
+                                          <input type='hidden' class='dropdown-value general-surface-key'/>
                                           <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" role="menu">
@@ -336,7 +336,7 @@
                                   <div class="dropdown">
                                       <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
                                           <span class='dropdown-text'>Dropdown</span>
-                                          <input type='hidden' class='dropdown-value isolated-surface-prod-rate'/>
+                                          <input type='hidden' class='dropdown-value isolated-surface-key'/>
                                           <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" role="menu">
@@ -398,7 +398,7 @@ var MODEL = {
     getDefaultRoom: function(){
         for(var i=0; i <= ROOMS.length - 1; i++){
             if(ROOMS[i].is_default == true){
-                return rooms[i];
+                return ROOMS[i];
             }
         }
     },
@@ -414,7 +414,7 @@ var MODEL = {
     getProject: function(project_key){
         var project = false;
         for(var i=0; i <= PROJECTS.length - 1; i++){ 
-            if(PROJECTS[i].key == project_keyy){
+            if(PROJECTS[i].key == project_key){
                 found = true;
                 project = PROJECTS[i];
             }
@@ -439,6 +439,13 @@ var MODEL = {
         }
         if(!found){
             PROJECTS.push(project);
+        }
+    },
+    getRoom: function(room_key){
+        for(var i=0; i <= ROOMS.length - 1; i++){
+            if(ROOMS[i].key == room_key){
+                return ROOMS[i];
+            }
         }
     },
     updateRoom: function(room){
@@ -477,7 +484,14 @@ var MODEL = {
             }
         }
         return ROOMS;
-    }
+    },
+    getPaint: function(paint_key){
+        for(var i=0; i <= PAINTS.length - 1; i++){
+            if(PAINTS[i].key == paint_key){
+                return PAINTS[i];
+            }
+        }
+    },
 
 };
 
@@ -603,10 +617,78 @@ function deleteProject(){
     });
 }
 
+function getRoomGroupData($page){
+
+    var results = {
+        'bayBreastVals':[],
+        'ceilingAdjustVals':[],
+        'wallAdjustVals':[],
+        'genSurfaceVals':[],
+        'isolSurfaceVals':[],
+        toString: function(){
+            var str = '';
+            str += 'bayBreastVals [' + this.bayBreastVals + ']\n';
+            str += 'ceilingAdjustVals [' + this.ceilingAdjustVals + ']\n';
+            str += 'wallAdjustVals [' + this.wallAdjustVals + ']\n';
+            str += 'genSurfaceVals [' + this.genSurfaceVals + ']\n';
+            str += 'isolSurfaceVals [' + this.isolSurfaceVals + ']\n';
+            return str;
+        }
+    };
+
+    var getf = function(inputElem, ancestor){
+        $parent = (ancestor != null) ? $(ancestor) : $page;
+        var floatVal = parseFloat($parent.find(inputElem).val());
+        return Math.abs(floatVal) >= 0 ? floatVal : 0; 
+    }
+
+    $page.find('.baybreast-group .input-block').each( function(index, elem){
+        results.bayBreastVals.push([ 
+            getf('.baybreast-depth', elem), 
+            getf('.baybreast-width', elem) 
+        ]);
+    });
+
+    $page.find('.ceiling-adjust-group .input-block').each( function(index, elem){
+        results.ceilingAdjustVals.push([ 
+            getf('.ceiling-adjust-dim1', elem), 
+            getf('.ceiling-adjust-dim2', elem) 
+        ]);
+    });
+
+    $page.find('.wall-adjust-group .input-block').each( function(index, elem){
+        results.wallAdjustVals.push([
+            getf('.wall-adjust-dim1', elem), 
+            getf('.wall-adjust-dim2', elem) 
+        ]);
+    });
+
+    $page.find('.general-surface-group .input-block').each( function(index, elem){
+console.log('gen surf key ' + $(elem).find('.general-surface-key').val());
+        results.genSurfaceVals.push([
+            $(elem).find('.general-surface-key').val(),
+            getf('.general-surface-qty', elem),
+            getf('.general-surface-width', elem),
+            getf('.general-surface-height', elem) 
+        ]);
+    });
+
+    $page.find('.isolated-surface-group .input-block').each( function(index, elem){
+        results.isolSurfaceVals.push([
+            $(elem).find('.isolated-surface-key').val(),
+            getf('.isolated-surface-qty', elem),
+            getf('.isolated-surface-length', elem),
+        ]);
+    });
+
+    return results;
+}
+
 function calculateWorkForRoom(event){
 
+    var $roomForm = $(event.target).closest('.room-form');
     //Validate input first.
-    if(!$(event.target).closest('.room-form').validate({ 
+    if(!$roomForm.validate({ 
             errorPlacement: function(error, element) {
                 error.insertAfter(element.closest('.input-pill'));
             }
@@ -616,25 +698,25 @@ function calculateWorkForRoom(event){
 
     var getf = function(descendant, ancestor){
         var $elem = $(event.target).closest('.pageContent'); 
-        $elem = (typeof ancestor  != 'undefined') ? $(ancestor) : $elem;
+        $elem = (ancestor != null) ? $(ancestor) : $elem;
         var floatVal = parseFloat($elem.find(descendant).val());
-        return Math.abs(floatVal)>=0 ? floatVal : 0; 
+        return Math.abs(floatVal) >= 0 ? floatVal : 0; 
     }
     
-    var roomLength =          getf('.room-length:first');
-    var roomWidth =           getf('.room-width:first');
-    var roomHeight =          getf('.room-height:first');
-    var doorQty =             getf('.door-qty:first');
-    var doorWidth =           getf('.door-width:first');
-    var doorHeight =          getf('.door-height:first');
-    var windowQty =           getf('.window-qty:first');
-    var windowWidth =         getf('.window-width:first');
-    var windowHeight =        getf('.window-height:first');
-    var radiatorQty =         getf('.radiator-qty:first');
-    var radiatorWidth =       getf('.radiator-width:first');
-    var radiatorHeight =      getf('.radiator-height:first');
-    var ceilingAdjust =       getf('.ceiling-adjust-simple');
-    var wallAdjust =          getf('.wall-adjust-simple');
+    var roomLength      =   getf('.room-length:first');
+    var roomWidth       =   getf('.room-width:first');
+    var roomHeight      =   getf('.room-height:first');
+    var doorQty         =   getf('.door-qty:first');
+    var doorWidth       =   getf('.door-width:first');
+    var doorHeight      =   getf('.door-height:first');
+    var windowQty       =   getf('.window-qty:first');
+    var windowWidth     =   getf('.window-width:first');
+    var windowHeight    =   getf('.window-height:first');
+    var radiatorQty     =   getf('.radiator-qty:first');
+    var radiatorWidth   =   getf('.radiator-width:first');
+    var radiatorHeight  =   getf('.radiator-height:first');
+    var ceilingAdjust   =   getf('.ceiling-adjust-simple');
+    var wallAdjust      =   getf('.wall-adjust-simple');
 
     var baybreastWall = 0;
     var baybreastCeiling = 0;
@@ -646,48 +728,46 @@ function calculateWorkForRoom(event){
     var isolSurfSpace = 0;
     var isolSurfHours = 0;
 
-    $('.baybreast-group .input-block').each( function(index, elem){
-        var bbDepth = getf('.baybreast-depth', elem);
-        var bbWidth = getf('.baybreast-width', elem);
+    var roomData = getRoomGroupData($roomForm);
+    
+    for(var i = 0; i <= roomData.bayBreastVals.length - 1; i++){
+        var bbDepth = roomData.bayBreastVals[i][0];
+        var bbWidth = roomData.bayBreastVals[i][1];
         if(Math.abs(bbDepth * bbWidth) > 0){
             baybreastWall += (2 * bbDepth * roomHeight);
             baybreastCeiling += (bbWidth * bbDepth);
             baybreastSkirting += (2 * bbDepth);
         }
-    });
-
-    $('.ceiling-adjust-group .input-block').each( function(index, elem){
-        var dim1 = getf('.ceiling-adjust-dim1', elem);
-        var dim2 = getf('.ceiling-adjust-dim2', elem);
+    }
+    for(var i = 0; i <= roomData.ceilingAdjustVals.length - 1; i++){
+        var dim1 = roomData.ceilingAdjustVals[i][0];
+        var dim2 = roomData.ceilingAdjustVals[i][1];
         if(Math.abs(dim1 * dim2) > 0) ceilingAdjust += (dim1 * dim2);
-    });
-
-    $('.wall-adjust-group .input-block').each( function(index, elem){
-        var dim1 = getf('.wall-adjust-dim1', elem);
-        var dim2 = getf('.wall-adjust-dim2', elem);
+    }
+    for(var i = 0; i <= roomData.wallAdjustVals.length - 1; i++){
+        var dim1 = roomData.wallAdjustVals[i][0];
+        var dim2 = roomData.wallAdjustVals[i][1];
         if(Math.abs(dim1 * dim2) > 0) wallAdjust += (dim1 * dim2);
-    });
-
-    $('.general-surface-group .input-block').each( function(index, elem){
-        var prodRate = getf('.general-surface-prod-rate', elem);
-        var quantity = getf('.general-surface-qty', elem);
-        var dim1 = getf('.general-surface-width', elem);
-        var dim2 = getf('.general-surface-height', elem);
+    }
+    for(var i = 0; i <= roomData.genSurfaceVals.length - 1; i++){
+        var prodRate = MODEL.getPaint(roomData.genSurfaceVals[i][0]).prod_rate;
+        var quantity = roomData.genSurfaceVals[i][1];
+        var dim1 = roomData.genSurfaceVals[i][2];
+        var dim2 = roomData.genSurfaceVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
             genSurfSpace += (quantity * dim1 * dim2);
             genSurfHours += ((quantity * dim1 * dim2) / prodRate);
         }
-    });
-
-    $('.isolated-surface-group .input-block').each( function(index, elem){
-        var prodRate = getf('.isolated-surface-prod-rate', elem);
-        var quantity = getf('.isolated-surface-qty', elem);
-        var dim1 = getf('.isolated-surface-length', elem);
+    }
+    for(var i = 0; i <= roomData.isolSurfaceVals.length - 1; i++){
+        var prodRate = MODEL.getPaint(roomData.isolSurfaceVals[i][0]).prod_rate;
+        var quantity = roomData.isolSurfaceVals[i][1];
+        var dim1 = roomData.isolSurfaceVals[i][2];
         if(Math.abs(quantity * dim1) > 0) {
             isolSurfSpace += (quantity * dim1);
             isolSurfHours += ((quantity * dim1) / prodRate);
         }
-    });
+    }
 
     var doorSpace =     doorQty * doorWidth * doorHeight;
     var doorFrame =     (doorHeight * 2 + doorWidth) * doorQty;
@@ -697,14 +777,20 @@ function calculateWorkForRoom(event){
     var skirtingSpace = (roomLength + roomWidth) * 2 - (doorWidth * doorQty) + baybreastSkirting;
     var radiatorSpace = radiatorQty * radiatorWidth * radiatorHeight;
 
+    var getRate = function(surface_type){
+        var key = $('#select-' + surface_type + '-spec').val();
+        var paint = MODEL.getPaint(key);
+        return parseFloat(paint.prod_rate);
+    };
+
     var tableData = [
-        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / parseInt($('#select-ceilings-prod-rate').val()) },
-        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / parseInt($('#select-walls-prod-rate').val()) },
-        { title: 'DOOR AREA',   amount: doorSpace,       units: 'm2', hours: doorSpace / parseInt($('#select-doors-prod-rate').val()) },
-        { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrame / parseInt($('#select-isolated-surfaces-prod-rate').val()) },
-        { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowSpace / parseInt($('#select-windows-prod-rate').val()) },
-        { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / parseInt($('#select-radiators-prod-rate').val()) },
-        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / parseInt($('#select-isolated-surfaces-prod-rate').val()) }, 
+        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / getRate('ceilings') },
+        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / getRate('walls') },
+        { title: 'DOOR AREA',   amount: doorSpace,       units: 'm2', hours: doorSpace / getRate('doors') },
+        { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrame / getRate('isolated-surfaces') },
+        { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowSpace / getRate('windows') },
+        { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorSpace / getRate('radiators') },
+        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / getRate('isolated-surfaces') }, 
         { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours },
         { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours }
     ];
@@ -891,6 +977,7 @@ function initOwlCarousel(){
 }
 
 function toggleDropDown(){
+  console.log('toggleDropDown');
     var $dropdown = $(this).closest('.dropdown');
     var c = 'open';
 
@@ -911,22 +998,31 @@ function selectDropDownItem(){
     return false;
 }
 
-function initDropdowns(){
+function initDropdown(elem){
 
-    $('.dropdown').each( function(index, elem){
-        var $elem = $(elem);
-        var selectedValue = $elem.find('.dropdown-value').val();
-        var dropdownText = $elem.find('.dropdown-text').text().toLowerCase();
+    var $elem = $(elem);
+    var selectedValue = $elem.find('.dropdown-value').val();
+    var dropdownText = $elem.find('.dropdown-text').text().toLowerCase();
 
-        if (dropdownText == 'dropdown' || dropdownText == 'menu item' 
-          || typeof selectedValue === 'undefined' || selectedValue == ''){
-            var defaultItem = $elem.find('.dropdown-menu a:first');
-            $elem.find('.dropdown-value').val( defaultItem.data('value') );
-            $elem.find('.dropdown-text').text( defaultItem.text() );
-            $elem.find('.dropdown-btn').unbind('click');
-            $elem.find('.dropdown-btn').click( toggleDropDown );
-            $elem.find('.dropdown-menu a').bind( 'click touchstart', selectDropDownItem );
-        }
+    if (dropdownText == 'dropdown' || dropdownText == 'menu item' 
+      || typeof selectedValue === 'undefined' || selectedValue == ''){
+console.log('init dropdown');
+        var defaultItem = $elem.find('.dropdown-menu a:first');
+        $elem.find('.dropdown-value').val( defaultItem.data('value') );
+        $elem.find('.dropdown-text').text( defaultItem.text() );
+    }
+    
+    $elem.find('.dropdown-btn').unbind('click');
+    $elem.find('.dropdown-btn').click( toggleDropDown );
+    $elem.find('.dropdown-menu a').bind( 'click touchstart', selectDropDownItem );
+
+}
+
+function initDropdowns(context){
+    if(context == null) context = $('html');
+    $(context).find('.dropdown').each( function(index, elem){
+        console.log('x');
+        initDropdown(elem);
     });
 }
 
@@ -1013,13 +1109,13 @@ function populateSpecDropdowns(){
     for(var i = 0; i < SURFACE_TYPES.length; i++){
         $newBlock = $('.spec-item-block:first').clone();
         $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
-        $.each(PAINTS, function(j, obj) {
-            if (obj.surface_type == SURFACE_TYPES[i]) {
+        $.each(PAINTS, function(j, paint) {
+            if (paint.surface_type == SURFACE_TYPES[i]) {
                 $newBlock.find('.dropdown-value').attr('id',
-                    'select-' + obj.surface_type.toLowerCase().replace(' ', '-') + '-prod-rate');
+                    'select-' + paint.surface_type.toLowerCase().replace(' ', '-') + '-spec');
                 $newBlock.find('ul.dropdown-menu').append(
-                    '<li><a role="menuitem" data-value="' + obj.prod_rate + '" >' 
-                    + obj.name + ' (' + obj.prod_rate + ') </a></li>'
+                    '<li><a role="menuitem" data-value="' + paint.key + '" >' 
+                    + paint.name + ' (' + paint.prod_rate + ') </a></li>'
                 );
             }
         });
@@ -1027,7 +1123,7 @@ function populateSpecDropdowns(){
         $newBlock.appendTo('#form-view-spec');
     }
     $('.btn-edit-spec').click( showEditSpecView );
-    initDropdowns();
+    initDropdowns($('#form-view-spec'));
 }
 
 function initSpecificationPage(){
@@ -1108,7 +1204,7 @@ function saveRoom(room, keyElem){
                           }else{
                               alert('Error saving room.');
                           }
-                          $("html, body").animate({ scrollTop: 0 }, "slow");
+                          $('html, body').animate({ scrollTop: 0 }, 'slow');
                       }
     });
 
@@ -1118,14 +1214,14 @@ function initRoomDefaultsPage(){
     
     var drm = DEFAULT_ROOM;
 
-    $('#default-room-key').val( drm.key );
-    $('#default-room-height').val( drm.room_height );
-    $('#default-door-width').val( drm.door_width );
-    $('#default-door-height').val( drm.door_height );
-    $('#default-window-width').val( drm.window_width );
-    $('#default-window-height').val( drm.window_height );
-    $('#default-radiator-width').val( drm.radiator_width );
-    $('#default-radiator-height').val( drm.radiator_height );
+    $('#default-room-key'         ).val( drm.key );
+    $('#default-room-height'      ).val( drm.room_height );
+    $('#default-door-width'       ).val( drm.door_width );
+    $('#default-door-height'      ).val( drm.door_height );
+    $('#default-window-width'     ).val( drm.window_width );
+    $('#default-window-height'    ).val( drm.window_height );
+    $('#default-radiator-width'   ).val( drm.radiator_width );
+    $('#default-radiator-height'  ).val( drm.radiator_height );
     
     $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
 
@@ -1145,6 +1241,7 @@ function initRoomDefaultsPage(){
             radiator_quantity: 0,
             radiator_width: parseFloat($('#default-radiator-width').val()),
             radiator_height: parseFloat($('#default-radiator-height').val()),
+            group_items: '',
             is_default: true,
             project: ''
         });
@@ -1178,7 +1275,7 @@ function initRoomPage(room){
             "door_quantity": '',
             "door_height": getf('#default-door-height'),    
             "door_width": 0.9,        
-            "window_quantity": '',
+            "window_quantity": ''
         }
     } 
 
@@ -1199,23 +1296,75 @@ function initRoomPage(room){
     
     $page.find('.positive-negative-first,.positive-negative-second').click( switchSign );
 
-    var $genDropdown = $page.find('.general-surface-group ul.dropdown-menu');
-    $genDropdown.empty();
+    //TODO: build input blocks and set the values for each group item.
+    if(room.group_items != null){
+        
+        for(var i = 0; i <= room.group_items.bayBreastVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.baybreast-group .btn-add-row:last') );
+            var $block = $page.find('.baybreast-group .input-block:last');
+            $block.find('.baybreast-width').val( room.group_items.bayBreastVals[i][0] );
+            $block.find('.baybreast-depth').val( room.group_items.bayBreastVals[i][1] );
+        }
+        
+        for(var i = 0; i <= room.group_items.ceilingAdjustVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.ceiling-adjust-group .btn-add-row:last') );
+            var $block = $page.find('.ceiling-adjust-group .input-block:last');
+            $page.find('.ceiling-adjust-dim1').val( room.group_items.ceilingAdjustVals[i][0] );
+            $page.find('.ceiling-adjust-dim2').val( room.group_items.ceilingAdjustVals[i][1] );
+        }
+        
+        for(var i = 0; i <= room.group_items.wallAdjustVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.wall-adjust-group .btn-add-row:last') );
+            $page.find('.wall-adjust-dim1').val( room.group_items.wallAdjustVals[i][0] );
+            $page.find('.wall-adjust-dim2').val( room.group_items.wallAdjustVals[i][1] );        
+        }
+        
+        for(var i = 0; i <= room.group_items.genSurfaceVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.general-surface-group .btn-add-row:last') );
+            var paint = MODEL.getPaint(room.group_items.genSurfaceVals[i][0]);
+            var $block = $page.find('.general-surface-group .input-block:last');
+            $block.find('.dropdown-value').val( paint.key );
+            $block.find('.dropdown-text').text( paint.name + ' (' + paint.prod_rate + ')' );
+            $block.find('.general-surface-qty').val( room.group_items.genSurfaceVals[i][1] );
+            $block.find('.general-surface-width').val( room.group_items.genSurfaceVals[i][2] );
+            $block.find('.general-surface-height').val( room.group_items.genSurfaceVals[i][3] );
+        }
+        
+        for(var i = 0; i <= room.group_items.isolSurfaceVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.isolated-surface-group .btn-add-row:last') );
+            var paint = MODEL.getPaint(room.group_items.isolSurfaceVals[i][0]);
+            var $block = $page.find('.isolated-surface-group .input-block:last');
+            $block.find('.dropdown-value').val( paint.key );
+            $block.find('.dropdown-text').text( paint.name + ' (' + paint.prod_rate + ')' );
+            $block.find('.isolated-surface-qty').val( room.group_items.isolSurfaceVals[i][1] );
+            $block.find('.isolated-surface-length').val( room.group_items.isolSurfaceVals[i][2] );
+        }
+    }
+
+    //Add the paint menu items to the general surface dropdowns
+    var $dropdown = $page.find('.general-surface-group ul.dropdown-menu');
+    $dropdown.empty();
     $.each(PAINTS, function(j, paint) {
         if (paint.surface_type == 'Doors') {
-            $genDropdown.append(
-                '<li><a role="menuitem" data-value="' + paint.prod_rate + '" >' 
+            $dropdown.append(
+                '<li><a role="menuitem" data-value="' + paint.key + '" >' 
                 + paint.name + ' (' + paint.prod_rate + ') </a></li>'
             );
         }
     });
 
-    var $isolDropdown = $page.find('.isolated-surface-group ul.dropdown-menu');
-    $isolDropdown.empty();
+    //Add the paint menu items to the isolated surface dropdowns
+    var $isolDropdownMenu = $page.find('.isolated-surface-group ul.dropdown-menu');
+    $isolDropdownMenu.empty();
     $.each(PAINTS, function(j, paint) {
         if (paint.surface_type == 'Isolated Surfaces') {
-            $isolDropdown.append(
-                '<li><a role="menuitem" data-value="' + paint.prod_rate + '" >' 
+            $isolDropdownMenu.append(
+                '<li><a role="menuitem" data-value="' + paint.key + '" >' 
                 + paint.name + ' (' + paint.prod_rate + ') </a></li>'
             );
         }
@@ -1227,7 +1376,7 @@ function initRoomPage(room){
 
     initIntegerInputs();
     initDecimalInputs();
-    initDropdowns();
+    initDropdowns($page);
     initAddInputBlockButtons();
 
 }
@@ -1247,6 +1396,9 @@ function onSaveRoomClick(){
         return parseFloat($page.find(elemId).val());
     }
 
+    groupItems = getRoomGroupData($page);
+    console.log('groupItems ' + groupItems.toString());
+
     if(isObjectEmpty(CURRENT_PROJECT)){
         alert('Please select a project first.');
     }else{
@@ -1265,6 +1417,7 @@ function onSaveRoomClick(){
             radiator_quantity:  getf('.radiator-qty'),
             radiator_width:     getf('.radiator-width'),
             radiator_height:    getf('.radiator-height'),
+            group_items:        groupItems,
             is_default:         false,
             project:            CURRENT_PROJECT.key
         }, '.room-key');
@@ -1338,27 +1491,33 @@ function addSvgButtons(){
 
 }
 
+function addInputBlock(context){
+
+      //Buttons to add groups of inputs.
+      //Set up events for various inputs in the new block if present.
+      var $group = $(context).closest('.input-group');
+      var $newBlock = $group.find('.input-block:last').clone();
+
+      $newBlock.find('input').val('');
+      $newBlock.find('.btn-add-row:first').remove();
+      $newBlock.find('input.decimal').keydown( keydownDecimalInput );
+      $newBlock.find('input.decimal').blur( blurDecimal );
+      $newBlock.find('.dropdown').removeClass('open');
+      $newBlock.find('.positive-negative-first,.positive-negative-second').click( switchSign );
+      $newBlock.removeClass('hidden');
+      $newBlock.insertAfter($group.find('.input-block:last'));
+      $btnRemove = $newBlock.find('.btn-remove-row:first');
+      $btnRemove.css('display','block');
+      $btnRemove.click(function(event){ 
+          $(event.target).closest('.input-block').remove(); 
+      });
+      initDropdowns($newBlock);
+}
+
 function initAddInputBlockButtons(){
 
-    //Buttons to allow user to add groups of inputs.
-    //Set up events for various inputs in the new block if present.
     $('#btn-add-spec-item,.btn-add-row').click( function(){
-        var $group = $(this).closest('.input-group');
-        var $newBlock = $group.find('.input-block:last').clone();
-        $newBlock.find('.btn-add-row:first').remove();
-        $newBlock.find('input').val('');
-        $newBlock.find('input.decimal').keydown( keydownDecimalInput );
-        $newBlock.find('input.decimal').blur( blurDecimal );
-        $newBlock.find('dropdown').removeClass('open');
-        $newBlock.find('.positive-negative-first,.positive-negative-second').click( switchSign );
-        $newBlock.removeClass('hidden');
-        $newBlock.insertAfter($group.find('.input-block:last'));
-        initDropdowns();
-        $btnRemove = $newBlock.find('.btn-remove-row:first');
-        $btnRemove.css('display','block');
-        $btnRemove.click(function(event){ 
-            $(event.target).closest('.input-block').remove(); 
-        });
+        addInputBlock(this);
     });
 }
 
@@ -1375,7 +1534,7 @@ $(document).ready(function() {
     initIntegerInputs();
     initDecimalInputs();
     initAddInputBlockButtons();
-    initDropdowns();
+    //initDropdowns();
 });
 
 function isObjectEmpty(object)
