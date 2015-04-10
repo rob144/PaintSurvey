@@ -56,6 +56,7 @@ class Room(ModelUtils, ndb.Model):
     radiator_quantity = ndb.IntegerProperty()
     radiator_width = ndb.FloatProperty()
     radiator_height = ndb.FloatProperty()
+    group_items = ndb.JsonProperty()
     is_default = ndb.BooleanProperty()
     project = ndb.KeyProperty(kind='Project')
 
@@ -247,6 +248,7 @@ class SaveRoom(webapp2.RequestHandler):
         room.radiator_width     = obj_room['radiator_width']
         room.radiator_height    = obj_room['radiator_height']
         room.is_default         = obj_room['is_default']
+        room.group_items        = obj_room['group_items']
 
         room = room.put().get()
 
