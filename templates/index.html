@@ -1264,35 +1264,37 @@ function initRoomPage(room){
     if(room == null){
         room = {  
             "name": 'Default Room',
-            "radiator_height": getf('#default-radiator-height'),
-            "radiator_width": getf('#default-radiator-width'),           
-            "window_width": getf('#default-window-width'),
-            "window_height": getf('#default-window-height'),
             "room_length": '',
             "room_width": '',
             "room_height": getf('#default-room-height'),
-            "radiator_quantity": '',
             "door_quantity": '',
             "door_height": getf('#default-door-height'),    
-            "door_width": 0.9,        
+            "door_width": 0.9,   
+            "radiator_quantity": '',
+            "radiator_height": getf('#default-radiator-height'),
+            "radiator_width": getf('#default-radiator-width'),           
+            "window_width": getf('#default-window-width'),
+            "window_height": getf('#default-window-height'),     
             "window_quantity": ''
         }
     } 
 
-    $page.find('.room-key').val(room.key);
-    $page.find('.room-title').val(room.name);
-    $page.find('.room-height').val(room.room_height);
-    $page.find('.room-width').val(room.room_width);
-    $page.find('.room-length').val(room.room_length);
-    $page.find('.door-qty').val(room.door_quantity);
-    $page.find('.door-width').val(room.door_width);
-    $page.find('.door-height').val(room.door_height);
-    $page.find('.window-qty').val(room.window_quantity);
-    $page.find('.window-width').val(room.window_width);
-    $page.find('.window-height').val(room.window_height);
-    $page.find('.radiator-qty').val(room.radiator_quantity);
-    $page.find('.radiator-width').val(room.radiator_width);
-    $page.find('.radiator-height').val(room.radiator_height);
+    $page.find('.room-key')               .val(room.key);
+    $page.find('.room-title')             .val(room.name);
+    $page.find('.room-height')            .val(room.room_height);
+    $page.find('.room-width')             .val(room.room_width);
+    $page.find('.room-length')            .val(room.room_length);
+    $page.find('.door-qty')               .val(room.door_quantity);
+    $page.find('.door-width')             .val(room.door_width);
+    $page.find('.door-height')            .val(room.door_height);
+    $page.find('.window-qty')             .val(room.window_quantity);
+    $page.find('.window-width')           .val(room.window_width);
+    $page.find('.window-height')          .val(room.window_height);
+    $page.find('.radiator-qty')           .val(room.radiator_quantity);
+    $page.find('.radiator-width')         .val(room.radiator_width);
+    $page.find('.radiator-height')        .val(room.radiator_height);
+    $page.find('.ceiling-adjust-simple')  .val(room.ceiling_adjust_simple);
+    $page.find('.wall-adjust-simple')     .val(room.wall_adjust_simple);
     
     $page.find('.positive-negative-first,.positive-negative-second').click( switchSign );
 
@@ -1403,23 +1405,25 @@ function onSaveRoomClick(){
         alert('Please select a project first.');
     }else{
         saveRoom({
-            key:                $page.find('.room-key').val(),
-            name:               $page.find('.room-title').val(),
-            room_length:        getf('.room-length'),
-            room_width:         getf('.room-width'),
-            room_height:        getf('.room-height'),
-            door_quantity:      getf('.door-qty'),
-            door_width:         getf('.door-width'),
-            door_height:        getf('.door-height'),
-            window_quantity:    getf('.window-qty'),
-            window_width:       getf('.window-width'),
-            window_height:      getf('.window-height'),
-            radiator_quantity:  getf('.radiator-qty'),
-            radiator_width:     getf('.radiator-width'),
-            radiator_height:    getf('.radiator-height'),
-            group_items:        groupItems,
-            is_default:         false,
-            project:            CURRENT_PROJECT.key
+            key:                    $page.find('.room-key').val(),
+            name:                   $page.find('.room-title').val(),
+            room_length:            getf('.room-length'),
+            room_width:             getf('.room-width'),
+            room_height:            getf('.room-height'),
+            door_quantity:          getf('.door-qty'),
+            door_width:             getf('.door-width'),
+            door_height:            getf('.door-height'),
+            window_quantity:        getf('.window-qty'),
+            window_width:           getf('.window-width'),
+            window_height:          getf('.window-height'),
+            radiator_quantity:      getf('.radiator-qty'),
+            radiator_width:         getf('.radiator-width'),
+            radiator_height:        getf('.radiator-height'),
+            ceiling_adjust_simple:  getf('.ceiling-adjust-simple'),
+            wall_adjust_simple:     getf('.wall-adjust-simple'),
+            group_items:            groupItems,
+            is_default:             false,
+            project:                CURRENT_PROJECT.key
         }, '.room-key');
     }
 
