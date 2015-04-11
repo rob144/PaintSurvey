@@ -56,6 +56,8 @@ class Room(ModelUtils, ndb.Model):
     radiator_quantity = ndb.IntegerProperty()
     radiator_width = ndb.FloatProperty()
     radiator_height = ndb.FloatProperty()
+    ceiling_adjust_simple = ndb.FloatProperty()
+    wall_adjust_simple = ndb.FloatProperty()
     group_items = ndb.JsonProperty()
     is_default = ndb.BooleanProperty()
     project = ndb.KeyProperty(kind='Project')
@@ -91,8 +93,6 @@ def init_data():
     #Create project test data if not there already.
     if(Project.query(Project.username == 'Test').count() < 3):
         Project(username='Test', title='Test One', date_created=datetime.now()).put()
-        Project(username='Test', title='Test Two', date_created=datetime.now()).put()
-        Project(username='Test', title='Test Three', date_created=datetime.now()).put()
 
     #Create room defaults if not there already.
     if(Room.query(Room.is_default == True).count() <= 0):
@@ -234,21 +234,23 @@ class SaveRoom(webapp2.RequestHandler):
         if(obj_room['key'] != ""):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
-        room.name               = obj_room['name']
-        room.room_width         = obj_room['room_width']
-        room.room_length        = obj_room['room_length']
-        room.room_height        = obj_room['room_height']
-        room.door_quantity      = obj_room['door_quantity']
-        room.door_width         = obj_room['door_width']
-        room.door_height        = obj_room['door_height']
-        room.window_quantity    = obj_room['window_quantity']
-        room.window_width       = obj_room['window_width']
-        room.window_height      = obj_room['window_height']
-        room.radiator_quantity  = obj_room['radiator_quantity']
-        room.radiator_width     = obj_room['radiator_width']
-        room.radiator_height    = obj_room['radiator_height']
-        room.is_default         = obj_room['is_default']
-        room.group_items        = obj_room['group_items']
+        room.name                   = obj_room['name']
+        room.room_width             = obj_room['room_width']
+        room.room_length            = obj_room['room_length']
+        room.room_height            = obj_room['room_height']
+        room.door_quantity          = obj_room['door_quantity']
+        room.door_width             = obj_room['door_width']
+        room.door_height            = obj_room['door_height']
+        room.window_quantity        = obj_room['window_quantity']
+        room.window_width           = obj_room['window_width']
+        room.window_height          = obj_room['window_height']
+        room.radiator_quantity      = obj_room['radiator_quantity']
+        room.radiator_width         = obj_room['radiator_width']
+        room.radiator_height        = obj_room['radiator_height']
+        room.ceiling_adjust_simple  = obj_room['ceiling_adjust_simple']
+        room.wall_adjust_simple     = obj_room['wall_adjust_simple']
+        room.is_default             = obj_room['is_default']
+        room.group_items            = obj_room['group_items']
 
         room = room.put().get()
 
