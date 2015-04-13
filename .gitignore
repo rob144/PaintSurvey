@@ -1,5 +1,5 @@
+venv/
 *.pyc
 *.DS_Store
-venv/
-paint-survey.sublime-project
-paint-survey.sublime-workspace
+*.sublime-project
+*.sublime-workspace

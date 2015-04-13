@@ -135,10 +135,10 @@ class Home(webapp2.RequestHandler):
         init_data()
         self.response.write(
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
-                'default_room': json.dumps(Room.query(Room.is_default == True).fetch(1)[0].to_dict(), default=json_serial),
-                'rooms': json.dumps([r.to_dict() for r in Room.query(Room.is_default == False).fetch(300)], default=json_serial),
-	        	'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], default=json_serial),
-                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.order).fetch(300)]) 
+                'default_room': json.dumps(Room.query(Room.is_default == True).fetch(1)[0].to_dict(), indent=4, default=json_serial),
+                'rooms': json.dumps([r.to_dict() for r in Room.query(Room.is_default == False).fetch(300)], indent=4, default=json_serial),
+	        	'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], indent=4, default=json_serial),
+                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.surface_type, Paint.order).fetch(300)], indent=4)
         	}) 
         )
 

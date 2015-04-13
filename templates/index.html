@@ -381,6 +381,13 @@
             </div>
         </div>
 
+        <div id='model-data'>
+            <div id='model-projects'>{{ projects|safe }}</div>
+            <div id='model-paints'>{{ paints|safe }}</div>
+            <div id='model-rooms'>{{ rooms|safe }}</div>
+            <div id='model-default-room'>{{ default_room|safe }}</div>
+        </div>
+
     </body>
 
 <script>
@@ -388,11 +395,11 @@
 var LOADING_START_TIME;
 var CARO;
 var CURRENT_PROJECT =   {};
-var PROJECTS        =   JSON.parse('{{ projects|safe }}');
+var PROJECTS        =   JSON.parse($('#model-projects').text());
 var SURFACE_TYPES   =   ['Ceilings','Walls','Doors','Windows','Radiators','Isolated Surfaces'];
-var PAINTS          =   JSON.parse('{{ paints|safe }}');
-var DEFAULT_ROOM    =   JSON.parse('{{ default_room|safe }}');
-var ROOMS           =   JSON.parse('{{ rooms|safe }}');
+var PAINTS          =   JSON.parse($('#model-paints').text());
+var DEFAULT_ROOM    =   JSON.parse($('#model-default-room').text());
+var ROOMS           =   JSON.parse($('#model-rooms').text());
 
 var MODEL = {
     getDefaultRoom: function(){
@@ -1143,14 +1150,32 @@ function fadeToViewSpec(){
 function onSpecSave(){
 
     var arrSpecItemData = [];
-    //build up the json data by grabbing values from the inputs
+    var specItemNames = [];
+    var duplicates = [];
+
+    /* Prevent duplicate spec-item-names for this surface type */
+    $('#form-edit-spec .input-block:not(.hidden) .spec-item-name').each(function(index, elem) {
+        var inputVal = $(elem).val().trim();
+        if($.inArray(inputVal, specItemNames) == -1) { //Not found
+            specItemNames.push(inputVal);
+        } else {
+            duplicates.push(inputVal);
+        }
+    });
+
+    if(duplicates.length >= 1){
+      alert("Can not save, duplicate value(s) found: " + duplicates.toString());
+      return;
+    }
+
+    /* Build up the json data making save call */
     $('#form-edit-spec .input-block:not(.hidden)').each( function(index, elem){
         var $elemBlock = $(elem);
         arrSpecItemData.push({ 
-            key: $elemBlock.find('.spec-item-key').val(),
-            order: $elemBlock.find('.spec-item-order').val(),
-            name: $elemBlock.find('.spec-item-name').val(),
-            prod_rate: $elemBlock.find('.spec-item-rate').val(),
+            key:          $elemBlock.find('.spec-item-key').val(),
+            order:        $elemBlock.find('.spec-item-order').val(),
+            name:         $elemBlock.find('.spec-item-name').val().trim(),
+            prod_rate:    $elemBlock.find('.spec-item-rate').val(),
             surface_type: $('#spec-surface-type').val()
         });
     });
