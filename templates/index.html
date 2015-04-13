@@ -1156,8 +1156,8 @@ function onSpecSave(){
     /* Prevent duplicate spec-item-names for this surface type */
     $('#form-edit-spec .input-block:not(.hidden) .spec-item-name').each(function(index, elem) {
         var inputVal = $(elem).val().trim();
-        if($.inArray(inputVal, specItemNames) == -1) { //Not found
-            specItemNames.push(inputVal);
+        if($.inArray(inputVal.toLowerCase(), specItemNames) == -1) { //Not found
+            specItemNames.push(inputVal.toLowerCase());
         } else {
             duplicates.push(inputVal);
         }
