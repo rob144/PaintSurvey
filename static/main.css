@@ -36,7 +36,10 @@ button {
     margin:0 0 0 1px;
     cursor:pointer;
 }
-#loadingDivOuter{
+#model-data {
+    display:none;
+}
+#loadingDivOuter {
     display:none;
     position:fixed;
     width:84px;
@@ -47,7 +50,7 @@ button {
     border:1px solid #ccc;
     border-radius:8px;
 }
-#loadingDiv{
+#loadingDiv {
     width:64px;
     height:64px;
     margin:10px auto 0 auto;
