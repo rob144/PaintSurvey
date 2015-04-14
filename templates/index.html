@@ -133,12 +133,19 @@
             <div id='page-room-1' class='owl-page room-page'>
                 <div class='pageContentOuter'>
                   <div class='pageContent'>
-                      <h2 class='room-title-heading' data-room-number="1">
-                          <input name='room-title' type='text' placeholder='Room Name' class='room-title'/>
-                      </h2>
-                      <input type='hidden' class='room-key' />
-                      <div class='results'>RESULTS</div>
-                      <form class='room-form'> 
+                      <form class='room-form'>
+                          <div class='room-top-row'>
+                              <div class='room-title-heading room-top-row-left' data-room-number="1">
+                                  <input name='room-title' type='text' placeholder='Room Name' class='room-title'/>
+                              </div>
+                              <div class='room-top-row-right'>
+                                  <span class='positive-negative-first'>±</span>
+                                  <input name='room-hours-adjust' placeholder='hours adjust' class='room-hours-adjust decimal' type='number' step='any'/>                     
+                              </div>
+                          </div>
+                          <input type='hidden' class='room-key' />
+                          <div class='results'>RESULTS</div>
+                       
                           <div class='group-label'>
                               <span>Room</span>
                           </div>
