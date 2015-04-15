@@ -19,9 +19,10 @@ input[type="button"] {
     font-size: 15pt;
     cursor:pointer;
 }
-input[type="number"]:not(:disabled), input[type="text"]:not(:disabled) {
-    height:22px;
-    padding:6px;
+
+input[type="number"]:not(:disabled), 
+input[type="text"]:not(:disabled) {
+    height:32px;
     margin:0;
 }
 select {
@@ -197,9 +198,6 @@ input[type="radio"] {
 th {
     text-align: left;
 }
-td {
-    padding: 0 10px 0 0;
-}
 .tdRightAlign {
     text-align: right;
 }
@@ -220,6 +218,7 @@ td {
     font-weight: normal;
 }
 .group-label {
+    clear:both;
     margin: 10px 0 10px 0;
     font-weight: bold;
 }
@@ -232,15 +231,12 @@ td {
     color:#555;
 }
 .form-control {
-    float:right;
-    width: 110px;
+    float:left;
+    width: 90px;
     background-color: #fff;
     border-top-right-radius:4px;
     border-bottom-right-radius:4px;
-    border-top:none;
-    border-right:none;
-    border-bottom:none;
-    border-left:1px solid #ccc; 
+    border:none; 
 }
 .form-row {
 	overflow:visible;
@@ -258,7 +254,9 @@ td {
     overflow:auto;
     margin:0 0 5px 0;
 }
-.baybreast-depth, .baybreast-width, 
+.baybreast-depth, .baybreast-width {
+    border:none;
+}
 .ceiling-adjust-dim1, .ceiling-adjust-dim2,
 .wall-adjust-dim1, .wall-adjust-dim2 {
     float:left;
@@ -292,7 +290,6 @@ td {
 .positive-negative-first, .positive-negative-second {
     display:inline-block;
     vertical-align:center;
-    float:left;
     height:22px;
     padding:8px 7px 6px 7px;
     font-weight:bold;
@@ -372,15 +369,20 @@ input.spec-item-rate {
 /* ********************* Room Page ********************* */
 .room-top-row {
     overflow:auto;
-    padding:10px 0 0 0;
 }
 .room-top-row-left {
     float:left;
-    width:59%;
+    width:50%;
+    margin:10px 0 0 0;
 }
 .room-top-row-right {
+    float:right; /* use js to float left if not enough room */
+    margin:10px 0 0 0;
+}
+.room-top-row-right > div {
     float:right;
-    width:140px;
+    overflow: auto;
+    width:130px;
 }
 input.room-title {
     /* width:calc(100% - 14px); */
@@ -393,13 +395,110 @@ input.room-title {
 }
 input.room-hours-adjust {
     float:left;
-    width:100px;
+    width:90px;
     border-top-right-radius:4px;
     border-bottom-right-radius:4px;
     border:1px solid #ccc;
 }
 div.room-top-row-right .positive-negative-first{
     float:left;
+}
+
+table {
+    margin:10px 0 0 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 350px;
+}
+table tr th, table tr td {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+table tr th:first-child, table tr td:first-child {
+    border-left: 1px solid #ccc;
+}
+table tr th:first-child, table tr td:first-child {
+    border-left: 1px solid #ccc;
+}
+table tr th {
+    background: #eee;
+    text-align: left;
+}
+/*
+table tr th, table tr:first-child td {
+    border-top: 1px solid #ccc;
+}
+*/
+
+/* top-left border-radius */
+table tr:first-child th:first-child,
+table tr:first-child td:first-child {
+    border-top-left-radius: 6px;
+}
+
+/* top-right border-radius */
+table tr:first-child th:last-child,
+table tr:first-child td:last-child {
+    border-top-right-radius: 6px;
+}
+
+/* bottom-left border-radius */
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 6px;
+}
+
+/* bottom-right border-radius */
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 6px;
+}
+table.room-dimension-table {
+    width:100%;
+}
+table.room-dimension-table td input[type='text'],
+table.room-dimension-table td input[type='number']{
+    padding:0 0 0 6px;
+    height:36px;
+    border:none;
+}
+/*
+table.room-dimension-table td {
+    padding:6px;
+    border-bottom:1px solid #ccc;
+    border-left: 1px solid #ccc;
+}
+*/
+table.room-dimension-table .col1 {
+    width:36%;
+}
+table.room-dimension-table .col2 {
+    width:30%;
+}
+table.room-dimension-table .col3 {
+    width:4%;
+    border-right:none;
+}
+table.room-dimension-table .col4 {
+    width:15%;
+    border-right:none;
+}
+table.room-dimension-table .col5 {
+    width:15%;
+    border-right:none;
+}
+td.top-row-cell {
+    border-top:1px solid #ccc;
+}
+td.room-3d-image { 
+    text-align:right;
+    border-top:none;
+    border-right:none;
+}
+td.room-3d-image img { 
+    width:150px;
+}
+td.btn-pos-neg-table {
+    text-align:center;
+    background-color:grey;
 }
 td.result {
     text-align: right;
@@ -449,7 +548,6 @@ td.result {
 .input-pill-inner > div, input {
     display:block;
     font-size:14px;
-    padding: 6px;
     color: #555;
 }
 .rowTotalHours td {
