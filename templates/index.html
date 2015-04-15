@@ -133,87 +133,89 @@
             <div id='page-room-1' class='owl-page room-page'>
                 <div class='pageContentOuter'>
                   <div class='pageContent'>
-                      <h2 class='room-title-heading' data-room-number="1">
-                          <input name='room-title' type='text' placeholder='Room Name' class='room-title'/>
-                      </h2>
-                      <input type='hidden' class='room-key' />
-                      <div class='results'>RESULTS</div>
-                      <form class='room-form'> 
-                          <div class='group-label'>
-                              <span>Room</span>
+                      <form class='room-form'>
+                          <div class='room-top-row'>
+                              <div class='room-title-heading room-top-row-left' data-room-number="1">
+                                  <input name='room-title' type='text' placeholder='Room Name' class='room-title'/>
+                              </div>
+                              <div class='room-top-row-right'>
+                                  <div>
+                                      <span class='positive-negative-first'>±</span>
+                                      <input name='room-hours-adjust' placeholder='hours adjust' class='room-hours-adjust decimal' type='number' step='any'/> 
+                                  </div>                    
+                              </div>
                           </div>
-                          <div class='form-group'>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>L</label>
-                                      <input name='room-length' class='room-length form-control decimal' type='number' step='any' min='0' placeholder='length' >
-                                  </div>
-                              </div>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>W</label>
-                                      <input name='room-width' class='room-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
-                                  </div>
-                              </div>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>H</label>
+                          <input type='hidden' class='room-key' />
+                          <div class='results'>RESULTS</div>
+
+                          <table class='room-dimension-table'>
+                              <col class='col1' />
+                              <col class='col2' />
+                              <col class='col3' />
+                              <col class='col4' />
+                              <col class='col5' />
+                              <tr>
+                                  <td class='top-row-cell'>
+                                      <label class='control-label'>Height</label>
+                                  </td>
+                                  <td class='top-row-cell'>
                                       <input name='room-height' class='room-height form-control decimal' type='number' step='any' min='0' placeholder='height' >
-                                  </div>
-                              </div>
-                          </div>
+                                  </td>    
+                                  <td class='room-3d-image' colspan='3' rowspan='3'>
+                                      <img src='/static/room-3d.png' />
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <label class='control-label'>Length</label>
+                                  </td>
+                                  <td>
+                                       <input name='room-length' class='room-length form-control decimal' type='number' step='any' min='0' placeholder='length'>
+                                  </td>    
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <label class='control-label'>Width</label>
+                                  </td>
+                                  <td>
+                                      <input name='room-width' class='room-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
+                                  </td>    
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <label class='control-label'>Bay/Breast</label>
+                                  </td>
+                                  <td class='input-group baybreast-group'>
+                                      <input name='baybreast-depth' class='form-control baybreast-depth decimal' type='number' step='any' min='0' placeholder='depth'/>
+                                  </td> 
+                                  <td class='btn-pos-neg-table'>
+                                      <span class='positive-negative-first'>±</span>
+                                  </td>
+                                  <td>
+                                      <input name='baybreast-width' class='form-control baybreast-width decimal' type='number' step='any' placeholder='width'/>
+                                  </td>  
+                                  <td>
+                                      <button type='button' class='btn-add-row'></button>
+                                      <button type='button' class='btn-remove-row'></button>
+                                  </td> 
+                              </tr>
+                          </table>
 
-                          <div class='group-label'>
-                              <span>Door</span>
-                          </div>
+                          <div class='group-label'>Doors</div>
                           <div class='form-group'>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>#</label>
-                                      <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='quantity'>
-                                  </div>
-                              </div>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>W</label>
-                                      <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
-                                  </div>
-                              </div>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>H</label>
-                                      <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder='width'>
-                                  </div>
-                              </div>
+                              <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='#'>
+                              <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
+                              <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder='height'>
                           </div>
 
-                          <div class='group-label'>
-                              <span>Window</span>
-                          </div>
+                          <div class='group-label'>Windows</div>
                           <div class='form-group'>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>#</label>
-                                      <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='quantity'/>
-                                  </div>
-                              </div>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>W</label>
-                                      <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
-                                  </div>
-                              </div>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>H</label>
-                                      <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder='height' />
-                                  </div>
-                              </div>
+                              <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='#'/>
+                              <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
+                              <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder='height' />
                           </div>
 
-                          <div class='group-label'>
-                              <span>Radiator</span>
-                          </div>
+                          <div class='group-label'>Radiator</div>
                           <div class='form-row'>
                               <div class='input-pill'>
                                   <div class="input-pill-inner">
@@ -231,21 +233,6 @@
                                   <div class="input-pill-inner">
                                       <label class='control-label'>H</label>
                                       <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder='height'/>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div class='input-group baybreast-group'>
-                              <div class='group-label'>
-                                  <span>Bay or Breast</span>
-                              </div>
-                              <div class='input-block'>
-                                  <div class='input-row'>
-                                      <span class='positive-negative-first'>±</span>
-                                      <input name='baybreast-width' class='baybreast-width decimal' type='number' step='any' placeholder='width'/>
-                                      <input name='baybreast-depth' class='baybreast-depth decimal' type='number' step='any' min='0' placeholder='depth'/>
-                                      <button type='button' class='btn-add-row'></button>
-                                      <button type='button' class='btn-remove-row'></button>
                                   </div>
                               </div>
                           </div>
