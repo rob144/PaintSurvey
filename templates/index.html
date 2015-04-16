@@ -201,159 +201,169 @@
                               </tr>
                           </table>
 
+                          <div class='input-group ceiling-adjust-group'>
+                              
+                              <div class='room-item-top-row'>
+                                  <div class='group-label'>Ceiling Adjusts</div>
+                                  <span class='positive-negative-first'>±</span>
+                                  <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
+                              </div>
+
+                              <div class='input-block'>
+                                  <div class='input-row'>
+                                      
+                                      <div class='left'>
+                                          <div class="dropdown">
+                                              <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                                  <span class='dropdown-text'>Dropdown</span>
+                                                  <input type='hidden' class='dropdown-value ceiling-adjust-prod-rate'/>
+                                                  <span class="caret"></span>
+                                              </button>
+                                              <ul class="dropdown-menu" role="menu">
+                                                  <li role='presentation'>
+                                                      <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      
+                                      <div class='right'>
+                                          <input name='ceiling-adjust-qty' type='number' step='1' placeholder='#' class='wall-adjust-qty integer'/>
+                                          <span class='positive-negative-first'>±</span>
+                                          <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal' type='number' step='any' placeholder='amount'/>
+                                          <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='amount'/>
+                                          <button type='button' class='btn-add-row'></button>
+                                          <button type='button' class='btn-remove-row'></button>
+                                      </div>
+
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class='input-group wall-adjust-group'>
+                              
+                              <div class='room-item-top-row'>
+                                  <div class='group-label'>Wall Adjusts</div>
+                                  <span class='positive-negative-first'>±</span>
+                                  <input name='wall-adjust-simple' type='number' step='any' placeholder='amount' class='wall-adjust-simple decimal'/>
+                              </div>
+
+                              <div class='input-block'>
+                                  <div class='input-row'>
+                                  
+                                      <div class='left'>
+                                          <div class="dropdown">
+                                              <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                                  <span class='dropdown-text'>Dropdown</span>
+                                                  <input type='hidden' class='dropdown-value wall-adjust-prod-rate'/>
+                                                  <span class="caret"></span>
+                                              </button>
+                                              <ul class="dropdown-menu" role="menu">
+                                                  <li role='presentation'>
+                                                      <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                  
+                                      <div class='right'>
+                                          <input name='wall-adjust-qty' type='number' step='1' placeholder='#' class='wall-adjust-qty integer'/>
+                                          <span class='positive-negative-first'>±</span>
+                                          <input name='wall-adjust-dim1' type='number' step='any' placeholder='amount' class='wall-adjust-dim1 decimal'/>
+                                          <input name='wall-adjust-dim2' type='number' min='0' step='any' placeholder='amount' class='wall-adjust-dim2 decimal'/>
+                                          <button type='button' class='btn-add-row'></button>
+                                          <button type='button' class='btn-remove-row'></button>
+                                      </div>
+
+                                  </div>
+                              </div>
+                          </div>
+
                           <div class='group-label'>Doors</div>
-                          <div class='form-group'>
+                          <div class='form-group group'>
                               <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='#'>
                               <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
                               <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder='height'>
                           </div>
 
                           <div class='group-label'>Windows</div>
-                          <div class='form-group'>
+                          <div class='form-group group'>
                               <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='#'/>
                               <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
                               <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder='height' />
                           </div>
 
                           <div class='group-label'>Radiator</div>
-                          <div class='form-row'>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>#</label>
-                                      <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='any' min='0' placeholder='quantity'/>
-                                  </div>
-                              </div>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>W</label>
-                                      <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
-                                  </div>
-                              </div>
-                              <div class='input-pill'>
-                                  <div class="input-pill-inner">
-                                      <label class='control-label'>H</label>
-                                      <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder='height'/>
-                                  </div>
-                              </div>
+                          <div class='form-group group'>
+                              <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='any' min='0' placeholder='#'/>
+                              <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
+                              <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder='height'/>
                           </div>
 
-                          <div class='input-group ceiling-adjust-group'>
-                              <div class='group-label'>
-                                  <span>Ceiling Adjusts</span>
-                              </div>
-                              <div class='form-row'>
-                                  <span class='positive-negative-first'>±</span>
-                                  <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
-                              </div>
-                              <div class='input-block'>
-                                  <div class='input-row'>
-                                      <span class='positive-negative-first'>±</span>
-                                      <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal' type='number' step='any' placeholder='amount'/>
-                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='amount'/>
-                                      <button type='button' class='btn-add-row'></button>
-                                      <button type='button' class='btn-remove-row'></button>
-                                  </div>
-                              </div>
-                          </div>
-                          
-                          <div class='input-group wall-adjust-group'>
-                              <div class='group-label'>
-                                  <span>Wall Adjusts</span>
-                              </div>
-                              <div class='form-row'>
-                                  <span class='positive-negative-first'>±</span>
-                                  <input name='wall-adjust-simple' type='number' step='any' placeholder='amount' class='wall-adjust-simple decimal'/>
-                              </div>
-                              <div class='input-block'>
-                                  <div class='input-row'>
-                                      <span class='positive-negative-first'>±</span>
-                                      <input name='wall-adjust-dim1' type='number' step='any' placeholder='amount' class='wall-adjust-dim1 decimal'/>
-                                      <input name='wall-adjust-dim2' type='number' min='0' step='any' placeholder='amount' class='wall-adjust-dim2 decimal'/>
-                                      <button type='button' class='btn-add-row'></button>
-                                      <button type='button' class='btn-remove-row'></button>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div class='input-group general-surface-group'>
+                          <div class='input-group general-surface-group group'>
                               <div class='group-label'>
                                   <span>General Surface</span>
                               </div>
                               <div class='input-block'>
-                                  <div class="dropdown">
-                                      <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                          <span class='dropdown-text'>Dropdown</span>
-                                          <input type='hidden' class='dropdown-value general-surface-key'/>
-                                          <span class="caret"></span>
-                                      </button>
-                                      <ul class="dropdown-menu" role="menu">
-                                          <li role='presentation'>
-                                              <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
-                                          </li>
-                                      </ul>
+                                  <div class='left'>
+                                      <div class="dropdown">
+                                          <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                              <span class='dropdown-text'>Dropdown</span>
+                                              <input type='hidden' class='dropdown-value general-surface-key'/>
+                                              <span class="caret"></span>
+                                          </button>
+                                          <ul class="dropdown-menu" role="menu">
+                                              <li role='presentation'>
+                                                  <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                      <input class='form-control general-surface-qty integer' name='general-surface-qty' type='number' step='1' min='0' placeholder='#'/>
+                                  </div>
+                                  <div class='right'>
+                                      <input class='form-control general-surface-width decimal' name='general-surface-width' type='number' step='any' min='0' placeholder='W'/>
+                                      <input class='form-control general-surface-height decimal' name='general-surface-height' type='number' step='any' min='0' placeholder='H'/>
                                       <button type='button' class='btn-add-row'></button>
                                       <button type='button' class='btn-remove-row'></button>
-                                  </div>
-                                  <div class='input-pill'>
-                                      <div class="input-pill-inner">
-                                          <label class='control-label'>#</label>
-                                          <input class='form-control general-surface-qty integer' name='general-surface-qty' type='number' step='1' min='0' placeholder='quantity'/>
-                                      </div>
-                                  </div>
-                                  <div class='input-pill'>
-                                      <div class="input-pill-inner">
-                                          <label class='control-label'>W</label>
-                                          <input class='form-control general-surface-width decimal' name='general-surface-width' type='number' step='any' min='0' placeholder='width'/>
-                                      </div>
-                                  </div>
-                                  <div class='input-pill'>
-                                      <div class="input-pill-inner">
-                                          <label class='control-label'>H</label>
-                                          <input class='form-control general-surface-height decimal' name='general-surface-height' type='number' step='any' min='0' placeholder='height'/>
-                                      </div>
                                   </div>
                               </div>
                           </div>
 
-                          <div class='input-group isolated-surface-group'>
-                              <div class='group-label'>
-                                  <span>Isolated Surface</span>
-                              </div>
+                          <div class='input-group isolated-surface-group group'>
+                              
+                              <div class='group-label'>Isolated Surface</div>
                               <div class='input-block'>
-                                  <div class="dropdown">
-                                      <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
-                                          <span class='dropdown-text'>Dropdown</span>
-                                          <input type='hidden' class='dropdown-value isolated-surface-key'/>
-                                          <span class="caret"></span>
-                                      </button>
-                                      <ul class="dropdown-menu" role="menu">
-                                          <li role='presentation'>
-                                              <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
-                                          </li>
-                                      </ul>
+                                  
+                                  <div class='left'>
+                                      <div class="dropdown">
+                                          <button class="dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                              <span class='dropdown-text'>Dropdown</span>
+                                              <input type='hidden' class='dropdown-value isolated-surface-key'/>
+                                              <span class="caret"></span>
+                                          </button>
+                                          <ul class="dropdown-menu" role="menu">
+                                              <li role='presentation'>
+                                                  <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                      <input class='form-control isolated-surface-qty integer' name='isolated-surface-qty' type='number' step='1' min='0' placeholder='#'/>
+                                  </div>
+                                              
+                                  <div class='right'>
+                                      <input class='form-control isolated-surface-length decimal' name='isolated-surface-length' type='number' step='any' min='0' placeholder='L'/>
                                       <button type='button' class='btn-add-row'></button>
                                       <button type='button' class='btn-remove-row'></button>
                                   </div>
-                                  <div class='input-pill'>
-                                      <div class='input-pill'>
-                                          <div class="input-pill-inner">
-                                              <label class='control-label'>#</label>
-                                              <input class='form-control isolated-surface-qty integer' name='isolated-surface-qty' type='number' step='1' min='0' placeholder='quantity'/>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class='input-pill'>
-                                      <div class="input-pill-inner">
-                                          <label class='control-label'>L</label>
-                                          <input class='form-control isolated-surface-length decimal' name='isolated-surface-length' type='number' step='any' min='0' placeholder='length'/>
-                                      </div>
-                                  </div>
+
                               </div>
                           </div>
 
-                          <button type='button' id='btn-calculate' class='btn-calculate-room'>Calculate</button>
-                          <button type='button' class='btn-save-room'>Save</button>
-                          <button type='button' class='btn-delete-room'>Delete</button>
+                          <div class='room-bottom-buttons'>
+                              <button type='button' id='btn-calculate' class='btn-calculate-room'>Calculate</button>
+                              <button type='button' class='btn-save-room'>Save</button>
+                              <button type='button' class='btn-delete-room'>Delete</button>
+                          </div>
 
                       </form>
                     </div>
