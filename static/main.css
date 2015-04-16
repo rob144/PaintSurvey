@@ -23,7 +23,6 @@ input[type="button"] {
 input[type="number"]:not(:disabled), 
 input[type="text"]:not(:disabled) {
     height:32px;
-    margin:0;
 }
 select {
     display:block;
@@ -36,6 +35,10 @@ button {
     display: block;
     margin:0 0 0 1px;
     cursor:pointer;
+}
+div.left, div.right {
+    float:left;
+    margin: 10px 0 0 0;
 }
 #model-data {
     display:none;
@@ -110,15 +113,17 @@ input[type="radio"] {
 .dropdown, .dropup {
     position: relative;
     overflow: visible;
+    margin:0 5px 0 0;
+    float:left;
 }
 .dropdown-btn {
     display: inline-block;
     overflow:auto;
     color: #333;
-    min-width: 230px;
+    width:150px;
     background-color: #fff;
     padding: 6px 12px;
-    margin:0 0 5px 0;
+    margin:0;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.42857143;
@@ -234,8 +239,6 @@ th {
     float:left;
     width: 90px;
     background-color: #fff;
-    border-top-right-radius:4px;
-    border-bottom-right-radius:4px;
     border:none; 
 }
 .form-row {
@@ -260,7 +263,7 @@ th {
 .ceiling-adjust-dim1, .ceiling-adjust-dim2,
 .wall-adjust-dim1, .wall-adjust-dim2 {
     float:left;
-    width:80px;
+    width:60px;
     height:22px;
     border:1px solid #ccc; 
 }
@@ -287,9 +290,13 @@ th {
 .btn-remove-row {
     display:none;
 }
+td .positive-negative-first {
+    float:none;
+}
 .positive-negative-first, .positive-negative-second {
     display:inline-block;
     vertical-align:center;
+    float:left;
     height:22px;
     padding:8px 7px 6px 7px;
     font-weight:bold;
@@ -424,12 +431,6 @@ table tr th {
     background: #eee;
     text-align: left;
 }
-/*
-table tr th, table tr:first-child td {
-    border-top: 1px solid #ccc;
-}
-*/
-
 /* top-left border-radius */
 table tr:first-child th:first-child,
 table tr:first-child td:first-child {
@@ -460,29 +461,19 @@ table.room-dimension-table td input[type='number']{
     height:36px;
     border:none;
 }
-/*
-table.room-dimension-table td {
-    padding:6px;
-    border-bottom:1px solid #ccc;
-    border-left: 1px solid #ccc;
-}
-*/
 table.room-dimension-table .col1 {
-    width:36%;
+    width:150px;
 }
 table.room-dimension-table .col2 {
-    width:30%;
+    width:150px;
 }
 table.room-dimension-table .col3 {
-    width:4%;
     border-right:none;
 }
 table.room-dimension-table .col4 {
-    width:15%;
     border-right:none;
 }
 table.room-dimension-table .col5 {
-    width:15%;
     border-right:none;
 }
 td.top-row-cell {
@@ -518,40 +509,64 @@ td.result {
 .results table td, .results table th {
     padding:2px 6px; 2px 0;
 }
+.room-item-top-row {
+    overflow:auto;
+    min-width:150px;
+    margin:10px 0 0 0;
+}
+.room-item-left {
+    float:left;
+    overflow:visible;
+    min-width:150px;
+    margin:10px 0 0 0;
+}
+.room-item-right {
+    overflow:auto;
+    min-width:150px;
+    margin:10px 0 10px 0;
+}
+.room-item-top-row > .group-label {
+    float:left;
+    width: 150px;
+    margin: 0 5px 0 0;
+}
+.wall-adjust-qty, .ceiling-adjust-qty, 
+.door-qty, .window-qty, .radiator-qty,
+.general-surface-qty, .isolated-surface-qty {
+    width:30px;
+    float:left;
+    text-align:center;
+    margin:0 5px 0 0;
+    border-radius:4px;
+    border:1px solid #ccc;
+}
 .ceiling-adjust-simple, .wall-adjust-simple {
     border:1px solid #ccc;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
-    width:80px;
+    width:160px;
     margin:0 0 5px 0;
 }
-.input-pill {
-    clear:both;
-    width:185px;
-    overflow:auto;
+.window-width, .door-width, .radiator-width,
+.general-surface-width, .isolated-surface-width, 
+.general-surface-height, .isolated-surface-length,
+.window-height, .door-height, .radiator-height {
+    border: 1px solid #ccc;
 }
-.input-pill-with-button {
-    overflow:auto;
+.window-width, .door-width, .radiator-width {
+    border-top-left-radius:4px;
+    border-bottom-left-radius:4px;
+    border-right:none;
 }
-.input-pill-with-button .input-pill {
-    float:left;
-    clear:left;
-}
-.input-pill-inner {
-    display:table;
-    margin:0 0 5px 0;
-    border:1px solid #ccc;
-    border-radius: 4px;
-    background-color: #eee;
-    overflow:auto;
-}
-.input-pill-inner > div, input {
-    display:block;
-    font-size:14px;
-    color: #555;
+.window-height, .door-height, .radiator-height {
+    border-top-right-radius:4px;
+    border-bottom-right-radius:4px;
 }
 .rowTotalHours td {
     border-top:1px solid black;
+}
+div.room-bottom-buttons {
+    margin:10px 0 0 0;
 }
 .btn-calculate-room, .btn-save-room, .btn-delete-room {
     color: #333;
