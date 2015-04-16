@@ -113,14 +113,14 @@ input[type="radio"] {
 .dropdown, .dropup {
     position: relative;
     overflow: visible;
-    margin:0 5px 0 0;
     float:left;
+    margin:0 1px 0;
 }
 .dropdown-btn {
     display: inline-block;
     overflow:auto;
     color: #333;
-    width:150px;
+    width:140px;
     background-color: #fff;
     padding: 6px 12px;
     margin:0;
@@ -225,6 +225,7 @@ th {
 .group-label {
     clear:both;
     margin: 10px 0 10px 0;
+    width: 177px;
     font-weight: bold;
 }
 .control-label {
@@ -261,10 +262,11 @@ th {
     border:none;
 }
 .ceiling-adjust-dim1, .ceiling-adjust-dim2,
-.wall-adjust-dim1, .wall-adjust-dim2 {
+.wall-adjust-dim1, .wall-adjust-dim2,
+.skirting-adjust-length, .door-width,
+.door-height {
     float:left;
-    width:60px;
-    height:22px;
+    width:50px;
     border:1px solid #ccc; 
 }
 .baybreast-depth, .ceiling-adjust-dim2, .wall-adjust-dim2 {
@@ -275,7 +277,7 @@ th {
 .btn-add-row, .btn-remove-row, #btn-add-spec-item, 
 .btn-reorder-item-up, .btn-reorder-item-down {
     float:right;
-    margin:0 0 0 10px;
+    margin:0 0 0 1px;
     padding:0;
     background-color: #fff;
     border:none;
@@ -527,24 +529,24 @@ td.result {
 }
 .room-item-top-row > .group-label {
     float:left;
-    width: 150px;
-    margin: 0 5px 0 0;
 }
 .wall-adjust-qty, .ceiling-adjust-qty, 
 .door-qty, .window-qty, .radiator-qty,
-.general-surface-qty, .isolated-surface-qty {
+.skirting-adjust-qty,.general-surface-qty, 
+.isolated-surface-qty {
     width:30px;
     float:left;
     text-align:center;
-    margin:0 5px 0 0;
+    margin:0 1px 0 0;
     border-radius:4px;
     border:1px solid #ccc;
 }
-.ceiling-adjust-simple, .wall-adjust-simple {
+.ceiling-adjust-simple, .wall-adjust-simple,
+.skirting-adjust-simple {
     border:1px solid #ccc;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
-    width:160px;
+    width:103px;
     margin:0 0 5px 0;
 }
 .window-width, .door-width, .radiator-width,
