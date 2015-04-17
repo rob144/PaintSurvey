@@ -23,13 +23,7 @@ input[type="button"] {
 input[type="number"]:not(:disabled), 
 input[type="text"]:not(:disabled) {
     height:32px;
-}
-select {
-    display:block;
-    margin:0 0 5px 0;
-    min-width:200px;
-    max-width:300px;
-    font-size:15px;
+    padding: 0 3px 0 3px;
 }
 button {
     display: block;
@@ -264,15 +258,17 @@ td {
 }
 .input-row {
     overflow:auto;
-    margin:0 0 5px 0;
 }
 .baybreast-depth, .baybreast-width {
     border:none;
 }
 .ceiling-adjust-dim1, .ceiling-adjust-dim2,
 .wall-adjust-dim1, .wall-adjust-dim2,
-.skirting-adjust-length, .door-width,
-.door-height {
+.skirting-adjust-length, 
+.door-width, .door-height,
+.window-width, .window-height,
+.radiator-width, .radiator-height,
+.general-surface-width, .general-surface-height {
     float:left;
     width:50px;
     border:none;
@@ -540,13 +536,6 @@ td.result {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     width:103px;
-    margin:0 0 5px 0;
-}
-.window-width, .door-width, .radiator-width,
-.general-surface-width, .isolated-surface-width, 
-.general-surface-height, .isolated-surface-length,
-.window-height, .door-height, .radiator-height {
-    border: 1px solid #ccc;
 }
 .window-width, .door-width, .radiator-width {
     border-top-left-radius:4px;

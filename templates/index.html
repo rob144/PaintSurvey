@@ -206,8 +206,18 @@
                               <div class='room-item-top-row'>
                                   <div class='group-label'>Ceiling Adjusts</div>
                                   <div class='input-pill'>
-                                      <span class='positive-negative-first'>±</span>
-                                      <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
+
+                                      <table class='input-pill'>
+                                          <tr>
+                                              <td class='positive-negative-cell'>
+                                                  <span class='positive-negative-first'>±</span>
+                                              </td>
+                                              <td class='last-child'>
+                                                  <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
+                                              </td>
+                                          </tr>
+                                      </table>
+
                                   </div>
                               </div>
 
@@ -230,20 +240,19 @@
                                       </div>
                                       
                                       <div class='right'>
-
                                           <table class='input-pill'>
                                               <tr>
                                                   <td>
-                                                    <input name='ceiling-adjust-qty' type='number' step='1' placeholder='#' class='wall-adjust-qty integer'/>
+                                                    <input name='ceiling-adjust-qty' type='number' step='1' placeholder='#' class='ceiling-adjust-qty integer'/>
                                                   </td>
                                                   <td class='positive-negative-cell'>
                                                       <span class='positive-negative-first'>±</span>
                                                   </td>
                                                   <td>
-                                                      <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal' type='number' step='any' placeholder='amount'/>
+                                                      <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal' type='number' step='any' placeholder='x'/>
                                                   </td>
                                                   <td class='last-child'>
-                                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='amount'/>
+                                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='y'/>
                                                   </td>
                                               </tr>
                                           </table>
@@ -262,11 +271,17 @@
                               
                               <div class='room-item-top-row'>
                                   <div class='group-label'>Wall Adjusts</div>
-                                  <div class='input-pill'>
-                                      <span class='positive-negative-first'>±</span>
-                                      <input name='wall-adjust-simple' type='number' step='any' placeholder='amount' class='wall-adjust-simple decimal'/>
-                                  </div>
-                              </div>
+                                  <table class='input-pill'>
+                                      <tr>
+                                          <td class='positive-negative-cell'>
+                                            <span class='positive-negative-first'>±</span>
+                                          </td>
+                                          <td class='last-child'>
+                                              <input name='wall-adjust-simple' type='number' step='any' placeholder='amount' class='wall-adjust-simple decimal'/>
+                                          </td>
+                                      </tr>
+                                  </table>
+                            </div>
 
                               <div class='input-block'>
                                   <div class='input-row'>
@@ -287,10 +302,25 @@
                                       </div>
                                   
                                       <div class='right'>
-                                          <input name='wall-adjust-qty' type='number' step='1' placeholder='#' class='wall-adjust-qty integer'/>
-                                          <span class='positive-negative-first'>±</span>
-                                          <input name='wall-adjust-dim1' type='number' step='any' placeholder='amount' class='wall-adjust-dim1 decimal'/>
-                                          <input name='wall-adjust-dim2' type='number' min='0' step='any' placeholder='amount' class='wall-adjust-dim2 decimal'/>
+                                          <table class='input-pill'>
+                                              <tr>
+                                                  <td>
+                                                      <input name='wall-adjust-qty' type='number' step='1' placeholder='#' class='wall-adjust-qty integer'/>
+                                                  </td>
+                                                  <td class='positive-negative-cell'>
+                                                      <span class='positive-negative-first'>±</span>
+                                                  </td>
+                                                  <td>
+                                                      <input name='wall-adjust-dim1' class='wall-adjust-dim1 decimal' type='number' step='any' placeholder='x'/>
+                                                  </td>
+                                                  <td class='last-child'>
+                                                      <input name='wall-adjust-dim2' class='wall-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='y'/>
+                                                  </td>
+                                              </tr>
+                                          </table>
+                                      </div>
+
+                                      <div class='button-box'>
                                           <button type='button' class='btn-add-row'></button>
                                           <button type='button' class='btn-remove-row'></button>
                                       </div>
@@ -303,6 +333,7 @@
                               
                               <div class='group-label'>Doors & Frames</div>
                               <div class='input-block'>
+                                  
                                   <div class='left'>
                                       <div class="dropdown">
                                           <button class="dropdown-btn" type="button" >
@@ -316,11 +347,25 @@
                                               </li>
                                           </ul>
                                       </div>
-                                      <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='#'>
                                   </div>
+
                                   <div class='right'>
-                                      <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
-                                      <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder='height'>
+                                      <table class='input-pill'>
+                                          <tr>
+                                              <td>
+                                                  <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='#'>
+                                              </td>
+                                              <td>
+                                                  <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
+                                              </td>
+                                              <td class='last-child'>
+                                                 <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder='height'>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                  </div>
+
+                                  <div class='button-box'>
                                       <button type='button' class='btn-add-row'></button>
                                       <button type='button' class='btn-remove-row'></button>
                                   </div>
@@ -331,10 +376,16 @@
                               
                               <div class='room-item-top-row'>
                                   <div class='group-label'>Skirting Adjusts</div>
-                                  <div clas='input-pill'>
-                                      <span class='positive-negative-first'>±</span>
-                                      <input name='skirting-adjust-simple' class='skirting-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
-                                  </div>
+                                  <table class='input-pill'>
+                                      <tr>
+                                          <td class='positive-negative-cell'>
+                                            <span class='positive-negative-first'>±</span>
+                                          </td>
+                                          <td class='last-child'>
+                                              <input name='skirting-adjust-simple' type='number' step='any' placeholder='amount' class='skirting-adjust-simple decimal'/>
+                                          </td>
+                                      </tr>
+                                  </table>
                               </div>
 
                               <div class='input-block'>
@@ -356,9 +407,22 @@
                                       </div>
                                       
                                       <div class='right'>
-                                          <input name='skirting-adjust-qty' type='number' step='1' placeholder='#' class='skirting-adjust-qty integer'/>
-                                          <span class='positive-negative-first'>±</span>
-                                          <input name='skirting-adjust-length' class='skirting-adjust-length decimal' type='number' step='any' placeholder='amount'/>
+                                          <table class='input-pill'>
+                                              <tr>
+                                                  <td>
+                                                      <input name='skirting-adjust-qty' type='number' step='1' placeholder='#' class='skirting-adjust-qty integer'/>
+                                                  </td>
+                                                  <td class='positive-negative-cell'>
+                                                      <span class='positive-negative-first'>±</span>
+                                                  </td>
+                                                  <td class='last-child'>
+                                                      <input name='skirting-adjust-length' class='skirting-adjust-length decimal' type='number' min='0' step='any' placeholder='y'/>
+                                                  </td>
+                                              </tr>
+                                          </table>
+                                      </div>
+
+                                      <div class='button-box'>
                                           <button type='button' class='btn-add-row'></button>
                                           <button type='button' class='btn-remove-row'></button>
                                       </div>
@@ -367,23 +431,96 @@
                               </div>
                           </div>
 
-                          <div class='group-label'>Windows</div>
-                          <div class='form-group group'>
-                              <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='#'/>
-                              <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
-                              <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder='height' />
+                          <div class='input-group windows-group group'>
+                              
+                              <div class='group-label'>Windows</div>
+                              <div class='input-block'>
+                                  
+                                  <div class='left'>
+                                      <div class="dropdown">
+                                          <button class="dropdown-btn" type="button" >
+                                              <span class='dropdown-text'>Dropdown</span>
+                                              <input type='hidden' class='dropdown-value window-surface-key'/>
+                                              <span class="caret"></span>
+                                          </button>
+                                          <ul class="dropdown-menu" role="menu">
+                                              <li role='presentation'>
+                                                  <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+
+                                  <div class='right'>
+                                      <table class='input-pill'>
+                                          <tr>
+                                              <td>
+                                                  <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='#'>
+                                              </td>
+                                              <td>
+                                                  <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
+                                              </td>
+                                              <td class='last-child'>
+                                                 <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder='height'>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                  </div>
+
+                                  <div class='button-box'>
+                                      <button type='button' class='btn-add-row'></button>
+                                      <button type='button' class='btn-remove-row'></button>
+                                  </div>
+                              </div>
                           </div>
 
-                          <div class='group-label'>Radiator</div>
-                          <div class='form-group group'>
-                              <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='any' min='0' placeholder='#'/>
-                              <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' placeholder='width' />
-                              <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder='height'/>
+                          <div class='input-group radiators-group group'>
+                              
+                              <div class='group-label'>Radiators</div>
+                              <div class='input-block'>
+                                  
+                                  <div class='left'>
+                                      <div class="dropdown">
+                                          <button class="dropdown-btn" type="button" >
+                                              <span class='dropdown-text'>Dropdown</span>
+                                              <input type='hidden' class='dropdown-value radiator-surface-key'/>
+                                              <span class="caret"></span>
+                                          </button>
+                                          <ul class="dropdown-menu" role="menu">
+                                              <li role='presentation'>
+                                                  <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+
+                                  <div class='right'>
+                                      <table class='input-pill'>
+                                          <tr>
+                                              <td>
+                                                  <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='1' min='0' placeholder='#'>
+                                              </td>
+                                              <td>
+                                                  <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
+                                              </td>
+                                              <td class='last-child'>
+                                                 <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder='height'>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                  </div>
+
+                                  <div class='button-box'>
+                                      <button type='button' class='btn-add-row'></button>
+                                      <button type='button' class='btn-remove-row'></button>
+                                  </div>
+                              </div>
                           </div>
 
                           <div class='input-group general-surface-group group'>
                               <div class='group-label'>General Surface</div>
                               <div class='input-block'>
+                                  
                                   <div class='left'>
                                       <div class="dropdown">
                                           <button class="dropdown-btn" type="button" >
@@ -397,14 +534,29 @@
                                               </li>
                                           </ul>
                                       </div>
-                                      <input class='form-control general-surface-qty integer' name='general-surface-qty' type='number' step='1' min='0' placeholder='#'/>
                                   </div>
+
                                   <div class='right'>
-                                      <input class='form-control general-surface-width decimal' name='general-surface-width' type='number' step='any' min='0' placeholder='W'/>
-                                      <input class='form-control general-surface-height decimal' name='general-surface-height' type='number' step='any' min='0' placeholder='H'/>
+                                      <table class='input-pill'>
+                                          <tr>
+                                              <td>
+                                                  <input name='general-surface-qty' class='general-surface-qty form-control integer' type='number' step='1' min='0' placeholder='#'>
+                                              </td>
+                                              <td>
+                                                  <input name='general-surface-width' class='general-surface-width form-control decimal' type='number' step='any' min='0' placeholder='width'>
+                                              </td>
+                                              <td class='last-child'>
+                                                 <input name='general-surface-height' class='general-surface-height form-control decimal' type='number' step='any' min='0' placeholder='height'>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                  </div>
+
+                                  <div class='button-box'>
                                       <button type='button' class='btn-add-row'></button>
                                       <button type='button' class='btn-remove-row'></button>
                                   </div>
+
                               </div>
                           </div>
 
