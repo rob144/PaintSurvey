@@ -205,8 +205,10 @@
                               
                               <div class='room-item-top-row'>
                                   <div class='group-label'>Ceiling Adjusts</div>
-                                  <span class='positive-negative-first'>±</span>
-                                  <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
+                                  <div class='input-pill'>
+                                      <span class='positive-negative-first'>±</span>
+                                      <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
+                                  </div>
                               </div>
 
                               <div class='input-block'>
@@ -228,14 +230,30 @@
                                       </div>
                                       
                                       <div class='right'>
-                                          <input name='ceiling-adjust-qty' type='number' step='1' placeholder='#' class='wall-adjust-qty integer'/>
-                                          <span class='positive-negative-first'>±</span>
-                                          <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal' type='number' step='any' placeholder='amount'/>
-                                          <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='amount'/>
+
+                                          <table class='input-pill'>
+                                              <tr>
+                                                  <td>
+                                                    <input name='ceiling-adjust-qty' type='number' step='1' placeholder='#' class='wall-adjust-qty integer'/>
+                                                  </td>
+                                                  <td class='positive-negative-cell'>
+                                                      <span class='positive-negative-first'>±</span>
+                                                  </td>
+                                                  <td>
+                                                      <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal' type='number' step='any' placeholder='amount'/>
+                                                  </td>
+                                                  <td class='last-child'>
+                                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='amount'/>
+                                                  </td>
+                                              </tr>
+                                          </table>
+                                      </div>
+
+                                      <div class='button-box'>
                                           <button type='button' class='btn-add-row'></button>
                                           <button type='button' class='btn-remove-row'></button>
                                       </div>
-
+                                      
                                   </div>
                               </div>
                           </div>
@@ -244,8 +262,10 @@
                               
                               <div class='room-item-top-row'>
                                   <div class='group-label'>Wall Adjusts</div>
-                                  <span class='positive-negative-first'>±</span>
-                                  <input name='wall-adjust-simple' type='number' step='any' placeholder='amount' class='wall-adjust-simple decimal'/>
+                                  <div class='input-pill'>
+                                      <span class='positive-negative-first'>±</span>
+                                      <input name='wall-adjust-simple' type='number' step='any' placeholder='amount' class='wall-adjust-simple decimal'/>
+                                  </div>
                               </div>
 
                               <div class='input-block'>
@@ -311,8 +331,10 @@
                               
                               <div class='room-item-top-row'>
                                   <div class='group-label'>Skirting Adjusts</div>
-                                  <span class='positive-negative-first'>±</span>
-                                  <input name='skirting-adjust-simple' class='skirting-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
+                                  <div clas='input-pill'>
+                                      <span class='positive-negative-first'>±</span>
+                                      <input name='skirting-adjust-simple' class='skirting-adjust-simple decimal' type='number' step='any' placeholder='amount'/>
+                                  </div>
                               </div>
 
                               <div class='input-block'>
