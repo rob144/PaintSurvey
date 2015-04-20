@@ -19,7 +19,6 @@ input[type="button"] {
     font-size: 15pt;
     cursor:pointer;
 }
-
 input[type="number"]:not(:disabled), 
 input[type="text"]:not(:disabled) {
     height:32px;
@@ -30,9 +29,24 @@ button {
     margin:0 0 0 1px;
     cursor:pointer;
 }
+table {
+    border-collapse:separate;
+    border-spacing:0;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+th {
+    text-align: left;
+}
+td {
+    padding:0;
+    margin:0;
+}
+td > input {
+    border-radius:4px;
+}
 div.left, div.right {
     float:left;
-    margin: 10px 0 0 0;
 }
 #model-data {
     display:none;
@@ -57,6 +71,9 @@ div.left, div.right {
 #loadingDiv img {
     width:64px;
     height:64px;
+}
+.hidden {
+    display:none;
 }
 #owl-pages{
     display:none;
@@ -85,15 +102,9 @@ div.left, div.right {
     background-color: #fff;
     border-color: #ccc;
 }
-input[type="radio"] {
-    display:inline;
-}
 .input-pill {
     float:left;
     max-width:200px;
-}
-.hidden {
-    display:none;
 }
 .group:after {
   content: "";
@@ -104,40 +115,41 @@ input[type="radio"] {
     margin:20px 0 0 0;
 }
 .input-group, .input-block {
-    overflow: visible;
+    overflow:visible;
     clear:left;
+    margin:10px 0 0 0;
 }
 .dropdown, .dropup {
-    position: relative;
-    overflow: visible;
+    position:relative;
+    overflow:visible;
     float:left;
     margin:0 1px 0;
 }
 .dropdown-btn {
-    display: inline-block;
+    display:inline-block;
     overflow:auto;
-    color: #333;
-    width:140px;
-    height:38px;
+    color:#333;
+    width:130px;
+    height:34px;
     background-color: #fff;
-    padding: 6px 12px;
+    padding:0 6px 0 6px;
     margin:0;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    text-align: right;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.42857143;
+    text-align:right;
+    white-space:nowrap;
+    vertical-align:middle;
+    -ms-touch-action:manipulation;
+    touch-action:manipulation;
+    cursor:pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    background-image:none;
+    border:1px solid #ccc;
+    border-radius:4px;
 }
 .caret {
     display: inline-block;
@@ -198,13 +210,6 @@ input[type="radio"] {
     padding:5px;
     background-color:cyan;
 }
-th {
-    text-align: left;
-}
-td {
-    padding:0;
-    margin:0;
-}
 .tdRightAlign {
     text-align: right;
 }
@@ -219,28 +224,25 @@ td {
     background-color:white;
 }
 .error {
-    /*display: block;*/
     margin: 0 0 5px 0;
     color:red;
     font-weight: normal;
 }
 .group-label {
     clear:both;
-    margin: 10px 0 10px 0;
-    width: 177px;
+    margin:10px 0 10px 0;
+    width:170px;
     font-weight: bold;
 }
 .control-label {
     display:table-cell;
     vertical-align: middle;
-    min-width:20px;
-    text-align: center;
-    padding:6px;
+    width:100px;
     color:#555;
 }
 .form-control {
     float:left;
-    width: 90px;
+    width:50px;
     background-color: #fff;
     border:none; 
 }
@@ -254,9 +256,12 @@ td {
 }
 .round-corners-input {
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border:1px solid #ccc;
 }
 .input-row {
+    overflow:auto;
+}
+.baybreast-group {
     overflow:auto;
 }
 .baybreast-depth, .baybreast-width {
@@ -268,7 +273,8 @@ td {
 .door-width, .door-height,
 .window-width, .window-height,
 .radiator-width, .radiator-height,
-.general-surface-width, .general-surface-height {
+.general-surface-width, .general-surface-height,
+.isolated-surface-length {
     float:left;
     width:50px;
     border:none;
@@ -281,7 +287,6 @@ td {
 .button-box {
     display:table;
     float:right;
-    margin:10px 0 0 0;
     height:38px;
 }
 .button-box button {
@@ -310,27 +315,23 @@ table.input-pill > tr:first-child > td:first-child {
     border-radius-top-left:4px;
     border-radius-bottom-left:4px;
 }
-td .positive-negative-first {
-    float:none;
+td.positive-negative-cell, td.positive-negative-fake-cell {
+    padding:2px 8px 0 8px;
+    color:#fff;
+    font-size:18px;
+    font-weight: bold;
 }
 td.positive-negative-cell {
-    background-color:grey;
+    background-color:#ccc;
+    cursor:pointer;
+}
+td.positive-negative-fake-cell {
+    width:10px;
+    background-color:#ccc;
 }
 td.last-child {
     border-radius-top-right:4px;
     border-radius-bottom-right:4px;
-}
-.positive-negative-first, .positive-negative-second {
-    display:inline-block;
-    vertical-align:center;
-    float:left;
-    height:22px;
-    padding:8px 7px 6px 7px;
-    font-weight:bold;
-    font-size:18px;
-    color:#fff;
-    background-color:grey;
-    cursor:pointer;
 }
 /* ********************** CAROUSEL ****************************** */
 .owl-theme > .owl-controls > .owl-pagination > .owl-page > span {
@@ -412,39 +413,31 @@ input.spec-item-rate {
 }
 .room-top-row-right > div {
     float:right;
-    overflow: auto;
+    overflow:auto;
     width:130px;
 }
 input.room-title {
     /* width:calc(100% - 14px); */
     width:85%;
-    min-width: 100px;
-    font-size: 20px;
-    font-weight: bold;
+    min-width:100px;
+    font-size:20px;
+    font-weight:bold;
     border-radius:4px;
     border:1px solid #ccc;
 }
 input.room-hours-adjust {
     float:left;
     width:90px;
-    border-top-right-radius:4px;
-    border-bottom-right-radius:4px;
-    border:1px solid #ccc;
-}
-div.room-top-row-right .positive-negative-first{
-    float:left;
-}
-table {
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius:4px;
-    border:1px solid #ccc;
-}
-td > input {
     border:none;
 }
 table.room-dimension-table {
-    width:100%;
+    float:left;
+    border-radius:4px;
+    border:none;
+}
+table.room-dimension-table td > input {
+    border:none;
+    border-radius:4px;
 }
 table.room-dimension-table td input[type='text'],
 table.room-dimension-table td input[type='number']{
@@ -452,35 +445,44 @@ table.room-dimension-table td input[type='number']{
     height:36px;
     border:none;
 }
-table.room-dimension-table .col1 {
-    width:150px;
+table.room-dimension-table td.col1 {
+    width:100px;
 }
-table.room-dimension-table .col2 {
-    width:150px;
+table.room-dimension-table td.col2 {
+    width:50px;
 }
-table.room-dimension-table .col3 {
-    border-right:none;
-}
-table.room-dimension-table .col4 {
-    border-right:none;
-}
-table.room-dimension-table .col5 {
-    border-right:none;
-}
-td.top-row-cell {
-    border-top:1px solid #ccc;
-}
-td.room-3d-image { 
+div.room-3d-image {
+    float:right; 
     text-align:right;
-    border-top:none;
-    border-right:none;
 }
-td.room-3d-image img { 
-    width:150px;
+div.room-3d-image img { 
+    max-width:110px;
+}
+td.room-height-cell {
+    border-top:1px solid #ccc;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    border-top-left-radius:4px;
+    border-top-right-radius:4px;
+}
+td.room-length-cell {
+    border-top:1px solid #ccc;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+}
+td.room-width-cell {
+    border:1px solid #ccc;
+    border-bottom-left-radius:4px;
+    border-bottom-right-radius:4px;
 }
 td.btn-pos-neg-table {
     text-align:center;
-    background-color:grey;
+    background-color:#ccc;
+}
+div.baybreast-label {
+    display:table;
+    float:left;
+    height:34px;
 }
 td.result {
     text-align: right;
@@ -491,11 +493,11 @@ td.result {
     margin:10px 0 10px 0;
     padding:6px;
     background-color: yellow;
-    border-radius: 4px;
+    border-radius:4px;
     border:1px solid blue;
 }
 .results table {
-    border-collapse: collapse;
+    border-collapse:collapse;
 }
 .results table td, .results table th {
     padding:2px 6px; 2px 0;
@@ -535,14 +537,16 @@ td.result {
     border:none;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
-    width:103px;
+    width:105px;
 }
 .window-width, .door-width, .radiator-width {
     border-top-left-radius:4px;
     border-bottom-left-radius:4px;
     border-right:none;
 }
-.window-height, .door-height, .radiator-height {
+.window-height, .door-height, .radiator-height,
+.general-surface-height, .skirting-adjust-length,
+.isolated-surface-length {
     border-top-right-radius:4px;
     border-bottom-right-radius:4px;
 }
