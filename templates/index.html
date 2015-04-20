@@ -189,13 +189,13 @@
                               </div>
                           </div>
                           
-                          <div class='input-group baybreast-group'>
+                          <div class='input-group baybreast-group group'>
 
                               <div class='baybreast-label'>
                                   <label class='control-label'>Bay/Breast</label>
                               </div>
 
-                              <table>
+                              <table class='input-pill'>
                                   <tr>
                                       <td class='baybreast-width-cell'>
                                           <input name='baybreast-width' class='form-control baybreast-width decimal' type='number' step='any' min='0' placeholder='w'/>
@@ -214,7 +214,7 @@
 
                           </div>
 
-                          <div class='input-group ceiling-adjust-group'>
+                          <div class='input-group ceiling-adjust-group group'>
                               
                               <div class='room-item-top-row'>
                                   <div class='group-label'>Ceiling Adjusts</div>
@@ -272,7 +272,7 @@
                               </div>
                           </div>
 
-                          <div class='input-group wall-adjust-group'>
+                          <div class='input-group wall-adjust-group group'>
                               
                               <div class='room-item-top-row'>
                                   <div class='group-label'>Wall Adjusts</div>
@@ -826,7 +826,6 @@ function selectProject(projectKey, reload){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
         for(var i = 0; i <= rooms.length - 1; i++){
             CARO.addItem($('#owl-pages .owl-page.room-page').html());
-            //Populate the room data in the inputs.
             initRoomPage(rooms[i]);
         }
     }else{
@@ -1203,7 +1202,7 @@ function roomDefaultsChange(){
 
 function switchSign(event){
     $btn = $(this);
-    $input = $btn.next('input[type="number"]');
+    $input = $btn.next('td').find('input[type="number"]');
     $input.val(-1 * $input.val());
     $input.blur();
 }
@@ -1570,9 +1569,9 @@ function initRoomPage(room){
     $page.find('.ceiling-adjust-simple')  .val(room.ceiling_adjust_simple);
     $page.find('.wall-adjust-simple')     .val(room.wall_adjust_simple);
     
-    $page.find('.positive-negative-first,.positive-negative-second').click( switchSign );
+    $page.find('.positive-negative-cell').click( switchSign );
 
-    //TODO: build input blocks and set the values for each group item.
+    //Build input blocks and set the values for each group item.
     if(room.group_items != null){
         
         for(var i = 0; i <= room.group_items.bayBreastVals.length - 1; i++){
@@ -1622,6 +1621,9 @@ function initRoomPage(room){
         }
     }
 
+    //TODO: setup the number input focus events to show/hide positive-negative buttons.
+    $page.find('.pos-neg-input').focus( onPosNegInputFocus );
+
     //Add the paint menu items to the general surface dropdowns
     var $dropdown = $page.find('.general-surface-group ul.dropdown-menu');
     $dropdown.empty();
@@ -1655,6 +1657,11 @@ function initRoomPage(room){
     initDropdowns($page);
     initAddInputBlockButtons();
 
+}
+
+function onPosNegInputFocus(){
+    /* TODO: show/hide a hovering button above input to 
+    allow user to switch sign between positive and negative */
 }
 
 function onDeleteRoomClick(){
@@ -1781,7 +1788,7 @@ function addInputBlock(context){
       $newBlock.find('input.decimal').keydown( keydownDecimalInput );
       $newBlock.find('input.decimal').blur( blurDecimal );
       $newBlock.find('.dropdown').removeClass('open');
-      $newBlock.find('.positive-negative-first,.positive-negative-second').click( switchSign );
+      $newBlock.find('.positive-negative-cell').click( switchSign );
       $newBlock.removeClass('hidden');
       $newBlock.insertAfter($group.find('.input-block:last'));
       $btnRemove = $newBlock.find('.btn-remove-row:first');
