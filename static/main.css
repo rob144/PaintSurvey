@@ -249,7 +249,7 @@ div.left, div.right {
     border:none; 
 }
 .form-row {
-	overflow:visible;
+	overflow:auto;
 	margin:10px 0 5px 0;
 }
 .form-row > label {

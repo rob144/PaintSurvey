@@ -1157,6 +1157,7 @@ function keydownIntegerInput(event){
 }
 
 function blurDecimal(event, inpElem){
+  console.log('blur dec');
     var $inpElem = $(this);
     if(inpElem != null) $inpElem = $(inpElem);
 
@@ -1178,7 +1179,7 @@ function blurDecimal(event, inpElem){
 }
 
 function blurInputFocus(event){
-
+console.log('blur input foc');
     var tagName = event.target.tagName.toLowerCase();
     if(tagName != 'input' && tagName != 'select'){
         $(':focus').blur();
@@ -1206,7 +1207,7 @@ function switchSign(inpElem){
 console.log('switch sign');
     $inpElem = $(inpElem);
     $inpElem.val(-1 * $inpElem.val());
-    $inpElem.blur();
+    //$inpElem.blur();
     $inpElem.focus();
     console.log($inpElem);
     console.log($inpElem.val());
@@ -1671,8 +1672,9 @@ function onPosNegInputFocus(event, secondCall){
     $btn.css('left',$inp.offset().left);
     $btn.css('display','block');
     $btn.off('click');
-    $btn.on('click', function(){
+    $btn.on('click', function(event){
         switchSign($inp); 
+        event.stopPropagation();
     });
 
     console.log($inp.is(':focus'));
