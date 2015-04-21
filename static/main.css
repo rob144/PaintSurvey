@@ -27,10 +27,9 @@ input[type="text"]:not(:disabled) {
     height:32px;
     padding: 0 3px 0 3px;
 }
-button {
-    display: block;
-    margin:0 0 0 1px;
-    cursor:pointer;
+input[type="number"]:focus, 
+input[type="text"]:focus {
+    background-color: yellow;
 }
 table {
     border-collapse:separate;
@@ -250,7 +249,7 @@ div.left, div.right {
     border:none; 
 }
 .form-row {
-	overflow:visible;
+	overflow:auto;
 	margin:10px 0 5px 0;
 }
 .form-row > label {
@@ -460,6 +459,7 @@ td.btn-pos-neg-table {
     background-color:#ccc;
 }
 #btn-pos-neg {
+    display:block;
     position:absolute;
     border:1px solid #ddd;
     border-top-left-radius:4px;

@@ -130,8 +130,8 @@
                     </div>
                 </div>
             </div>
-            <div id='page-room-1' class='owl-page room-page'>
-                <div class='pageContentOuter'>
+            <div id='page-room-1' class='owl-page room-page-template'>
+                <div class='pageContentOuter room-page'>
                   <div class='pageContent'>
                       
                       <form class='room-form'>
@@ -254,10 +254,10 @@
                                                   </td>
                                                   <td class='positive-negative-cell'>±</td>
                                                   <td>
-                                                      <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal pos-neg' type='number' step='any' placeholder='x'/>
+                                                      <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal pos-neg' type='number' step='any' placeholder='x' tabindex="-1"/>
                                                   </td>
                                                   <td class='last-child'>
-                                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='y'/>
+                                                      <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='y' tabindex="-1"/>
                                                   </td>
                                               </tr>
                                           </table>
@@ -333,7 +333,7 @@
                           <div class='input-group doors-group group'>
                               
                               <div class='group-label'>Doors & Frames</div>
-                              <div class='input-block'>
+                              <div class='input-block group'>
                                   
                                   <div class='left'>
                                       <div class="dropdown">
@@ -388,7 +388,7 @@
                                   </table>
                               </div>
 
-                              <div class='input-block'>
+                              <div class='input-block group'>
                                   <div class='input-row'>
                                       
                                       <div class='left'>
@@ -396,7 +396,6 @@
                                               <button class='dropdown-btn' type='button' >
                                                   <span class='dropdown-text'>Dropdown</span>
                                                   <input type='hidden' class='dropdown-value skirting-adjust-prod-rate'/>
-                                                  <span class='caret'></span>
                                               </button>
                                               <ul class="dropdown-menu" role="menu">
                                                   <li role='presentation'>
@@ -432,7 +431,7 @@
                           <div class='input-group windows-group group'>
                               
                               <div class='group-label'>Windows</div>
-                              <div class='input-block'>
+                              <div class='input-block group'>
                                   
                                   <div class='left'>
                                       <div class="dropdown">
@@ -476,7 +475,7 @@
                           <div class='input-group radiators-group group'>
                               
                               <div class='group-label'>Radiators</div>
-                              <div class='input-block'>
+                              <div class='input-block group'>
                                   
                                   <div class='left'>
                                       <div class="dropdown">
@@ -519,7 +518,7 @@
 
                           <div class='input-group general-surface-group group'>
                               <div class='group-label'>General Surface</div>
-                              <div class='input-block'>
+                              <div class='input-block group'>
                                   
                                   <div class='left'>
                                       <div class="dropdown">
@@ -564,7 +563,7 @@
                           <div class='input-group isolated-surface-group group'>
                               
                               <div class='group-label'>Isolated Surface</div>
-                              <div class='input-block'>
+                              <div class='input-block group'>
                                   
                                   <div class='left'>
                                       <div class="dropdown">
@@ -814,20 +813,22 @@ function selectProject(projectKey, reload){
             CARO.removeItem(CARO.owl.owlItems.length - 1);
         }
     }
-
+console.log('s num inputs ' + $('.ceiling-adjust-dim1').length);
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
         for(var i = 0; i <= rooms.length - 1; i++){
-            CARO.addItem($('#owl-pages .owl-page.room-page').html());
+            CARO.addItem($('#owl-pages .owl-page.room-page-template').html());
             initRoomPage(rooms[i]);
         }
     }else{
         //just add the default blank room.
-        CARO.addItem($('#owl-pages .owl-page.room-page').html());
+        CARO.addItem($('#owl-pages .owl-page.room-page-template').html());
+        console.log('t num inputs ' + $('.ceiling-adjust-dim1').length);
         initRoomPage();
     }
     CARO.next();
+console.log('s2 num inputs ' + $('.ceiling-adjust-dim1').length);
     
 }
 
@@ -1155,27 +1156,30 @@ function keydownIntegerInput(event){
     event.preventDefault();  
 }
 
-function blurDecimal(){
+function blurDecimal(event, inpElem){
+  console.log('blur dec');
+    var $inpElem = $(this);
+    if(inpElem != null) $inpElem = $(inpElem);
+
     //Enforce 2 decimal places.
-    if(this.value.trim() == '.') this.value = '0.00';
-    if(this.value.length >= 1 && Math.abs(parseFloat(this.value)) > 0){
-        this.value = parseFloat(this.value).toFixed(2);
+    if($inpElem.val().trim() == '.') $inpElem.val( '0.00' );
+    if($inpElem.val().length >= 1 && Math.abs(parseFloat($inpElem.val())) > 0){
+        $inpElem.val( parseFloat($inpElem.val()).toFixed(2) );
     }else{
-        this.value = '';
+        $inpElem.val('');
     }
     //Set red color for negative values
-    var $elem = $(this);
-    if($elem.val().length > 0){
-        if($elem.val() > 0){
-            $elem.css('color','black');
+    if($inpElem.val().length > 0){
+        if($inpElem.val() > 0){
+            $inpElem.css('color','black');
         }else{
-            $elem.css('color','red');
+            $inpElem.css('color','red');
         }
     }
 }
 
 function blurInputFocus(event){
-
+console.log('blur input foc');
     var tagName = event.target.tagName.toLowerCase();
     if(tagName != 'input' && tagName != 'select'){
         $(':focus').blur();
@@ -1185,6 +1189,12 @@ function blurInputFocus(event){
       && $elem.hasAncestor('.dropdown-btn') == false){
        $('.dropdown.open').removeClass('open');
     }
+    if($elem.hasClass('pos-neg') == false 
+      && $elem.attr('id') != 'btn-pos-neg'){
+      console.log($elem.attr('id'));
+      console.log($elem.attr('class'));
+        $('#btn-pos-neg').hide();
+    }
 }
 
 function roomDefaultsChange(){
@@ -1193,18 +1203,22 @@ function roomDefaultsChange(){
     $('.' + $elem.attr('id').replace('default-','')).val($elem.val());
 }
 
-function switchSign($inputElem){
-    //$btn = $(this);
-    //$input = $btn.next('td').find('input[type="number"]');
-    $inputElem.val(-1 * $inputElem.val());
-    $inputElem.blur();
+function switchSign(inpElem){
+console.log('switch sign');
+    $inpElem = $(inpElem);
+    $inpElem.val(-1 * $inpElem.val());
+    //$inpElem.blur();
+    $inpElem.focus();
+    console.log($inpElem);
+    console.log($inpElem.val());
+    console.log('focus '+$inpElem.is(':focus'));
 }
 
 function initOwlCarousel(){
     //Add the pages into the CARO
     $('#owl-pages .owl-page').each(function(){
         var $page = $(this);
-        if($page.hasClass('room-page') == false){
+        if($page.hasClass('room-page-template') == false){
             $page.appendTo('#owl-carousel');
         }
     })
@@ -1521,7 +1535,7 @@ function initRoomPage(room){
         return parseFloat($(elemId).val()).toFixed(2);
     }
 
-    var $page = $('.owl-item:last');
+    var $page = $('.owl-item:last .room-page');
 
     //Use the default room settings if room object not passed in.
     if(room == null){
@@ -1559,8 +1573,7 @@ function initRoomPage(room){
     $page.find('.ceiling-adjust-simple')  .val(room.ceiling_adjust_simple);
     $page.find('.wall-adjust-simple')     .val(room.wall_adjust_simple);
     
-    $page.find('.positive-negative-cell').click( switchSign );
-
+    //$page.find('.positive-negative-cell').click( switchSign );
     //Build input blocks and set the values for each group item.
     if(room.group_items != null){
         
@@ -1573,7 +1586,6 @@ function initRoomPage(room){
         }
         
         for(var i = 0; i <= room.group_items.ceilingAdjustVals.length - 1; i++){
-            
             if(i >= 1) addInputBlock( $page.find('.ceiling-adjust-group .btn-add-row:last') );
             var $block = $page.find('.ceiling-adjust-group .input-block:last');
             $page.find('.ceiling-adjust-dim1').val( room.group_items.ceilingAdjustVals[i][0] );
@@ -1611,7 +1623,7 @@ function initRoomPage(room){
         }
     }
 
-    //TODO: setup the number input focus events to show/hide positive-negative buttons.
+    //TODO: setup the events to show/hide positive-negative buttons.
     $page.find('.pos-neg').focus( onPosNegInputFocus );
 
     //Add the paint menu items to the general surface dropdowns
@@ -1649,24 +1661,25 @@ function initRoomPage(room){
 
 }
 
-function onPosNegInputFocus(event, isSecond){
+function onPosNegInputFocus(event, secondCall){
     /* Show/hide a hovering button above input to 
     allow user to switch sign between positive and negative */
-    console.log('**'+isSecond);
-    var $inp = $(event.target);
+
+    var $inp = $(this);  
     var $btn = $('#btn-pos-neg');
-    
-    if(isSecond == null || isSecond != 'second'){
-        $btn.hide();
-        $btn.css({ 
-            'top':$inp.offset().top - $btn.outerHeight(),
-            'left':$inp.offset().left
-        });
-        $btn.off('click');
-        $btn.click( switchSign( $inp ) );
-        $btn.show();
-        //$(event.target).trigger('focus','second');
-    }
+
+    $btn.css('top',$inp.offset().top - $btn.outerHeight());
+    $btn.css('left',$inp.offset().left);
+    $btn.css('display','block');
+    $btn.off('click');
+    $btn.on('click', function(event){
+        switchSign($inp); 
+        event.stopPropagation();
+    });
+
+    console.log($inp.is(':focus'));
+
+    return true;
 }
 
 function onDeleteRoomClick(){
@@ -1824,6 +1837,8 @@ $(document).ready(function() {
     initDecimalInputs();
     initAddInputBlockButtons();
     //initDropdowns();
+
+    $('#btn-pos-neg').hide();
 });
 
 function isObjectEmpty(object)
