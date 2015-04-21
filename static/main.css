@@ -22,6 +22,10 @@ input[type="button"] {
     font-size: 15pt;
     cursor:pointer;
 }
+input[type="number"]:disabled, 
+input[type="text"]:disabled {
+    background:none;
+}
 input[type="number"]:not(:disabled), 
 input[type="text"]:not(:disabled) {
     height:32px;
