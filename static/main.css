@@ -112,6 +112,9 @@ div.left, div.right {
     float:left;
     max-width:200px;
 }
+.input-pill td:not(.last-child) {
+    border-right:1px solid #ccc;
+}
 .group:after {
   content: "";
   display: table;
@@ -123,7 +126,11 @@ div.left, div.right {
 .input-group, .input-block {
     overflow:visible;
     clear:left;
-    margin:10px 0 0 0;
+}
+.input-group:after, .input-block:after {
+    content: "";
+    display: table;
+    clear: both;
 }
 .dropdown, .dropup {
     position:relative;
