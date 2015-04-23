@@ -529,21 +529,19 @@ function keydownIntegerInput(event){
 function blurDecimal(event, inpElem){
     var $inpElem = $(this);
     if(inpElem != null) $inpElem = $(inpElem);
-
+   
     //Enforce 2 decimal places.
-    if($inpElem.val().trim() == '.') $inpElem.val( '0.00' );
-    if($inpElem.val().length >= 1 && Math.abs(parseFloat($inpElem.val())) > 0){
-        $inpElem.val( parseFloat($inpElem.val()).toFixed(2) );
-    }else{
-        $inpElem.val('');
+    if($inpElem.val().length == 0
+        || $inpElem.val().trim() == '.'){
+         $inpElem.val( '0.00' );
     }
+    
+    $inpElem.val( parseFloat($inpElem.val()).toFixed(2) );
     //Set red color for negative values
-    if($inpElem.val().length > 0){
-        if($inpElem.val() > 0){
-            $inpElem.css('color','black');
-        }else{
-            $inpElem.css('color','red');
-        }
+     if($inpElem.val() >= 0){
+        $inpElem.css('color','black');
+    }else{
+        $inpElem.css('color','red');
     }
 }
 
@@ -902,20 +900,36 @@ function initRoomPage(room){
     if(room == null){
         room = {  
             "name": 'Default Room',
-            "room_length": '',
-            "room_width": '',
+            "room_length": 0,
+            "room_width": 0,
             "room_height": getf('#default-room-height'),
-            "door_quantity": '',
+            "ceiling_adjust_simple": 0,
+            "wall_adjust_simple": 0,
+            "door_quantity": 1,
             "door_height": getf('#default-door-height'),    
             "door_width": 0.9,   
-            "radiator_quantity": '',
+            "radiator_quantity": 1,
             "radiator_height": getf('#default-radiator-height'),
             "radiator_width": getf('#default-radiator-width'),           
             "window_width": getf('#default-window-width'),
             "window_height": getf('#default-window-height'),     
-            "window_quantity": ''
+            "window_quantity": 1
         }
     } 
+
+    //Set the quantity cells to 1 by default
+    $page.find('input[type=number]').val(0);
+
+    $page.find('.ceiling-adjust-qty')     .val(1);
+    $page.find('.wall-adjust-qty')        .val(1);
+    $page.find('.door-qty')               .val(1);
+    $page.find('.skirting-adjust-qty')    .val(1);
+    $page.find('.window-qty')             .val(1);
+    $page.find('.radiator-qty')           .val(1);
+    $page.find('.general-surface-qty')    .val(1);
+    $page.find('.isolated-surface-qty')   .val(1);
+
+    console.log('ca ' + room.ceiling_adjust_simple);
 
     $page.find('.room-key')               .val(room.key);
     $page.find('.room-title')             .val(room.name);
@@ -1150,7 +1164,7 @@ function addSvgButtons(){
 }
 
 function addInputBlock(context){
-
+console.log('add input block');
       //Buttons to add groups of inputs.
       //Set up events for various inputs in the new block if present.
       var $group = $(context).closest('.input-group');
@@ -1162,6 +1176,7 @@ function addInputBlock(context){
       $newBlock.find('input.decimal').blur( blurDecimal );
       $newBlock.find('.dropdown').removeClass('open');
       $newBlock.find('.positive-negative-cell').click( switchSign );
+      $newBlock.find('.default-value-cell').removeClass('default-value-cell');
       $newBlock.removeClass('hidden');
       $newBlock.insertAfter($group.find('.input-block:last'));
       $btnRemove = $newBlock.find('.btn-remove-row:first');
@@ -1169,6 +1184,7 @@ function addInputBlock(context){
       $btnRemove.click(function(event){ 
           $(event.target).closest('.input-block').remove(); 
       });
+      $group.find('input.decimal').blur();
       initDropdowns($newBlock);
 }
 
