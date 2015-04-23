@@ -50,6 +50,8 @@ td {
 }
 td > input {
     border-radius:4px;
+    text-align:right;
+    background:none;
 }
 div.left, div.right {
     float:left;
@@ -120,14 +122,15 @@ div.left, div.right {
   display: table;
   clear: both;
 }
-.input-group {
-    margin:20px 0 0 0;
-}
 .input-group, .input-block {
     overflow:visible;
     clear:left;
 }
-.input-group:after, .input-block:after {
+.input-block {
+    /* height:38px; */
+}
+.input-group:after, .input-block:after, 
+.form-row:after {
     content: "";
     display: table;
     clear: both;
@@ -137,6 +140,9 @@ div.left, div.right {
     overflow:visible;
     float:left;
     margin:0 1px 0;
+}
+.room-page .dropdown-btn {
+    background-color:#D6FFD7;
 }
 .dropdown-btn {
     display:inline-block;
@@ -244,7 +250,7 @@ div.left, div.right {
 .group-label {
     clear:both;
     margin:10px 0 10px 0;
-    width:170px;
+    width:172px;
     font-weight: bold;
 }
 .control-label {
@@ -256,11 +262,9 @@ div.left, div.right {
 .form-control {
     float:left;
     width:50px;
-    background-color: #fff;
     border:none; 
 }
 .form-row {
-	overflow:auto;
 	margin:10px 0 5px 0;
 }
 .form-row > label {
@@ -346,7 +350,7 @@ td.last-child {
 }
 /* ********************* Specification Page ********************* */
 #form-edit-spec .input-block {
-    border-top:2px solid #ccc;
+    border-top:1px solid #ccc;
 }
 #spec-list .input-block {
     margin:0 0 10px 0;
@@ -389,6 +393,9 @@ input.spec-item-rate {
     border-radius:4px;
 }
 /* ********************* Room Page ********************* */
+td.default-value-cell{
+    background-color:#eee;
+}
 .room-top-row {
     overflow:auto;
     margin:0 0 10px 0;
@@ -454,6 +461,7 @@ td.room-height-cell {
     border-right:1px solid #ccc;
     border-top-left-radius:4px;
     border-top-right-radius:4px;
+    background-color:#99D9EA;
 }
 td.room-length-cell {
     border-top:1px solid #ccc;
@@ -464,6 +472,11 @@ td.room-width-cell {
     border:1px solid #ccc;
     border-bottom-left-radius:4px;
     border-bottom-right-radius:4px;
+}
+td.room-length-cell, 
+td.room-width-cell, td.baybreast-width-cell, 
+td.baybreast-depth-cell {
+    background-color:#538ED5;
 }
 td.btn-pos-neg-table {
     text-align:center;
@@ -483,9 +496,6 @@ td.btn-pos-neg-table {
     font-size:18px;
     font-weight:bold;
     cursor:pointer;
-}
-.baybreast-group {
-    overflow:auto;
 }
 .baybreast-depth, .baybreast-width {
     border:none;
@@ -583,11 +593,12 @@ td.result {
 }
 div.room-bottom-buttons {
     margin:10px 0 0 0;
+    text-align:center;
 }
 .btn-calculate-room, .btn-save-room, .btn-delete-room {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
+    color:#333;
+    background-color:#fff;
+    border-color:#ccc;
 }
 /* ********************* Projects Page ********************* */
 ul#projects-list {
@@ -607,9 +618,9 @@ input#new-project-title {
     border-radius:4px;
 }
 #btn-create-project {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
+    color:#333;
+    background-color:#fff;
+    border-color:#ccc;
 }
 .project-title, .project-date-created {
     border:none;
