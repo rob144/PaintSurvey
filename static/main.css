@@ -476,7 +476,7 @@ td.room-width-cell {
 td.room-length-cell, 
 td.room-width-cell, td.baybreast-width-cell, 
 td.baybreast-depth-cell {
-    background-color:#538ED5;
+    background-color:#7AA7DD;
 }
 td.btn-pos-neg-table {
     text-align:center;
@@ -621,6 +621,13 @@ input#new-project-title {
     color:#333;
     background-color:#fff;
     border-color:#ccc;
+}
+.project-title {
+    font-size:14px;
+}
+.project-date-created {
+    font-size:12px;
+    color:#aaa;
 }
 .project-title, .project-date-created {
     border:none;
