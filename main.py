@@ -43,24 +43,17 @@ class Project(ModelUtils, ndb.Model):
     date_created = ndb.DateTimeProperty(auto_now_add=True)
 
 class Room(ModelUtils, ndb.Model):
-    name = ndb.StringProperty()
-    room_length = ndb.FloatProperty()
-    room_width = ndb.FloatProperty()
-    room_height = ndb.FloatProperty()
-    door_quantity = ndb.IntegerProperty()
-    door_width = ndb.FloatProperty()
-    door_height = ndb.FloatProperty()
-    window_quantity = ndb.IntegerProperty()
-    window_width = ndb.FloatProperty()
-    window_height = ndb.FloatProperty()
-    radiator_quantity = ndb.IntegerProperty()
-    radiator_width = ndb.FloatProperty()
-    radiator_height = ndb.FloatProperty()
-    ceiling_adjust_simple = ndb.FloatProperty()
-    wall_adjust_simple = ndb.FloatProperty()
-    group_items = ndb.JsonProperty()
-    is_default = ndb.BooleanProperty()
-    project = ndb.KeyProperty(kind='Project')
+    name                    = ndb.StringProperty()
+    room_hours_adjust       = ndb.FloatProperty()
+    room_length             = ndb.FloatProperty()
+    room_width              = ndb.FloatProperty()
+    room_height             = ndb.FloatProperty()
+    ceiling_adjust_simple   = ndb.FloatProperty()
+    wall_adjust_simple      = ndb.FloatProperty()
+    skirting_adjust_simple  = ndb.FloatProperty()
+    group_items             = ndb.JsonProperty()
+    is_default              = ndb.BooleanProperty()
+    project                 = ndb.KeyProperty(kind='Project')
 
 class Paint(ModelUtils, ndb.Model):
     name = ndb.StringProperty()
@@ -73,15 +66,6 @@ def create_default_room():
         room_length = 5.0,
         room_width = 5.0,
         room_height = 2.5,
-        door_quantity = 1,
-        door_width = 0.9,
-        door_height = 2.0,
-        window_quantity = 1,
-        window_width = 1.5,
-        window_height = 1.0,
-        radiator_quantity = 1,
-        radiator_width = 1.5,
-        radiator_height = 0.7,
         is_default = True
     )
 
@@ -235,20 +219,13 @@ class SaveRoom(webapp2.RequestHandler):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
         room.name                   = obj_room['name']
+        room.room_hours_adjust      = obj_room['room_hours_adjust']
         room.room_width             = obj_room['room_width']
         room.room_length            = obj_room['room_length']
         room.room_height            = obj_room['room_height']
-        room.door_quantity          = obj_room['door_quantity']
-        room.door_width             = obj_room['door_width']
-        room.door_height            = obj_room['door_height']
-        room.window_quantity        = obj_room['window_quantity']
-        room.window_width           = obj_room['window_width']
-        room.window_height          = obj_room['window_height']
-        room.radiator_quantity      = obj_room['radiator_quantity']
-        room.radiator_width         = obj_room['radiator_width']
-        room.radiator_height        = obj_room['radiator_height']
         room.ceiling_adjust_simple  = obj_room['ceiling_adjust_simple']
         room.wall_adjust_simple     = obj_room['wall_adjust_simple']
+        room.skirting_adjust_simple = obj_room['skirting_adjust_simple']
         room.is_default             = obj_room['is_default']
         room.group_items            = obj_room['group_items']
 

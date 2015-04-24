@@ -238,8 +238,8 @@
                                   <div class='left'>
                                       <div class="dropdown">
                                           <button class="dropdown-btn" type="button" >
-                                              <span class='dropdown-text'>Dropdown</span>
-                                              <input type='hidden' class='dropdown-value ceiling-adjust-prod-rate'/>
+                                              <span class='dropdown-text'>Select...</span>
+                                              <input type='hidden' class='dropdown-value ceiling-adjust-paint-key'/>
                                               
                                           </button>
                                           <ul class="dropdown-menu" role="menu">
@@ -254,7 +254,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                <input name='ceiling-adjust-qty' type='number' step='1' placeholder='' class='ceiling-adjust-qty integer'/>
+                                                <input name='ceiling-adjust-qty' type='number' min='0' step='1' placeholder='' class='ceiling-adjust-qty integer' data-default-value='1'/>
                                               </td>
                                               <td class='positive-negative-cell'>±</td>
                                               <td>
@@ -294,8 +294,8 @@
                                   <div class='left'>
                                       <div class="dropdown">
                                           <button class="dropdown-btn" type="button">
-                                              <span class='dropdown-text'>Dropdown</span>
-                                              <input type='hidden' class='dropdown-value wall-adjust-prod-rate'/>
+                                              <span class='dropdown-text'>Select...</span>
+                                              <input type='hidden' class='dropdown-value wall-adjust-paint-key'/>
                                               
                                           </button>
                                           <ul class="dropdown-menu" role="menu">
@@ -310,7 +310,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='wall-adjust-qty' type='number' step='1' placeholder='0' class='wall-adjust-qty integer'/>
+                                                  <input name='wall-adjust-qty' type='number' min='0' step='1' placeholder='' class='wall-adjust-qty integer' data-default-value='1'/>
                                               </td>
                                               <td class='positive-negative-cell'>±</td>
                                               <td>
@@ -339,8 +339,8 @@
                                   <div class='left'>
                                       <div class="dropdown">
                                           <button class="dropdown-btn" type="button" >
-                                              <span class='dropdown-text'>Dropdown</span>
-                                              <input type='hidden' class='dropdown-value door-surface-key'/>
+                                              <span class='dropdown-text'>Select...</span>
+                                              <input type='hidden' class='dropdown-value door-paint-key'/>
                                               
                                           </button>
                                           <ul class="dropdown-menu" role="menu">
@@ -355,7 +355,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='0'>
+                                                  <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-cell'>±</td>
                                               <td class='default-value-cell'>
@@ -394,8 +394,8 @@
                                   <div class='left'>
                                       <div class='dropdown'>
                                           <button class='dropdown-btn' type='button' >
-                                              <span class='dropdown-text'>Dropdown</span>
-                                              <input type='hidden' class='dropdown-value skirting-adjust-prod-rate'/>
+                                              <span class='dropdown-text'>Select...</span>
+                                              <input type='hidden' class='dropdown-value skirting-adjust-paint-key'/>
                                           </button>
                                           <ul class="dropdown-menu" role="menu">
                                               <li role='presentation'>
@@ -409,7 +409,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='skirting-adjust-qty' type='number' step='1' placeholder='0' class='skirting-adjust-qty integer'/>
+                                                  <input name='skirting-adjust-qty' type='number' min='0' step='1' placeholder='0' class='skirting-adjust-qty integer' data-default-value='1'/>
                                               </td>
                                               <td class='positive-negative-cell'>±</td>
                                               <td class='last-child'>
@@ -433,15 +433,15 @@
                               <div class='input-block'>
                                   
                                   <div class='left'>
-                                      <div class="dropdown">
-                                          <button class="dropdown-btn" type="button" >
-                                              <span class='dropdown-text'>Dropdown</span>
-                                              <input type='hidden' class='dropdown-value window-surface-key'/>
+                                      <div class='dropdown'>
+                                          <button class='dropdown-btn' type='button' >
+                                              <span class='dropdown-text'>Select...</span>
+                                              <input type='hidden' class='dropdown-value window-paint-key'/>
                                               
                                           </button>
-                                          <ul class="dropdown-menu" role="menu">
+                                          <ul class='dropdown-menu' role='menu'>
                                               <li role='presentation'>
-                                                  <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                                  <a role='menuitem' tabindex='-1' href='#'>Menu Item</a>
                                               </li>
                                           </ul>
                                       </div>
@@ -451,7 +451,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='0'>
+                                                  <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-fake-cell'></td>
                                               <td class='default-value-cell'>
@@ -479,8 +479,8 @@
                                   <div class='left'>
                                       <div class="dropdown">
                                           <button class="dropdown-btn" type="button" >
-                                              <span class='dropdown-text'>Dropdown</span>
-                                              <input type='hidden' class='dropdown-value radiator-surface-key'/>
+                                              <span class='dropdown-text'>Select...</span>
+                                              <input type='hidden' class='dropdown-value radiator-paint-key'/>
                                               
                                           </button>
                                           <ul class="dropdown-menu" role="menu">
@@ -495,7 +495,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='1' min='0' placeholder='0'>
+                                                  <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-fake-cell'></td>
                                               <td class='default-value-cell'>
@@ -522,8 +522,8 @@
                                   <div class='left'>
                                       <div class="dropdown">
                                           <button class="dropdown-btn" type="button" >
-                                              <span class='dropdown-text'>Dropdown</span>
-                                              <input type='hidden' class='dropdown-value general-surface-key'/>
+                                              <span class='dropdown-text'>Select...</span>
+                                              <input type='hidden' class='dropdown-value general-surface-paint-key'/>
                                               
                                           </button>
                                           <ul class="dropdown-menu" role="menu">
@@ -538,7 +538,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='general-surface-qty' class='general-surface-qty form-control integer' type='number' step='1' min='0' placeholder='0'>
+                                                  <input name='general-surface-qty' class='general-surface-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-fake-cell'></td>
                                               <td>
@@ -567,8 +567,8 @@
                                   <div class='left'>
                                       <div class="dropdown">
                                           <button class="dropdown-btn" type="button" >
-                                              <span class='dropdown-text'>Dropdown</span>
-                                              <input type='hidden' class='dropdown-value isolated-surface-key'/>
+                                              <span class='dropdown-text'>Select...</span>
+                                              <input type='hidden' class='dropdown-value isolated-surface-paint-key'/>
                                               
                                           </button>
                                           <ul class="dropdown-menu" role="menu">
@@ -583,7 +583,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='isolated-surface-qty' class='isolated-surface-qty form-control integer' type='number' step='1' min='0' placeholder=''>
+                                                  <input name='isolated-surface-qty' class='isolated-surface-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-fake-cell'></td>
                                               <td class='last-child'>

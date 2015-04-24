@@ -243,6 +243,10 @@ function getRoomGroupData($page){
         'bayBreastVals':[],
         'ceilingAdjustVals':[],
         'wallAdjustVals':[],
+        'doorVals':[],
+        'skirtingVals':[],
+        'windowVals':[],
+        'radiatorVals':[],
         'genSurfaceVals':[],
         'isolSurfaceVals':[],
         toString: function(){
@@ -250,6 +254,10 @@ function getRoomGroupData($page){
             str += 'bayBreastVals [' + this.bayBreastVals + ']\n';
             str += 'ceilingAdjustVals [' + this.ceilingAdjustVals + ']\n';
             str += 'wallAdjustVals [' + this.wallAdjustVals + ']\n';
+            str += 'doorVals [' + this.doorVals + ']\n';
+            str += 'skirtingVals [' + this.skirtingVals + ']\n';
+            str += 'windowVals [' + this.windowVals + ']\n';
+            str += 'radiatorVals [' + this.radiatorVals + ']\n';
             str += 'genSurfaceVals [' + this.genSurfaceVals + ']\n';
             str += 'isolSurfaceVals [' + this.isolSurfaceVals + ']\n';
             return str;
@@ -271,6 +279,8 @@ function getRoomGroupData($page){
 
     $page.find('.ceiling-adjust-group .input-block').each( function(index, elem){
         results.ceilingAdjustVals.push([ 
+            $(elem).find('.ceiling-adjust-paint-key').val(),
+            getf('.ceiling-adjust-qty', elem), 
             getf('.ceiling-adjust-dim1', elem), 
             getf('.ceiling-adjust-dim2', elem) 
         ]);
@@ -278,14 +288,51 @@ function getRoomGroupData($page){
 
     $page.find('.wall-adjust-group .input-block').each( function(index, elem){
         results.wallAdjustVals.push([
+            $(elem).find('.wall-adjust-paint-key').val(),
+            getf('.wall-adjust-qty', elem), 
             getf('.wall-adjust-dim1', elem), 
             getf('.wall-adjust-dim2', elem) 
         ]);
     });
 
+    $page.find('.doors-group .input-block').each( function(index, elem){
+        results.doorVals.push([
+            $(elem).find('.door-paint-key').val(),
+            getf('.door-qty', elem), 
+            getf('.door-width', elem), 
+            getf('.door-height', elem) 
+        ]);
+    });
+
+    $page.find('.skirting-adjust-group .input-block').each( function(index, elem){
+        results.skirtingVals.push([
+            $(elem).find('.skirting-paint-key').val(),
+            getf('.skirting-adjust-qty', elem), 
+            getf('.skirting-adjust-length', elem)
+        ]);
+    });
+
+    $page.find('.windows-group .input-block').each( function(index, elem){
+        results.windowVals.push([
+            $(elem).find('.window-paint-key').val(),
+            getf('.window-qty', elem), 
+            getf('.window-width', elem), 
+            getf('.window-height', elem) 
+        ]);
+    });
+
+    $page.find('.radiators-group .input-block').each( function(index, elem){
+        results.radiatorVals.push([
+            $(elem).find('.radiator-paint-key').val(),
+            getf('.radiator-qty', elem), 
+            getf('.radiator-width', elem), 
+            getf('.radiator-height', elem) 
+        ]);
+    });
+
     $page.find('.general-surface-group .input-block').each( function(index, elem){
         results.genSurfaceVals.push([
-            $(elem).find('.general-surface-key').val(),
+            $(elem).find('.general-surface-paint-key').val(),
             getf('.general-surface-qty', elem),
             getf('.general-surface-width', elem),
             getf('.general-surface-height', elem) 
@@ -294,7 +341,7 @@ function getRoomGroupData($page){
 
     $page.find('.isolated-surface-group .input-block').each( function(index, elem){
         results.isolSurfaceVals.push([
-            $(elem).find('.isolated-surface-key').val(),
+            $(elem).find('.isolated-surface-paint-key').val(),
             getf('.isolated-surface-qty', elem),
             getf('.isolated-surface-length', elem),
         ]);
@@ -625,8 +672,7 @@ function initDropdown(elem){
     var selectedValue = $elem.find('.dropdown-value').val();
     var dropdownText = $elem.find('.dropdown-text').text().toLowerCase();
 
-    if (dropdownText == 'dropdown' || dropdownText == 'menu item' 
-      || typeof selectedValue === 'undefined' || selectedValue == ''){
+    if (dropdownText == 'dropdown' || dropdownText == 'menu item'){
         var defaultItem = $elem.find('.dropdown-menu a:first');
         $elem.find('.dropdown-value').val( defaultItem.data('value') );
         $elem.find('.dropdown-text').text( defaultItem.text() );
@@ -824,7 +870,10 @@ function deleteRoom(room_key){
 }
 
 function saveRoom(room, keyElem){
-    //Do an ajax call to save the room data
+    
+    console.log('room before save: ');
+    console.log(room);
+
     doXhr({
         httpMethod: 'POST',
         url: '/saveroom',
@@ -863,23 +912,24 @@ function initRoomDefaultsPage(){
 
     $('#form-room-defaults .btn-save').click( function(){
         saveRoom({
-            key: $('#default-room-key').val(),
-            name: 'Default Room',
-            room_width: 0,
-            room_length: 0,
-            room_height: parseFloat($('#default-room-height').val()),
-            door_quantity: 0,
-            door_width: parseFloat($('#default-door-width').val()),
-            door_height: parseFloat($('#default-door-height').val()),
-            window_quantity: 0,
-            window_width: parseFloat($('#default-window-width').val()),
-            window_height: parseFloat($('#default-window-height').val()),
-            radiator_quantity: 0,
-            radiator_width: parseFloat($('#default-radiator-width').val()),
-            radiator_height: parseFloat($('#default-radiator-height').val()),
-            group_items: '',
-            is_default: true,
-            project: ''
+            key:                $('#default-room-key').val(),
+            name:               'Default Room',
+            room_hours_adjust:  0,
+            room_width:         0,
+            room_length:        0,
+            room_height:        parseFloat($('#default-room-height').val()),
+            door_quantity:      0,
+            door_width:         parseFloat($('#default-door-width').val()),
+            door_height:        parseFloat($('#default-door-height').val()),
+            window_quantity:    0,
+            window_width:       parseFloat($('#default-window-width').val()),
+            window_height:      parseFloat($('#default-window-height').val()),
+            radiator_quantity:  0,
+            radiator_width:     parseFloat($('#default-radiator-width').val()),
+            radiator_height:    parseFloat($('#default-radiator-height').val()),
+            group_items:        '',
+            is_default:         true,
+            project:            ''
         });
     });      
 }
@@ -899,27 +949,19 @@ function initRoomPage(room){
     //Use the default room settings if room object not passed in.
     if(room == null){
         room = {  
-            "name": 'Default Room',
-            "room_length": 0,
-            "room_width": 0,
-            "room_height": getf('#default-room-height'),
-            "ceiling_adjust_simple": 0,
-            "wall_adjust_simple": 0,
-            "door_quantity": 1,
-            "door_height": getf('#default-door-height'),    
-            "door_width": 0.9,   
-            "radiator_quantity": 1,
-            "radiator_height": getf('#default-radiator-height'),
-            "radiator_width": getf('#default-radiator-width'),           
-            "window_width": getf('#default-window-width'),
-            "window_height": getf('#default-window-height'),     
-            "window_quantity": 1
+            'name': '',
+            'room_length': 0,
+            'room_width': 0,
+            'room_height': getf('#default-room-height'),
+            'ceiling_adjust_simple': 0,
+            'wall_adjust_simple': 0,
+            'skirting-adjust-simple': 0
         }
     } 
 
-    //Set the quantity cells to 1 by default
     $page.find('input[type=number]').val(0);
 
+    //Set the quantity cells to 1 by default
     $page.find('.ceiling-adjust-qty')     .val(1);
     $page.find('.wall-adjust-qty')        .val(1);
     $page.find('.door-qty')               .val(1);
@@ -929,28 +971,23 @@ function initRoomPage(room){
     $page.find('.general-surface-qty')    .val(1);
     $page.find('.isolated-surface-qty')   .val(1);
 
-    console.log('ca ' + room.ceiling_adjust_simple);
-
     $page.find('.room-key')               .val(room.key);
     $page.find('.room-title')             .val(room.name);
+    $page.find('.room-hours-adjust')      .val(room.room_hours_adjust);
     $page.find('.room-height')            .val(room.room_height);
     $page.find('.room-width')             .val(room.room_width);
     $page.find('.room-length')            .val(room.room_length);
-    $page.find('.door-qty')               .val(room.door_quantity);
-    $page.find('.door-width')             .val(room.door_width);
-    $page.find('.door-height')            .val(room.door_height);
-    $page.find('.window-qty')             .val(room.window_quantity);
-    $page.find('.window-width')           .val(room.window_width);
-    $page.find('.window-height')          .val(room.window_height);
-    $page.find('.radiator-qty')           .val(room.radiator_quantity);
-    $page.find('.radiator-width')         .val(room.radiator_width);
-    $page.find('.radiator-height')        .val(room.radiator_height);
     $page.find('.ceiling-adjust-simple')  .val(room.ceiling_adjust_simple);
     $page.find('.wall-adjust-simple')     .val(room.wall_adjust_simple);
+    $page.find('.skirting-adjust-simple') .val(room.skirting_adjust_simple);
     
     //$page.find('.positive-negative-cell').click( switchSign );
+    
     //Build input blocks and set the values for each group item.
     if(room.group_items != null){
+
+console.log('fetch room group items');
+console.log(room.group_items);
         
         for(var i = 0; i <= room.group_items.bayBreastVals.length - 1; i++){
             
@@ -961,24 +998,63 @@ function initRoomPage(room){
         }
         
         for(var i = 0; i <= room.group_items.ceilingAdjustVals.length - 1; i++){
+            
             if(i >= 1) addInputBlock( $page.find('.ceiling-adjust-group .btn-add-row:last') );
             var $block = $page.find('.ceiling-adjust-group .input-block:last');
-            $page.find('.ceiling-adjust-dim1').val( room.group_items.ceilingAdjustVals[i][0] );
-            $page.find('.ceiling-adjust-dim2').val( room.group_items.ceilingAdjustVals[i][1] );
+            $block.find('.ceiling-adjust-qty').val( room.group_items.ceilingAdjustVals[i][1] );
+            $block.find('.ceiling-adjust-dim1').val( room.group_items.ceilingAdjustVals[i][2] );
+            $block.find('.ceiling-adjust-dim2').val( room.group_items.ceilingAdjustVals[i][3] );
         }
         
         for(var i = 0; i <= room.group_items.wallAdjustVals.length - 1; i++){
             
             if(i >= 1) addInputBlock( $page.find('.wall-adjust-group .btn-add-row:last') );
-            $page.find('.wall-adjust-dim1').val( room.group_items.wallAdjustVals[i][0] );
-            $page.find('.wall-adjust-dim2').val( room.group_items.wallAdjustVals[i][1] );        
+            var $block = $page.find('.wall-adjust-group .input-block:last');
+            $block.find('.wall-adjust-qty').val( room.group_items.wallAdjustVals[i][1] );
+            $block.find('.wall-adjust-dim1').val( room.group_items.wallAdjustVals[i][2] );
+            $block.find('.wall-adjust-dim2').val( room.group_items.wallAdjustVals[i][3] );        
         }
-        
+
+        for(var i = 0; i <= room.group_items.doorVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.doors-group .btn-add-row:last') );
+            var $block = $page.find('.doors-group .input-block:last');
+            $block.find('.door-qty').val( room.group_items.doorVals[i][1] );
+            $block.find('.door-width').val( room.group_items.doorVals[i][2] );
+            $block.find('.door-height').val( room.group_items.doorVals[i][3] );        
+        }
+
+        for(var i = 0; i <= room.group_items.skirtingVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.skirting-adjust-group .btn-add-row:last') );
+            var $block = $page.find('.skirting-adjust-group .input-block:last');
+            $block.find('.skirting-adjust-qty').val( room.group_items.skirtingVals[i][1] );
+            $block.find('.skirting-adjust-length').val( room.group_items.skirtingVals[i][2] );
+        }
+
+        for(var i = 0; i <= room.group_items.windowVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.windows-group .btn-add-row:last') );
+            var $block = $page.find('.windows-group .input-block:last');
+            $block.find('.window-qty').val( room.group_items.windowVals[i][1] );
+            $block.find('.window-width').val( room.group_items.windowVals[i][2] );
+            $block.find('.window-height').val( room.group_items.windowVals[i][3] );        
+        }
+
+        for(var i = 0; i <= room.group_items.radiatorVals.length - 1; i++){
+            
+            if(i >= 1) addInputBlock( $page.find('.radiators-group .btn-add-row:last') );
+            var $block = $page.find('.radiators-group .input-block:last');
+            $block.find('.radiator-qty').val( room.group_items.radiatorVals[i][1] );
+            $block.find('.radiator-width').val( room.group_items.radiatorVals[i][2] );
+            $block.find('.radiator-height').val( room.group_items.radiatorVals[i][3] );        
+        }
+
         for(var i = 0; i <= room.group_items.genSurfaceVals.length - 1; i++){
             
             if(i >= 1) addInputBlock( $page.find('.general-surface-group .btn-add-row:last') );
-            var paint = MODEL.getPaint(room.group_items.genSurfaceVals[i][0]);
             var $block = $page.find('.general-surface-group .input-block:last');
+            var paint = MODEL.getPaint(room.group_items.genSurfaceVals[i][0]);
             $block.find('.dropdown-value').val( paint.key );
             $block.find('.dropdown-text').text( paint.name + ' (' + paint.prod_rate + ')' );
             $block.find('.general-surface-qty').val( room.group_items.genSurfaceVals[i][1] );
@@ -1030,7 +1106,6 @@ function initRoomPage(room){
     initDecimalInputs();
     initDropdowns($page);
     initAddInputBlockButtons();
-
 }
 
 function onPosNegInputFocus(event, secondCall){
@@ -1069,26 +1144,22 @@ function onSaveRoomClick(){
 
     groupItems = getRoomGroupData($page);
 
+    console.log('groupItems: ');
+    console.log(groupItems);
+
     if(isObjectEmpty(CURRENT_PROJECT)){
         alert('Please select a project first.');
     }else{
         saveRoom({
             key:                    $page.find('.room-key').val(),
             name:                   $page.find('.room-title').val(),
+            room_hours_adjust:      getf('.room-hours-adjust'),
             room_length:            getf('.room-length'),
             room_width:             getf('.room-width'),
             room_height:            getf('.room-height'),
-            door_quantity:          getf('.door-qty'),
-            door_width:             getf('.door-width'),
-            door_height:            getf('.door-height'),
-            window_quantity:        getf('.window-qty'),
-            window_width:           getf('.window-width'),
-            window_height:          getf('.window-height'),
-            radiator_quantity:      getf('.radiator-qty'),
-            radiator_width:         getf('.radiator-width'),
-            radiator_height:        getf('.radiator-height'),
             ceiling_adjust_simple:  getf('.ceiling-adjust-simple'),
             wall_adjust_simple:     getf('.wall-adjust-simple'),
+            skirting_adjust_simple: getf('.skirting-adjust-simple'),
             group_items:            groupItems,
             is_default:             false,
             project:                CURRENT_PROJECT.key
@@ -1164,28 +1235,31 @@ function addSvgButtons(){
 }
 
 function addInputBlock(context){
-console.log('add input block');
-      //Buttons to add groups of inputs.
-      //Set up events for various inputs in the new block if present.
-      var $group = $(context).closest('.input-group');
-      var $newBlock = $group.find('.input-block:last').clone();
+        //Buttons to add groups of inputs.
+        //Set up events for various inputs in the new block if present.
+        var $group = $(context).closest('.input-group');
+        var $newBlock = $group.find('.input-block:last').clone();
 
-      $newBlock.find('input').val('');
-      $newBlock.find('.btn-add-row:first').remove();
-      $newBlock.find('input.decimal').keydown( keydownDecimalInput );
-      $newBlock.find('input.decimal').blur( blurDecimal );
-      $newBlock.find('.dropdown').removeClass('open');
-      $newBlock.find('.positive-negative-cell').click( switchSign );
-      $newBlock.find('.default-value-cell').removeClass('default-value-cell');
-      $newBlock.removeClass('hidden');
-      $newBlock.insertAfter($group.find('.input-block:last'));
-      $btnRemove = $newBlock.find('.btn-remove-row:first');
-      $btnRemove.css('display','block');
-      $btnRemove.click(function(event){ 
+        $newBlock.find('input').val('');
+        $newBlock.find('.btn-add-row:first').remove();
+        $newBlock.find('input.decimal').keydown( keydownDecimalInput );
+        $newBlock.find('input.decimal').blur( blurDecimal );
+        $newBlock.find('.dropdown').removeClass('open');
+        $newBlock.find('.positive-negative-cell').click( switchSign );
+        $newBlock.find('.default-value-cell').removeClass('default-value-cell');
+        $newBlock.find('input[type="number"]').each(function(index, elem){
+            var $elem = $(elem);
+            $elem.val($elem.attr('data-default-value'));
+        });
+        $newBlock.removeClass('hidden');
+        $newBlock.insertAfter($group.find('.input-block:last'));
+        $btnRemove = $newBlock.find('.btn-remove-row:first');
+        $btnRemove.css('display','block');
+        $btnRemove.click(function(event){ 
           $(event.target).closest('.input-block').remove(); 
-      });
-      $group.find('input.decimal').blur();
-      initDropdowns($newBlock);
+        });
+        $group.find('input.decimal').blur();
+        initDropdowns($newBlock);
 }
 
 function initAddInputBlockButtons(){
