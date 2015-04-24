@@ -270,81 +270,115 @@ function getRoomGroupData($page){
         return Math.abs(floatVal) >= 0 ? floatVal : 0; 
     }
 
+    var notZero = function(ancestor){
+        var sum = 1;
+        $(ancestor).find('input[type="number"]').each(function(idx, elem){
+            sum *= parseFloat($(elem).val());
+        });
+        return (Math.abs(sum) > 0);
+    }
+
     $page.find('.baybreast-group .input-block').each( function(index, elem){
-        results.bayBreastVals.push([ 
-            getf('.baybreast-depth', elem), 
-            getf('.baybreast-width', elem) 
-        ]);
+        if(notZero(elem)){
+            results.bayBreastVals.push([ 
+                getf('.baybreast-depth', elem), 
+                getf('.baybreast-width', elem) 
+            ]);
+        }
     });
 
     $page.find('.ceiling-adjust-group .input-block').each( function(index, elem){
-        results.ceilingAdjustVals.push([ 
-            $(elem).find('.ceiling-adjust-paint-key').val(),
-            getf('.ceiling-adjust-qty', elem), 
-            getf('.ceiling-adjust-dim1', elem), 
-            getf('.ceiling-adjust-dim2', elem) 
-        ]);
+        if($(elem).find('.ceiling-adjust-paint-key').val().length >= 1 
+            && notZero(elem)){
+            results.ceilingAdjustVals.push([ 
+                $(elem).find('.ceiling-adjust-paint-key').val(),
+                getf('.ceiling-adjust-qty', elem), 
+                getf('.ceiling-adjust-dim1', elem), 
+                getf('.ceiling-adjust-dim2', elem) 
+            ]);
+        }
     });
 
     $page.find('.wall-adjust-group .input-block').each( function(index, elem){
-        results.wallAdjustVals.push([
-            $(elem).find('.wall-adjust-paint-key').val(),
-            getf('.wall-adjust-qty', elem), 
-            getf('.wall-adjust-dim1', elem), 
-            getf('.wall-adjust-dim2', elem) 
-        ]);
+        if($(elem).find('.wall-adjust-paint-key').val().length >= 1 
+            && notZero(elem)){
+            results.wallAdjustVals.push([
+                $(elem).find('.wall-adjust-paint-key').val(),
+                getf('.wall-adjust-qty', elem), 
+                getf('.wall-adjust-dim1', elem), 
+                getf('.wall-adjust-dim2', elem) 
+            ]);
+        }
     });
 
     $page.find('.doors-group .input-block').each( function(index, elem){
-        results.doorVals.push([
-            $(elem).find('.door-paint-key').val(),
-            getf('.door-qty', elem), 
-            getf('.door-width', elem), 
-            getf('.door-height', elem) 
-        ]);
+        if($(elem).find('.door-paint-key').val().length >= 1 
+            && notZero(elem)){
+            results.doorVals.push([
+                $(elem).find('.door-paint-key').val(),
+                getf('.door-qty', elem), 
+                getf('.door-width', elem), 
+                getf('.door-height', elem) 
+            ]);
+        }
     });
 
     $page.find('.skirting-adjust-group .input-block').each( function(index, elem){
-        results.skirtingVals.push([
-            $(elem).find('.skirting-paint-key').val(),
-            getf('.skirting-adjust-qty', elem), 
-            getf('.skirting-adjust-length', elem)
-        ]);
+        if($(elem).find('.skirting-adjust-paint-key').val().length >= 1 
+            && notZero(elem)){
+            results.skirtingVals.push([
+                $(elem).find('.skirting-paint-key').val(),
+                getf('.skirting-adjust-qty', elem), 
+                getf('.skirting-adjust-length', elem)
+            ]);
+        }
     });
 
     $page.find('.windows-group .input-block').each( function(index, elem){
-        results.windowVals.push([
-            $(elem).find('.window-paint-key').val(),
-            getf('.window-qty', elem), 
-            getf('.window-width', elem), 
-            getf('.window-height', elem) 
-        ]);
+        if($(elem).find('.window-paint-key').val().length >= 1 
+            && notZero(elem)){
+            results.windowVals.push([
+                $(elem).find('.window-paint-key').val(),
+                getf('.window-qty', elem), 
+                getf('.window-width', elem), 
+                getf('.window-height', elem) 
+            ]);
+        }
     });
 
     $page.find('.radiators-group .input-block').each( function(index, elem){
-        results.radiatorVals.push([
-            $(elem).find('.radiator-paint-key').val(),
-            getf('.radiator-qty', elem), 
-            getf('.radiator-width', elem), 
-            getf('.radiator-height', elem) 
-        ]);
+        if($(elem).find('.radiator-paint-key').val().length >= 1 
+            && notZero(elem)){
+            results.radiatorVals.push([
+                $(elem).find('.radiator-paint-key').val(),
+                getf('.radiator-qty', elem), 
+                getf('.radiator-width', elem), 
+                getf('.radiator-height', elem) 
+            ]);
+        }
     });
 
     $page.find('.general-surface-group .input-block').each( function(index, elem){
-        results.genSurfaceVals.push([
-            $(elem).find('.general-surface-paint-key').val(),
-            getf('.general-surface-qty', elem),
-            getf('.general-surface-width', elem),
-            getf('.general-surface-height', elem) 
-        ]);
+        if($(elem).find('.general-surface-paint-key').val().length >= 1 
+            && notZero(elem)){
+            results.genSurfaceVals.push([
+                $(elem).find('.general-surface-paint-key').val(),
+                getf('.general-surface-qty', elem),
+                getf('.general-surface-width', elem),
+                getf('.general-surface-height', elem) 
+            ]);
+        }
     });
 
     $page.find('.isolated-surface-group .input-block').each( function(index, elem){
-        results.isolSurfaceVals.push([
-            $(elem).find('.isolated-surface-paint-key').val(),
-            getf('.isolated-surface-qty', elem),
-            getf('.isolated-surface-length', elem),
-        ]);
+        if($(elem).find('.isolated-surface-paint-key').val().length >= 1 
+            && notZero(elem)){
+            results.isolSurfaceVals.push([
+                $(elem).find('.isolated-surface-paint-key').val(),
+                getf('.isolated-surface-qty', elem),
+                getf('.isolated-surface-length', elem),
+            ]);
+        }
     });
 
     return results;
@@ -913,7 +947,7 @@ function initRoomDefaultsPage(){
     $('#form-room-defaults .btn-save').click( function(){
         saveRoom({
             key:                $('#default-room-key').val(),
-            name:               'Default Room',
+            name:               '',
             room_hours_adjust:  0,
             room_width:         0,
             room_length:        0,
