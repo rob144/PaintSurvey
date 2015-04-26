@@ -212,6 +212,9 @@ div.left, div.right {
     white-space:nowrap;
     text-decoration:none;
 }
+.dropdown-menu .menuitem {
+    cursor:pointer;
+}
 .dropdown-menu > li:hover {
     background-color:#e0ffff;
 }
@@ -281,10 +284,10 @@ div.left, div.right {
 .button-box {
     display:table;
     float:right;
-    height:38px;
+    height:34px;
 }
 .button-box button {
-    margin:4px 0 0 0;
+    margin:3px 0 0 0;
     float:none;
 }
 .btn-add-row, .btn-remove-row, #btn-add-spec-item, 

@@ -905,8 +905,8 @@ function deleteRoom(room_key){
 
 function saveRoom(room, keyElem){
     
-    console.log('room before save: ');
-    console.log(room);
+console.log('room before save: ');
+console.log(room);
 
     doXhr({
         httpMethod: 'POST',
@@ -1023,6 +1023,9 @@ function initRoomPage(room){
 console.log('fetch room group items');
 console.log(room.group_items);
         
+        /* TODO: refactor following code to use a function to set drop down values 
+        and input values for each input group */
+
         for(var i = 0; i <= room.group_items.bayBreastVals.length - 1; i++){
             
             if(i >= 1) addInputBlock( $page.find('.baybreast-group .btn-add-row:last') );
@@ -1035,6 +1038,9 @@ console.log(room.group_items);
             
             if(i >= 1) addInputBlock( $page.find('.ceiling-adjust-group .btn-add-row:last') );
             var $block = $page.find('.ceiling-adjust-group .input-block:last');
+            var paint = MODEL.getPaint(room.group_items.ceilingAdjustVals[i][0]);
+            $block.find('.dropdown-value').val( paint.key );
+            $block.find('.dropdown-text').text( paint.name + ' (' + paint.prod_rate + ')' );
             $block.find('.ceiling-adjust-qty').val( room.group_items.ceilingAdjustVals[i][1] );
             $block.find('.ceiling-adjust-dim1').val( room.group_items.ceilingAdjustVals[i][2] );
             $block.find('.ceiling-adjust-dim2').val( room.group_items.ceilingAdjustVals[i][3] );
@@ -1140,6 +1146,14 @@ console.log(room.group_items);
     initDecimalInputs();
     initDropdowns($page);
     initAddInputBlockButtons();
+
+    $page.find('input[type="number"]').focus(
+        function(){
+            /* TODO: set cursor position to end of number
+             input so the user can delete numbers without moving
+             the cusor themselves. */
+        }
+    );
 }
 
 function onPosNegInputFocus(event, secondCall){
@@ -1177,9 +1191,6 @@ function onSaveRoomClick(){
     }
 
     groupItems = getRoomGroupData($page);
-
-    console.log('groupItems: ');
-    console.log(groupItems);
 
     if(isObjectEmpty(CURRENT_PROJECT)){
         alert('Please select a project first.');
@@ -1303,24 +1314,6 @@ function initAddInputBlockButtons(){
     });
 }
 
-$(document).ready(function() {
-
-    initOwlCarousel();
-    initSpecificationPage();
-    initRoomDefaultsPage();
-    initProjectsPage();
-
-    $('body').bind('touchstart click', blurInputFocus );
-    addSvgButtons();
-
-    initIntegerInputs();
-    initDecimalInputs();
-    initAddInputBlockButtons();
-    //initDropdowns();
-
-    $('#btn-pos-neg').hide();
-});
-
 function isObjectEmpty(object)
 {
     if ('object' !== typeof object) {
@@ -1398,3 +1391,20 @@ $.fn.center = function() {
       'left': '50%', 'top': '50%'
     });
 }
+
+$(document).ready(function() {
+
+    initOwlCarousel();
+    initSpecificationPage();
+    initRoomDefaultsPage();
+    initProjectsPage();
+
+    $('body').bind('touchstart click', blurInputFocus );
+    addSvgButtons();
+
+    initIntegerInputs();
+    initDecimalInputs();
+    initAddInputBlockButtons();
+
+    $('#btn-pos-neg').hide();
+});
