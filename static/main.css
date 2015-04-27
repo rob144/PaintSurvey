@@ -53,8 +53,16 @@ td > input {
     text-align:right;
     background:none;
 }
-div.left, div.right {
+.left, .right {
     float:left;
+    margin:2px 0 0 0;
+}
+.left {
+    clear:left;
+    margin-right:1px;
+}
+.left .left {
+    margin-right:0;
 }
 #model-data {
     display:none;
@@ -139,7 +147,6 @@ div.left, div.right {
     position:relative;
     overflow:visible;
     float:left;
-    margin:0 1px 0;
 }
 .room-page .dropdown-btn {
     background-color:#D6FFD7;
@@ -627,6 +634,7 @@ input#new-project-title {
 }
 .project-title {
     font-size:14px;
+    color:#000;
 }
 .project-date-created {
     font-size:12px;
