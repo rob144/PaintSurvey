@@ -1033,9 +1033,12 @@ function initRoomDefaultsPage(){
         saveRoom({
             key:                $('#default-room-key').val(),
             name:               '',
-            room_hours_adjust:  0,
-            room_width:         0,
-            room_length:        0,
+            room_hours_adjust:      0,
+            room_width:             0,
+            room_length:            0,
+            ceiling_adjust_simple:  0,
+            wall_adjust_simple:     0,
+            skirting_adjust_simple: 0,
             room_height:        parseFloat($('#default-room-height').val()),
             door_width:         parseFloat($('#default-door-width').val()),
             door_height:        parseFloat($('#default-door-height').val()),
@@ -1398,6 +1401,7 @@ function addInputBlock(context){
 
 function initAddInputBlockButtons(){
 
+    $('#btn-add-spec-item,.btn-add-row').off('click');
     $('#btn-add-spec-item,.btn-add-row').click( function(){
         addInputBlock(this);
     });
