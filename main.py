@@ -37,10 +37,22 @@ class ModelUtils(object):
         return result
 
 class Project(ModelUtils, ndb.Model):
-    username = ndb.StringProperty()
-    title = ndb.StringProperty()
-    rooms = ndb.KeyProperty(kind='Room', repeated=True)
-    date_created = ndb.DateTimeProperty(auto_now_add=True)
+    username        = ndb.StringProperty()
+    title           = ndb.StringProperty()
+    rooms           = ndb.KeyProperty(kind='Room', repeated=True)
+    date_created    = ndb.DateTimeProperty(auto_now_add=True)
+
+class DefaultRoom(ModelUtils, ndb.Model):
+    name                     = ndb.StringProperty()
+    room_length              = ndb.FloatProperty()
+    room_width               = ndb.FloatProperty()
+    room_height              = ndb.FloatProperty()
+    door_width               = ndb.FloatProperty()
+    door_height              = ndb.FloatProperty()
+    window_width             = ndb.FloatProperty()
+    window_height            = ndb.FloatProperty()
+    radiator_width           = ndb.FloatProperty()
+    radiator_height          = ndb.FloatProperty()
 
 class Room(ModelUtils, ndb.Model):
     name                    = ndb.StringProperty()
@@ -52,36 +64,40 @@ class Room(ModelUtils, ndb.Model):
     wall_adjust_simple      = ndb.FloatProperty()
     skirting_adjust_simple  = ndb.FloatProperty()
     group_items             = ndb.JsonProperty()
-    is_default              = ndb.BooleanProperty()
     project                 = ndb.KeyProperty(kind='Project')
 
 class Paint(ModelUtils, ndb.Model):
-    name = ndb.StringProperty()
-    prod_rate = ndb.FloatProperty()
-    surface_type = ndb.StringProperty()
-    order = ndb.IntegerProperty()
+    name            = ndb.StringProperty()
+    prod_rate       = ndb.FloatProperty()
+    surface_type    = ndb.StringProperty()
+    order           = ndb.IntegerProperty()
 
 def create_default_room():
-    return Room(
-        room_length = 5.0,
-        room_width = 5.0,
-        room_height = 2.5,
-        is_default = True
+    return DefaultRoom(
+        room_length     = 5.0,
+        room_width      = 5.0,
+        room_height     = 2.5,
+        door_width      = 0.5,
+        door_height     = 1.5,
+        window_width    = 1.5,
+        window_height   = 1.0,
+        radiator_width  = 1.0,
+        radiator_height  = 0.5
     )
 
 def init_data():
     #ndb.delete_multi(Project.query().fetch(keys_only=True))
     #ndb.delete_multi(Room.query().fetch(keys_only=True))
+    #ndb.delete_multi(DefaultRoom.query().fetch(keys_only=True))
     #ndb.delete_multi(Paint.query().fetch(keys_only=True))
     
     #Create project test data if not there already.
-    if(Project.query(Project.username == 'Test').count() < 3):
+    if(Project.query(Project.username == 'Test').count() < 1):
         Project(username='Test', title='Test One', date_created=datetime.now()).put()
 
     #Create room defaults if not there already.
-    if(Room.query(Room.is_default == True).count() <= 0):
-        default_room = create_default_room()
-        default_room.put()
+    if(DefaultRoom.query().count() < 1):
+        create_default_room().put()
 
     paint_data = [
         ['1 Vinyl Matt', 20, 'Ceilings', 1],
@@ -119,8 +135,8 @@ class Home(webapp2.RequestHandler):
         init_data()
         self.response.write(
         	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
-                'default_room': json.dumps(Room.query(Room.is_default == True).fetch(1)[0].to_dict(), indent=4, default=json_serial),
-                'rooms': json.dumps([r.to_dict() for r in Room.query(Room.is_default == False).fetch(300)], indent=4, default=json_serial),
+                'default_room': json.dumps(DefaultRoom.query().fetch(1)[0].to_dict(), indent=4, default=json_serial),
+                'rooms': json.dumps([r.to_dict() for r in Room.query().fetch(300)], indent=4, default=json_serial),
 	        	'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], indent=4, default=json_serial),
                 'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.surface_type, Paint.order).fetch(300)], indent=4)
         	}) 
@@ -226,7 +242,6 @@ class SaveRoom(webapp2.RequestHandler):
         room.ceiling_adjust_simple  = obj_room['ceiling_adjust_simple']
         room.wall_adjust_simple     = obj_room['wall_adjust_simple']
         room.skirting_adjust_simple = obj_room['skirting_adjust_simple']
-        room.is_default             = obj_room['is_default']
         room.group_items            = obj_room['group_items']
 
         room = room.put().get()

@@ -9,13 +9,6 @@ var DEFAULT_ROOM    =   JSON.parse($('#model-default-room').text());
 var ROOMS           =   JSON.parse($('#model-rooms').text());
 
 var MODEL = {
-    getDefaultRoom: function(){
-        for(var i = 0; i <= ROOMS.length - 1; i++){
-            if(ROOMS[i].is_default == true){
-                return ROOMS[i];
-            }
-        }
-    },
     getRoomsForProject: function(project_key){
         var rooms = [];
         for(var i = 0; i <= ROOMS.length - 1; i++){
@@ -186,9 +179,13 @@ function selectProject(projectKey, reload){
             CARO.removeItem(CARO.owl.owlItems.length - 1);
         }
     }
+
+console.log('CURRENT_PROJECT.rooms.length ' + CURRENT_PROJECT.rooms.length );
+console.log(CURRENT_PROJECT);
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
+console.log(rooms);
         for(var i = 0; i <= rooms.length - 1; i++){
             CARO.addItem($('#owl-pages .owl-page.room-page-template').html());
             initRoomPage(rooms[i]);
@@ -1018,6 +1015,8 @@ function initRoomDefaultsPage(){
     
     var drm = DEFAULT_ROOM;
 
+console.log(drm);
+
     $('#default-room-key'         ).val( drm.key );
     $('#default-room-height'      ).val( drm.room_height );
     $('#default-door-width'       ).val( drm.door_width );
@@ -1039,16 +1038,16 @@ function initRoomDefaultsPage(){
             ceiling_adjust_simple:  0,
             wall_adjust_simple:     0,
             skirting_adjust_simple: 0,
-            room_height:        parseFloat($('#default-room-height').val()),
-            door_width:         parseFloat($('#default-door-width').val()),
-            door_height:        parseFloat($('#default-door-height').val()),
-            window_width:       parseFloat($('#default-window-width').val()),
-            window_height:      parseFloat($('#default-window-height').val()),
-            radiator_width:     parseFloat($('#default-radiator-width').val()),
-            radiator_height:    parseFloat($('#default-radiator-height').val()),
-            group_items:        '',
-            is_default:         true,
-            project:            ''
+            room_height:            parseFloat($('#default-room-height').val()),
+            door_width:             parseFloat($('#default-door-width').val()),
+            door_height:            parseFloat($('#default-door-height').val()),
+            window_width:           parseFloat($('#default-window-width').val()),
+            window_height:          parseFloat($('#default-window-height').val()),
+            radiator_width:         parseFloat($('#default-radiator-width').val()),
+            radiator_height:        parseFloat($('#default-radiator-height').val()),
+            group_items:            '',
+            is_default:             true,
+            project:                ''
         });
     });      
 }
@@ -1068,19 +1067,25 @@ function initRoomPage(room){
     //Use the default room settings if room object not passed in.
     if(room == null){
         room = {  
-            'name': '',
-            'room_length': 0,
-            'room_width': 0,
-            'room_height': getf('#default-room-height'),
-            'ceiling_adjust_simple': 0,
-            'wall_adjust_simple': 0,
-            'skirting-adjust-simple': 0
+            'name'                  : '',
+            'room_length'           : 0,
+            'room_width'            : 0,
+            'room_height'           : getf('#default-room-height'),
+            'ceiling_adjust_simple' : 0,
+            'wall_adjust_simple'    : 0,
+            'skirting-adjust-simple': 0,
+            'door_width'            : getf('#default-door-width'),
+            'door_height'           : getf('#default-door-height'),
+            'window_width'          : getf('#default-window-width'),
+            'window_height'         : getf('#default-window-height'),
+            'radiator_width'        : getf('#default-radiator-width'),
+            'radiator_height'       : getf('#default-radiator-height')
         }
     } 
 
     $page.find('input[type=number]').val(0);
 
-    //Set the quantity cells to 1 by default
+    //Set some defaults
     $page.find('.ceiling-adjust-qty')     .val(1);
     $page.find('.wall-adjust-qty')        .val(1);
     $page.find('.door-qty')               .val(1);
@@ -1089,18 +1094,23 @@ function initRoomPage(room){
     $page.find('.radiator-qty')           .val(1);
     $page.find('.general-surface-qty')    .val(1);
     $page.find('.isolated-surface-qty')   .val(1);
+    $page.find('.door-width:first')       .val( room.door_width );
+    $page.find('.door-height:first')      .val( room.door_height );
+    $page.find('.window-width:first')     .val( room.window_width );
+    $page.find('.window-height:first')    .val( room.window_height );
+    $page.find('.radiator-width:first')   .val( room.radiator_width );
+    $page.find('.radiator-height:first')  .val( room.radiator_height );
 
-    $page.find('.room-key')               .val(room.key);
-    $page.find('.room-title')             .val(room.name);
-    $page.find('.room-hours-adjust')      .val(room.room_hours_adjust);
-    $page.find('.room-height')            .val(room.room_height);
-    $page.find('.room-width')             .val(room.room_width);
-    $page.find('.room-length')            .val(room.room_length);
-    $page.find('.ceiling-adjust-simple')  .val(room.ceiling_adjust_simple);
-    $page.find('.wall-adjust-simple')     .val(room.wall_adjust_simple);
-    $page.find('.skirting-adjust-simple') .val(room.skirting_adjust_simple);
+    $page.find('.room-key')               .val( room.key );
+    $page.find('.room-title')             .val( room.name );
+    $page.find('.room-hours-adjust')      .val( room.room_hours_adjust );
+    $page.find('.room-height')            .val( room.room_height );
+    $page.find('.room-width')             .val( room.room_width );
+    $page.find('.room-length')            .val( room.room_length );
+    $page.find('.ceiling-adjust-simple')  .val( room.ceiling_adjust_simple );
+    $page.find('.wall-adjust-simple')     .val( room.wall_adjust_simple );
+    $page.find('.skirting-adjust-simple') .val( room.skirting_adjust_simple );
     
-    //$page.find('.positive-negative-cell').click( switchSign );
     
     //Build input blocks and set the values for each group item.
     if(room.group_items != null){
@@ -1238,14 +1248,7 @@ console.log(room.group_items);
     initDecimalInputs();
     initDropdowns($page);
     initAddInputBlockButtons();
-
-    $page.find('input[type="number"]').focus(
-        function(){
-            /* TODO: set cursor position to end of number
-             input so the user can delete numbers without moving
-             the cusor themselves. */
-        }
-    );
+    initInputCursorPos($page);
 }
 
 function onPosNegInputFocus(event, secondCall){
@@ -1303,6 +1306,22 @@ function onSaveRoomClick(){
         }, '.room-key');
     }
 
+}
+
+function initInputCursorPos(context){
+
+    var $context = $('body');
+    if(context != null) $context = $(context); 
+    $('input[type="number"],input[type="text"]').focus( function(event){
+    /* Set the cursor position to the end when input focussed */
+    /* Does not work for number inputs in Google Chrome */
+    if(this.setSelectionRange){
+            var len = $(this).val().length * 2;
+            this.setSelectionRange(len, len);
+        } else {
+            $(this).val($(this).val());
+        }
+    });
 }
 
 function initIntegerInputs(){
@@ -1397,6 +1416,7 @@ function addInputBlock(context){
         });
         $group.find('input.decimal').blur();
         initDropdowns($newBlock);
+        initInputCursorPos($newBlock);
 }
 
 function initAddInputBlockButtons(){
@@ -1495,6 +1515,7 @@ $(document).ready(function() {
     $('body').bind('touchstart click', blurInputFocus );
     addSvgButtons();
 
+    initInputCursorPos();
     initIntegerInputs();
     initDecimalInputs();
     initAddInputBlockButtons();
