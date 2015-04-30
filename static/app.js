@@ -102,17 +102,18 @@ var MODEL = {
     getPaintsByProject: function(project_key){
     	var paints = [];
         for(var i = 0; i <= PAINTS.length - 1; i++){
-            if(PAINTS[i].project == project_key{
+            if(PAINTS[i].project == project_key){
                 paints.push(PAINTS[i]);
             }
         }
         return paints;
     },
     getPaintsByType: function(surface_type, project_key){
-        var paints = this.getPaintsByProject(project_key);
-        for(var i = 0; i <= PAINTS.length - 1; i++){
-            if(PAINTS[i].surface_type.toLowerCase() == surface_type.toLowerCase()){
-                paints.push(PAINTS[i]);
+    	var paints = []
+        var project_paints = this.getPaintsByProject(project_key);
+        for(var i = 0; i <= project_paints.length - 1; i++){
+            if(project_paints[i].surface_type.toLowerCase() == surface_type.toLowerCase()){
+                paints.push(project_paints[i]);
             }
         }
         return paints;
@@ -190,11 +191,9 @@ function selectProject(projectKey, reload){
     }
 
 console.log('CURRENT_PROJECT.rooms.length ' + CURRENT_PROJECT.rooms.length );
-console.log(CURRENT_PROJECT);
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
-console.log(rooms);
         for(var i = 0; i <= rooms.length - 1; i++){
             CARO.addItem($('#owl-pages .owl-page.room-page-template').html());
             initRoomPage(rooms[i]);
@@ -205,7 +204,6 @@ console.log(rooms);
         initRoomPage();
     }
     CARO.next();
-    
 }
 
 function createProject(){
@@ -451,9 +449,6 @@ function calculateWorkForRoom(event){
     var isolSurfHours = 0;
 
     var roomData = getRoomGroupData($roomForm);
-    
-console.log('roomData in calc');
-console.log(roomData);
 
     /* BAYBREAST SPACE */
     for(var i = 0; i <= roomData.bayBreastVals.length - 1; i++){
@@ -797,7 +792,9 @@ function initDropdown(elem){
     var selectedValue = $elem.find('.dropdown-value').val();
     var dropdownText = $elem.find('.dropdown-text').text().toLowerCase();
 
-    if (dropdownText == 'dropdown' || dropdownText == 'menu item'){
+    if (dropdownText == 'dropdown' 
+    	|| dropdownText == 'menu item' 
+    	|| dropdownText.trim() == ''){
         var defaultItem = $elem.find('.dropdown-menu a:first');
         $elem.find('.dropdown-value').val( defaultItem.data('value') );
         $elem.find('.dropdown-text').text( defaultItem.text() );
@@ -836,8 +833,9 @@ function showEditSpecView(){
                           .find('.spec-item-title').text();
     $('#spec-surface-type').val(surface_type);
 
+    var paints = MODEL.getPaintsByType(surface_type, null);
     //For each paint of this surface type, build the edit inputs.
-    $.each(PAINTS, function(i, paint) {  
+    $.each(paints, function(i, paint) {  
         if (paint.surface_type.toLowerCase() == surface_type.toLowerCase()) {
             var $newBlock = $('#form-edit-spec .input-block:first').clone();
             $newBlock.find('input.spec-item-key').val(paint.key);
@@ -899,8 +897,7 @@ function populateSpecDropdowns(){
     for(var i = 0; i < SURFACE_TYPES.length; i++){
         $newBlock = $('.spec-item-block:first').clone();
         $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
-console.log(CURRENT_PROJECT);
-        var paints = MODEL.getPaintsByType(SURFACE_TYPES[i], CURRENT_PROJECT);
+        var paints = MODEL.getPaintsByType(SURFACE_TYPES[i], null);
         $.each(paints, function(j, paint) {
             $newBlock.find('.dropdown-value').attr('id',
                 'select-' + paint.surface_type.toLowerCase().replace(' ', '-') + '-spec');
@@ -973,6 +970,8 @@ function onSpecSave(){
         dataType: 'json',
         successFunc: function(data){ 
             PAINTS = data; 
+console.log('after save spec');
+console.log(data);
             fadeToViewSpec();
         }
     });
@@ -996,10 +995,7 @@ function deleteRoom(room_key){
 }
 
 function saveRoom(room, keyElem){
-/*    
-console.log('room before save: ');
-console.log(room);
-*/
+
     doXhr({
         httpMethod: 'POST',
         url: '/saveroom',
@@ -1232,7 +1228,7 @@ console.log(room.group_items);
         var $page = $(page);
         var $dropdown = $page.find(dropdownId);
         $dropdown.empty();
-        var paints = MODEL.getPaintsByType(paintType, CURRENT_PROJECT);
+        var paints = MODEL.getPaintsByType(paintType, CURRENT_PROJECT.key);
         $.each(paints, function(j, paint) {
             $dropdown.append(
                 '<li><a role="menuitem" data-value="' + paint.key + '" >' 

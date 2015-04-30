@@ -2,6 +2,7 @@ import os
 import webapp2
 import jinja2
 from google.appengine.ext import ndb
+from models import *
 from datetime import datetime
 import time
 import json
@@ -26,65 +27,6 @@ def json_serial(obj):
         return obj.isoformat()
     if(type(obj) == ndb.key.Key):
         return obj.urlsafe()
-
-def str2bool(s):
-    return s.lower() in ("yes", "true", "t", "1")
-
-class ModelUtils(object):
-    def to_dict(self):
-        result = super(ModelUtils,self).to_dict()
-        result['key'] = self.key.urlsafe()
-        return result
-
-class Project(ModelUtils, ndb.Model):
-    username        = ndb.StringProperty()
-    title           = ndb.StringProperty()
-    rooms           = ndb.KeyProperty(kind='Room', repeated=True)
-    date_created    = ndb.DateTimeProperty(auto_now_add=True)
-
-class DefaultRoom(ModelUtils, ndb.Model):
-    name                     = ndb.StringProperty()
-    room_length              = ndb.FloatProperty()
-    room_width               = ndb.FloatProperty()
-    room_height              = ndb.FloatProperty()
-    door_width               = ndb.FloatProperty()
-    door_height              = ndb.FloatProperty()
-    window_width             = ndb.FloatProperty()
-    window_height            = ndb.FloatProperty()
-    radiator_width           = ndb.FloatProperty()
-    radiator_height          = ndb.FloatProperty()
-
-class Room(ModelUtils, ndb.Model):
-    name                    = ndb.StringProperty()
-    room_hours_adjust       = ndb.FloatProperty()
-    room_length             = ndb.FloatProperty()
-    room_width              = ndb.FloatProperty()
-    room_height             = ndb.FloatProperty()
-    ceiling_adjust_simple   = ndb.FloatProperty()
-    wall_adjust_simple      = ndb.FloatProperty()
-    skirting_adjust_simple  = ndb.FloatProperty()
-    group_items             = ndb.JsonProperty()
-    project                 = ndb.KeyProperty(kind='Project')
-
-class Paint(ModelUtils, ndb.Model):
-    name            = ndb.StringProperty()
-    prod_rate       = ndb.FloatProperty()
-    surface_type    = ndb.StringProperty()
-    order           = ndb.IntegerProperty()
-    project         = ndb.KeyProperty(kind='Project')
-
-def create_default_room():
-    return DefaultRoom(
-        room_length     = 5.0,
-        room_width      = 5.0,
-        room_height     = 2.5,
-        door_width      = 0.5,
-        door_height     = 1.5,
-        window_width    = 1.5,
-        window_height   = 1.0,
-        radiator_width  = 1.0,
-        radiator_height  = 0.5
-    )
 
 def init_data():
     #ndb.delete_multi(Project.query().fetch(keys_only=True))
@@ -139,7 +81,7 @@ class Home(webapp2.RequestHandler):
                 'default_room': json.dumps(DefaultRoom.query().fetch(1)[0].to_dict(), indent=4, default=json_serial),
                 'rooms': json.dumps([r.to_dict() for r in Room.query().fetch(300)], indent=4, default=json_serial),
 	        	'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], indent=4, default=json_serial),
-                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.surface_type, Paint.order).fetch(300)], indent=4)
+                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.surface_type, Paint.order).fetch(300)], indent=4, default=json_serial)
         	}) 
         )
 
@@ -192,22 +134,14 @@ class SaveSpec(webapp2.RequestHandler):
         resp_paints.sort(key=lambda x:x.order)
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps([p.to_dict() for p in resp_paints]))
+        self.response.write(json.dumps([p.to_dict() for p in resp_paints], default=json_serial))
         
 class CreateProject(webapp2.RequestHandler):
-    def post(self):
-        #TODO: assign a copy of the default paints to the project
-        #i.e. copy the properties of each default paint (project = null)
-        #should I create a default project?
-        #Query datastore to get paints where project = null
-        #What is the best way to clone the paint entities before assigning to project?
-        default_paints = Paint.query(Paint.project == None).fetch(200)
-        for dp in default_paints: 
-            #copy paint and set project, TODO: create a Models module and a copy_paint method.
-
+    def post(self):        
         project_title = self.request.get('projectTitle')
         project = Project(username='Test', title=project_title, date_created=datetime.now())
         project = project.put().get()
+        set_project_paints(project, Paint.query(Paint.project == None).fetch(200))
         projects = Project.query().fetch(50)
         
         if(next((p for p in projects if p.key == project.key), None)) == None:
