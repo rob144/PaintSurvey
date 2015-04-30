@@ -99,8 +99,17 @@ var MODEL = {
             }
         }
     },
-    getPaintsByType: function(surface_type){
-        var paints = [];
+    getPaintsByProject: function(project_key){
+    	var paints = [];
+        for(var i = 0; i <= PAINTS.length - 1; i++){
+            if(PAINTS[i].project == project_key{
+                paints.push(PAINTS[i]);
+            }
+        }
+        return paints;
+    },
+    getPaintsByType: function(surface_type, project_key){
+        var paints = this.getPaintsByProject(project_key);
         for(var i = 0; i <= PAINTS.length - 1; i++){
             if(PAINTS[i].surface_type.toLowerCase() == surface_type.toLowerCase()){
                 paints.push(PAINTS[i]);
@@ -890,7 +899,8 @@ function populateSpecDropdowns(){
     for(var i = 0; i < SURFACE_TYPES.length; i++){
         $newBlock = $('.spec-item-block:first').clone();
         $newBlock.find('.spec-item-title').text( SURFACE_TYPES[i] );
-        var paints = MODEL.getPaintsByType(SURFACE_TYPES[i]);
+console.log(CURRENT_PROJECT);
+        var paints = MODEL.getPaintsByType(SURFACE_TYPES[i], CURRENT_PROJECT);
         $.each(paints, function(j, paint) {
             $newBlock.find('.dropdown-value').attr('id',
                 'select-' + paint.surface_type.toLowerCase().replace(' ', '-') + '-spec');
@@ -1079,7 +1089,8 @@ function initRoomPage(room){
             'window_width'          : getf('#default-window-width'),
             'window_height'         : getf('#default-window-height'),
             'radiator_width'        : getf('#default-radiator-width'),
-            'radiator_height'       : getf('#default-radiator-height')
+            'radiator_height'       : getf('#default-radiator-height'),
+            'project'				: null
         }
     } 
 
@@ -1221,7 +1232,7 @@ console.log(room.group_items);
         var $page = $(page);
         var $dropdown = $page.find(dropdownId);
         $dropdown.empty();
-        var paints = MODEL.getPaintsByType(paintType);
+        var paints = MODEL.getPaintsByType(paintType, CURRENT_PROJECT);
         $.each(paints, function(j, paint) {
             $dropdown.append(
                 '<li><a role="menuitem" data-value="' + paint.key + '" >' 

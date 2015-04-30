@@ -71,6 +71,7 @@ class Paint(ModelUtils, ndb.Model):
     prod_rate       = ndb.FloatProperty()
     surface_type    = ndb.StringProperty()
     order           = ndb.IntegerProperty()
+    project         = ndb.KeyProperty(kind='Project')
 
 def create_default_room():
     return DefaultRoom(
@@ -195,6 +196,15 @@ class SaveSpec(webapp2.RequestHandler):
         
 class CreateProject(webapp2.RequestHandler):
     def post(self):
+        #TODO: assign a copy of the default paints to the project
+        #i.e. copy the properties of each default paint (project = null)
+        #should I create a default project?
+        #Query datastore to get paints where project = null
+        #What is the best way to clone the paint entities before assigning to project?
+        default_paints = Paint.query(Paint.project == None).fetch(200)
+        for dp in default_paints: 
+            #copy paint and set project, TODO: create a Models module and a copy_paint method.
+
         project_title = self.request.get('projectTitle')
         project = Project(username='Test', title=project_title, date_created=datetime.now())
         project = project.put().get()
