@@ -194,6 +194,7 @@ console.log('CURRENT_PROJECT.rooms.length ' + CURRENT_PROJECT.rooms.length );
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
+console.log(rooms);
         for(var i = 0; i <= rooms.length - 1; i++){
             CARO.addItem($('#owl-pages .owl-page.room-page-template').html());
             initRoomPage(rooms[i]);
@@ -1152,6 +1153,9 @@ console.log(room.group_items);
             
             if(i >= 1) addInputBlock( $page.find('.wall-adjust-group .btn-add-row:last') );
             var $block = $page.find('.wall-adjust-group .input-block:last');
+            var paint = MODEL.getPaint(room.group_items.wallAdjustVals[i][0]);
+            $block.find('.dropdown-value').val( paint.key );
+            $block.find('.dropdown-text').text( paint.name );
             $block.find('.wall-adjust-qty').val( room.group_items.wallAdjustVals[i][1] );
             $block.find('.wall-adjust-dim1').val( room.group_items.wallAdjustVals[i][2] );
             $block.find('.wall-adjust-dim2').val( room.group_items.wallAdjustVals[i][3] );        
@@ -1176,6 +1180,9 @@ console.log(room.group_items);
             
             if(i >= 1) addInputBlock( $page.find('.skirting-adjust-group .btn-add-row:last') );
             var $block = $page.find('.skirting-adjust-group .input-block:last');
+            var paint = MODEL.getPaint(room.group_items.skirtingVals[i][0]);
+            $block.find('.dropdown-value').val( paint.key );
+            $block.find('.dropdown-text').text( paint.name );
             $block.find('.skirting-adjust-qty').val( room.group_items.skirtingVals[i][1] );
             $block.find('.skirting-adjust-length').val( room.group_items.skirtingVals[i][2] );
         }
@@ -1184,6 +1191,9 @@ console.log(room.group_items);
             
             if(i >= 1) addInputBlock( $page.find('.windows-group .btn-add-row:last') );
             var $block = $page.find('.windows-group .input-block:last');
+            var paint = MODEL.getPaint(room.group_items.windowVals[i][0]);
+            $block.find('.dropdown-value').val( paint.key );
+            $block.find('.dropdown-text').text( paint.name );
             $block.find('.window-qty').val( room.group_items.windowVals[i][1] );
             $block.find('.window-width').val( room.group_items.windowVals[i][2] );
             $block.find('.window-height').val( room.group_items.windowVals[i][3] );        
@@ -1193,6 +1203,9 @@ console.log(room.group_items);
             
             if(i >= 1) addInputBlock( $page.find('.radiators-group .btn-add-row:last') );
             var $block = $page.find('.radiators-group .input-block:last');
+            var paint = MODEL.getPaint(room.group_items.radiatorVals[i][0]);
+            $block.find('.dropdown-value').val( paint.key );
+            $block.find('.dropdown-text').text( paint.name );
             $block.find('.radiator-qty').val( room.group_items.radiatorVals[i][1] );
             $block.find('.radiator-width').val( room.group_items.radiatorVals[i][2] );
             $block.find('.radiator-height').val( room.group_items.radiatorVals[i][3] );        
@@ -1213,8 +1226,8 @@ console.log(room.group_items);
         for(var i = 0; i <= room.group_items.isolSurfaceVals.length - 1; i++){
             
             if(i >= 1) addInputBlock( $page.find('.isolated-surface-group .btn-add-row:last') );
-            var paint = MODEL.getPaint(room.group_items.isolSurfaceVals[i][0]);
             var $block = $page.find('.isolated-surface-group .input-block:last');
+            var paint = MODEL.getPaint(room.group_items.isolSurfaceVals[i][0]);
             $block.find('.dropdown-value').val( paint.key );
             $block.find('.dropdown-text').text( paint.name );
             $block.find('.isolated-surface-qty').val( room.group_items.isolSurfaceVals[i][1] );
@@ -1232,7 +1245,7 @@ console.log(room.group_items);
         $.each(paints, function(j, paint) {
             $dropdown.append(
                 '<li><a role="menuitem" data-value="' + paint.key + '" >' 
-                + paint.name + ' (' + paint.prod_rate + ') </a></li>'
+                + paint.name + '</a></li>'
             );
         });
     }
@@ -1291,6 +1304,8 @@ function onSaveRoomClick(){
     var getf = function(elemId){
         return parseFloat($page.find(elemId).val());
     }
+
+console.log('room key ' + $page.find('.room-key').val());
 
     groupItems = getRoomGroupData($page);
 

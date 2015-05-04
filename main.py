@@ -194,8 +194,9 @@ class SaveRoom(webapp2.RequestHandler):
             #Get the project entity and append the room.
             room.project = ndb.Key(urlsafe=obj_room['project'])
             project = room.project.get()
-            project.rooms.append(room.put())
-            project.put()
+            if(room.key not in project.rooms):
+                project.rooms.append(room.put())
+                project.put()
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(room.to_dict(), default=json_serial))   
