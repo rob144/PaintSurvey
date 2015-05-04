@@ -1335,13 +1335,14 @@ function initInputCursorPos(context){
     var $context = $('body');
     if(context != null) $context = $(context); 
     $('input[type="number"],input[type="text"]').focus( function(event){
-    /* Set the cursor position to the end when input focussed */
-    /* Does not work for number inputs in Google Chrome */
-    if(this.setSelectionRange){
+        /* Set the cursor position when input focussed */
+        /* Does not work for number inputs in Google Chrome or Opera. */
+        if(this.setSelectionRange){
             var len = $(this).val().length * 2;
-            this.setSelectionRange(len, len);
-        } else {
-            $(this).val($(this).val());
+            /* If input value is zero, select whole thing to make it 
+            easy to overwrite, else set cursor to the end */
+            var start = (parseFloat($(this).val()) == 0) ? 0 : len;
+            this.setSelectionRange(start, len);
         }
     });
 }
