@@ -190,11 +190,9 @@ function selectProject(projectKey, reload){
         }
     }
 
-console.log('CURRENT_PROJECT.rooms.length ' + CURRENT_PROJECT.rooms.length );
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
-console.log(rooms);
         for(var i = 0; i <= rooms.length - 1; i++){
             CARO.addItem($('#owl-pages .owl-page.room-page-template').html());
             initRoomPage(rooms[i]);
@@ -971,8 +969,6 @@ function onSpecSave(){
         dataType: 'json',
         successFunc: function(data){ 
             PAINTS = data; 
-console.log('after save spec');
-console.log(data);
             fadeToViewSpec();
         }
     });
@@ -1021,8 +1017,6 @@ function saveRoom(room, keyElem){
 function initRoomDefaultsPage(){
     
     var drm = DEFAULT_ROOM;
-
-console.log(drm);
 
     $('#default-room-key'         ).val( drm.key );
     $('#default-room-height'      ).val( drm.room_height );
@@ -1305,8 +1299,6 @@ function onSaveRoomClick(){
         return parseFloat($page.find(elemId).val());
     }
 
-console.log('room key ' + $page.find('.room-key').val());
-
     groupItems = getRoomGroupData($page);
 
     if(isObjectEmpty(CURRENT_PROJECT)){
@@ -1334,15 +1326,22 @@ function initInputCursorPos(context){
 
     var $context = $('body');
     if(context != null) $context = $(context); 
-    $('input[type="number"],input[type="text"]').focus( function(event){
-        /* Set the cursor position when input focussed */
-        /* Does not work for number inputs in Google Chrome or Opera. */
+    /* Set the cursor position when input focussed */
+    /* Does not work for number inputs in Google Chrome or Opera. */
+    $('input[type="number"]').focus( function(event){
         if(this.setSelectionRange){
             var len = $(this).val().length * 2;
             /* If input value is zero, select whole thing to make it 
             easy to overwrite, else set cursor to the end */
             var start = (parseFloat($(this).val()) == 0) ? 0 : len;
             this.setSelectionRange(start, len);
+        }
+    });
+    $('input[type="text"]').focus( function(event){
+        if(this.setSelectionRange){
+            var len = $(this).val().length * 2;
+            /* Set cursor to the end for easy backspace delete. */
+            this.setSelectionRange(len, len);
         }
     });
 }
