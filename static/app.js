@@ -1031,8 +1031,8 @@ function initRoomDefaultsPage(){
 
     $('#form-room-defaults .btn-save').click( function(){
         saveRoom({
-            key:                $('#default-room-key').val(),
-            name:               '',
+            key:                    $('#default-room-key').val(),
+            name:                   '',
             room_hours_adjust:      0,
             room_width:             0,
             room_length:            0,
@@ -1112,7 +1112,6 @@ function initRoomPage(room){
     $page.find('.ceiling-adjust-simple')  .val( room.ceiling_adjust_simple );
     $page.find('.wall-adjust-simple')     .val( room.wall_adjust_simple );
     $page.find('.skirting-adjust-simple') .val( room.skirting_adjust_simple );
-    
     
     //Build input blocks and set the values for each group item.
     if(room.group_items != null){
@@ -1253,6 +1252,34 @@ console.log(room.group_items);
     fillDropdown($page, '.radiators-group ul.dropdown-menu', 'radiators');
     fillDropdown($page, '.general-surface-group ul.dropdown-menu', 'doors');
     fillDropdown($page, '.isolated-surface-group ul.dropdown-menu', 'isolated surfaces');
+
+    var defaultItems = [
+        'door-width',
+        'door-height',
+        'window-width',
+        'window-height',
+        'radiator-width',
+        'radiator-height'
+    ];
+
+    /* Add/remove grey backgrounds when default values changed. */
+    for(var i = 0; i <= defaultItems.length - 1; i++){
+        $page.find('.' + defaultItems[i]).keyup(
+            { defaultValId:'#default-' + defaultItems[i] },
+            function(event){;
+                var $cell = $(this).closest('td');
+                if(parseFloat($(this).val()).toFixed(2) == getf(event.data.defaultValId)){
+                    /* Indicate this is the default value by adding
+                     the class for the grey background */
+                     $cell.removeClass('default-value').addClass('default-value');
+                }else{
+                    /* The value is different from the default so 
+                    remove the grey background. */
+                    $cell.removeClass('default-value')
+                }
+            }
+        );
+    }
 
     $page.find('.btn-calculate-room').click( calculateWorkForRoom );
     $page.find('.btn-delete-room').click( onDeleteRoomClick );
@@ -1424,7 +1451,7 @@ function addInputBlock(context){
         $newBlock.find('input.decimal').blur( blurDecimal );
         $newBlock.find('.dropdown').removeClass('open');
         $newBlock.find('.positive-negative-cell').click( switchSign );
-        $newBlock.find('.default-value-cell').removeClass('default-value-cell');
+        $newBlock.find('.default-value').removeClass('default-value');
         $newBlock.find('input[type="number"]').each(function(index, elem){
             var $elem = $(elem);
             $elem.val($elem.attr('data-default-value'));
