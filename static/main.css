@@ -408,7 +408,7 @@ input.spec-item-rate {
     border-radius:4px;
 }
 /* ********************* Room Page ********************* */
-td.default-value-cell{
+td.default-value{
     background-color:#eee;
 }
 .room-top-row {
