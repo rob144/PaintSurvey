@@ -170,6 +170,30 @@ class DeleteProject(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write( json.dumps([p.to_dict() for p in projects], default=json_serial) )
 
+class SaveDefaultRoom(webapp2.RequestHandler):
+    def post(self):
+        obj_room = json.loads(self.request.POST.get('room'))
+        room = DefaultRoom()
+        
+        if(obj_room['key'] != ""):
+            room = ndb.Key(urlsafe=obj_room['key']).get()
+
+        room.name               = obj_room['name']
+        room.room_width         = obj_room['room_width']
+        room.room_length        = obj_room['room_length']
+        room.room_height        = obj_room['room_height']
+        room.door_width         = obj_room['door_width']
+        room.door_height        = obj_room['door_height']
+        room.window_width       = obj_room['window_width']
+        room.window_height      = obj_room['window_height']
+        room.radiator_width     = obj_room['radiator_width']
+        room.radiator_height    = obj_room['radiator_height']
+        
+        room = room.put().get()
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(room.to_dict(), default=json_serial))   
+
 class SaveRoom(webapp2.RequestHandler):
     def post(self):
         obj_room = json.loads(self.request.POST.get('room'))
@@ -219,6 +243,7 @@ application = webapp2.WSGIApplication([
     ('/getproject', GetProject),
     ('/deleteproject', DeleteProject),
     ('/saveroom', SaveRoom),
+    ('/savedefaultroom', SaveDefaultRoom),
     ('/deleteroom', DeleteRoom),
     ('/savespec', SaveSpec),
     ('/getpaints', GetPaints)

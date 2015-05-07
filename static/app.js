@@ -1011,7 +1011,24 @@ function saveRoom(room, keyElem){
                           $('html, body').animate({ scrollTop: 0 }, 'slow');
                       }
     });
+}
 
+function saveDefaultRoom(room){
+
+    doXhr({
+        httpMethod: 'POST',
+        url: '/savedefaultroom',
+        data: { room: JSON.stringify( room ) },
+        dataType: 'json',
+        successFunc:  function(data, status){
+                          if(status == 'success'){
+                              alert('Settings saved.');
+                          } else {
+                              alert('Error saving room.');
+                          }
+                          $('html, body').animate({ scrollTop: 0 }, 'slow');
+                      }
+    });
 }
 
 function initRoomDefaultsPage(){
@@ -1030,25 +1047,18 @@ function initRoomDefaultsPage(){
     $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
 
     $('#form-room-defaults .btn-save').click( function(){
-        saveRoom({
+        saveDefaultRoom({
             key:                    $('#default-room-key').val(),
             name:                   '',
-            room_hours_adjust:      0,
             room_width:             0,
             room_length:            0,
-            ceiling_adjust_simple:  0,
-            wall_adjust_simple:     0,
-            skirting_adjust_simple: 0,
             room_height:            parseFloat($('#default-room-height').val()),
             door_width:             parseFloat($('#default-door-width').val()),
             door_height:            parseFloat($('#default-door-height').val()),
             window_width:           parseFloat($('#default-window-width').val()),
             window_height:          parseFloat($('#default-window-height').val()),
             radiator_width:         parseFloat($('#default-radiator-width').val()),
-            radiator_height:        parseFloat($('#default-radiator-height').val()),
-            group_items:            '',
-            is_default:             true,
-            project:                ''
+            radiator_height:        parseFloat($('#default-radiator-height').val())
         });
     });      
 }
