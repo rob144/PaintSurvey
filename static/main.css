@@ -1,6 +1,6 @@
 body { 
     font:-webkit-small-control;
-    font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
+    font-family:Arial,Helvetica Neue,Helvetica,sans-serif; 
     font-size:15px;
     margin:0;
     background-color:#eee;
@@ -22,8 +22,8 @@ label {
 }
 input[type="button"] {
     font:-webkit-small-control;
-    font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
-    font-size: 15pt;
+    font-family:Arial,Helvetica Neue,Helvetica,sans-serif; 
+    font-size:15pt;
     cursor:pointer;
 }
 input[type="number"]:disabled, 
@@ -33,7 +33,7 @@ input[type="text"]:disabled {
 input[type="number"]:not(:disabled), 
 input[type="text"]:not(:disabled) {
     height:32px;
-    padding: 0 4px 0 4px;
+    padding:0 4px 0 4px;
 }
 input[type="number"]:focus, 
 input[type="text"]:focus {
@@ -46,7 +46,7 @@ table {
     border-radius:4px;
 }
 th {
-    text-align: left;
+    text-align:left;
 }
 td {
     padding:0;
@@ -333,7 +333,7 @@ td.positive-negative-cell, td.positive-negative-fake-cell {
     padding:2px 8px 0 8px;
     color:#fff;
     font-size:18px;
-    font-weight: bold;
+    font-weight:bold;
 }
 td.positive-negative-cell {
     background-color:#ccc;
@@ -349,17 +349,17 @@ td.positive-negative-fake-cell {
     height:20px;
 }
 .owl-theme .owl-controls .owl-buttons div {
-    position: absolute;
+    position:absolute;
 }
 .owl-theme .owl-controls .owl-buttons .owl-prev {
-    left: 10px;
-    top: 0;
+    left:10px;
+    top:0;
     margin:0;
     padding:10px;
 }
 .owl-theme .owl-controls .owl-buttons .owl-next {
-    right: 10px;
-    top: 0;
+    right:10px;
+    top:0;
     margin:0;
     padding:10px;
 }
@@ -407,8 +407,12 @@ input.spec-item-rate {
     border:1px solid #ccc;
     border-radius:4px;
 }
+/* ********************* Room Defaults Page ********************* */
+#page-room-defaults input[type="number"] {
+    text-align:center;
+}
 /* ********************* Room Page ********************* */
-td.default-value{
+td.default-value {
     background-color:#eee;
 }
 .room-top-row {
