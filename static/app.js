@@ -155,7 +155,10 @@ function populateProjects(projects){
         $newBlock.find('.btn-delete-project').click(
             function(event){
                 var projectKey = $(this).closest('.project-item').find('.project-key').val();
-                if(confirm('Are you sure?')) deleteProject(projectKey);
+                
+                showDialog('Delete Project','Are you sure?');
+
+                // deleteProject(projectKey);
             }
         );
         $newBlock.appendTo('#projects-list'); 
@@ -1481,8 +1484,26 @@ function initAddInputBlockButtons(){
     });
 }
 
-function isObjectEmpty(object)
-{
+function initDialog(){
+    var $dialog = $('#dialog-background');
+    $('#dialog').css({ opacity: 1.0 });
+    $dialog.css({ opacity: 0.6 });
+    $('#dialog .btn-dialog-cancel').click(
+        function(){
+            $('#dialog-background').hide();
+        }
+    );
+    
+}
+
+function showDialog(title, message, confirmFunc) {
+    $('#dialog-background').show();
+    $('#dialog .dialog-title').text(title);
+    $('#dialog .dialog-message').text(message);
+    //TODO: setup clickevent for confirmFunc if passed in.
+}
+
+function isObjectEmpty(object){
     if ('object' !== typeof object) {
         throw new Error('Object must be specified.');
     }
@@ -1573,6 +1594,6 @@ $(document).ready(function() {
     initIntegerInputs();
     initDecimalInputs();
     initAddInputBlockButtons();
-
     $('#btn-pos-neg').hide();
+    initDialog();
 });
