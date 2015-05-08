@@ -134,33 +134,30 @@ function populateProjects(projects){
         $newBlock.removeClass('hidden');
 
         //Animate show/hide controls
-        $newBlock.click( function(){ 
-            var $controls = $(this).find('.project-controls');
-            if($controls.css('display') == 'block'){
-                $controls.animate(
-                    {height:0},200,'swing',
-                    function(){$controls.addClass('hidden');
-                });
-            }else{
-                $controls.removeClass('hidden');
-                $controls.animate(
-                    {height:30},200,'swing',
-                    function(){}
+        $newBlock.click( 
+            function(){
+                $(this).find('.project-controls').slideToggle();
+            }
+        ); 
+        //Setup click events for the controls.
+        $newBlock.find('.btn-select-project').click(
+            function(event){
+                selectProject( 
+                    $(this).closest('.project-item').find('.project-key').val()
                 );
             }
-        });
-        
-        //Setup click events for the controls.
-        $newBlock.find('.btn-select-project').click(function(event){
-            selectProject( 
-                $(this).closest('.project-item').find('.project-key').val()
-            );
-        });
-        $newBlock.find('.btn-edit-project').click(function(event){
-            event.stopPropagation();
-        });
-        $newBlock.find('.btn-delete-project').click( deleteProject );
-
+        );
+        $newBlock.find('.btn-edit-project').click(
+            function(event){
+                event.stopPropagation();
+            }
+        );
+        $newBlock.find('.btn-delete-project').click(
+            function(event){
+                var projectKey = $(this).closest('.project-item').find('.project-key').val();
+                if(confirm('Are you sure?')) deleteProject(projectKey);
+            }
+        );
         $newBlock.appendTo('#projects-list'); 
     }
 }
@@ -223,14 +220,12 @@ function createProject(){
     }
 }
 
-function deleteProject(){
-
-    var project_key = $(this).closest('.project-item').find('.project-key').val();
+function deleteProject(projectKey){
 
     doXhr({
         httpMethod: 'POST', 
         url: '/deleteproject',
-        data: { project_key: project_key },
+        data: { project_key: projectKey },
         dataType: 'json',
         successFunc: function(data){
             PROJECTS = data;

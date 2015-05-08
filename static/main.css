@@ -653,14 +653,11 @@ input#new-project-title {
     border:none;
     padding:0;
 }
-.project-controls {
-    height:0;
-}
 .project-controls button {
-    min-width:80px;
+    min-width:60px;
+    height:30px;
     display:inline-block;
     margin:10px 10px 0 0;
-    height:25px;
     background:none;
     border:1px solid #ccc;
     border-radius:4px;
