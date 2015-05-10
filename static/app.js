@@ -156,9 +156,12 @@ function populateProjects(projects){
             function(event){
                 var projectKey = $(this).closest('.project-item').find('.project-key').val();
                 
-                showDialog('Delete Project','Are you sure?');
-
-                // deleteProject(projectKey);
+                showDialog(
+                    'Delete Project',
+                    'Are you sure?',
+                    deleteProject,
+                    projectKey
+                );
             }
         );
         $newBlock.appendTo('#projects-list'); 
@@ -1485,22 +1488,32 @@ function initAddInputBlockButtons(){
 }
 
 function initDialog(){
-    var $dialog = $('#dialog-background');
-    $('#dialog').css({ opacity: 1.0 });
-    $dialog.css({ opacity: 0.6 });
+    var $background = $('#dialog-background');
+    $background.css({ opacity: 0.6 });
     $('#dialog .btn-dialog-cancel').click(
         function(){
             $('#dialog-background').hide();
+            $('#dialog').hide();
         }
     );
-    
 }
 
-function showDialog(title, message, confirmFunc) {
+function showDialog(title, message, confirmFunc, funcParams){
     $('#dialog-background').show();
-    $('#dialog .dialog-title').text(title);
-    $('#dialog .dialog-message').text(message);
-    //TODO: setup clickevent for confirmFunc if passed in.
+    var $dialog = $('#dialog');
+    $dialog.show();
+    $dialog.find('.dialog-title').text(title);
+    $dialog.find('.dialog-message').text(message);
+
+    if(confirmFunc != null) {
+            $dialog.find('.btn-dialog-confirm').click(
+                function(){
+                    $('#dialog').hide();
+                    $('#dialog-background').hide();
+                    confirmFunc(funcParams);
+                }
+            );
+    }
 }
 
 function isObjectEmpty(object){

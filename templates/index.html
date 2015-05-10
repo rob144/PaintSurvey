@@ -109,10 +109,11 @@
                     <div class='pageContent'>
                         <h2>Projects</h2>
                         <div class='form-row'>
-                            <label>Create New</label>
+                            <div class='group-label'>Create New</div>
                             <input id='new-project-title' type='text' placeholder='Project Title'/>
                         </div>
                         <input id='btn-create-project' type='button' value='Create'/>
+                        <div class='group-label'>Existing Projects</div>
                         <ul id='projects-list'>
                             <li class='project-item group hidden'>
                                 <input type='hidden' class='project-key' />
@@ -627,13 +628,12 @@
                     <img src='/static/loading.gif' alt='loading' />
                 </div>
             </div>
-            <div id='dialog-background'>
-                <div id='dialog'>
-                    <h2 class='dialog-title'>Dialog Title</h2>
-                    <h3 class='dialog-message'>Dialog Message</h3>
-                    <button type='button' class='btn-dialog-confirm'>Confirm</button>
-                    <button type='button' class='btn-dialog-cancel'>Cancel</button>
-                </div>
+            <div id='dialog-background'></div>
+            <div id='dialog'>
+                <h2 class='dialog-title'>Dialog Title</h2>
+                <h3 class='dialog-message'>Dialog Message</h3>
+                <button type='button' class='btn-dialog-confirm'>Confirm</button>
+                <button type='button' class='btn-dialog-cancel'>Cancel</button>
             </div>
             <div id='btn-pos-neg'>±</div>
         </div>
