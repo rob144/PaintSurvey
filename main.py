@@ -33,10 +33,6 @@ def init_data():
     #ndb.delete_multi(Room.query().fetch(keys_only=True))
     #ndb.delete_multi(DefaultRoom.query().fetch(keys_only=True))
     #ndb.delete_multi(Paint.query().fetch(keys_only=True))
-    
-    #Create project test data if not there already.
-    if(Project.query(Project.username == 'Test').count() < 1):
-        Project(username='Test', title='Test One', date_created=datetime.now()).put()
 
     #Create room defaults if not there already.
     if(DefaultRoom.query().count() < 1):
@@ -161,10 +157,11 @@ class DeleteProject(webapp2.RequestHandler):
     def post(self):
 
         project = ndb.Key(urlsafe=self.request.get('project_key')).get()
-        if(len(project.rooms) >= 1):
+        
+        if(project):
             for room in project.rooms:
                 room.delete()
-        project.key.delete()
+            project.key.delete()
 
         projects = Project.query().fetch(50)
         self.response.headers['Content-Type'] = 'application/json'
