@@ -123,7 +123,13 @@ var MODEL = {
 
 //Add the projects to the list
 function populateProjects(projects){
-    $('.project-item:not(.hidden)').remove();
+    
+    $('#projects-list').find('li:not(.hidden)').remove();
+
+    if(projects.length <= 0){
+        $('#projects-list').append('<li><p>No projects</p></li>')
+    }
+
     for(var i=0; i<projects.length; i++){
         var $newBlock = $('.project-item:first').clone();
         $newBlock.find('.project-key').val( projects[i].key );
@@ -1569,7 +1575,6 @@ function doXhr(params) {
           var elapsed = new Date($.now()) - LOADING_START_TIME;
           setTimeout(
               function(){
-                  params.successFunc(data, status, xhr);
                   $loading.hide(); 
               }, 1000 - elapsed
           );
