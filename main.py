@@ -179,7 +179,8 @@ class GetProject(webapp2.RequestHandler):
 class DeleteProject(webapp2.RequestHandler):
     def post(self):
 
-        project = ndb.Key(urlsafe=self.request.get('project_key')).get()
+        proj_key = ndb.Key(urlsafe=self.request.get('project_key'))
+        project = proj_key.get()
         
         if(project):
             for room in project.rooms:
@@ -188,7 +189,9 @@ class DeleteProject(webapp2.RequestHandler):
                 paint.delete()
             project.key.delete()
 
-        projects = Project.query().fetch(50)
+        projects = Project.query().fetch(200)
+        projects = [ p for p in projects if p.key is not proj_key ]
+
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write( json.dumps([p.to_dict() for p in projects], default=json_serial) )
 

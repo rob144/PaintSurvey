@@ -237,7 +237,7 @@ function createProject(){
 }
 
 function deleteProject(projectKey){
-
+console.log('DELETE PROJECT');
     doXhr({
         httpMethod: 'POST', 
         url: '/deleteproject',
@@ -245,6 +245,7 @@ function deleteProject(projectKey){
         dataType: 'json',
         successFunc: function(data){
             PROJECTS = data;
+console.log(PROJECTS);
             //TODO:update any orphan rooms.
             populateProjects(PROJECTS);
         }
@@ -1513,14 +1514,15 @@ function showDialog(title, message, confirmFunc, funcParams){
     $dialog.find('.dialog-title').text(title);
     $dialog.find('.dialog-message').text(message);
 
+    //TODO: make sure multiple functions don't build up on confirm click.
     if(confirmFunc != null) {
-            $dialog.find('.btn-dialog-confirm').click(
-                function(){
-                    $('#dialog').hide();
-                    $('#dialog-background').hide();
-                    confirmFunc(funcParams);
-                }
-            );
+        $dialog.find('.btn-dialog-confirm').click(
+            function(){
+                $('#dialog').hide();
+                $('#dialog-background').hide();
+                confirmFunc(funcParams);
+            }
+        );
     }
 }
 
