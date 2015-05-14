@@ -151,9 +151,6 @@ class CreateProject(webapp2.RequestHandler):
 
         projects = Project.query().fetch(500)
         paints = Paint.query().order(Paint.project, Paint.surface_type, Paint.order).fetch(500)
-        
-        #if(next((p for p in projects if p.key == project.key), None)) == None:
-        #    projects.append(project)
 
         #Append new project to response to deal with ds latency.
         if(project.key not in [p.key for p in projects]):
