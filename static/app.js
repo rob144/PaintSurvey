@@ -116,6 +116,9 @@ var MODEL = {
                 paints.push(project_paints[i]);
             }
         }
+        paints.sort(function(a, b){
+            return a.order - b.order;
+        });
         return paints;
     },
 
@@ -222,7 +225,8 @@ function createProject(){
             data: { projectTitle: $('#new-project-title').val() },
             dataType: 'json',
             successFunc: function(data){ 
-                PROJECTS = data;
+                PROJECTS = data.projects;
+                PAINTS = data.paints;
                 populateProjects(PROJECTS);
                 $('#new-project-title').val('');
             }
@@ -1136,8 +1140,6 @@ function initRoomPage(room){
 console.log('fetch room group items');
 console.log(room.group_items);
 */      
-        /* TODO: refactor following code to use a function to set drop down values 
-        and input values for each input group */
 
         for(var i = 0; i <= room.group_items.bayBreastVals.length - 1; i++){
             

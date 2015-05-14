@@ -46,19 +46,6 @@ class Paint(ModelUtils, ndb.Model):
     order           = ndb.IntegerProperty()
     project         = ndb.KeyProperty(kind='Project')
 
-def set_project_paints(project, paints):
-    for paint in paints:
-        project.paints.append(
-            Paint(
-                name            = paint.name,
-                prod_rate       = paint.prod_rate,
-                surface_type    = paint.surface_type,
-                order           = paint.order,
-                project         = project.key
-            ).put()
-        )
-    return project.put().get()
-
 def create_default_room():
     return DefaultRoom(
         room_length     = 5.0,
