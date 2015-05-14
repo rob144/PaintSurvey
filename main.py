@@ -73,12 +73,12 @@ class Home(webapp2.RequestHandler):
     def get(self):
         init_data()
         self.response.write(
-        	JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
+            JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
                 'default_room': json.dumps(DefaultRoom.query().fetch(1)[0].to_dict(), indent=4, default=json_serial),
                 'rooms': json.dumps([r.to_dict() for r in Room.query().fetch(300)], indent=4, default=json_serial),
-	        	'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], indent=4, default=json_serial),
+                'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], indent=4, default=json_serial),
                 'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.surface_type, Paint.order).fetch(300)], indent=4, default=json_serial)
-        	}) 
+            }) 
         )
 
 class GetPaints(webapp2.RequestHandler):
@@ -137,14 +137,37 @@ class CreateProject(webapp2.RequestHandler):
         project_title = self.request.get('projectTitle')
         project = Project(username='Test', title=project_title, date_created=datetime.now())
         project = project.put().get()
-        set_project_paints(project, Paint.query(Paint.project == None).fetch(200))
-        projects = Project.query().fetch(50)
         
-        if(next((p for p in projects if p.key == project.key), None)) == None:
+        for paint in Paint.query(Paint.project == None).fetch(200):
+            project.paints.append(
+                Paint(
+                    name            = paint.name,
+                    prod_rate       = paint.prod_rate,
+                    surface_type    = paint.surface_type,
+                    order           = paint.order,
+                    project         = project.key
+                ).put()
+            )
+
+        projects = Project.query().fetch(500)
+        paints = Paint.query().order(Paint.project, Paint.surface_type, Paint.order).fetch(500)
+
+        #Append new project to response to deal with ds latency.
+        if(project.key not in [p.key for p in projects]):
             projects.append(project)
 
+        #Append new project paints to response to deal with ds latency.
+        for proj_paint in project.paints:
+            if(proj_paint not in [p.key for p in paints]):
+                paints.append(proj_paint.get())
+
+        resp = {
+            'projects': [p.to_dict() for p in projects],
+            'paints': [p.to_dict() for p in paints]
+        }
+
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write( json.dumps([p.to_dict() for p in projects], default=json_serial) )
+        self.response.write( json.dumps(resp, indent=4, default=json_serial) )
 
 class GetProject(webapp2.RequestHandler):
     def post(self):
@@ -161,6 +184,8 @@ class DeleteProject(webapp2.RequestHandler):
         if(project):
             for room in project.rooms:
                 room.delete()
+            for paint in project.paints:
+                paint.delete()
             project.key.delete()
 
         projects = Project.query().fetch(50)
