@@ -287,13 +287,19 @@ td.last-child {
     margin:3px 0 0 0;
     float:none;
 }
-.btn-add-row, .btn-remove-row, #btn-add-spec-item, 
-.btn-reorder-item-up, .btn-reorder-item-down {
+.btn-add-row, 
+.btn-remove-row, 
+#btn-add-spec-item, 
+.btn-reorder-item-up, 
+.btn-reorder-item-down {
     float:right;
     margin:0 0 0 1px;
     padding:0;
     border:none;
     cursor:pointer;
+}
+#btn-add-spec-item {
+    margin:10px 0 0 0;
 }
 .btn-add-row {
     /*background-image:url(/static/plus.png);*/
@@ -433,11 +439,17 @@ input.spec-item-name {
     border:1px solid #ccc;
     border-radius:4px;
 }
+table.spec-item-rates {
+    border-collapse:collapse;
+    border:none;
+}
+input.spec-item-pr1, 
+input.spec-item-pr2,
 input.spec-item-rate {
-    float:left;
-    width:80px;
+    width:60px;
     border:1px solid #ccc;
     border-radius:4px;
+    background-color:#fff;
 }
 /* ********************* ROOM DEFAULTS PAGE ********************* */
 #page-room-defaults input[type="number"] {
