@@ -163,13 +163,11 @@ function populateProjects(projects){
         );
         $newBlock.find('.btn-delete-project').click(
             function(event){
-                var projectKey = $(this).closest('.project-item').find('.project-key').val();
-                
                 showDialog(
                     'Delete Project',
                     'Are you sure?',
                     deleteProject,
-                    projectKey
+                    $(this).closest('.project-item').find('.project-key').val()
                 );
             }
         );
@@ -1514,9 +1512,9 @@ function showDialog(title, message, confirmFunc, funcParams){
     $dialog.find('.dialog-title').text(title);
     $dialog.find('.dialog-message').text(message);
 
-    //TODO: make sure multiple functions don't build up on confirm click.
     if(confirmFunc != null) {
-        $dialog.find('.btn-dialog-confirm').click(
+        $dialog.find('.btn-dialog-confirm').one(
+            'click',
             function(){
                 $('#dialog').hide();
                 $('#dialog-background').hide();

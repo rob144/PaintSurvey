@@ -16,58 +16,12 @@ JINJA_ENV = jinja2.Environment(
     extensions = ['jinja2.ext.autoescape'],
     autoescape = True)
 
-def include_file(filename):
-    return jinja2.Markup(loader.get_source(JINJA_ENV, TEMPLATES_DIR + filename)[0])
-
-JINJA_ENV.globals['include_file'] = include_file
-
 def json_serial(obj):
     #JSON serializer for objects not serializable by default json code
     if isinstance(obj, datetime):
         return obj.isoformat()
     if(type(obj) == ndb.key.Key):
         return obj.urlsafe()
-
-def init_data():
-    #ndb.delete_multi(Project.query().fetch(keys_only=True))
-    #ndb.delete_multi(Room.query().fetch(keys_only=True))
-    #ndb.delete_multi(DefaultRoom.query().fetch(keys_only=True))
-    #ndb.delete_multi(Paint.query().fetch(keys_only=True))
-
-    #Create room defaults if not there already.
-    if(DefaultRoom.query().count() < 1):
-        create_default_room().put()
-
-    paint_data = [
-        ['1 Vinyl Matt', 20, 'Ceilings', 1],
-        ['2 Vinyl Matt', 10, 'Ceilings', 2],
-        ['2 Eggshell', 9, 'Ceilings', 3],
-        ['Wallpaper', 4.5, 'Walls', 1],
-        ['2 Vinyl Matt', 10, 'Walls', 2],
-        ['2 Eggshell', 9, 'Walls', 3],
-        ['General surface', 4, 'Doors', 1],
-        ['Glazed med pane', 3.5, 'Doors', 2],
-        ['Glazed small pane', 2.5, 'Doors', 3],
-        ['Large pane', 5, 'Windows', 1],
-        ['Med pane', 4, 'Windows', 1],
-        ['Small pane', 3, 'Windows', 2],
-        ['Panel', 4, 'Radiators', 1],
-        ['Column', 3, 'Radiators', 2],
-        ['100 Girth', 15, 'Isolated Surfaces', 1],
-        ['150 Girth', 12, 'Isolated Surfaces', 2],
-        ['300 Girth', 10, 'Isolated Surfaces', 3]
-    ]
-
-    for p in paint_data:
-        qry = Paint.query(
-            Paint.name == p[0],
-            Paint.prod_rate == p[1],
-            Paint.surface_type == p[2]
-        )
-        if(qry.count() <= 0):
-            Paint(name=p[0], prod_rate=p[1], surface_type=p[2], order=p[3]).put()
-
-    time.sleep(3)
 
 class Home(webapp2.RequestHandler):
     def get(self):
