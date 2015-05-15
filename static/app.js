@@ -850,7 +850,7 @@ function showEditSpecView(){
             $newBlock.find('input.spec-item-key').val(paint.key);
             $newBlock.find('input.spec-item-order').val(paint.order);
             $newBlock.find('input.spec-item-name').val(paint.name);
-            $newBlock.find('input.spec-item-rate').val(paint.prod_rate);
+            $newBlock.find('input.spec-item-pr1').val(paint.prod_rate);
             $newBlock.removeClass('hidden');
             $newBlock.insertAfter('#form-edit-spec .input-block:last');
             $btnRemove = $newBlock.find('.btn-remove-row:first');
@@ -964,7 +964,7 @@ function onSpecSave(){
             key:          $elemBlock.find('.spec-item-key').val(),
             order:        $elemBlock.find('.spec-item-order').val(),
             name:         $elemBlock.find('.spec-item-name').val().trim(),
-            prod_rate:    $elemBlock.find('.spec-item-rate').val(),
+            prod_rate:    $elemBlock.find('.spec-item-pr1').val(),
             surface_type: $('#spec-surface-type').val()
         });
     });

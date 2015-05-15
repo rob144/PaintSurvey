@@ -21,9 +21,8 @@
                             
                         <form id='form-edit-spec'>
                             <div class='input-group'>
-                                <h2 class='group'>Edit Specification
+                                <h2 class='group'>Edit Specification</h2>
                                 <button type='button' id='btn-add-spec-item'></button>
-                                </h2>
                                 <input type='text' id='spec-surface-type' value='surface type' disabled="disabled" />
                                 <div id='spec-list'>
                                     <div class='input-block hidden'>
@@ -34,12 +33,24 @@
                                             <input class='spec-item-name' type='text' placeholder='item name'/>
                                             <button type='button' class='btn-remove-row'></button>
                                         </div>
-                                        <div class='form-row group'>
-                                            <label>Production Rate</label>
-                                            <input class='spec-item-rate decimal' type='number' step='any' min='0' placeholder='rate'/>
+                                        <table class='spec-item-rates'>
+                                            <tr>
+                                              <th>PR1</th><th>PR2</th><th>Rate</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input class='spec-item-pr1 decimal' type='number' step='any' min='0'/>
+                                                </td>
+                                                <td>
+                                                    <input class='spec-item-pr2 decimal' type='number' step='any' min='0'/>
+                                                </td>
+                                                <td>
+                                                    <input class='spec-item-rate decimal' type='number' step='any' min='0'/>
+                                                </td>
+                                            </tr>                                           
                                             <button type='button' class='btn-reorder-item-up'></button>
                                             <button type='button' class='btn-reorder-item-down'></button>
-                                        </div>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
