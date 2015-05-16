@@ -41,7 +41,9 @@ class Room(ModelUtils, ndb.Model):
 
 class Paint(ModelUtils, ndb.Model):
     name            = ndb.StringProperty()
-    prod_rate       = ndb.FloatProperty()
+    prod_rate_one   = ndb.FloatProperty()
+    prod_rate_two   = ndb.FloatProperty()
+    unit_rate       = ndb.FloatProperty()
     surface_type    = ndb.StringProperty()
     order           = ndb.IntegerProperty()
     project         = ndb.KeyProperty(kind='Project')
@@ -92,8 +94,13 @@ def init_data():
     for p in paint_data:
         qry = Paint.query(
             Paint.name == p[0],
-            Paint.prod_rate == p[1],
+            Paint.prod_rate_one == p[1],
             Paint.surface_type == p[2]
         )
         if(qry.count() <= 0):
-            Paint(name=p[0], prod_rate=p[1], surface_type=p[2], order=p[3]).put()
+            Paint(
+                name=p[0], 
+                prod_rate_one=p[1], 
+                surface_type=p[2], 
+                order=p[3]
+            ).put()
