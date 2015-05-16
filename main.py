@@ -25,7 +25,7 @@ def json_serial(obj):
 
 class Home(webapp2.RequestHandler):
     def get(self):
-        init_data()
+        #init_data() #Uncomment to init data for first time
         self.response.write(
             JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
                 'default_room': json.dumps(DefaultRoom.query().fetch(1)[0].to_dict(), indent=4, default=json_serial),
@@ -51,26 +51,32 @@ class SaveSpec(webapp2.RequestHandler):
 
         for obj in paints:
             paint_keys.append(obj['key'])
-            if(obj['key'] != ""):
+            if(obj['key'] != ''):
                 #Update existing paint
                 paint = ndb.Key(urlsafe=obj['key']).get()
                 if(paint):
-                    paint.name = obj['name'];
-                    paint.prod_rate = float(obj['prod_rate']);
-                    paint.order = int(obj['order']);
+                    paint.name          = obj['name'];
+                    paint.prod_rate_one = float(obj['prod_rate_one']);
+                    paint.prod_rate_two = float(obj['prod_rate_two']);
+                    paint.unit_rate     = float(obj['unit_rate']);
+                    paint.order         = int(obj['order']);
                     resp_paints.append(paint.put().get())
             else:
                 #Create new paint
                 resp_paints.append(
-                    Paint(name = obj['name'],
-                        surface_type = surface_type,
-                        prod_rate = float(obj['prod_rate']),
-                        order = Paint.query().order(-Paint.order).fetch(1)[0].order + 1
+                    Paint(
+                        name            = obj['name'],
+                        surface_type    = surface_type,
+                        prod_rate_one   = float(obj['prod_rate_one']),
+                        prod_rate_two   = float(obj['prod_rate_two']),
+                        unit_rate       = float(obj['unit_rate']),
+                        order           = Paint.query().order(-Paint.order).fetch(1)[0].order + 1
                     ).put().get()
                 )
 
         #Do deletions
-        all_paints = Paint.query(Paint.surface_type == surface_type).fetch(200)
+        all_paints = Paint.query(Paint.surface_type == surface_type).fetch(500)
+
         for p in all_paints:
             if p.key.urlsafe() not in paint_keys:
                 p.key.delete()
@@ -92,11 +98,14 @@ class CreateProject(webapp2.RequestHandler):
         project = Project(username='Test', title=project_title, date_created=datetime.now())
         project = project.put().get()
         
+        #Copy paints from existing spec to the new project
         for paint in Paint.query(Paint.project == None).fetch(200):
             project.paints.append(
                 Paint(
                     name            = paint.name,
-                    prod_rate       = paint.prod_rate,
+                    prod_rate_one   = paint.prod_rate_one,
+                    prod_rate_two   = paint.prod_rate_two,
+                    unit_rate       = paint.unit_rate,
                     surface_type    = paint.surface_type,
                     order           = paint.order,
                     project         = project.key
@@ -208,6 +217,7 @@ class DeleteRoom(webapp2.RequestHandler):
     def post(self):
         room = ndb.Key(urlsafe=self.request.get('room_key')).get()
         project = room.project.get()
+        
         if room.key in project.rooms:
             idx = project.rooms.index(room.key)
             del project.rooms[idx]

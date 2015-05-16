@@ -235,7 +235,6 @@ function createProject(){
 }
 
 function deleteProject(projectKey){
-console.log('DELETE PROJECT');
     doXhr({
         httpMethod: 'POST', 
         url: '/deleteproject',
@@ -243,7 +242,6 @@ console.log('DELETE PROJECT');
         dataType: 'json',
         successFunc: function(data){
             PROJECTS = data;
-console.log(PROJECTS);
             //TODO:update any orphan rooms.
             populateProjects(PROJECTS);
         }
@@ -840,6 +838,7 @@ function showEditSpecView(){
     
     var surface_type = $clickedButton.closest('.spec-item-block')
                           .find('.spec-item-title').text();
+    
     $('#spec-surface-type').val(surface_type);
 
     var paints = MODEL.getPaintsByType(surface_type, null);
@@ -847,10 +846,12 @@ function showEditSpecView(){
     $.each(paints, function(i, paint) {  
         if (paint.surface_type.toLowerCase() == surface_type.toLowerCase()) {
             var $newBlock = $('#form-edit-spec .input-block:first').clone();
-            $newBlock.find('input.spec-item-key').val(paint.key);
-            $newBlock.find('input.spec-item-order').val(paint.order);
-            $newBlock.find('input.spec-item-name').val(paint.name);
-            $newBlock.find('input.spec-item-pr1').val(paint.prod_rate);
+            $newBlock.find('input.spec-item-key'    ) .val( paint.key             );
+            $newBlock.find('input.spec-item-order'  ) .val( paint.order           );
+            $newBlock.find('input.spec-item-name'   ) .val( paint.name            );
+            $newBlock.find('input.spec-item-pr1'    ) .val( paint.prod_rate_one   );
+            $newBlock.find('input.spec-item-pr2'    ) .val( paint.prod_rate_two   );
+            $newBlock.find('input.spec-item-rate'   ) .val( paint.unit_rate       );
             $newBlock.removeClass('hidden');
             $newBlock.insertAfter('#form-edit-spec .input-block:last');
             $btnRemove = $newBlock.find('.btn-remove-row:first');
@@ -911,8 +912,8 @@ function populateSpecDropdowns(){
             $newBlock.find('.dropdown-value').attr('id',
                 'select-' + paint.surface_type.toLowerCase().replace(' ', '-') + '-spec');
             $newBlock.find('ul.dropdown-menu').append(
-                '<li><a role="menuitem" data-value="' + paint.key + '" >' 
-                + paint.name + ' (' + paint.prod_rate + ') </a></li>'
+                '<li><a role="menuitem" data-value="' 
+                + paint.key + '" >' + paint.name + '</a></li>'
             );
         });
         $newBlock.removeClass('hidden');
@@ -961,11 +962,13 @@ function onSpecSave(){
     $('#form-edit-spec .input-block:not(.hidden)').each( function(index, elem){
         var $elemBlock = $(elem);
         arrSpecItemData.push({ 
-            key:          $elemBlock.find('.spec-item-key').val(),
-            order:        $elemBlock.find('.spec-item-order').val(),
-            name:         $elemBlock.find('.spec-item-name').val().trim(),
-            prod_rate:    $elemBlock.find('.spec-item-pr1').val(),
-            surface_type: $('#spec-surface-type').val()
+            key:            $elemBlock.find('.spec-item-key').val(),
+            order:          $elemBlock.find('.spec-item-order').val(),
+            name:           $elemBlock.find('.spec-item-name').val().trim(),
+            prod_rate_one:  $elemBlock.find('.spec-item-pr1').val(),
+            prod_rate_two:  $elemBlock.find('.spec-item-pr2').val(),
+            unit_rate:      $elemBlock.find('.spec-item-rate').val(), 
+            surface_type:   $('#spec-surface-type').val()
         });
     });
 
@@ -974,11 +977,11 @@ function onSpecSave(){
         url: '/savespec',
         data: { 
           surface_type: $('#spec-surface-type').val(), 
-          paints: JSON.stringify(arrSpecItemData) 
+          paints: JSON.stringify( arrSpecItemData ) 
         },
         dataType: 'json',
         successFunc: function(data){ 
-            PAINTS = data; 
+            PAINTS = data;
             fadeToViewSpec();
         }
     });
@@ -1134,11 +1137,7 @@ function initRoomPage(room){
     $page.find('.skirting-adjust-simple') .val( room.skirting_adjust_simple );
     
     //Build input blocks and set the values for each group item.
-    if(room.group_items != null){
-/*
-console.log('fetch room group items');
-console.log(room.group_items);
-*/      
+    if(room.group_items != null){    
 
         for(var i = 0; i <= room.group_items.bayBreastVals.length - 1; i++){
             

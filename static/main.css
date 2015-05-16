@@ -433,15 +433,24 @@ table.input-pill tr:first-child td:first-child {
     border:none;
     background:none;
 }
+.spec-item-block .dropdown-btn {
+    width:211px;
+}
 input.spec-item-name {
     float:left;
-    width:220px;
+    width:211px;
     border:1px solid #ccc;
     border-radius:4px;
 }
 table.spec-item-rates {
     border-collapse:collapse;
     border:none;
+}
+table.spec-item-rates th {
+    padding:0 0 5px 0;
+}
+table.spec-item-rates td {
+    padding:0 5px 0 0;
 }
 input.spec-item-pr1, 
 input.spec-item-pr2,
