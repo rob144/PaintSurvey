@@ -1,0 +1,61 @@
+<html>
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--<link rel="stylesheet" type="text/css" href="../static/main.css" />-->
+        <script src="../static/lib/jquery-1.11.2.min.js"></script>
+        <style>
+            .caro {
+            	position:relative;
+                width:200px;
+                height:200px;
+                margin:10px 0 0 10px;
+                overflow:hidden;
+                border:1px solid #000;
+            }
+            .caro-stage {
+            	position:relative;
+            	overflow:auto;
+            	width:600px;/*width should be sum of item widths*/
+            }
+            .caro-item {
+            	float:left;
+            	width:200px;
+                height:200px;
+                background-color:#bbb;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h1>CAROUSEL TEST<h1>
+
+        <a href='javascript:moveSlide(1);'>PREV</a>
+        <a href='javascript:moveSlide(-1);'>NEXT</a>
+
+        <div class='caro'>
+        	<div class='caro-stage'>
+	            <div class='caro-item'><p>ITEM A</p></div>
+	            <div class='caro-item'><p>ITEM B</p></div>
+	            <div class='caro-item'><p>ITEM C</p></div>
+	            <div class='caro-item'><p>ITEM D</p></div>
+            </div>
+        </div>
+
+    </body>
+
+    <script type='text/javascript'>
+    	function initCaro(elem){
+    		//TODO: set the stage width big enough to hold all items
+    		//TODO: create caro as a js object
+    	}
+	    function moveSlide(vector){
+	    	var $stage = $('.caro .caro-stage');
+	    	var dx = $('.caro-item').width() * vector;
+	    	var newLeft = $stage.position().left + dx;
+	    	$stage.animate({left: newLeft + 'px'});
+	    }
+    </script>
+
+</html>

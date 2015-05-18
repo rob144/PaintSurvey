@@ -411,9 +411,6 @@ table.input-pill tr:first-child td:first-child {
 #form-edit-spec{
     display:none;
 }
-#form-edit-spec > h2 {
-    /* max-width:400px; */
-}
 .btn-edit-spec {
     float:right;
     width:30px;
