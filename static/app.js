@@ -194,9 +194,9 @@ function selectProject(projectKey, reload){
     $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
     
     //Remove existing room pages
-    if(CARO.owl.owlItems){
-        while(CARO.owl.owlItems.length >= 4){
-            CARO.removeItem(CARO.owl.owlItems.length - 1);
+    if(CARO.owlItems){
+        while(CARO.owlItems.length >= 4){
+            CARO.removeItem(CARO.owlItems.length - 1);
         }
     }
 
@@ -204,12 +204,16 @@ function selectProject(projectKey, reload){
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
         for(var i = 0; i <= rooms.length - 1; i++){
-            CARO.addItem($('#owl-pages .owl-page.room-page-template').html());
+            var itemHtml = $('#owl-pages .owl-page.room-page-template').html();
+            CARO.trigger('add.owl.carousel', [$(itemHtml), 3+i])
+                .trigger('refresh.owl.carousel');
             initRoomPage(rooms[i]);
         }
     }else{
         //just add the default blank room.
-        CARO.addItem($('#owl-pages .owl-page.room-page-template').html());
+        var itemHtml = $('#owl-pages .owl-page.room-page-template').html();
+        CARO.trigger('add.owl.carousel', [$(itemHtml), 3])
+            .trigger('refresh.owl.carousel');
         initRoomPage();
     }
     CARO.next();
@@ -749,27 +753,40 @@ function switchSign(inpElem){
 }
 
 function initOwlCarousel(){
-    //Add the pages into the CARO
+    
+    //TODO: try using Slick carousel
+
     $('#owl-pages .owl-page').each(function(){
         var $page = $(this);
         if($page.hasClass('room-page-template') == false){
             $page.appendTo('#owl-carousel');
         }
     })
-    $('#owl-carousel').owlCarousel(
+    $('#owl-carousel').slick();
+    /*CARO = $('#owl-carousel');
+    CARO.owlCarousel(
         { 
-            navigation : true, // Show next and prev buttons
-            slideSpeed : 300,
-            paginationSpeed : 400,
+            callbacks: true,
+            nav: true,
+            slideSpeed: 300,
+            paginationSpeed: 400,
             singleItem: true,
-            afterInit : function(elem){
-              var that = this;
-              that.owlControls.prependTo(elem);
+            responsive: {
+                0: { items: 1 },
+                600: { items: 1 },
+                960: { items: 1 },
+                1200: { items: 1 }
+            },
+            afterInit: function(elem){
+              this.owlControls.prependTo(elem);
               this.jumpTo(2);
             }
         }
     );
-    CARO = $('#owl-carousel').data('owlCarousel');
+    CARO.on('onAnimationEnd', function(e) {
+        console.log('onAnimationEnd');  
+    });
+*/
 }
 
 function toggleDropDown(){
