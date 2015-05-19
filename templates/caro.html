@@ -6,7 +6,11 @@
         <script src="../static/lib/jquery-1.11.2.min.js"></script>
         <style>
             .caro {
-            	position:relative;
+                position:relative;
+                overflow:auto;
+            }
+            .caro-inner {
+                position:relative;
                 width:200px;
                 height:200px;
                 margin:10px 0 0 10px;
@@ -14,13 +18,12 @@
                 border:1px solid #000;
             }
             .caro-stage {
-            	position:relative;
-            	overflow:auto;
-            	width:600px;/*width should be sum of item widths*/
+                position:relative;
+                overflow:auto;
             }
             .caro-item {
-            	float:left;
-            	width:200px;
+                float:left;
+                width:200px;
                 height:200px;
                 background-color:#bbb;
             }
@@ -31,31 +34,66 @@
 
         <h1>CAROUSEL TEST<h1>
 
-        <a href='javascript:moveSlide(1);'>PREV</a>
-        <a href='javascript:moveSlide(-1);'>NEXT</a>
-
         <div class='caro'>
-        	<div class='caro-stage'>
-	            <div class='caro-item'><p>ITEM A</p></div>
-	            <div class='caro-item'><p>ITEM B</p></div>
-	            <div class='caro-item'><p>ITEM C</p></div>
-	            <div class='caro-item'><p>ITEM D</p></div>
+            <div class='caro-inner'>
+                <div class='caro-stage'>
+                    <div class='caro-item'><p>ITEM A</p></div>
+                    <div class='caro-item'><p>ITEM B</p></div>
+                    <div class='caro-item'><p>ITEM C</p></div>
+                    <div class='caro-item'><p>ITEM D</p></div>
+                </div>
             </div>
         </div>
 
     </body>
 
     <script type='text/javascript'>
-    	function initCaro(elem){
-    		//TODO: set the stage width big enough to hold all items
-    		//TODO: create caro as a js object
-    	}
-	    function moveSlide(vector){
-	    	var $stage = $('.caro .caro-stage');
-	    	var dx = $('.caro-item').width() * vector;
-	    	var newLeft = $stage.position().left + dx;
-	    	$stage.animate({left: newLeft + 'px'});
-	    }
+        var caro = '';
+        
+        function Caro(elem){
+            
+            var caroElem = $(elem);
+            var currentSlideNum = 1;
+            var totalSlides = caroElem.find('.caro-item').length;
+
+            /* Set stage width */
+            var itemWidthsTotal = 0;
+            caroElem.find('.caro-item').each(function() {
+                itemWidthsTotal += $(this).outerWidth( true );
+            });
+            caroElem.find('.caro-stage').width(itemWidthsTotal);
+            
+            var nextSlide = function(){ 
+                if(currentSlideNum < totalSlides){
+                    moveSlide(-1);
+                }
+            };
+
+            var prevSlide = function(){
+                if(currentSlideNum > 1){
+                    moveSlide(1);
+                }
+            };
+
+            var moveSlide = function(vector){
+                var $stage = caroElem.find('.caro-stage');
+                var dx = caroElem.find('.caro-item').width() * vector;
+                var newLeft = $stage.position().left + dx;
+                $stage.animate({left: newLeft + 'px'});
+                var step = -1 * vector;
+                currentSlideNum += step;
+            };
+
+            /* Add the nav controls */
+            caroElem.prepend('<a class="caro-nav-next" href="#">Next</a>');
+            caroElem.prepend('<a class="caro-nav-prev" href="#">Prev</a>');
+            caroElem.find('.caro-nav-prev').click(prevSlide);
+            caroElem.find('.caro-nav-next').click(nextSlide);
+        };
+       
+        $(document).ready(function() {
+            caro = Caro('.caro');
+        });
     </script>
 
 </html>
