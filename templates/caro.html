@@ -9,16 +9,16 @@
                 position:relative;
                 overflow:auto;
             }
-            .caro-inner {
+            .caro-window {
                 position:relative;
                 width:200px;
                 height:200px;
-                margin:10px 0 0 10px;
+                margin:100px 0 0 100px;
                 overflow:hidden;
                 border:1px solid #000;
             }
             .caro-stage {
-                position:relative;
+                position:absolute;
                 overflow:auto;
             }
             .caro-item {
@@ -35,7 +35,7 @@
         <h1>CAROUSEL TEST<h1>
 
         <div class='caro'>
-            <div class='caro-inner'>
+            <div class='caro-window'>
                 <div class='caro-stage'>
                     <div class='caro-item'><p>ITEM A</p></div>
                     <div class='caro-item'><p>ITEM B</p></div>
@@ -50,19 +50,26 @@
     <script type='text/javascript'>
         var caro = '';
         
+        var CARO_INFO = {
+            mousedown: false
+        }; 
+
         function Caro(elem){
             
-            var caroElem = $(elem);
+            var $caro = $(elem);
+            var $caroWindow = $caro.find('.caro-window');
+            var $stage = $caro.find('.caro-stage');
+
             var currentSlideNum = 1;
-            var totalSlides = caroElem.find('.caro-item').length;
+            var totalSlides = $caro.find('.caro-item').length;
 
             /* Set stage width */
             var itemWidthsTotal = 0;
-            caroElem.find('.caro-item').each(function() {
+            $caro.find('.caro-item').each(function() {
                 itemWidthsTotal += $(this).outerWidth( true );
             });
-            caroElem.find('.caro-stage').width(itemWidthsTotal);
-            
+            $stage.width(itemWidthsTotal);
+
             var nextSlide = function(){ 
                 if(currentSlideNum < totalSlides){
                     moveSlide(-1);
@@ -76,19 +83,101 @@
             };
 
             var moveSlide = function(vector){
-                var $stage = caroElem.find('.caro-stage');
-                var dx = caroElem.find('.caro-item').width() * vector;
-                var newLeft = $stage.position().left + dx;
-                $stage.animate({left: newLeft + 'px'});
-                var step = -1 * vector;
-                currentSlideNum += step;
+
+                if(!$stage.hasClass('sliding')){
+                    var dx = $caro.find('.caro-item').width() * vector;
+                    var newLeft = $stage.position().left + dx;
+                    $stage.addClass('sliding');
+                    $stage.animate(
+                        { left: newLeft + 'px'},
+                        400, 
+                        function(){ 
+                            $stage.removeClass('sliding');
+                        }
+                    );
+                    var step = -1 * vector;
+                    currentSlideNum += step;
+                }
             };
 
+            var getTargetSlide = function(direction){
+                
+                var targetElem;
+
+                if(direction < 0){ //Moving stage from right to left
+                    
+                    /* Find element where top left corner is inside window */
+                    $caro.find('.caro-item').each( function( i, elem ) {
+                        elem = $(elem);
+                        if(elem.position().left >= $caroWindow.position().left
+                            && elem.position().left < ($caroWindow.position().left + $caroWindow.outerWidth()) ){
+                                targetElem = elem;
+                                return false;
+                        }
+                    });
+
+                }else if(direction > 0){ //Moving stage from left to right
+
+                    /* Find element where top right corner is inside window */
+                    $caro.find('.caro-item').each( function( i, elem ) {
+                        elem = $(elem);
+                        if(elem.position().left + elem.outerWidth() >= $caroWindow.position().left
+                            && elem.position().left < ($caroWindow.position().left + $caroWindow.outerWidth()) ){
+                                targetElem = elem;
+                                return false;
+                        }
+                    });
+                }
+
+                return targetElem;
+            }
+
+            /* Setup the touch and drag events */
+            $caro.mousedown(function(e){
+                e.preventDefault();
+                CARO_INFO.mousedown = true;
+                CARO_INFO.startX = e.pageX;
+                CARO_INFO.trackX = CARO_INFO.startX;
+            });
+
+            $caro.mousemove(function(e){
+                if(CARO_INFO.mousedown){
+                    
+                    var newLeft = $stage.position().left + e.pageX - CARO_INFO.trackX;
+                    var vector = e.pageX - CARO_INFO.startX;
+                    var direction;
+
+                    if(vector != 0){
+                        
+                        var distance = Math.abs(vector);
+                        console.log(distance);
+                        /* If distance >10px, slide all the way to the next or prev item */
+                        if(distance > 10){
+                            if(vector < 0) {
+                                direction = -1; //Moving stage from right to left
+                            }else if(vector > 0){
+                                direction = 1; //Moving stage from left to right
+                            }
+                            /* Work out distance to target slide left position */
+                            var targetSlide = getTargetSlide(direction);
+                            var moveX = e.pageX - targetSlide.position().left;
+                            console.log('target html' + targetSlide.html() + 'target left' + targetSlide.position().left + 'moveX ' + moveX);
+                        }
+                        $stage.css({ left: newLeft });
+                        CARO_INFO.trackX = e.pageX;
+                    }
+                }
+            });
+
+            $caro.mouseup(function(e){ 
+                CARO_INFO.mousedown = false; 
+            });
+
             /* Add the nav controls */
-            caroElem.prepend('<a class="caro-nav-next" href="#">Next</a>');
-            caroElem.prepend('<a class="caro-nav-prev" href="#">Prev</a>');
-            caroElem.find('.caro-nav-prev').click(prevSlide);
-            caroElem.find('.caro-nav-next').click(nextSlide);
+            $caro.prepend('<a class="caro-nav-next" href="#">Next</a>');
+            $caro.prepend('<a class="caro-nav-prev" href="#">Prev</a>');
+            $caro.find('.caro-nav-prev').click(prevSlide);
+            $caro.find('.caro-nav-next').click(nextSlide);
         };
        
         $(document).ready(function() {
