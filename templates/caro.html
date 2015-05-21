@@ -27,12 +27,15 @@
                 height:200px;
                 background-color:#bbb;
             }
+            .caro-nav-prev {
+                margin:0 10px 0 0;
+            }
         </style>
     </head>
 
     <body>
 
-        <h1>CAROUSEL TEST<h1>
+        <h1>CAROUSEL TEST</h1>
 
         <div class='caro'>
             <div class='caro-window'>
@@ -83,14 +86,12 @@
             };
 
             var moveSlide = function(vector){
-
                 if(!$stage.hasClass('sliding')){
-                    var dx = $caro.find('.caro-item').width() * vector;
-                    var newLeft = $stage.position().left + dx;
                     $stage.addClass('sliding');
                     $stage.animate(
-                        { left: newLeft + 'px'},
-                        400, 
+                        { left: (vector < 0 ? '-=' : vector > 0 ? '+=' : '') 
+                            + $caro.find('.caro-item').outerWidth() },
+                        300, 
                         function(){ 
                             $stage.removeClass('sliding');
                         }
@@ -99,6 +100,42 @@
                     currentSlideNum += step;
                 }
             };
+
+            var fixOvershoot = function(){
+                /* If the stage was dragged beyond the first or last elements,
+                animate back to boundary. */
+
+                if($stage.offset().left > $caroWindow.offset().left){
+                    if(!$stage.hasClass('sliding')){
+                        $stage.addClass('sliding');
+                        //Animate to the first slide
+                        $stage.animate(
+                            { left: 0 },
+                            300, 
+                            function(){ 
+                                $stage.removeClass('sliding');
+                            }
+                        );
+                    }
+                }
+
+                if($stage.offset().left + $stage.outerWidth() 
+                    < $caroWindow.offset().left + $caroWindow.outerWidth()){
+                    if(!$stage.hasClass('sliding')){
+                        $stage.addClass('sliding');
+                        //Animate to the last slide
+                        $stage.animate({ 
+                                left: "+=" + ( $caroWindow.offset().left 
+                                - $caro.find('.caro-item:last').offset().left + 1) 
+                            },
+                            300, 
+                            function(){ 
+                                $stage.removeClass('sliding');
+                            }
+                        );
+                    }
+                }
+            }
 
             var getTargetSlide = function(direction){
                 
@@ -109,8 +146,8 @@
                     /* Find element where top left corner is inside window */
                     $caro.find('.caro-item').each( function( i, elem ) {
                         elem = $(elem);
-                        if(elem.position().left >= $caroWindow.position().left
-                            && elem.position().left < ($caroWindow.position().left + $caroWindow.outerWidth()) ){
+                        if(elem.offset().left >= $caroWindow.offset().left
+                            && elem.offset().left < ($caroWindow.offset().left + $caroWindow.outerWidth()) ){
                                 targetElem = elem;
                                 return false;
                         }
@@ -133,24 +170,24 @@
             }
 
             /* Setup the touch and drag events */
-            $caro.mousedown(function(e){
+            $caroWindow.off('mousedown').on('mousedown', function(e){
                 e.preventDefault();
                 CARO_INFO.mousedown = true;
                 CARO_INFO.startX = e.pageX;
                 CARO_INFO.trackX = CARO_INFO.startX;
             });
 
-            $caro.mousemove(function(e){
+            $caroWindow.off('mousemove').on('mousemove', function(e){
                 if(CARO_INFO.mousedown){
                     
                     var newLeft = $stage.position().left + e.pageX - CARO_INFO.trackX;
                     var vector = e.pageX - CARO_INFO.startX;
-                    var direction;
+                    var direction = 0;
 
                     if(vector != 0){
                         
                         var distance = Math.abs(vector);
-                        console.log(distance);
+                       
                         /* If distance >10px, slide all the way to the next or prev item */
                         if(distance > 10){
                             if(vector < 0) {
@@ -160,17 +197,34 @@
                             }
                             /* Work out distance to target slide left position */
                             var targetSlide = getTargetSlide(direction);
-                            var moveX = e.pageX - targetSlide.position().left;
-                            console.log('target html' + targetSlide.html() + 'target left' + targetSlide.position().left + 'moveX ' + moveX);
+                            if(targetSlide != null){
+                                var moveX = e.pageX - targetSlide.position().left;
+                                //TODO: snap animation to target slide
+                            }
                         }
-                        $stage.css({ left: newLeft });
-                        CARO_INFO.trackX = e.pageX;
+
+                        //Drag stage if still within bounds
+                        if(direction == 1 && $stage.offset().left < $caroWindow.offset().left
+                            || direction == -1 && $stage.offset().left + $stage.outerWidth() 
+                            > $caroWindow.offset().left + $caroWindow.outerWidth()){
+                            
+                            $stage.css({ left: newLeft });
+                            CARO_INFO.trackX = e.pageX;
+                        }
                     }
                 }
             });
 
-            $caro.mouseup(function(e){ 
+            $caroWindow.off('mouseup').on('mouseup', function(e){ 
                 CARO_INFO.mousedown = false; 
+                fixOvershoot();
+            });
+
+            $caroWindow.off('mouseleave').on('mouseleave', function(e){ 
+                if(CARO_INFO.mousedown == true){
+                    CARO_INFO.mousedown = false;
+                    fixOvershoot();
+                } 
             });
 
             /* Add the nav controls */
@@ -178,6 +232,8 @@
             $caro.prepend('<a class="caro-nav-prev" href="#">Prev</a>');
             $caro.find('.caro-nav-prev').click(prevSlide);
             $caro.find('.caro-nav-next').click(nextSlide);
+
+            return { caro: $caro, caroWindow: $caroWindow, stage: $stage };
         };
        
         $(document).ready(function() {
