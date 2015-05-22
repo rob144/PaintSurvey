@@ -9,22 +9,32 @@
                 position:relative;
                 overflow:auto;
             }
+            .caro:after{
+                content: "";
+                display: table;
+                clear: both;
+            }
             .caro-window {
                 position:relative;
-                width:200px;
-                height:200px;
-                margin:100px 0 0 100px;
                 overflow:hidden;
-                border:1px solid #000;
+                background-color:#eee;
+            }
+            .caro-window:after{
+                content: "";
+                display: table;
+                clear: both;
             }
             .caro-stage {
                 position:absolute;
                 overflow:auto;
             }
+            .caro-stage:after{
+                content: "";
+                display: table;
+                clear: both;
+            }
             .caro-item {
                 float:left;
-                width:200px;
-                height:200px;
                 background-color:#bbb;
             }
             .caro-nav-prev {
@@ -63,6 +73,13 @@
             var $caroWindow = $caro.find('.caro-window');
             var $stage = $caro.find('.caro-stage');
 
+            $caro.css({ width: '100%' });
+            $caroWindow.width( $caro.width() );
+            $stage.css({ 'min-height':'400px' });
+            $caroWindow.css({ 'min-height':'400px' });
+            $stage.find('.caro-item').width( $caroWindow.width() );
+            $stage.find('.caro-item').css({ 'min-height':'400px' });
+
             var currentSlideNum = 1;
             var totalSlides = $caro.find('.caro-item').length;
 
@@ -74,30 +91,62 @@
             $stage.width(itemWidthsTotal);
 
             var nextSlide = function(){ 
-                if(currentSlideNum < totalSlides){
-                    moveSlide(-1);
-                }
+                moveSlide(-1);
             };
 
             var prevSlide = function(){
-                if(currentSlideNum > 1){
-                    moveSlide(1);
+                moveSlide(1);
+            };
+
+            var animateStage = function(newLeft, onComplete){
+                if(!$stage.hasClass('sliding')){
+                    $stage.addClass('sliding');
+                    $stage.animate(
+                        { left: newLeft },
+                        300, 
+                        function(){ 
+                            $stage.removeClass('sliding');
+                            if(onComplete != null){
+                                onComplete();
+                            }
+                        }
+                    );
                 }
             };
 
             var moveSlide = function(vector){
-                if(!$stage.hasClass('sliding')){
-                    $stage.addClass('sliding');
-                    $stage.animate(
-                        { left: (vector < 0 ? '-=' : vector > 0 ? '+=' : '') 
-                            + $caro.find('.caro-item').outerWidth() },
-                        300, 
-                        function(){ 
-                            $stage.removeClass('sliding');
+                
+                //Get the current slide,
+                var $currSlide;
+                $stage.find('.caro-item').each(function(){
+                    var $elem = $(this);
+                    if( $elem.offset().left >= $caroWindow.offset().left
+                        && ($elem.offset().left + $elem.outerWidth()) 
+                        <= ($caroWindow.offset().left + $caroWindow.outerWidth()) ){
+                        $currSlide = $elem;
+                        return false;
+                    }
+                });
+                
+                //Check if the next or previous slide exists.
+                if((vector < 0 && $currSlide.next().length) 
+                    || (vector > 0 && $currSlide.prev().length)){
+                    animateStage( 
+                        (vector < 0 ? '-=' : vector > 0 ? '+=' : '') 
+                                + $caro.find('.caro-item').outerWidth(), 
+                        function(){
+                            var step = -1 * vector;
+                            currentSlideNum += step;
                         }
                     );
-                    var step = -1 * vector;
-                    currentSlideNum += step;
+                }
+            };
+
+            var animateToSlide = function(targetSlide){
+                if(targetSlide !== null){
+                    var $targetSlide = $(targetSlide);
+                    var newLeft = $stage.offset().left - $targetSlide.offset().left;
+                    animateStage(newLeft);
                 }
             };
 
@@ -135,39 +184,22 @@
                         );
                     }
                 }
-            }
+            };
 
             var getTargetSlide = function(direction){
                 
-                var targetElem;
+                var $currElem = $(CARO_INFO.draggedElem);
 
-                if(direction < 0){ //Moving stage from right to left
+                if(direction < 0 && $currElem.next().length){
+                    return $currElem.next();
+                }
                     
-                    /* Find element where top left corner is inside window */
-                    $caro.find('.caro-item').each( function( i, elem ) {
-                        elem = $(elem);
-                        if(elem.offset().left >= $caroWindow.offset().left
-                            && elem.offset().left < ($caroWindow.offset().left + $caroWindow.outerWidth()) ){
-                                targetElem = elem;
-                                return false;
-                        }
-                    });
-
-                }else if(direction > 0){ //Moving stage from left to right
-
-                    /* Find element where top right corner is inside window */
-                    $caro.find('.caro-item').each( function( i, elem ) {
-                        elem = $(elem);
-                        if(elem.position().left + elem.outerWidth() >= $caroWindow.position().left
-                            && elem.position().left < ($caroWindow.position().left + $caroWindow.outerWidth()) ){
-                                targetElem = elem;
-                                return false;
-                        }
-                    });
+                if(direction > 0 && $currElem.prev().length){
+                    return $currElem.prev();
                 }
 
-                return targetElem;
-            }
+                return null;
+            };
 
             /* Setup the touch and drag events */
             $caroWindow.off('mousedown').on('mousedown', function(e){
@@ -175,6 +207,8 @@
                 CARO_INFO.mousedown = true;
                 CARO_INFO.startX = e.pageX;
                 CARO_INFO.trackX = CARO_INFO.startX;
+                CARO_INFO.draggedElem = $(e.target);
+                CARO_INFO.mouseupAnimation = function(){};
             });
 
             $caroWindow.off('mousemove').on('mousemove', function(e){
@@ -197,9 +231,10 @@
                             }
                             /* Work out distance to target slide left position */
                             var targetSlide = getTargetSlide(direction);
-                            if(targetSlide != null){
-                                var moveX = e.pageX - targetSlide.position().left;
-                                //TODO: snap animation to target slide
+                            if(targetSlide !== null){
+                                CARO_INFO.mouseupAnimation = function(){
+                                    animateToSlide(targetSlide);
+                                }
                             }
                         }
 
@@ -217,15 +252,18 @@
 
             $caroWindow.off('mouseup').on('mouseup', function(e){ 
                 CARO_INFO.mousedown = false; 
+                CARO_INFO.mouseupAnimation();
                 fixOvershoot();
             });
 
+/*
             $caroWindow.off('mouseleave').on('mouseleave', function(e){ 
                 if(CARO_INFO.mousedown == true){
                     CARO_INFO.mousedown = false;
                     fixOvershoot();
                 } 
             });
+*/
 
             /* Add the nav controls */
             $caro.prepend('<a class="caro-nav-next" href="#">Next</a>');
