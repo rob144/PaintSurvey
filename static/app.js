@@ -752,41 +752,15 @@ function switchSign(inpElem){
     $inpElem.focus();
 }
 
-function initOwlCarousel(){
+function initCarousel(){
     
-    //TODO: try using Slick carousel
-
+    var CARO = Caro('#owl-carousel');
     $('#owl-pages .owl-page').each(function(){
         var $page = $(this);
         if($page.hasClass('room-page-template') == false){
-            $page.appendTo('#owl-carousel');
+            CARO.addItem($page);
         }
     })
-    $('#owl-carousel').slick();
-    /*CARO = $('#owl-carousel');
-    CARO.owlCarousel(
-        { 
-            callbacks: true,
-            nav: true,
-            slideSpeed: 300,
-            paginationSpeed: 400,
-            singleItem: true,
-            responsive: {
-                0: { items: 1 },
-                600: { items: 1 },
-                960: { items: 1 },
-                1200: { items: 1 }
-            },
-            afterInit: function(elem){
-              this.owlControls.prependTo(elem);
-              this.jumpTo(2);
-            }
-        }
-    );
-    CARO.on('onAnimationEnd', function(e) {
-        console.log('onAnimationEnd');  
-    });
-*/
 }
 
 function toggleDropDown(){
@@ -1616,9 +1590,11 @@ $.fn.center = function() {
     });
 }
 
+
+
 $(document).ready(function() {
 
-    initOwlCarousel();
+    initCarousel();
     initSpecificationPage();
     initRoomDefaultsPage();
     initProjectsPage();

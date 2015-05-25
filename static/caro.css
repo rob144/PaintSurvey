@@ -1,0 +1,36 @@
+.caro {
+    position:relative;
+    overflow:auto;
+    width:100%;
+}
+.caro:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.caro-window {
+    position:relative;
+    overflow:hidden;
+    background-color:#eee;
+}
+.caro-window:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.caro-stage {
+    position:absolute;
+    overflow:auto;
+}
+.caro-stage:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.caro-item {
+    float:left;
+    background-color:#bbb;
+}
+.caro-nav-prev {
+    margin:0 10px 0 0;
+}
