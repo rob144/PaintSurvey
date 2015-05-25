@@ -80,7 +80,6 @@
             $stage.find('.caro-item').width( $caroWindow.width() );
             $stage.find('.caro-item').css({ 'min-height':'400px' });
 
-            var currentSlideNum = 1;
             var totalSlides = $caro.find('.caro-item').length;
 
             /* Set stage width */
@@ -116,6 +115,10 @@
 
             var moveSlide = function(vector){
                 
+                //Still moving
+                if($stage.hasClass('sliding'))
+                    return;
+
                 //Get the current slide,
                 var $currSlide;
                 $stage.find('.caro-item').each(function(){
@@ -133,11 +136,7 @@
                     || (vector > 0 && $currSlide.prev().length)){
                     animateStage( 
                         (vector < 0 ? '-=' : vector > 0 ? '+=' : '') 
-                                + $caro.find('.caro-item').outerWidth(), 
-                        function(){
-                            var step = -1 * vector;
-                            currentSlideNum += step;
-                        }
+                            + $caro.find('.caro-item').outerWidth()
                     );
                 }
             };
@@ -154,10 +153,10 @@
                 /* If the stage was dragged beyond the first or last elements,
                 animate back to boundary. */
 
+                //Animate to the first slide
                 if($stage.offset().left > $caroWindow.offset().left){
                     if(!$stage.hasClass('sliding')){
                         $stage.addClass('sliding');
-                        //Animate to the first slide
                         $stage.animate(
                             { left: 0 },
                             300, 
@@ -168,11 +167,11 @@
                     }
                 }
 
+                //Animate to the last slide
                 if($stage.offset().left + $stage.outerWidth() 
                     < $caroWindow.offset().left + $caroWindow.outerWidth()){
                     if(!$stage.hasClass('sliding')){
                         $stage.addClass('sliding');
-                        //Animate to the last slide
                         $stage.animate({ 
                                 left: "+=" + ( $caroWindow.offset().left 
                                 - $caro.find('.caro-item:last').offset().left + 1) 
