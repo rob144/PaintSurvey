@@ -200,23 +200,21 @@ function selectProject(projectKey, reload){
         }
     }
 
+    //TODO:fix this so the rooms slides display correctly.
+
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
         for(var i = 0; i <= rooms.length - 1; i++){
-            var itemHtml = $('#owl-pages .owl-page.room-page-template').html();
-            CARO.trigger('add.owl.carousel', [$(itemHtml), 3+i])
-                .trigger('refresh.owl.carousel');
+            CARO.addSlide($('.room-page-template').html());
             initRoomPage(rooms[i]);
         }
     }else{
         //just add the default blank room.
-        var itemHtml = $('#owl-pages .owl-page.room-page-template').html();
-        CARO.trigger('add.owl.carousel', [$(itemHtml), 3])
-            .trigger('refresh.owl.carousel');
+        CARO.addSlide($('.room-page-template').html());
         initRoomPage();
     }
-    CARO.next();
+    CARO.nextSlide();
 }
 
 function createProject(){
@@ -754,11 +752,11 @@ function switchSign(inpElem){
 
 function initCarousel(){
     
-    var CARO = Caro('#owl-carousel');
+    CARO = Caro('#owl-carousel');
     $('#owl-pages .owl-page').each(function(){
         var $page = $(this);
         if($page.hasClass('room-page-template') == false){
-            CARO.addItem($page);
+            CARO.addSlide($page.html());
         }
     })
 }
