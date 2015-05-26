@@ -1,32 +1,57 @@
 function Caro(elem){
             
     var $caro = $(elem);
-    var $caroWindow = $caro.find('.caro-window');
-    var $caroStage = $caro.find('.caro-stage');
+    var $caroWindow;
+    var $caroStage;
+    
+    if(!$caro.find('.caro-window').length){
+        $caro.append('<div class="caro-window"></div>');
+        $caro.find('.caro-window').append('<div class="caro-stage"></div>');
+    }
+    $caroWindow = $caro.find('.caro-window');
+    $caroStage = $caro.find('.caro-stage');
 
     var CARO_INFO = { mousedown: false };
 
     var init = function(){
-        $caroWindow.width( $caro.width() );
-        $caroStage.css({ 'min-height':'400px' });
-        $caroWindow.css({ 'min-height':'400px' });
         $caroStage.find('div').each(function(i, elem){
             $(elem).remove();
             addSlide($(elem).html());
         });
+        $(window).resize(function(){
+            $caroStage.find('.caro-item').width( $( window ).width() );
+            //Realign stage on resize
+            var offset = $caroStage.offset();
+            $caroStage.offset({
+                top: offset.top, 
+                left: offset.left += 
+                    (-1 * getNearestElem($caroWindow.offset().left).offset().left)  
+            });
+        })
+    }
+
+    var setStageWidth = function(){
+        /* Set stage width */
+        var itemWidthsTotal = 0;
+        $caro.find('.caro-item').each(function() {
+            itemWidthsTotal += $(this).outerWidth( true );
+        });
+        $caroStage.width(itemWidthsTotal + 1);
+        return $caroStage.width();
     }
 
     var addSlide = function(slideHtml){
         $caroStage.append("<div class='caro-item'>" + slideHtml + "</div>");
         var $slides = $caroStage.find('.caro-item');
         $slides.width( $caroWindow.width() );
-        $slides.css({ 'min-height':'400px' });
-         /* Set stage width */
-        var itemWidthsTotal = 0;
-        $caro.find('.caro-item').each(function() {
-            itemWidthsTotal += $(this).outerWidth( true );
-        });
-        $caroStage.width(itemWidthsTotal);
+        setStageWidth();
+        $caroWindow.height($caroStage.height());
+    }
+
+    var removeSlide = function(index){
+        if(index >= 1 && $caroStage.find('.caro-item:nth-child('+index+')').length){
+            $caroStage.find('.caro-item:nth-child('+index+')').remove();
+        }
     }
 
     var nextSlide = function(){ 
@@ -142,7 +167,6 @@ function Caro(elem){
 
     /* Setup the touch and drag events */
     $caroWindow.off('mousedown').on('mousedown', function(e){
-        e.preventDefault();
         
         var $elem = $(e.target);
         CARO_INFO.mousedown = true;
@@ -199,8 +223,11 @@ function Caro(elem){
     var getNearestElem = function(position, elems){
         var min = null;
         var $nearestElem = null;
+        if(elems == null) {
+            elems = $caroStage.find('.caro-item');
+        }
         for(var i=0; i<elems.length; i++){
-            var $elem = elems[i];
+            var $elem = $(elems[i]);
             var newMin = Math.abs($caroWindow.offset().left - $elem.offset().left);
             if(min == null || newMin < min){
                 $nearestElem = $elem;
@@ -212,7 +239,9 @@ function Caro(elem){
 
     $caroWindow.off('mouseup').on('mouseup', function(e){ 
         CARO_INFO.mousedown = false; 
-        CARO_INFO.mouseupAnimation();
+        if(CARO_INFO.mouseupAnimation != null){
+            CARO_INFO.mouseupAnimation();
+        };
         fixOvershoot();
         
         //Fix mouseleave and return problem.
@@ -232,12 +261,30 @@ function Caro(elem){
     });
 
     /* Add the nav controls */
-    $caro.prepend('<a class="caro-nav-next" href="#">Next</a>');
-    $caro.prepend('<a class="caro-nav-prev" href="#">Prev</a>');
+    $caro.prepend('<div class="caro-nav-btn caro-nav-next">Next</a>');
+    $caro.prepend('<div class="caro-nav-btn caro-nav-prev">Prev</a>');
     $caro.find('.caro-nav-prev').click(prevSlide);
     $caro.find('.caro-nav-next').click(nextSlide);
 
     init();
 
-    return { addSlide: addSlide };
+    return { 
+        addSlide: addSlide, 
+        removeSlide: removeSlide,
+        setStageWidth: setStageWidth,
+        nextSlide: nextSlide,
+        prevSlide: prevSlide
+    };
 };
+
+
+
+
+
+
+
+
+
+
+
+

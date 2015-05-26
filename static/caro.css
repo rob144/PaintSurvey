@@ -11,6 +11,7 @@
 .caro-window {
     position:relative;
     overflow:hidden;
+    width:100%;
     background-color:#eee;
 }
 .caro-window:after {
@@ -29,8 +30,28 @@
 }
 .caro-item {
     float:left;
-    background-color:#bbb;
+}
+.caro-nav-btn {
+    color:#FFF;
+    display:inline-block;
+    zoom:1;
+    margin:5px;
+    padding:10px;
+    font-size:12px;
+    -webkit-border-radius:30px;
+    -moz-border-radius:30px;
+    border-radius:30px;
+    background:#869791;
+    filter:Alpha(Opacity=50);
+    opacity:0.5;
+    cursor:pointer;
 }
 .caro-nav-prev {
-    margin:0 10px 0 0;
+    float:left;
+}
+.caro-nav-next {
+    float:right;
+}
+.caro-nav-prev, .caro-nav-next {
+    margin:5px;
 }
