@@ -178,7 +178,7 @@ function populateProjects(projects){
 function selectProject(projectKey, reload){
 
     if(CURRENT_PROJECT.key == projectKey && reload != true){
-        alert('Project already selected.');
+        CARO.nextSlide();
         return;
     }
 
@@ -1323,7 +1323,7 @@ function onPosNegInputFocus(event, secondCall){
 
 function onDeleteRoomClick(){
     if(CURRENT_PROJECT.rooms.length >= 1){
-        deleteRoom($(this).closest('.owl-item').find('.room-key').val());
+        deleteRoom($(this).closest('.caro-item').find('.room-key').val());
     }else{
         alert('Room not saved yet.');
     }
@@ -1331,7 +1331,7 @@ function onDeleteRoomClick(){
 
 function onSaveRoomClick(){
 
-    var $page = $(this).closest('.owl-item');
+    var $page = $(this).closest('.caro-item');
     var getf = function(elemId){
         return parseFloat($page.find(elemId).val());
     }
@@ -1464,7 +1464,6 @@ function addInputBlock(context){
         $newBlock.find('.default-value').removeClass('default-value');
         $newBlock.find('input[type="number"]').each(function(index, elem){
             var $elem = $(elem);
-console.log('n ' +$elem.attr('data-default-value'));
             $elem.val($elem.attr('data-default-value'));
         });
         $newBlock.removeClass('hidden');
@@ -1613,4 +1612,6 @@ $(document).ready(function() {
     $('input').mousedown(function(event){
         event.stopPropagation();
     });
+
+    window.scrollTo(0,0);
 });
