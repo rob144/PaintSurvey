@@ -187,7 +187,9 @@ class SaveRoom(webapp2.RequestHandler):
         obj_room = json.loads(self.request.POST.get('room'))
         room = Room()
         
-        if(obj_room['key'] != ""):
+        print(obj_room)
+
+        if('key' in obj_room and obj_room['key'] != ""):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
         room.name                   = obj_room['name']

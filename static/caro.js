@@ -83,7 +83,6 @@ function Caro(elem){
     var moveSlide = function(vector){
         //Still moving
         if($caroStage.hasClass('sliding')){
-            console.log('sliding');
             return;
         }
 
@@ -108,9 +107,7 @@ function Caro(elem){
     };
 
     var animateToSlide = function(targetSlide){
-        console.log('animate to slide');
         if(targetSlide !== null){
-            console.log('test');
             var $targetSlide = $(targetSlide);
             var newLeft = $caroStage.offset().left - $targetSlide.offset().left;
             animateStage(newLeft);
@@ -190,7 +187,6 @@ function Caro(elem){
             var newLeft = $caroStage.position().left + e.pageX - CARO_INFO.trackX;
             var vector = e.pageX - CARO_INFO.startX;
             var direction = 0;
-console.log('v ' + vector);
             if(vector != 0){
                 
                 var distance = Math.abs(vector);
