@@ -194,13 +194,12 @@ function selectProject(projectKey, reload){
     $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
     
     //Remove existing room pages
-    if(CARO.owlItems){
-        while(CARO.owlItems.length >= 4){
-            CARO.removeItem(CARO.owlItems.length - 1);
+    var slides = CARO.getSlides();
+    if(slides){
+        while(slides.length >= 4){
+            CARO.removeSlide(slides.length - 1);
         }
     }
-
-    //TODO:fix this so the rooms slides display correctly.
 
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
@@ -213,6 +212,7 @@ function selectProject(projectKey, reload){
         //just add the default blank room.
         CARO.addSlide($('.room-page-template').html());
         initRoomPage();
+        
     }
     CARO.nextSlide();
 }
@@ -1075,7 +1075,7 @@ function initRoomPage(room){
         return parseFloat($(elemId).val()).toFixed(2);
     }
 
-    var $page = $('.owl-item:last .room-page');
+    var $page = $('.caro-item .room-page:last:not(.hidden)');
 
     //Use the default room settings if room object not passed in.
     if(room == null){
@@ -1098,7 +1098,6 @@ function initRoomPage(room){
     } 
 
     $page.find('input[type=number]').val(0);
-
     //Set some defaults
     $page.find('.ceiling-adjust-qty')     .val(1);
     $page.find('.wall-adjust-qty')        .val(1);
@@ -1296,6 +1295,11 @@ function initRoomPage(room){
     initDropdowns($page);
     initAddInputBlockButtons();
     initInputCursorPos($page);
+
+    //Prevent carousel moving when clicking into inputs
+    $('input').mousedown(function(event){
+        event.stopPropagation();
+    });
 }
 
 function onPosNegInputFocus(event, secondCall){
@@ -1460,6 +1464,7 @@ function addInputBlock(context){
         $newBlock.find('.default-value').removeClass('default-value');
         $newBlock.find('input[type="number"]').each(function(index, elem){
             var $elem = $(elem);
+console.log('n ' +$elem.attr('data-default-value'));
             $elem.val($elem.attr('data-default-value'));
         });
         $newBlock.removeClass('hidden');
@@ -1588,8 +1593,6 @@ $.fn.center = function() {
     });
 }
 
-
-
 $(document).ready(function() {
 
     initCarousel();
@@ -1606,4 +1609,8 @@ $(document).ready(function() {
     initAddInputBlockButtons();
     $('#btn-pos-neg').hide();
     initDialog();
+
+    $('input').mousedown(function(event){
+        event.stopPropagation();
+    });
 });
