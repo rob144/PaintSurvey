@@ -402,14 +402,6 @@ function getRoomGroupData($page){
 function calculateWorkForRoom(event){
 
     var $roomForm = $(event.target).closest('.room-form');
-    //Validate input first.
-    if(!$roomForm.validate({ 
-            errorPlacement: function(error, element) {
-                error.insertAfter(element.closest('.input-pill'));
-            }
-        }).form()){
-        return;
-    }
 
     var getf = function(descendant, ancestor){
         var $elem = $(event.target).closest('.pageContent'); 
@@ -430,9 +422,13 @@ function calculateWorkForRoom(event){
     var wallAdjustSimple        =   getf('.wall-adjust-simple');
     var skirtingAdjustSimple    =   getf('.skirting-adjust-simple');
 
+    var ceilingSpace = 0;
+    var ceilingHours = 0;
     var ceilingAdjustSpace = 0;
     var ceilingAdjustHours = 0;
 
+    var wallSpace = 0;
+    var wallHours = 0;
     var wallAdjustSpace = 0;
     var wallAdjustHours = 0;
 
@@ -442,6 +438,8 @@ function calculateWorkForRoom(event){
     var doorSurfHours = 0;
     var doorFrameHours = 0;
 
+    var skirtingSpace = 0;
+    var skirtingHours = 0;
     var skirtingAdjustSpace = 0;
     var skirtingAdjustHours = 0;
 
@@ -472,13 +470,14 @@ function calculateWorkForRoom(event){
 
     /* CEILING ADJUST SPACE */
     for(var i = 0; i <= roomData.ceilingAdjustVals.length - 1; i++){
-        var prodRate = MODEL.getPaint(roomData.ceilingAdjustVals[i][0]).prod_rate;
+        var paint = MODEL.getPaint(roomData.ceilingAdjustVals[i][0]);
         var quantity = roomData.ceilingAdjustVals[i][1];
         var dim1 = roomData.ceilingAdjustVals[i][0];
         var dim2 = roomData.ceilingAdjustVals[i][1];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
             ceilingAdjustSpace += (quantity * dim1 * dim2);
-            ceilingAdjustHours += ((quantity * dim1 * dim2) / prodRate);
+            ceilingAdjustHours += ((quantity * dim1 * dim2) / paint.prod_rate_one);
+            ceilingAdjustHours += ((quantity * dim1 * dim2) / paint.prod_rate_two);
         }
     }
 
@@ -568,24 +567,69 @@ function calculateWorkForRoom(event){
         }
     }
 
-    var ceilingSpace =  (roomLength * roomWidth) + baybreastCeiling + ceilingAdjustSpace; 
-    var wallSpace =     (roomLength + roomWidth) * 2 * roomHeight - doorSurface - windowSpace + baybreastWall + wallAdjustSpace; 
-    var skirtingSpace = (roomLength + roomWidth) * 2 - doorsTotalWidth + baybreastSkirting + skirtingAdjustSpace;
-
-    var getRate = function(surface_type){
+    var getDefaultPaint = function(surface_type){
         var key = $('#select-' + surface_type + '-spec').val();
+console.log('k ' + key);
         var paint = MODEL.getPaint(key);
-        return parseFloat(paint.prod_rate);
+console.log(paint);
+        return paint;
     };
 
+    ceilingSpace =  (roomLength * roomWidth) + baybreastCeiling; 
+    if(ceilingAdjustSpace < 0) ceilingSpace += ceilingAdjustSpace;
+    
+    wallSpace =     (roomLength + roomWidth) * 2 * roomHeight - doorSurface - windowSpace + baybreastWall; 
+    if(wallAdjustSpace < 0) wallSpace += wallAdjustSpace;
+   
+    skirtingSpace = (roomLength + roomWidth) * 2 - doorsTotalWidth + baybreastSkirting;
+    if(skirtingAdjustSpace < 0) skirtingSpace += skirtingAdjustSpace;
+
+console.log('ceilings def ' + getDefaultPaint('ceilings').prod_rate_one); 
+
+    var ceilingPaint = getDefaultPaint('ceilings');
+    if(ceilingPaint.prod_rate_one > 0){
+        ceilingHours += ceilingSpace / ceilingPaint.prod_rate_one;
+    }
+    if(ceilingPaint.prod_rate_two){
+        ceilingHours += ceilingSpace / ceilingPaint.prod_rate_two;
+    }
+    ceilingHours += ceilingAdjustSimple;
+    ceilingHours += ceilingAdjustHours;
+
+    var wallPaint = getDefaultPaint('walls');
+    if(wallPaint.prod_rate_one > 0){
+        wallHours += wallSpace / wallPaint.prod_rate_one;
+    }
+    if(wallPaint.prod_rate_two > 0){
+        wallHours += wallSpace / wallPaint.prod_rate_two;
+    }
+    wallHours += wallAdjustSimple;
+    wallHours += wallAdjustHours;
+
+    var skirtingPaint = getDefaultPaint('isolated-surfaces');
+    if(skirtingPaint.prod_rate_one > 0){
+        skirtingHours += skirtingSpace / skirtingPaint.prod_rate_one;
+    }
+    if(skirtingPaint.prod_rate_two > 0){
+        skirtingHours += skirtingSpace / skirtingPaint.prod_rate_two;
+    }
+    skirtingHours += skirtingAdjustSimple;
+    skirtingHours += skirtingAdjustHours;
+
+    if(ceilingAdjustSpace > 0) ceilingSpace += ceilingAdjustSpace;
+    if(wallAdjustSpace > 0) wallSpace += wallAdjustSpace;
+    if(skirtingAdjustSpace > 0) skirtingSpace += skirtingAdjustSpace;
+
+//TODO: add table column for unit rate calculation.
+
     var tableData = [
-        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingSpace / getRate('ceilings') + ceilingAdjustSpace + ceilingAdjustSimple },
-        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallSpace / getRate('walls') + wallAdjustHours + wallAdjustSimple },
+        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingHours },
+        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallHours },
         { title: 'DOOR AREA',   amount: doorSurface,     units: 'm2', hours: doorSurfHours },
         { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrameHours },
         { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowHours },
         { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorHours },
-        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingSpace / getRate('isolated-surfaces') + skirtingAdjustHours + skirtingAdjustSimple }, 
+        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingHours }, 
         { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours },
         { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours }
     ];
@@ -599,32 +643,23 @@ function calculateWorkForRoom(event){
 
 function buildResultsTable(tableData){
     var results = '<table><tr><th>Part</th><th>Amount</th><th></th><th>Hours</th></tr>';
+    var rowTemplate = '<tr><td>{0}</td><td class="tdRightAlign">{1}</td>';
+    rowTemplate += '<td>{2}</td><td class="tdRightAlign">{3}</td></tr>';
     var totalHours = 0;
     
     for (i = 0; i < tableData.length; ++i) {
         obj = tableData[i];
-        results += '<tr>';
-        for (var key in obj){
-            if (obj.hasOwnProperty(key)) {
-                var val = 0;
-                var cssClass = 'class="tdRightAlign"';
-                if(key == 'amount' ){
-                    val = roundAndFix(obj[key], 2);
-                }else if(key == 'hours'){
-                    val = roundAndFix(obj[key], 2);
-                    totalHours += parseFloat(val);
-                }else{
-                    val = obj[key];
-                    cssClass = '';
-                }
-                results += '<td ' + cssClass + '>' + val + '</td>';
-            }
-        }
-        results += '</tr>';
+        results += rowTemplate.format(
+            obj.title,
+            roundAndFix(obj.amount, 2),
+            obj.units,
+            roundAndFix(obj.hours, 2)
+        );
+        totalHours += parseFloat(obj.hours);   
     }
 
-    results += '<tr class="rowTotalHours"><td>TOTAL:</td><td></td><td></td><td class="tdRightAlign">' + totalHours.toFixed(2) + '</td></tr>';
-    results += '</table>';
+    results += '<tr class="rowTotalHours"><td>TOTAL:</td><td></td><td></td>';
+    results += '<td class="tdRightAlign">' + totalHours.toFixed(2) + '</td></tr></table>';
     return results;
 }
 
@@ -1591,6 +1626,15 @@ $.fn.center = function() {
       'left': '50%', 'top': '50%'
     });
 }
+
+String.prototype.format = function () {
+  var args = arguments;
+  return this.replace(/\{\{|\}\}|\{(\d+)\}/g, function (m, n) {
+    if (m == "{{") { return "{"; }
+    if (m == "}}") { return "}"; }
+    return args[n];
+  });
+};
 
 $(document).ready(function() {
 

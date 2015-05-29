@@ -25,7 +25,7 @@ function Caro(elem){
 
     var resizeUi = function(forceScrollBar){
         var $slides = $caroStage.find('.caro-item');
-        $caroStage.width($slides.width() * $slides.length + 1);
+        $caroStage.width($slides.width() * $slides.length + 2);
         $slides.width( $caroWindow.width() );
         //Realign stage
         var offset = $caroStage.offset();
