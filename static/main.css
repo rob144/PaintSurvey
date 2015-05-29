@@ -593,7 +593,7 @@ div.baybreast-label {
 td.result {
     text-align: right;
 }
-.results {
+.room-form .results {
     display:none;
     clear:both;
     margin:10px 0 10px 0;
@@ -603,6 +603,8 @@ td.result {
     border:1px solid blue;
 }
 .results table {
+    width:100%;
+    border:none;
     border-collapse:collapse;
 }
 .results table td, .results table th {
