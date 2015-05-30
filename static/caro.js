@@ -34,11 +34,10 @@ function Caro(elem){
             top: offset.top, 
             left: offset.left += (-1 * $nearestElem.offset().left)  
         });
-        $caroWindow.height($caroStage.height());
+        $caroWindow.css('min-height', $caroStage.height() + 'px');
         if(forceScrollBar && $caroWindow.height() < $(window).height() + 1){
-            $caroWindow.height($(window).height() + 1);
+            $caroWindow.css('min-height', ($(window).height() + 1) + 'px');
         }
-        window.scrollTo(0,0);
     }
 
     var addSlide = function(slideHtml){
@@ -62,6 +61,16 @@ function Caro(elem){
 
     var getSlides = function(){
         return $caroStage.find('.caro-item');
+    }
+
+    var getSlide = function(index){
+        if(index >= 1 && $caroStage.find('.caro-item:nth-child('+index+')').length){
+            return $caroStage.find('.caro-item:nth-child('+index+')');
+        }
+    }
+
+    var getLast = function(){
+        return $caro.find('.caro-item:last');
     }
 
     var animateStage = function(newLeft, onComplete){
@@ -268,6 +277,7 @@ function Caro(elem){
     $caro.prepend('<div class="caro-nav-btn caro-nav-prev">Prev</a>');
     $caro.find('.caro-nav-prev').click(prevSlide);
     $caro.find('.caro-nav-next').click(nextSlide);
+    $caroWindow.append('<p class="fix-height"></p>');
 
     init();
 
@@ -277,7 +287,10 @@ function Caro(elem){
         removeSlide: removeSlide,
         nextSlide: nextSlide,
         prevSlide: prevSlide,
-        getSlides: getSlides
+        getSlides: getSlides,
+        getSlide: getSlide,
+        getLast: getLast,
+        resizeUi: resizeUi
     };
 };
 

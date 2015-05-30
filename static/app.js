@@ -196,11 +196,12 @@ function selectProject(projectKey, reload){
     //Remove existing room pages
     var slides = CARO.getSlides();
     if(slides){
-        while(slides.length >= 4){
-            CARO.removeSlide(slides.length - 1);
+        for(var i=slides.length; i>0; i--){
+            if(CARO.getSlide(i).find('.room-page:not(.hidden)').length){
+                CARO.removeSlide(i);
+            }
         }
     }
-
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
@@ -569,50 +570,39 @@ function calculateWorkForRoom(event){
 
     var getDefaultPaint = function(surface_type){
         var key = $('#select-' + surface_type + '-spec').val();
-console.log('k ' + key);
         var paint = MODEL.getPaint(key);
-console.log(paint);
         return paint;
     };
 
     ceilingSpace =  (roomLength * roomWidth) + baybreastCeiling; 
     if(ceilingAdjustSpace < 0) ceilingSpace += ceilingAdjustSpace;
-    
     wallSpace =     (roomLength + roomWidth) * 2 * roomHeight - doorSurface - windowSpace + baybreastWall; 
     if(wallAdjustSpace < 0) wallSpace += wallAdjustSpace;
-   
     skirtingSpace = (roomLength + roomWidth) * 2 - doorsTotalWidth + baybreastSkirting;
     if(skirtingAdjustSpace < 0) skirtingSpace += skirtingAdjustSpace;
 
-console.log('ceilings def ' + getDefaultPaint('ceilings').prod_rate_one); 
+    var addRateHours = function(paint, space, hours){
+        if(paint.prod_rate_one > 0){
+            hours += space / paint.prod_rate_one;
+        }
+        if(paint.prod_rate_two > 0){
+            hours += space / paint.prod_rate_two;
+        }
+        return hours;
+    }
 
     var ceilingPaint = getDefaultPaint('ceilings');
-    if(ceilingPaint.prod_rate_one > 0){
-        ceilingHours += ceilingSpace / ceilingPaint.prod_rate_one;
-    }
-    if(ceilingPaint.prod_rate_two){
-        ceilingHours += ceilingSpace / ceilingPaint.prod_rate_two;
-    }
+    ceilingHours += addRateHours(ceilingPaint, ceilingSpace, ceilingHours);
     ceilingHours += ceilingAdjustSimple;
     ceilingHours += ceilingAdjustHours;
 
     var wallPaint = getDefaultPaint('walls');
-    if(wallPaint.prod_rate_one > 0){
-        wallHours += wallSpace / wallPaint.prod_rate_one;
-    }
-    if(wallPaint.prod_rate_two > 0){
-        wallHours += wallSpace / wallPaint.prod_rate_two;
-    }
+    wallHours += addRateHours(wallPaint, wallSpace, wallHours);
     wallHours += wallAdjustSimple;
     wallHours += wallAdjustHours;
 
     var skirtingPaint = getDefaultPaint('isolated-surfaces');
-    if(skirtingPaint.prod_rate_one > 0){
-        skirtingHours += skirtingSpace / skirtingPaint.prod_rate_one;
-    }
-    if(skirtingPaint.prod_rate_two > 0){
-        skirtingHours += skirtingSpace / skirtingPaint.prod_rate_two;
-    }
+    skirtingHours += addRateHours(skirtingPaint, skirtingSpace, skirtingHours);
     skirtingHours += skirtingAdjustSimple;
     skirtingHours += skirtingAdjustHours;
 
@@ -620,46 +610,52 @@ console.log('ceilings def ' + getDefaultPaint('ceilings').prod_rate_one);
     if(wallAdjustSpace > 0) wallSpace += wallAdjustSpace;
     if(skirtingAdjustSpace > 0) skirtingSpace += skirtingAdjustSpace;
 
-//TODO: add table column for unit rate calculation.
+    //TODO: calculate cumulative rateValues from group items.
 
     var tableData = [
-        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingHours },
-        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallHours },
-        { title: 'DOOR AREA',   amount: doorSurface,     units: 'm2', hours: doorSurfHours },
-        { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrameHours },
-        { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowHours },
-        { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorHours },
-        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingHours }, 
-        { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours },
-        { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours }
+        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingHours,          rateValue: ceilingPaint.unit_rate },
+        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallHours,             rateValue: wallPaint.unit_rate },
+        { title: 'DOOR AREA',   amount: doorSurface,     units: 'm2', hours: doorSurfHours,         rateValue: 0 },
+        { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrameHours,        rateValue: 0 },
+        { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowHours,           rateValue: 0 },
+        { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorHours,         rateValue: 0 },
+        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingHours,         rateValue: skirtingPaint.unit_rate },
+        { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours,    rateValue: 0 },
+        { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours,  rateValue: 0 },
     ];
 
     var $resultsElem = $(event.target).closest('.pageContent').find('.results:first');
     $resultsElem.html(buildResultsTable(tableData));
     $resultsElem.fadeIn(500);
 
-    $("html, body").animate({ scrollTop: 0 }, "slow");
+    $("html, body").animate({ scrollTop: 0 }, 300, function(){ CARO.resizeUi(true) });
 }
 
 function buildResultsTable(tableData){
-    var results = '<table><tr><th>Part</th><th>Amount</th><th></th><th>Hours</th></tr>';
+    var results = '<table><tr><th>Part</th><th>Amount</th><th></th><th>Hours</th><th>Value</th></tr>';
     var rowTemplate = '<tr><td>{0}</td><td class="tdRightAlign">{1}</td>';
-    rowTemplate += '<td>{2}</td><td class="tdRightAlign">{3}</td></tr>';
+    rowTemplate += '<td>{2}</td><td class="tdRightAlign">{3}</td><td class="tdRightAlign">{4}</td></tr>';
     var totalHours = 0;
+    var totalValue = 0;
     
     for (i = 0; i < tableData.length; ++i) {
         obj = tableData[i];
+        var rateValue = roundAndFix(obj.rateValue * obj.amount, 2);
         results += rowTemplate.format(
             obj.title,
             roundAndFix(obj.amount, 2),
             obj.units,
-            roundAndFix(obj.hours, 2)
+            roundAndFix(obj.hours, 2),
+            rateValue
         );
-        totalHours += parseFloat(obj.hours);   
+        totalHours += parseFloat(obj.hours);  
+        totalValue += parseFloat(rateValue);
     }
 
     results += '<tr class="rowTotalHours"><td>TOTAL:</td><td></td><td></td>';
-    results += '<td class="tdRightAlign">' + totalHours.toFixed(2) + '</td></tr></table>';
+    results += '<td class="tdRightAlign">' + totalHours.toFixed(2) + '</td>';
+    results += '<td class="tdRightAlign">' + totalValue.toFixed(2) + '</td></tr></table>';
+
     return results;
 }
 
@@ -794,6 +790,12 @@ function initCarousel(){
             CARO.addSlide($page.html());
         }
     })
+}
+
+function resizeCarousel(){
+    if(CARO != null){
+        CARO.resizeUi(true);
+    }
 }
 
 function toggleDropDown(){
@@ -1506,11 +1508,13 @@ function addInputBlock(context){
         $btnRemove = $newBlock.find('.btn-remove-row:first');
         $btnRemove.css('display','block');
         $btnRemove.click(function(event){ 
-          $(event.target).closest('.input-block').remove(); 
+            $(event.target).closest('.input-block').remove();
+            resizeCarousel(); 
         });
         $group.find('input.decimal').blur();
         initDropdowns($newBlock);
         initInputCursorPos($newBlock);
+        resizeCarousel();
 }
 
 function initAddInputBlockButtons(){

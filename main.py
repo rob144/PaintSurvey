@@ -26,12 +26,18 @@ def json_serial(obj):
 class Home(webapp2.RequestHandler):
     def get(self):
         #init_data() #Uncomment to init data for first time
+        
+        default_room = DefaultRoom.query().fetch(1)[0].to_dict()
+        rooms        = [r.to_dict() for r in Room.query().fetch(300)]
+        projects     = [p.to_dict() for p in Project.query().fetch(20)]
+        paints       = [p.to_dict() for p in Paint.query().order(Paint.surface_type, Paint.order).fetch(300)]
+
         self.response.write(
             JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
-                'default_room': json.dumps(DefaultRoom.query().fetch(1)[0].to_dict(), indent=4, default=json_serial),
-                'rooms': json.dumps([r.to_dict() for r in Room.query().fetch(300)], indent=4, default=json_serial),
-                'projects': json.dumps([p.to_dict() for p in Project.query().fetch(20)], indent=4, default=json_serial),
-                'paints': json.dumps([p.to_dict() for p in Paint.query().order(Paint.surface_type, Paint.order).fetch(300)], indent=4, default=json_serial)
+                'default_room': json.dumps(default_room, indent=4, default=json_serial),
+                'rooms':        json.dumps(rooms, indent=4, default=json_serial),
+                'projects':     json.dumps(projects, indent=4, default=json_serial),
+                'paints':       json.dumps(paints, indent=4, default=json_serial)
             }) 
         )
 
