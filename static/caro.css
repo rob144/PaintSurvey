@@ -11,7 +11,8 @@
 .caro-window {
     position:relative;
     clear:both;
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:visible;
     width:100%;
     background-color:#eee;
 }
