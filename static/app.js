@@ -415,49 +415,24 @@ function calculateWorkForRoom(event){
     var roomWidth           =   getf('.room-width:first');
     var roomHeight          =   getf('.room-height:first');
     
-    var baybreastWall = 0;
-    var baybreastCeiling = 0;
-    var baybreastSkirting = 0;
-
     var ceilingAdjustSimple     =   getf('.ceiling-adjust-simple');
     var wallAdjustSimple        =   getf('.wall-adjust-simple');
     var skirtingAdjustSimple    =   getf('.skirting-adjust-simple');
 
-    var ceilingSpace = 0;
-    var ceilingHours = 0;
-    var ceilingAdjustSpace = 0;
-    var ceilingAdjustHours = 0;
-
-    var wallSpace = 0;
-    var wallHours = 0;
-    var wallAdjustSpace = 0;
-    var wallAdjustHours = 0;
-
+    var baybreastWall   = 0, baybreastCeiling = 0, baybreastSkirting = 0;
+    var ceilingSpace    = 0, ceilingHours   = 0, ceilingAdjustSpace = 0, ceilingAdjustHours = 0, ceilingUnitValue = 0;
+    var wallSpace       = 0, wallHours      = 0, wallAdjustSpace    = 0, wallAdjustHours    = 0, wallUnitValue  = 0;
     var doorsTotalWidth = 0;
-    var doorSurface = 0;
-    var doorFrame = 0;
-    var doorSurfHours = 0;
-    var doorFrameHours = 0;
-
-    var skirtingSpace = 0;
-    var skirtingHours = 0;
-    var skirtingAdjustSpace = 0;
-    var skirtingAdjustHours = 0;
-
-    var windowSpace = 0;
-    var windowHours = 0;
-
-    var radiatorSpace = 0;
-    var radiatorHours = 0;
-
-    var genSurfSpace = 0;
-    var genSurfHours = 0;
-
-    var isolSurfSpace = 0;
-    var isolSurfHours = 0;
+    var doorSurface     = 0, doorSurfHours  = 0, doorSurfUnitValue = 0;
+    var doorFrame       = 0, doorFrameHours = 0, doorFrameUnitValue = 0;
+    var skirtingSpace   = 0, skirtingHours  = 0, skirtingAdjustSpace = 0, skirtingAdjustHours = 0, skirtingUnitValue = 0;
+    var windowSpace     = 0, windowHours    = 0, windowUnitValue    = 0;
+    var radiatorSpace   = 0, radiatorHours  = 0, radiatorUnitValue  = 0;
+    var genSurfSpace    = 0, genSurfHours   = 0, genSurfUnitValue   = 0;
+    var isolSurfSpace   = 0, isolSurfHours  = 0, isolSurfUnitValue  = 0;
 
     var roomData = getRoomGroupData($roomForm);
-
+console.log(roomData);
     /* BAYBREAST SPACE */
     for(var i = 0; i <= roomData.bayBreastVals.length - 1; i++){
         var bbDepth = roomData.bayBreastVals[i][0];
@@ -496,75 +471,138 @@ function calculateWorkForRoom(event){
 
     /* DOOR & FRAME SPACE*/
     for(var i = 0; i <= roomData.doorVals.length - 1; i++){
-        var prodRate = MODEL.getPaint(roomData.doorVals[i][0]).prod_rate;
+        var surfacePaint = MODEL.getPaint(roomData.doorVals[i][0]);
         var quantity = roomData.doorVals[i][1];
         var dim1 = roomData.doorVals[i][2];
         var dim2 = roomData.doorVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
             doorsTotalWidth += dim1;
-            doorSurface += (quantity * dim1 * dim2);
-            doorSurfHours += ((quantity * dim1 * dim2) / prodRate);
+            var surface = quantity * dim1 * dim2;
+            doorSurface += surface;
+            if(surfacePaint.prod_rate_one > 0){
+                doorSurfHours += (surface / surfacePaint.prod_rate_one);
+            }
+            if(surfacePaint.prod_rate_two > 0){
+                doorSurfHours += (surface / surfacePaint.prod_rate_two);
+            }
+            if(surfacePaint.unit_rate > 0){
+                doorSurfUnitValue += (surface / surfacePaint.unit_rate);
+            } 
+            var framePaint = MODEL.getPaint(roomData.doorVals[i][4]);
+            var frameLength = 2 * dim2 + dim1;
+            doorFrame += frameLength;
+            if(framePaint.prod_rate_one > 0){
+                doorFrameHours += (frameLength / framePaint.prod_rate_one);
+            }
+            if(framePaint.prod_rate_two > 0){
+                doorFrameHours += (frameLength / framePaint.prod_rate_two);
+            }  
+            if(framePaint.unit_rate > 0){
+                doorFrameUnitValue += (frameLength / framePaint.unit_rate);
+            }  
         }
-        var frameProdRate = MODEL.getPaint(roomData.doorVals[i][4]).prod_rate;
-        doorFrame += (2 * dim2 + dim1);
-        doorFrameHours += (2 * dim2 + dim1) / frameProdRate;
     }
 
-    /* SKIRTING SURFACE SPACE */
+    /* SKIRTING SPACE */
     for(var i = 0; i <= roomData.skirtingVals.length - 1; i++){
-        var prodRate = MODEL.getPaint(roomData.skirtingVals[i][0]).prod_rate;
+        var skirtingPaint = MODEL.getPaint(roomData.skirtingVals[i][0]);
         var quantity = roomData.skirtingVals[i][1];
         var dim1 = roomData.skirtingVals[i][2];
         if(Math.abs(quantity * dim1) > 0) {
-            skirtingAdjustSpace += (quantity * dim1);
-            skirtingAdjustHours += ((quantity * dim1) / prodRate);
+            var space = quantity * dim1;
+            skirtingAdjustSpace += space;
+            if(skirtingPaint.prod_rate_one > 0){
+                skirtingAdjustHours += (space / skirtingPaint.prod_rate_one);
+            }
+            if(skirtingPaint.prod_rate_two > 0){
+                skirtingAdjustHours += (space / skirtingPaint.prod_rate_two);
+            }  
+            if(skirtingPaint.unit_rate > 0){
+                skirtingUnitValue += (space / skirtingPaint.unit_rate);
+            }  
         }
     }
 
     /* WINDOW SPACE */
     for(var i = 0; i <= roomData.windowVals.length - 1; i++){
-        var prodRate = MODEL.getPaint(roomData.windowVals[i][0]).prod_rate;
+        var windowPaint = MODEL.getPaint(roomData.windowVals[i][0]);
         var quantity = roomData.windowVals[i][1];
         var dim1 = roomData.windowVals[i][2];
         var dim2 = roomData.windowVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
-            windowSpace += (quantity * dim1 * dim2);
-            windowHours += ((quantity * dim1 * dim2) / prodRate);
+            var space = quantity * dim1 * dim2;
+            windowSpace += space;
+            if(windowPaint.prod_rate_one > 0){
+                windowHours += (space / windowPaint.prod_rate_one);
+            }
+            if(windowPaint.prod_rate_two > 0){
+                windowHours += (space / windowPaint.prod_rate_two);
+            }
+            if(windowPaint.unit_rate > 0){
+                windowUnitValue += (space / windowPaint.unit_rate);
+            }
         }
     }
 
     /* RADIATOR SPACE */
     for(var i = 0; i <= roomData.radiatorVals.length - 1; i++){
-        var prodRate = MODEL.getPaint(roomData.radiatorVals[i][0]).prod_rate;
+        var radiatorPaint = MODEL.getPaint(roomData.radiatorVals[i][0]);
         var quantity = roomData.radiatorVals[i][1];
         var dim1 = roomData.radiatorVals[i][2];
         var dim2 = roomData.radiatorVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
-            radiatorSpace += (quantity * dim1 * dim2);
-            radiatorHours += ((quantity * dim1 * dim2) / prodRate);
+            var space = quantity * dim1 * dim2;
+            radiatorSpace += space;
+            if(radiatorPaint.prod_rate_one > 0){
+                radiatorHours += (space / radiatorPaint.prod_rate_one);
+            }
+            if(radiatorPaint.prod_rate_two > 0){
+                radiatorHours += (space / radiatorPaint.prod_rate_two);
+            }
+            if(radiatorPaint.unit_rate > 0){
+                radiatorUnitValue += (space / radiatorPaint.unit_rate);
+            }
         }
     }
 
     /* GENERAL SURFACE SPACE */
     for(var i = 0; i <= roomData.genSurfaceVals.length - 1; i++){
-        var prodRate = MODEL.getPaint(roomData.genSurfaceVals[i][0]).prod_rate;
+        var genSurfPaint = MODEL.getPaint(roomData.genSurfaceVals[i][0]);
         var quantity = roomData.genSurfaceVals[i][1];
         var dim1 = roomData.genSurfaceVals[i][2];
         var dim2 = roomData.genSurfaceVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
-            genSurfSpace += (quantity * dim1 * dim2);
-            genSurfHours += ((quantity * dim1 * dim2) / prodRate);
+            var space = quantity * dim1 * dim2;
+            genSurfSpace += space;
+            if(genSurfPaint.prod_rate_one > 0){
+                genSurfHours += (space / genSurfPaint.prod_rate_one);
+            }
+            if(genSurfPaint.prod_rate_two > 0){
+                genSurfHours += (space / genSurfPaint.prod_rate_two);
+            }
+            if(genSurfPaint.unit_rate > 0){
+                genSurfUnitValue += (space / genSurfPaint.unit_rate);
+            }
         }
     }
 
     /* ISOLATED SURFACE SPACE */
     for(var i = 0; i <= roomData.isolSurfaceVals.length - 1; i++){
-        var prodRate = MODEL.getPaint(roomData.isolSurfaceVals[i][0]).prod_rate;
+        var isolSurfPaint = MODEL.getPaint(roomData.isolSurfaceVals[i][0]);
         var quantity = roomData.isolSurfaceVals[i][1];
         var dim1 = roomData.isolSurfaceVals[i][2];
         if(Math.abs(quantity * dim1) > 0) {
-            isolSurfSpace += (quantity * dim1);
-            isolSurfHours += ((quantity * dim1) / prodRate);
+            var space = quantity * dim1;
+            isolSurfSpace += space;
+            if(isolSurfPaint.prod_rate_one > 0){
+                isolSurfHours += (space / isolSurfPaint.prod_rate_one);
+            }
+            if(isolSurfPaint.prod_rate_two > 0){
+                isolSurfHours += (space / isolSurfPaint.prod_rate_two);
+            }
+            if(isolSurfPaint.unit_rate > 0){
+                isolSurfUnitValue += (space / isolSurfPaint.unit_rate);
+            }
         }
     }
 
@@ -595,33 +633,49 @@ function calculateWorkForRoom(event){
     ceilingHours += addRateHours(ceilingPaint, ceilingSpace, ceilingHours);
     ceilingHours += ceilingAdjustSimple;
     ceilingHours += ceilingAdjustHours;
+    if(ceilingPaint.unit_rate){
+        ceilingUnitValue = ceilingSpace / ceilingPaint.unit_rate;
+    }
 
     var wallPaint = getDefaultPaint('walls');
     wallHours += addRateHours(wallPaint, wallSpace, wallHours);
     wallHours += wallAdjustSimple;
     wallHours += wallAdjustHours;
+    if(wallPaint.unit_rate > 0){
+        wallUnitValue = wallSpace / wallPaint.unit_rate;
+    }
 
     var skirtingPaint = getDefaultPaint('isolated-surfaces');
     skirtingHours += addRateHours(skirtingPaint, skirtingSpace, skirtingHours);
     skirtingHours += skirtingAdjustSimple;
     skirtingHours += skirtingAdjustHours;
+    if(skirtingPaint.unit_rate > 0){
+        skirtingUnitValue = skirtingSpace / skirtingPaint.unit_rate;
+    }
 
-    if(ceilingAdjustSpace > 0) ceilingSpace += ceilingAdjustSpace;
-    if(wallAdjustSpace > 0) wallSpace += wallAdjustSpace;
-    if(skirtingAdjustSpace > 0) skirtingSpace += skirtingAdjustSpace;
-
-    //TODO: calculate cumulative rateValues from group items.
+    if(ceilingAdjustSpace > 0) {
+        ceilingSpace += ceilingAdjustSpace;
+        //TODO: ceilingUnitValue += ceilingAdjustUnitValue;
+    }
+    if(wallAdjustSpace > 0) {
+        wallSpace += wallAdjustSpace;
+        //TODO: wallUnitValue += ceilingAdjustUnitValue;
+    }
+    if(skirtingAdjustSpace > 0) {
+        skirtingSpace += skirtingAdjustSpace;
+        //TODO: skirtingUnitValue += skirtingAdjustUnitValue;
+    }
 
     var tableData = [
-        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingHours,          rateValue: ceilingPaint.unit_rate },
-        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallHours,             rateValue: wallPaint.unit_rate },
-        { title: 'DOOR AREA',   amount: doorSurface,     units: 'm2', hours: doorSurfHours,         rateValue: 0 },
-        { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrameHours,        rateValue: 0 },
-        { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowHours,           rateValue: 0 },
-        { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorHours,         rateValue: 0 },
-        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingHours,         rateValue: skirtingPaint.unit_rate },
-        { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours,    rateValue: 0 },
-        { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours,  rateValue: 0 },
+        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingHours,          rateValue: ceilingUnitValue },
+        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallHours,             rateValue: wallUnitValue },
+        { title: 'DOOR AREA',   amount: doorSurface,     units: 'm2', hours: doorSurfHours,         rateValue: doorSurfUnitValue },
+        { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrameHours,        rateValue: doorFrameUnitValue },
+        { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowHours,           rateValue: windowUnitValue },
+        { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorHours,         rateValue: radiatorUnitValue },
+        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingHours,         rateValue: skirtingUnitValue },
+        { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours,    rateValue: genSurfUnitValue },
+        { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours,  rateValue: isolSurfUnitValue }
     ];
 
     var $resultsElem = $(event.target).closest('.pageContent').find('.results:first');
