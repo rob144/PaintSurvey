@@ -419,17 +419,20 @@ function calculateWorkForRoom(event){
     var wallAdjustSimple        =   getf('.wall-adjust-simple');
     var skirtingAdjustSimple    =   getf('.skirting-adjust-simple');
 
-    var baybreastWall   = 0, baybreastCeiling = 0, baybreastSkirting = 0;
-    var ceilingSpace    = 0, ceilingHours   = 0, ceilingAdjustSpace = 0, ceilingAdjustHours = 0, ceilingUnitValue = 0;
-    var wallSpace       = 0, wallHours      = 0, wallAdjustSpace    = 0, wallAdjustHours    = 0, wallUnitValue  = 0;
-    var doorsTotalWidth = 0;
-    var doorSurface     = 0, doorSurfHours  = 0, doorSurfUnitValue = 0;
-    var doorFrame       = 0, doorFrameHours = 0, doorFrameUnitValue = 0;
-    var skirtingSpace   = 0, skirtingHours  = 0, skirtingAdjustSpace = 0, skirtingAdjustHours = 0, skirtingUnitValue = 0;
-    var windowSpace     = 0, windowHours    = 0, windowUnitValue    = 0;
-    var radiatorSpace   = 0, radiatorHours  = 0, radiatorUnitValue  = 0;
-    var genSurfSpace    = 0, genSurfHours   = 0, genSurfUnitValue   = 0;
-    var isolSurfSpace   = 0, isolSurfHours  = 0, isolSurfUnitValue  = 0;
+    var baybreastWall       = 0, baybreastCeiling   = 0, baybreastSkirting      = 0;
+    var ceilingSpace        = 0, ceilingHours       = 0, ceilingUnitValue       = 0;
+    var ceilingAdjustSpace  = 0, ceilingAdjustHours = 0, ceilingAdjustUnitValue = 0;
+    var wallSpace           = 0, wallHours          = 0, wallUnitValue          = 0;
+    var wallAdjustSpace     = 0, wallAdjustHours    = 0, wallAdjustUnitValue    = 0;
+    var doorsTotalWidth     = 0;
+    var doorSurface         = 0, doorSurfHours      = 0, doorSurfUnitValue      = 0;
+    var doorFrame           = 0, doorFrameHours     = 0, doorFrameUnitValue     = 0;
+    var skirtingSpace       = 0, skirtingHours      = 0, skirtingUnitValue      = 0;
+    var skirtingAdjustSpace = 0, skirtingAdjustHours = 0, skirtingAdjustUnitValue = 0;
+    var windowSpace         = 0, windowHours        = 0, windowUnitValue        = 0;
+    var radiatorSpace       = 0, radiatorHours      = 0, radiatorUnitValue      = 0;
+    var genSurfSpace        = 0, genSurfHours       = 0, genSurfUnitValue       = 0;
+    var isolSurfSpace       = 0, isolSurfHours      = 0, isolSurfUnitValue      = 0;
 
     var roomData = getRoomGroupData($roomForm);
 console.log(roomData);
@@ -450,22 +453,39 @@ console.log(roomData);
         var quantity = roomData.ceilingAdjustVals[i][1];
         var dim1 = roomData.ceilingAdjustVals[i][0];
         var dim2 = roomData.ceilingAdjustVals[i][1];
-        if(Math.abs(quantity * dim1 * dim2) > 0) {
-            ceilingAdjustSpace += (quantity * dim1 * dim2);
-            ceilingAdjustHours += ((quantity * dim1 * dim2) / paint.prod_rate_one);
-            ceilingAdjustHours += ((quantity * dim1 * dim2) / paint.prod_rate_two);
+        var space = quantity * dim1 * dim2;
+        if(Math.abs(space) > 0) {
+            ceilingAdjustSpace += space;
+            if(paint.prod_rate_one > 0){
+                ceilingAdjustHours += (space / paint.prod_rate_one);
+            }
+            if(paint.prod_rate_two > 0){
+                ceilingAdjustHours += (space / paint.prod_rate_two);
+            }
+            if(paint.unit_rate > 0){
+                ceilingAdjustUnitValue += (space / paint.unit_rate);
+            }   
         }
     }
 
     /* WALL ADJUST SPACE */
     for(var i = 0; i <= roomData.wallAdjustVals.length - 1; i++){
-        var prodRate = MODEL.getPaint(roomData.wallAdjustVals[i][0]).prod_rate;
+        var paint = MODEL.getPaint(roomData.wallAdjustVals[i][0]);
         var quantity = roomData.wallAdjustVals[i][1];
         var dim1 = roomData.wallAdjustVals[i][2];
         var dim2 = roomData.wallAdjustVals[i][3];
-        if(Math.abs(quantity * dim1 * dim2) > 0) {
-            wallAdjustSpace += (quantity * dim1 * dim2);
-            wallAdjustHours += ((quantity * dim1 * dim2) / prodRate);
+        var space = quantity * dim1 * dim2;
+        if(Math.abs(space) > 0) {
+            wallAdjustSpace += space;
+            if(paint.prod_rate_one > 0){
+                wallAdjustHours += (space / paint.prod_rate_one);
+            }
+            if(paint.prod_rate_two > 0){
+                wallAdjustHours += (space / paint.prod_rate_two);
+            }
+            if(paint.unit_rate > 0){
+                wallAdjustUnitValue += (space / paint.unit_rate);
+            }
         }
     }
 
@@ -612,11 +632,16 @@ console.log(roomData);
         return paint;
     };
 
-    ceilingSpace =  (roomLength * roomWidth) + baybreastCeiling; 
+    /* If there are negative adjustments we need to reduce the space for
+    the ceiling, wall and skirting before calculating the hours for the main
+    ceiling, wall and skirting areas */
+    ceilingSpace    = (roomLength * roomWidth) + baybreastCeiling; 
     if(ceilingAdjustSpace < 0) ceilingSpace += ceilingAdjustSpace;
-    wallSpace =     (roomLength + roomWidth) * 2 * roomHeight - doorSurface - windowSpace + baybreastWall; 
+
+    wallSpace       = (roomLength + roomWidth) * 2 * roomHeight - doorSurface - windowSpace + baybreastWall; 
     if(wallAdjustSpace < 0) wallSpace += wallAdjustSpace;
-    skirtingSpace = (roomLength + roomWidth) * 2 - doorsTotalWidth + baybreastSkirting;
+    
+    skirtingSpace   = (roomLength + roomWidth) * 2 - doorsTotalWidth + baybreastSkirting;
     if(skirtingAdjustSpace < 0) skirtingSpace += skirtingAdjustSpace;
 
     var addRateHours = function(paint, space, hours){
@@ -653,18 +678,17 @@ console.log(roomData);
         skirtingUnitValue = skirtingSpace / skirtingPaint.unit_rate;
     }
 
-    if(ceilingAdjustSpace > 0) {
-        ceilingSpace += ceilingAdjustSpace;
-        //TODO: ceilingUnitValue += ceilingAdjustUnitValue;
-    }
-    if(wallAdjustSpace > 0) {
-        wallSpace += wallAdjustSpace;
-        //TODO: wallUnitValue += ceilingAdjustUnitValue;
-    }
-    if(skirtingAdjustSpace > 0) {
-        skirtingSpace += skirtingAdjustSpace;
-        //TODO: skirtingUnitValue += skirtingAdjustUnitValue;
-    }
+    /* If there are positive adjustments, we add to ceiling, wall and skirting 
+    after the main parts have been calculated above because the positive
+    adjustments have their own production and unit rates. */
+    if(ceilingAdjustSpace > 0) ceilingSpace += ceilingAdjustSpace;
+    ceilingUnitValue += ceilingAdjustUnitValue;
+
+    if(wallAdjustSpace > 0) wallSpace += wallAdjustSpace;
+    wallUnitValue += ceilingAdjustUnitValue;
+    
+    if(skirtingAdjustSpace > 0) skirtingSpace += skirtingAdjustSpace;
+    skirtingUnitValue += skirtingAdjustUnitValue;
 
     var tableData = [
         { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingHours,          rateValue: ceilingUnitValue },
