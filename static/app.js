@@ -213,7 +213,6 @@ function selectProject(projectKey, reload){
         //just add the default blank room.
         CARO.addSlide($('.room-page-template').html());
         initRoomPage();
-        
     }
     CARO.nextSlide();
 }
@@ -435,7 +434,6 @@ function calculateWorkForRoom(event){
     var isolSurfSpace       = 0, isolSurfHours      = 0, isolSurfUnitValue      = 0;
 
     var roomData = getRoomGroupData($roomForm);
-console.log(roomData);
     /* BAYBREAST SPACE */
     for(var i = 0; i <= roomData.bayBreastVals.length - 1; i++){
         var bbDepth = roomData.bayBreastVals[i][0];
@@ -862,6 +860,28 @@ function switchSign(inpElem){
 function initCarousel(){
     
     CARO = Caro('#carousel');
+    var $btn = $('.btn-add-room.template');
+    $btn.hide();
+    $btn = $btn.removeClass('template');
+    $('.caro-nav-next').after($btn);
+
+    CARO.registerCallback(
+        ['prevslide','nextslide'],
+        function(){ 
+            var $navButton = $('.caro-nav-next:not(.template)');
+            var $addButton = $('.btn-add-room:not(.template)');
+            if(CARO.isLastSlide() /* TODO: check it is a room-page */){
+                //Hide the 'next slide' button and show 'add room' button
+                $navButton.hide();
+                $addButton.show();
+            }else{
+                //Hide the 'add room' button and show 'next slide' button
+                $addButton.hide();
+                $navButton.show();
+            }
+        }
+    );
+
     $('#owl-pages .owl-page').each(function(){
         var $page = $(this);
         if($page.hasClass('room-page-template') == false){
@@ -1580,64 +1600,41 @@ function showDialog(title, message, confirmFunc, funcParams){
     }
 }
 
-function isObjectEmpty(object){
-    if ('object' !== typeof object) {
-        throw new Error('Object must be specified.');
-    }
-
-    if (null === object) {
-        return true;
-    }
-
-    if ('undefined' !== Object.keys) {
-        // Using ECMAScript 5 feature.
-        return (0 === Object.keys(object).length);
-    } else {
-        // Using legacy compatibility mode.
-        for (var key in object) {
-            if (object.hasOwnProperty(key)) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
 function doXhr(params) {
 
-  var $loading = $('.loadingDivOuter');
-  var success = false;
+    var $loading = $('.loadingDivOuter');
+    var success = false;
 
-  return $.ajax({
-      url:        params.url,
-      type:       params.httpMethod,
-      data:       params.data,
-      dataType:   params.dataType,
-      beforeSend: function(){
-          LOADING_START_TIME = new Date($.now());
-          $loading.center();
-          $loading.show();
-      },
-      success: function(data, status, xhr){
-          success = true;
-          var elapsed = new Date($.now()) - LOADING_START_TIME;
-          setTimeout(
+    return $.ajax({
+        url:        params.url,
+        type:       params.httpMethod,
+        data:       params.data,
+        dataType:   params.dataType,
+        beforeSend: function(){
+            LOADING_START_TIME = new Date($.now());
+            $loading.center();
+            $loading.show();
+        },
+        success: function(data, status, xhr){
+            success = true;
+            var elapsed = new Date($.now()) - LOADING_START_TIME;
+            setTimeout(
               function(){
                   params.successFunc(data, status, xhr);
                   $loading.hide(); 
               }, 1000 - elapsed
-          );
-      }
-  }).always(function() {
-      if(!success){
-          var elapsed = new Date($.now()) - LOADING_START_TIME;
-          setTimeout(
-              function(){
-                  $loading.hide(); 
-              }, 1000 - elapsed
-          );
-      }
-  })
+            );
+        }
+    }).always(function() {
+        if(!success){
+            var elapsed = new Date($.now()) - LOADING_START_TIME;
+            setTimeout(
+                function(){
+                    $loading.hide(); 
+                }, 1000 - elapsed
+            );
+        }
+    })
 
 }
 
@@ -1665,6 +1662,29 @@ String.prototype.format = function () {
   });
 };
 
+function isObjectEmpty(object){
+    if ('object' !== typeof object) {
+        throw new Error('Object must be specified.');
+    }
+
+    if (null === object) {
+        return true;
+    }
+
+    if ('undefined' !== Object.keys) {
+        // Using ECMAScript 5 feature.
+        return (0 === Object.keys(object).length);
+    } else {
+        // Using legacy compatibility mode.
+        for (var key in object) {
+            if (object.hasOwnProperty(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
 $(document).ready(function() {
 
     initCarousel();
@@ -1680,14 +1700,24 @@ $(document).ready(function() {
         $(selector + ':not(.template)').replaceWith($elem);
     }
 
-    makeComponent('.btn-add-row');
-    makeComponent('.btn-add-spec-item');
-    makeComponent('.btn-remove-row');
-    makeComponent('.btn-reorder-item-up');
-    makeComponent('.btn-reorder-item-down');
-    makeComponent('.loadingDivOuter');
-    makeComponent('.dialog-background');
-    makeComponent('.dialog');
+    var makeComponents = function(arrComponents){
+        if(arrComponents){
+            for(var i = 0; i < arrComponents.length; i++){
+                makeComponent(arrComponents[i]);
+            }
+        }  
+    }
+
+    makeComponents([
+        '.btn-add-row',
+        '.btn-add-spec-item',
+        '.btn-remove-row',
+        '.btn-reorder-item-up',
+        '.btn-reorder-item-down',
+        '.loadingDivOuter',
+        '.dialog-background',
+        '.dialog'
+    ]);
 
     initInputCursorPos();
     initIntegerInputs();
