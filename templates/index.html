@@ -10,7 +10,7 @@
     </head>
     <body>
         <h1 id='app-title'>Paint Survey</h1>
-        <div id='owl-carousel' class='owl-carousel'></div>
+        <div id='carousel' class='owl-carousel'></div>
 
         <div id='owl-pages'>
             <div id='page-specification' class='owl-page'>
@@ -20,7 +20,7 @@
                         <form id='form-edit-spec'>
                             <div class='input-group'>
                                 <h2 class='group'>Edit Specification</h2>
-                                <button type='button' id='btn-add-spec-item'></button>
+                                <button type='button' class='btn-add-spec-item'></button>
                                 <input type='text' id='spec-surface-type' value='surface type' disabled="disabled" />
                                 <div id='spec-list'>
                                     <div class='input-block hidden'>
@@ -630,21 +630,55 @@
             </div>
         </div>
 
+        <div class='loadingDivOuter'></div>
+        <div class='dialog-background'></div>
+        <div class='dialog'></div>
+
         <div id='view-components'>
-            <div id='loadingDivOuter'>
+            <div class='loadingDivOuter template'>
                 <span>LOADING</span>
-                <div id='loadingDiv'>
+                <div class='loadingDiv'>
                     <img src='/static/loading.gif' alt='loading' />
                 </div>
             </div>
-            <div id='dialog-background'></div>
-            <div id='dialog'>
+            <div class='dialog-background template'></div>
+            <div class='dialog template'>
                 <h2 class='dialog-title'>Dialog Title</h2>
                 <h3 class='dialog-message'>Dialog Message</h3>
                 <button type='button' class='btn-dialog-confirm'>Confirm</button>
                 <button type='button' class='btn-dialog-cancel'>Cancel</button>
             </div>
             <div id='btn-pos-neg'>±</div>
+            <button type='button' class='btn-add-row template'>
+                <svg width='30' height='30'>
+                    <circle tagname='circle' cx='15' cy='15' r='15' fill='blue'></circle>
+                    <polygon tagname='polygon' points='12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12' fill='white'></polygon>
+                </svg>
+            </button>
+            <button type='button' class='btn-add-spec-item template'>
+                <svg width='30' height='30'>
+                    <circle tagname='circle' cx='15' cy='15' r='15' fill='blue'></circle>
+                    <polygon tagname='polygon' points="12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12" fill='white'></polygon>
+                </svg>
+            </button>
+            <button type='button' class='btn-remove-row template'>
+                <svg width='30' height='30'>
+                    <circle tagname='circle' cx='15' cy='15' r='15' fill='red'></circle>
+                    <polygon tagname='polygon' points='6,12 24,12 24,18 6,18 6,12' fill='white'></polygon>
+                </svg>
+            </button>
+            <button type='button' class='btn-reorder-item-up template'>
+                <svg width='30' height='30'>
+                    <circle tagname='circle' cx='15' cy='15' r='15' fill='black'></circle>
+                    <polygon tagname='polygon' points='15,7 23,20 7,20' fill='white'></polygon>
+                </svg>
+            </button>
+            <button type='button' class='btn-reorder-item-down template'>
+                <svg width='30' height='30'>
+                    <circle tagname='circle' cx='15' cy='15' r='15' fill='black'></circle>
+                    <polygon tagname='polygon' points='15,23 23,10 7,10' fill='white'></polygon>
+                </svg>
+            </button>
         </div>
 
         <div id='model-data'>
