@@ -446,6 +446,7 @@ input.spec-item-rate {
     border:none;
     margin:5px;
     cursor:pointer;
+    padding:0px;
 }
 td.default-value {
     background-color:#eee;

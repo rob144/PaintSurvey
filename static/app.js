@@ -860,27 +860,32 @@ function switchSign(inpElem){
 function initCarousel(){
     
     CARO = Caro('#carousel');
-    var $btn = $('.btn-add-room.template');
-    $btn.hide();
-    $btn = $btn.removeClass('template');
-    $('.caro-nav-next').after($btn);
 
-    CARO.registerCallback(
-        ['prevslide','nextslide'],
-        function(){ 
-            var $navButton = $('.caro-nav-next:not(.template)');
-            var $addButton = $('.btn-add-room:not(.template)');
-            if(CARO.isLastSlide() /* TODO: check it is a room-page */){
-                //Hide the 'next slide' button and show 'add room' button
-                $navButton.hide();
-                $addButton.show();
-            }else{
-                //Hide the 'add room' button and show 'next slide' button
-                $addButton.hide();
-                $navButton.show();
-            }
+    var $btnAdd = $('.btn-add-room.template').clone();
+    $btnAdd = $btnAdd.removeClass('template');
+    $btnAdd.hide();
+    $btnAdd.click(function(){
+        CARO.addSlide($('.room-page-template').html());
+        CARO.nextSlide();
+    });
+    $('.caro-nav-next').after($btnAdd);
+
+    var toggleNavButton = function(){
+        var $navButton = $('.caro-nav-next:not(.template)');
+        var $addButton = $('.btn-add-room:not(.template)');
+        if(CARO.isLastSlide() 
+            && CARO.getCurrentSlide().find('.room-page').length >= 1){
+            //Hide the 'next slide' button and show 'add room' button
+            $navButton.hide();
+            $addButton.show();
+        }else{
+            //Hide the 'add room' button and show 'next slide' button
+            $addButton.hide();
+            $navButton.show();
         }
-    );
+    }
+
+    CARO.registerCallback(['prevslide','nextslide'], toggleNavButton);
 
     $('#owl-pages .owl-page').each(function(){
         var $page = $(this);
@@ -934,7 +939,6 @@ function initDropdown(elem){
     $elem.find('.dropdown-btn').unbind('click');
     $elem.find('.dropdown-btn').click( toggleDropDown );
     $elem.find('.dropdown-menu a').bind( 'click touchstart', selectDropDownItem );
-
 }
 
 function initDropdowns(context){

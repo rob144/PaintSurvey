@@ -119,13 +119,7 @@ function Caro(elem){
         }
     };
 
-    var moveSlide = function(vector, onComplete){
-        //Still moving
-        if($caroStage.hasClass('sliding')){
-            return;
-        }
-
-        //Get the current slide,
+    var getCurrentSlide = function(){
         var $currSlide;
         $caroStage.find('.caro-item').each(function(){
             var $slide = $(this);
@@ -135,6 +129,18 @@ function Caro(elem){
                 return false;
             }
         });
+        return $currSlide;
+    }
+
+    var moveSlide = function(vector, onComplete){
+        //Still moving
+        if($caroStage.hasClass('sliding')){
+            return;
+        }
+
+        //Get the current slide.
+        var $currSlide = getCurrentSlide();
+        
         //Check if the next or previous slide exists.
         if((vector < 0 && $currSlide.next().length) 
             || (vector > 0 && $currSlide.prev().length)){
@@ -342,6 +348,7 @@ function Caro(elem){
         addSlide:       addSlide, 
         removeSlide:    removeSlide,
         registerCallback: registerCallback,
+        getCurrentSlide: getCurrentSlide,
         nextSlide:      nextSlide,
         prevSlide:      prevSlide,
         isLastSlide:    isLastSlide,
