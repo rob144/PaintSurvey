@@ -35,9 +35,9 @@ class Home(webapp2.RequestHandler):
         self.response.write(
             JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
                 'default_room': json.dumps(default_room, indent=4, default=json_serial),
-                'rooms':        json.dumps(rooms, indent=4, default=json_serial),
-                'projects':     json.dumps(projects, indent=4, default=json_serial),
-                'paints':       json.dumps(paints, indent=4, default=json_serial)
+                'rooms':        json.dumps(rooms,       indent=4, default=json_serial),
+                'projects':     json.dumps(projects,    indent=4, default=json_serial),
+                'paints':       json.dumps(paints,      indent=4, default=json_serial)
             }) 
         )
 

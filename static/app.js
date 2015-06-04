@@ -861,7 +861,7 @@ function switchSign(inpElem){
 
 function initCarousel(){
     
-    CARO = Caro('#owl-carousel');
+    CARO = Caro('#carousel');
     $('#owl-pages .owl-page').each(function(){
         var $page = $(this);
         if($page.hasClass('room-page-template') == false){
@@ -1509,61 +1509,6 @@ function initDecimalInputs(){
     $('.decimal').blur();
 }
 
-function svgEl(tagName) {
-    return document.createElementNS("http://www.w3.org/2000/svg", tagName);
-}
-
-function addSvgElems(containerIds, svgElemData){
-    for(var i=0;i<containerIds.length;i++){
-        var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        $(containerIds[i]).append($(svg).attr({ 'width':30, 'height':30 }));
-        for(var j=0;j<svgElemData.length;j++){
-            $(containerIds[i] + ' > svg').append(
-              $(svgEl(svgElemData[j]['tagName'])).attr(svgElemData[j])
-            );
-        }
-    }
-}
-
-function addSvgButtons(){
-
-    addSvgElems(
-        [ '#btn-add-spec-item','.btn-add-row' ],
-        [
-          { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'blue'},
-          { 'tagName':'polygon','points':'12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12', 'fill':'white' }
-        ]
-    );
-
-    //Init 'remove block' svg button icons
-    addSvgElems(
-        [ '.btn-remove-row' ],
-        [
-          { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'red'},
-          { 'tagName':'polygon','points':'6,12 24,12 24,18 6,18 6,12', 'fill':'white' }
-        ]
-    );
-
-    //Init item reorder up button icons
-    addSvgElems(
-        [ '.btn-reorder-item-up' ],
-        [
-          { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'black'},
-          { 'tagName':'polygon','points':'15,7 23,20 7,20', 'fill':'white' }
-        ]
-    );
-
-    //Init item reorder down button icons
-    addSvgElems(
-        [ '.btn-reorder-item-down' ],
-        [
-          { 'tagName':'circle', cx: 15, cy: 15, r: 15, 'fill': 'black'},
-          { 'tagName':'polygon','points':'15,23 23,10 7,10', 'fill':'white' }
-        ]
-    );
-
-}
-
 function addInputBlock(context){
         //Buttons to add groups of inputs.
         //Set up events for various inputs in the new block if present.
@@ -1604,19 +1549,21 @@ function initAddInputBlockButtons(){
 }
 
 function initDialog(){
-    var $background = $('#dialog-background');
+    var $dialog = $('.dialog');
+    var $background = $('.dialog-background');
     $background.css({ opacity: 0.6 });
-    $('#dialog .btn-dialog-cancel').click(
+    $dialog.find('.btn-dialog-cancel').click(
         function(){
-            $('#dialog-background').hide();
-            $('#dialog').hide();
+            $background.hide();
+            $dialog.hide();
         }
     );
 }
 
 function showDialog(title, message, confirmFunc, funcParams){
-    $('#dialog-background').show();
-    var $dialog = $('#dialog');
+    var $dialog = $('.dialog');
+    var $background = $('.dialog-background');
+    $background.show();
     $dialog.show();
     $dialog.find('.dialog-title').text(title);
     $dialog.find('.dialog-message').text(message);
@@ -1625,8 +1572,8 @@ function showDialog(title, message, confirmFunc, funcParams){
         $dialog.find('.btn-dialog-confirm').one(
             'click',
             function(){
-                $('#dialog').hide();
-                $('#dialog-background').hide();
+                $dialog.hide();
+                $background.hide();
                 confirmFunc(funcParams);
             }
         );
@@ -1658,7 +1605,7 @@ function isObjectEmpty(object){
 
 function doXhr(params) {
 
-  var $loading = $('#loadingDivOuter');
+  var $loading = $('.loadingDivOuter');
   var success = false;
 
   return $.ajax({
@@ -1726,7 +1673,21 @@ $(document).ready(function() {
     initProjectsPage();
 
     $('body').bind('touchstart click', blurInputFocus );
-    addSvgButtons();
+    
+    var makeComponent = function(selector){
+        var $elem = $('#view-components ' + selector + '.template').clone();
+        $elem = $elem.removeClass('template');
+        $(selector + ':not(.template)').replaceWith($elem);
+    }
+
+    makeComponent('.btn-add-row');
+    makeComponent('.btn-add-spec-item');
+    makeComponent('.btn-remove-row');
+    makeComponent('.btn-reorder-item-up');
+    makeComponent('.btn-reorder-item-down');
+    makeComponent('.loadingDivOuter');
+    makeComponent('.dialog-background');
+    makeComponent('.dialog');
 
     initInputCursorPos();
     initIntegerInputs();
