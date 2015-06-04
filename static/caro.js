@@ -11,7 +11,32 @@ function Caro(elem){
     $caroWindow = $caro.find('.caro-window');
     $caroStage = $caro.find('.caro-stage');
 
-    var CARO_INFO = { mousedown: false };
+    var CARO_INFO = { 
+        mousedown: false,
+        callbacks: []
+    };
+
+    var registerCallback = function(arrFuncNames, func){
+        for (var i = 0; i < arrFuncNames.length; i++) {
+            CARO_INFO.callbacks.push({ 
+                funcName: arrFuncNames[i], 
+                func: func 
+            })
+        };
+    }
+
+    var getCallback = function(funcName){
+        
+        var func = function(){};
+        var callbacks = CARO_INFO.callbacks;
+        
+        for(var i = 0; i < callbacks.length; i++){
+            if(callbacks[i].funcName.toLowerCase() == funcName.toLowerCase()){
+                func = callbacks[i].func;
+            }
+        }
+        return func;
+    }
 
     var init = function(){
         $caroStage.find('div').each(function(i, elem){
@@ -24,16 +49,21 @@ function Caro(elem){
     }
 
     var resizeUi = function(forceScrollBar){
+        
         var $slides = $caroStage.find('.caro-item');
         $caroStage.width($slides.width() * $slides.length + 2);
         $slides.width( $caroWindow.width() );
+        
         //Realign stage
         var offset = $caroStage.offset();
-        var $nearestElem = getNearestElem($caroWindow.offset().left);
+        var $nearestSlide = getNearestSlide($caroWindow.offset().left);
+        var newLeft = ($nearestSlide) ? $nearestSlide.offset().left : 0;
         $caroStage.offset({
             top: offset.top, 
-            left: offset.left += (-1 * $nearestElem.offset().left)  
+            left: offset.left += (-1 * newLeft) 
         });
+
+        //Set the height
         $caroWindow.css('min-height', $caroStage.height() + 'px');
         if(forceScrollBar && $caroWindow.height() < $(window).height() + 1){
             $caroWindow.css('min-height', ($(window).height() + 1) + 'px');
@@ -52,11 +82,11 @@ function Caro(elem){
     }
 
     var nextSlide = function(){ 
-        moveSlide(-1);
+        moveSlide(-1, getCallback('nextslide'));
     };
 
     var prevSlide = function(){
-        moveSlide(1);
+        moveSlide(1, getCallback('prevslide'));
     };
 
     var getSlides = function(){
@@ -89,7 +119,7 @@ function Caro(elem){
         }
     };
 
-    var moveSlide = function(vector){
+    var moveSlide = function(vector, onComplete){
         //Still moving
         if($caroStage.hasClass('sliding')){
             return;
@@ -110,7 +140,8 @@ function Caro(elem){
             || (vector > 0 && $currSlide.prev().length)){
             animateStage( 
                 (vector < 0 ? '-=' : vector > 0 ? '+=' : '') 
-                    + $caro.find('.caro-item').outerWidth()
+                    + $caro.find('.caro-item').outerWidth(),
+                onComplete
             );
         }
     };
@@ -228,21 +259,46 @@ function Caro(elem){
         }
     });
 
-    var getNearestElem = function(position, elems){
+    var getNearestSlide = function(position, elems){
+        
         var min = null;
         var $nearestElem = null;
-        if(elems == null) {
-            elems = $caroStage.find('.caro-item');
+
+        if(position === null) position = $caroWindow.offset().left;
+        if(elems    === null) elems = $caroStage.find('.caro-item');
+        
+        if(elems){
+            for(var i = 0; i < elems.length; i++){
+                var $elem = $(elems[i]);
+                var newMin = Math.abs(position - $elem.offset().left);
+                if(min == null || newMin < min){
+                    $nearestElem = $elem;
+                    min = newMin;
+                }
+            }
         }
-        for(var i=0; i<elems.length; i++){
+
+        return $nearestElem;
+    }
+
+    var isLastSlide = function(){
+        
+        var min             = null;
+        var $nearestElem    = null;
+        var elems           = $caroStage.find('.caro-item');
+        var index;
+
+        for(var i = 0; i < elems.length; i++){
             var $elem = $(elems[i]);
             var newMin = Math.abs($caroWindow.offset().left - $elem.offset().left);
             if(min == null || newMin < min){
                 $nearestElem = $elem;
                 min = newMin;
+                index = i;
             }
         }
-        return $nearestElem;
+
+        return (index == getSlides().length - 1);
     }
 
     $caroWindow.off('mouseup').on('mouseup', function(e){ 
@@ -264,7 +320,7 @@ function Caro(elem){
             if(CARO_INFO.draggedSlide.next().length){
                 elems.push(CARO_INFO.draggedSlide.next());
             }
-            var $nearestSlide = getNearestElem($caroWindow.offset().left, elems);
+            var $nearestSlide = getNearestSlide($caroWindow.offset().left, elems);
             if(Math.abs($caroWindow.offset().left - $nearestSlide.offset().left) > 2){
                 animateToSlide($nearestSlide);
             }
@@ -282,15 +338,17 @@ function Caro(elem){
     init();
 
     return { 
-        caroElem: $caro,
-        addSlide: addSlide, 
-        removeSlide: removeSlide,
-        nextSlide: nextSlide,
-        prevSlide: prevSlide,
-        getSlides: getSlides,
-        getSlide: getSlide,
-        getLast: getLast,
-        resizeUi: resizeUi
+        caroElem:       $caro,
+        addSlide:       addSlide, 
+        removeSlide:    removeSlide,
+        registerCallback: registerCallback,
+        nextSlide:      nextSlide,
+        prevSlide:      prevSlide,
+        isLastSlide:    isLastSlide,
+        getSlides:      getSlides,
+        getSlide:       getSlide,
+        getLast:        getLast,
+        resizeUi:       resizeUi
     };
 };
 

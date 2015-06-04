@@ -441,6 +441,12 @@ input.spec-item-rate {
     text-align:center;
 }
 /* ********************* ROOM PAGE ****************************** */
+.btn-add-room {
+    float:right;
+    border:none;
+    margin:5px;
+    cursor:pointer;
+}
 td.default-value {
     background-color:#eee;
 }
