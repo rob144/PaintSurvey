@@ -29,6 +29,7 @@ class DefaultRoom(ModelUtils, ndb.Model):
 
 class Room(ModelUtils, ndb.Model):
     name                    = ndb.StringProperty()
+    date_created            = ndb.DateTimeProperty(auto_now_add=True)
     room_hours_adjust       = ndb.FloatProperty()
     room_length             = ndb.FloatProperty()
     room_width              = ndb.FloatProperty()

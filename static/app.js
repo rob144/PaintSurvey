@@ -16,6 +16,12 @@ var MODEL = {
                 rooms.push(ROOMS[i]);
             }
         }
+        //Order rooms by date_created
+        rooms.sort(function(a, b){
+            var c = new Date(a.date_created);
+            var d = new Date(b.date_created);
+            return c - d;
+        });
         return rooms;
     },
     getProject: function(project_key){
@@ -214,6 +220,12 @@ function selectProject(projectKey, reload){
         CARO.addSlide($('.room-page-template').html());
         initRoomPage();
     }
+    
+    //Stop the carousel from moving when user clicks input
+    $('input').mousedown(function(event){
+        event.stopPropagation();
+    });
+
     CARO.nextSlide();
 }
 
@@ -866,6 +878,7 @@ function initCarousel(){
     $btnAdd.hide();
     $btnAdd.click(function(){
         CARO.addSlide($('.room-page-template').html());
+        initRoomPage();
         CARO.nextSlide();
     });
     $('.caro-nav-next').after($btnAdd);
