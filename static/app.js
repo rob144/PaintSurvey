@@ -187,6 +187,7 @@ function addProjectPages(){
     CARO.removeSlideContaining('.room-page:not(.hidden)');
 
     CARO.addSlide($('.project-summary-template').html());
+    initProjectSummaryPage();
 
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
@@ -261,6 +262,7 @@ function deleteProject(projectKey){
     });
 }
 
+//TODO: change to getRoomData() and return an object with all the room data.
 function getRoomGroupData($page){
 
     var results = {
@@ -410,13 +412,12 @@ function getRoomGroupData($page){
     return results;
 }
 
-function calculateWorkForRoom(event){
+function calculateWorkForRoom(roomPage){
 
-    var $roomForm = $(event.target).closest('.room-form');
+    var $roomForm = $(roomPage).find('.room-form');
 
     var getf = function(descendant){
-        var $elem = $roomForm.closest('.pageContent'); 
-        var floatVal = parseFloat($elem.find(descendant).val());
+        var floatVal = parseFloat($roomForm.find(descendant).val());
         return Math.abs(floatVal) >= 0 ? floatVal : 0; 
     }
     
@@ -444,6 +445,7 @@ function calculateWorkForRoom(event){
     var isolSurfSpace       = 0, isolSurfHours      = 0, isolSurfUnitValue      = 0;
 
     var roomData = getRoomGroupData($roomForm);
+
     /* BAYBREAST SPACE */
     for(var i = 0; i <= roomData.bayBreastVals.length - 1; i++){
         var bbDepth = roomData.bayBreastVals[i][0];
@@ -717,7 +719,10 @@ function renderRoomCalculations(roomPage, tableData){
     var $resultsElem = $(roomPage).find('.results:first');
     $resultsElem.html(buildResultsTable(tableData));
     $resultsElem.fadeIn(500);
-    $("html, body").animate({ scrollTop: 0 }, 300, function(){ CARO.resizeUi(true) });
+    $("html, body").animate(
+        { scrollTop: 0 }, 300, 
+        function(){ CARO.resizeUi(true) }
+    );
 }
 
 function buildResultsTable(tableData){
@@ -901,12 +906,12 @@ function initCarousel(){
 
     CARO.registerCallback(['prevslide','nextslide'], toggleNavButton);
 
-    $('#owl-pages .owl-page').each(function(){
-        var $page = $(this);
-        if($page.hasClass('room-page-template') == false){
-            CARO.addSlide($page.html());
-        }
-    })
+    var $pages = $('#owl-pages .owl-page')
+        .not('.room-page-template')
+        .not('.project-summary-template')
+        .each(function(){
+            CARO.addSlide($(this).html());
+    });
 }
 
 function resizeCarousel(){
@@ -1223,6 +1228,18 @@ function initProjectsPage(){
     $('#btn-create-project').click( createProject );
 }
 
+function initProjectSummaryPage(){
+    //TODO: add the calculations for each room in the project
+    var $summaryPage = $('.caro-item .project-summary-page');
+    if(CURRENT_PROJECT.rooms.length >= 1){
+        var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
+        for(var i = 0; i <= rooms.length - 1; i++){
+console.log(rooms[i]);
+            $summaryPage.find('.project-summary-info').append('<p>' + rooms[i].name + '</p>');
+        }
+    }
+}
+
 function initRoomPage(room){
     var getf = function(elemId){
         return parseFloat($(elemId).val()).toFixed(2);
@@ -1440,7 +1457,9 @@ function initRoomPage(room){
     }
 
     $page.find('.btn-calculate-room').click( function(event){
-        calculateWorkForRoom();
+        var $roomPage = $(event.target).closest('.room-page');
+        var tableData = calculateWorkForRoom($roomPage);
+        renderRoomCalculations($roomPage, tableData);
     });
     $page.find('.btn-delete-room').click( onDeleteRoomClick );
     $page.find('.btn-save-room').click( onSaveRoomClick );
@@ -1512,6 +1531,11 @@ function onSaveRoomClick(){
         }, '.room-key');
     }
 
+}
+
+function updateProjectSummary(){
+    /* TODO: re-calculate the project summary data
+    based on the rooms that have been saved */
 }
 
 function initInputCursorPos(context){
