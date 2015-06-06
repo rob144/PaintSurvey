@@ -81,6 +81,18 @@ function Caro(elem){
         }
     }
 
+    var removeSlideContaining = function(selector){
+        var $slides = getSlides();
+        if($slides.length >= 1){
+            $slides.each(function(i, elem){
+                var $slide = $(elem);
+                if($slide.find(selector).length >= 1){
+                    removeSlide(i+1);
+                };
+            });
+        }
+    }
+
     var nextSlide = function(){ 
         moveSlide(-1, getCallback('nextslide'));
     };
@@ -308,30 +320,14 @@ function Caro(elem){
     }
 
     $caroWindow.off('mouseup').on('mouseup', function(e){ 
+
         CARO_INFO.mousedown = false; 
-        if(CARO_INFO.mouseupAnimation != null){
+        if(CARO_INFO.mouseupAnimation !== null){
             CARO_INFO.mouseupAnimation();
             CARO_INFO.mouseupAnimation = null;
         };
-        
+
         fixOvershoot();
-        
-        //Fix mouseleave and return problem.
-        if(!$caroStage.hasClass('sliding')){
-            
-            var elems = [ CARO_INFO.draggedSlide ];
-            if(CARO_INFO.draggedSlide.prev().length){
-                elems.push(CARO_INFO.draggedSlide.prev());
-            }
-            if(CARO_INFO.draggedSlide.next().length){
-                elems.push(CARO_INFO.draggedSlide.next());
-            }
-            var $nearestSlide = getNearestSlide($caroWindow.offset().left, elems);
-            if(Math.abs($caroWindow.offset().left - $nearestSlide.offset().left) > 2){
-                animateToSlide($nearestSlide);
-            }
-            
-        }
     });
 
     /* Add the nav controls */
@@ -347,6 +343,7 @@ function Caro(elem){
         caroElem:       $caro,
         addSlide:       addSlide, 
         removeSlide:    removeSlide,
+        removeSlideContaining: removeSlideContaining,
         registerCallback: registerCallback,
         getCurrentSlide: getCurrentSlide,
         nextSlide:      nextSlide,

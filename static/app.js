@@ -181,33 +181,13 @@ function populateProjects(projects){
     }
 }
 
-function selectProject(projectKey, reload){
+function addProjectPages(){
 
-    if(CURRENT_PROJECT.key == projectKey && reload != true){
-        CARO.nextSlide();
-        return;
-    }
+    CARO.removeSlideContaining('.project-summary-page:not(.hidden)');
+    CARO.removeSlideContaining('.room-page:not(.hidden)');
 
-    if(CURRENT_PROJECT.key != projectKey){
-        for(var i=0; i < PROJECTS.length; i++){
-            if(PROJECTS[i].key == projectKey){
-                CURRENT_PROJECT = PROJECTS[i];
-                break;
-            }
-        }
-    }
+    CARO.addSlide($('.project-summary-template').html());
 
-    $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
-    
-    //Remove existing room pages
-    var slides = CARO.getSlides();
-    if(slides){
-        for(var i=slides.length; i>0; i--){
-            if(CARO.getSlide(i).find('.room-page:not(.hidden)').length){
-                CARO.removeSlide(i);
-            }
-        }
-    }
     //Add the room pages for this project
     if(CURRENT_PROJECT.rooms.length >= 1){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
@@ -225,7 +205,26 @@ function selectProject(projectKey, reload){
     $('input').mousedown(function(event){
         event.stopPropagation();
     });
+}
 
+function selectProject(projectKey, reload){
+
+    if(CURRENT_PROJECT.key == projectKey && reload != true){
+        CARO.nextSlide();
+        return;
+    }
+
+    if(CURRENT_PROJECT.key != projectKey){
+        for(var i=0; i < PROJECTS.length; i++){
+            if(PROJECTS[i].key == projectKey){
+                CURRENT_PROJECT = PROJECTS[i];
+                break;
+            }
+        }
+    }
+
+    $('#app-title').text('Paint Survey - ' + CURRENT_PROJECT.title);
+    addProjectPages();
     CARO.nextSlide();
 }
 
@@ -415,9 +414,8 @@ function calculateWorkForRoom(event){
 
     var $roomForm = $(event.target).closest('.room-form');
 
-    var getf = function(descendant, ancestor){
-        var $elem = $(event.target).closest('.pageContent'); 
-        $elem = (ancestor != null) ? $(ancestor) : $elem;
+    var getf = function(descendant){
+        var $elem = $roomForm.closest('.pageContent'); 
         var floatVal = parseFloat($elem.find(descendant).val());
         return Math.abs(floatVal) >= 0 ? floatVal : 0; 
     }
@@ -712,10 +710,13 @@ function calculateWorkForRoom(event){
         { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours,  rateValue: isolSurfUnitValue }
     ];
 
-    var $resultsElem = $(event.target).closest('.pageContent').find('.results:first');
+    return tableData;
+}
+
+function renderRoomCalculations(roomPage, tableData){
+    var $resultsElem = $(roomPage).find('.results:first');
     $resultsElem.html(buildResultsTable(tableData));
     $resultsElem.fadeIn(500);
-
     $("html, body").animate({ scrollTop: 0 }, 300, function(){ CARO.resizeUi(true) });
 }
 
@@ -1438,7 +1439,9 @@ function initRoomPage(room){
         );
     }
 
-    $page.find('.btn-calculate-room').click( calculateWorkForRoom );
+    $page.find('.btn-calculate-room').click( function(event){
+        calculateWorkForRoom();
+    });
     $page.find('.btn-delete-room').click( onDeleteRoomClick );
     $page.find('.btn-save-room').click( onSaveRoomClick );
 
