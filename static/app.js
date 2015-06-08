@@ -262,33 +262,7 @@ function deleteProject(projectKey){
     });
 }
 
-//TODO: change to getRoomData() and return an object with all the room data.
-function getRoomGroupData($page){
-
-    var results = {
-        'bayBreastVals':[],
-        'ceilingAdjustVals':[],
-        'wallAdjustVals':[],
-        'doorVals':[],
-        'skirtingVals':[],
-        'windowVals':[],
-        'radiatorVals':[],
-        'genSurfaceVals':[],
-        'isolSurfaceVals':[],
-        toString: function(){
-            var str = '';
-            str += 'bayBreastVals [' + this.bayBreastVals + ']\n';
-            str += 'ceilingAdjustVals [' + this.ceilingAdjustVals + ']\n';
-            str += 'wallAdjustVals [' + this.wallAdjustVals + ']\n';
-            str += 'doorVals [' + this.doorVals + ']\n';
-            str += 'skirtingVals [' + this.skirtingVals + ']\n';
-            str += 'windowVals [' + this.windowVals + ']\n';
-            str += 'radiatorVals [' + this.radiatorVals + ']\n';
-            str += 'genSurfaceVals [' + this.genSurfaceVals + ']\n';
-            str += 'isolSurfaceVals [' + this.isolSurfaceVals + ']\n';
-            return str;
-        }
-    };
+function getRoomData($page){
 
     var getf = function(inputElem, ancestor){
         $parent = (ancestor != null) ? $(ancestor) : $page;
@@ -304,9 +278,38 @@ function getRoomGroupData($page){
         return (Math.abs(sum) > 0);
     }
 
+    var room = {
+        roomLength:             0,
+        roomWidth:              0,
+        roomHeight:             0,
+        roomHoursAdjust:        0,
+        ceilingAdjustSimple:    0,
+        wallAdjustSimple:       0,
+        skirtingAdjustSimple:   0,
+        groupItems: {
+            bayBreastVals:      [],
+            ceilingAdjustVals:  [],
+            wallAdjustVals:     [],
+            doorVals:           [],
+            skirtingVals:       [],
+            windowVals:         [],
+            radiatorVals:       [],
+            genSurfaceVals:     [],
+            isolSurfaceVals:    []
+        }
+    };
+
+    room.roomLength             = getf('.room-length');
+    room.roomWidth              = getf('.room-width');
+    room.roomHeight             = getf('.room-height');
+    room.roomHoursAdjust        = getf('.room-hours-adjust');
+    room.ceilingAdjustSimple    = getf('.ceiling-adjust-simple');
+    room.wallAdjustSimple       = getf('.wall-adjust-simple');
+    room.skirtingAdjustSimple   = getf('.skirting-adjust-simple');
+
     $page.find('.baybreast-group .input-block').each( function(index, elem){
         if(notZero(elem)){
-            results.bayBreastVals.push([ 
+            room.groupItems.bayBreastVals.push([ 
                 getf('.baybreast-depth', elem), 
                 getf('.baybreast-width', elem) 
             ]);
@@ -316,7 +319,7 @@ function getRoomGroupData($page){
     $page.find('.ceiling-adjust-group .input-block').each( function(index, elem){
         if($(elem).find('.ceiling-adjust-paint-key').val().length >= 1 
             && notZero(elem)){
-            results.ceilingAdjustVals.push([ 
+            room.groupItems.ceilingAdjustVals.push([ 
                 $(elem).find('.ceiling-adjust-paint-key').val(),
                 getf('.ceiling-adjust-qty', elem), 
                 getf('.ceiling-adjust-dim1', elem), 
@@ -328,7 +331,7 @@ function getRoomGroupData($page){
     $page.find('.wall-adjust-group .input-block').each( function(index, elem){
         if($(elem).find('.wall-adjust-paint-key').val().length >= 1 
             && notZero(elem)){
-            results.wallAdjustVals.push([
+            room.groupItems.wallAdjustVals.push([
                 $(elem).find('.wall-adjust-paint-key').val(),
                 getf('.wall-adjust-qty', elem), 
                 getf('.wall-adjust-dim1', elem), 
@@ -341,7 +344,7 @@ function getRoomGroupData($page){
         if($(elem).find('.door-surface-paint-key').val().length >= 1 
             && $(elem).find('.door-frame-paint-key').val().length >= 1
             && notZero(elem)){
-            results.doorVals.push([
+            room.groupItems.doorVals.push([
                 $(elem).find('.door-surface-paint-key').val(),
                 getf('.door-qty', elem), 
                 getf('.door-width', elem), 
@@ -354,7 +357,7 @@ function getRoomGroupData($page){
     $page.find('.skirting-adjust-group .input-block').each( function(index, elem){
         if($(elem).find('.skirting-adjust-paint-key').val().length >= 1 
             && notZero(elem)){
-            results.skirtingVals.push([
+            room.groupItems.skirtingVals.push([
                 $(elem).find('.skirting-adjust-paint-key').val(),
                 getf('.skirting-adjust-qty', elem), 
                 getf('.skirting-adjust-length', elem)
@@ -365,7 +368,7 @@ function getRoomGroupData($page){
     $page.find('.windows-group .input-block').each( function(index, elem){
         if($(elem).find('.window-paint-key').val().length >= 1 
             && notZero(elem)){
-            results.windowVals.push([
+            room.groupItems.windowVals.push([
                 $(elem).find('.window-paint-key').val(),
                 getf('.window-qty', elem), 
                 getf('.window-width', elem), 
@@ -377,7 +380,7 @@ function getRoomGroupData($page){
     $page.find('.radiators-group .input-block').each( function(index, elem){
         if($(elem).find('.radiator-paint-key').val().length >= 1 
             && notZero(elem)){
-            results.radiatorVals.push([
+            room.groupItems.radiatorVals.push([
                 $(elem).find('.radiator-paint-key').val(),
                 getf('.radiator-qty', elem), 
                 getf('.radiator-width', elem), 
@@ -389,7 +392,7 @@ function getRoomGroupData($page){
     $page.find('.general-surface-group .input-block').each( function(index, elem){
         if($(elem).find('.general-surface-paint-key').val().length >= 1 
             && notZero(elem)){
-            results.genSurfaceVals.push([
+            room.groupItems.genSurfaceVals.push([
                 $(elem).find('.general-surface-paint-key').val(),
                 getf('.general-surface-qty', elem),
                 getf('.general-surface-width', elem),
@@ -401,7 +404,7 @@ function getRoomGroupData($page){
     $page.find('.isolated-surface-group .input-block').each( function(index, elem){
         if($(elem).find('.isolated-surface-paint-key').val().length >= 1 
             && notZero(elem)){
-            results.isolSurfaceVals.push([
+            room.groupItems.isolSurfaceVals.push([
                 $(elem).find('.isolated-surface-paint-key').val(),
                 getf('.isolated-surface-qty', elem),
                 getf('.isolated-surface-length', elem),
@@ -409,7 +412,7 @@ function getRoomGroupData($page){
         }
     });
 
-    return results;
+    return room;
 }
 
 function calculateWorkForRoom(roomPage){
@@ -420,14 +423,6 @@ function calculateWorkForRoom(roomPage){
         var floatVal = parseFloat($roomForm.find(descendant).val());
         return Math.abs(floatVal) >= 0 ? floatVal : 0; 
     }
-    
-    var roomLength          =   getf('.room-length:first');
-    var roomWidth           =   getf('.room-width:first');
-    var roomHeight          =   getf('.room-height:first');
-    
-    var ceilingAdjustSimple     =   getf('.ceiling-adjust-simple');
-    var wallAdjustSimple        =   getf('.wall-adjust-simple');
-    var skirtingAdjustSimple    =   getf('.skirting-adjust-simple');
 
     var baybreastWall       = 0, baybreastCeiling   = 0, baybreastSkirting      = 0;
     var ceilingSpace        = 0, ceilingHours       = 0, ceilingUnitValue       = 0;
@@ -444,12 +439,12 @@ function calculateWorkForRoom(roomPage){
     var genSurfSpace        = 0, genSurfHours       = 0, genSurfUnitValue       = 0;
     var isolSurfSpace       = 0, isolSurfHours      = 0, isolSurfUnitValue      = 0;
 
-    var roomData = getRoomGroupData($roomForm);
+    var room = getRoomData($roomForm);
 
     /* BAYBREAST SPACE */
-    for(var i = 0; i <= roomData.bayBreastVals.length - 1; i++){
-        var bbDepth = roomData.bayBreastVals[i][0];
-        var bbWidth = roomData.bayBreastVals[i][1];
+    for(var i = 0; i <= room.bayBreastVals.length - 1; i++){
+        var bbDepth = room.bayBreastVals[i][0];
+        var bbWidth = room.bayBreastVals[i][1];
         if(Math.abs(bbDepth * bbWidth) > 0){
             baybreastWall += (2 * bbDepth * roomHeight);
             baybreastCeiling += (bbWidth * bbDepth);
@@ -458,11 +453,11 @@ function calculateWorkForRoom(roomPage){
     }
 
     /* CEILING ADJUST SPACE */
-    for(var i = 0; i <= roomData.ceilingAdjustVals.length - 1; i++){
-        var paint = MODEL.getPaint(roomData.ceilingAdjustVals[i][0]);
-        var quantity = roomData.ceilingAdjustVals[i][1];
-        var dim1 = roomData.ceilingAdjustVals[i][0];
-        var dim2 = roomData.ceilingAdjustVals[i][1];
+    for(var i = 0; i <= room.ceilingAdjustVals.length - 1; i++){
+        var paint = MODEL.getPaint(room.ceilingAdjustVals[i][0]);
+        var quantity = room.ceilingAdjustVals[i][1];
+        var dim1 = room.ceilingAdjustVals[i][0];
+        var dim2 = room.ceilingAdjustVals[i][1];
         var space = quantity * dim1 * dim2;
         if(Math.abs(space) > 0) {
             ceilingAdjustSpace += space;
@@ -479,11 +474,11 @@ function calculateWorkForRoom(roomPage){
     }
 
     /* WALL ADJUST SPACE */
-    for(var i = 0; i <= roomData.wallAdjustVals.length - 1; i++){
-        var paint = MODEL.getPaint(roomData.wallAdjustVals[i][0]);
-        var quantity = roomData.wallAdjustVals[i][1];
-        var dim1 = roomData.wallAdjustVals[i][2];
-        var dim2 = roomData.wallAdjustVals[i][3];
+    for(var i = 0; i <= room.wallAdjustVals.length - 1; i++){
+        var paint = MODEL.getPaint(room.wallAdjustVals[i][0]);
+        var quantity = room.wallAdjustVals[i][1];
+        var dim1 = room.wallAdjustVals[i][2];
+        var dim2 = room.wallAdjustVals[i][3];
         var space = quantity * dim1 * dim2;
         if(Math.abs(space) > 0) {
             wallAdjustSpace += space;
@@ -500,11 +495,11 @@ function calculateWorkForRoom(roomPage){
     }
 
     /* DOOR & FRAME SPACE*/
-    for(var i = 0; i <= roomData.doorVals.length - 1; i++){
-        var surfacePaint = MODEL.getPaint(roomData.doorVals[i][0]);
-        var quantity = roomData.doorVals[i][1];
-        var dim1 = roomData.doorVals[i][2];
-        var dim2 = roomData.doorVals[i][3];
+    for(var i = 0; i <= room.doorVals.length - 1; i++){
+        var surfacePaint = MODEL.getPaint(room.doorVals[i][0]);
+        var quantity = room.doorVals[i][1];
+        var dim1 = room.doorVals[i][2];
+        var dim2 = room.doorVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
             doorsTotalWidth += dim1;
             var surface = quantity * dim1 * dim2;
@@ -518,7 +513,7 @@ function calculateWorkForRoom(roomPage){
             if(surfacePaint.unit_rate > 0){
                 doorSurfUnitValue += (surface / surfacePaint.unit_rate);
             } 
-            var framePaint = MODEL.getPaint(roomData.doorVals[i][4]);
+            var framePaint = MODEL.getPaint(room.doorVals[i][4]);
             var frameLength = 2 * dim2 + dim1;
             doorFrame += frameLength;
             if(framePaint.prod_rate_one > 0){
@@ -534,10 +529,10 @@ function calculateWorkForRoom(roomPage){
     }
 
     /* SKIRTING SPACE */
-    for(var i = 0; i <= roomData.skirtingVals.length - 1; i++){
-        var skirtingPaint = MODEL.getPaint(roomData.skirtingVals[i][0]);
-        var quantity = roomData.skirtingVals[i][1];
-        var dim1 = roomData.skirtingVals[i][2];
+    for(var i = 0; i <= room.skirtingVals.length - 1; i++){
+        var skirtingPaint = MODEL.getPaint(room.skirtingVals[i][0]);
+        var quantity = room.skirtingVals[i][1];
+        var dim1 = room.skirtingVals[i][2];
         if(Math.abs(quantity * dim1) > 0) {
             var space = quantity * dim1;
             skirtingAdjustSpace += space;
@@ -554,11 +549,11 @@ function calculateWorkForRoom(roomPage){
     }
 
     /* WINDOW SPACE */
-    for(var i = 0; i <= roomData.windowVals.length - 1; i++){
-        var windowPaint = MODEL.getPaint(roomData.windowVals[i][0]);
-        var quantity = roomData.windowVals[i][1];
-        var dim1 = roomData.windowVals[i][2];
-        var dim2 = roomData.windowVals[i][3];
+    for(var i = 0; i <= room.windowVals.length - 1; i++){
+        var windowPaint = MODEL.getPaint(room.windowVals[i][0]);
+        var quantity = room.windowVals[i][1];
+        var dim1 = room.windowVals[i][2];
+        var dim2 = room.windowVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
             var space = quantity * dim1 * dim2;
             windowSpace += space;
@@ -575,11 +570,11 @@ function calculateWorkForRoom(roomPage){
     }
 
     /* RADIATOR SPACE */
-    for(var i = 0; i <= roomData.radiatorVals.length - 1; i++){
-        var radiatorPaint = MODEL.getPaint(roomData.radiatorVals[i][0]);
-        var quantity = roomData.radiatorVals[i][1];
-        var dim1 = roomData.radiatorVals[i][2];
-        var dim2 = roomData.radiatorVals[i][3];
+    for(var i = 0; i <= room.radiatorVals.length - 1; i++){
+        var radiatorPaint = MODEL.getPaint(room.radiatorVals[i][0]);
+        var quantity = room.radiatorVals[i][1];
+        var dim1 = room.radiatorVals[i][2];
+        var dim2 = room.radiatorVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
             var space = quantity * dim1 * dim2;
             radiatorSpace += space;
@@ -596,11 +591,11 @@ function calculateWorkForRoom(roomPage){
     }
 
     /* GENERAL SURFACE SPACE */
-    for(var i = 0; i <= roomData.genSurfaceVals.length - 1; i++){
-        var genSurfPaint = MODEL.getPaint(roomData.genSurfaceVals[i][0]);
-        var quantity = roomData.genSurfaceVals[i][1];
-        var dim1 = roomData.genSurfaceVals[i][2];
-        var dim2 = roomData.genSurfaceVals[i][3];
+    for(var i = 0; i <= room.genSurfaceVals.length - 1; i++){
+        var genSurfPaint = MODEL.getPaint(room.genSurfaceVals[i][0]);
+        var quantity = room.genSurfaceVals[i][1];
+        var dim1 = room.genSurfaceVals[i][2];
+        var dim2 = room.genSurfaceVals[i][3];
         if(Math.abs(quantity * dim1 * dim2) > 0) {
             var space = quantity * dim1 * dim2;
             genSurfSpace += space;
@@ -617,10 +612,10 @@ function calculateWorkForRoom(roomPage){
     }
 
     /* ISOLATED SURFACE SPACE */
-    for(var i = 0; i <= roomData.isolSurfaceVals.length - 1; i++){
-        var isolSurfPaint = MODEL.getPaint(roomData.isolSurfaceVals[i][0]);
-        var quantity = roomData.isolSurfaceVals[i][1];
-        var dim1 = roomData.isolSurfaceVals[i][2];
+    for(var i = 0; i <= room.isolSurfaceVals.length - 1; i++){
+        var isolSurfPaint = MODEL.getPaint(room.isolSurfaceVals[i][0]);
+        var quantity = room.isolSurfaceVals[i][1];
+        var dim1 = room.isolSurfaceVals[i][2];
         if(Math.abs(quantity * dim1) > 0) {
             var space = quantity * dim1;
             isolSurfSpace += space;
@@ -645,13 +640,13 @@ function calculateWorkForRoom(roomPage){
     /* If there are negative adjustments we need to reduce the space for
     the ceiling, wall and skirting before calculating the hours for the main
     ceiling, wall and skirting areas */
-    ceilingSpace    = (roomLength * roomWidth) + baybreastCeiling; 
+    ceilingSpace    = (room.roomLength * room.roomWidth) + baybreastCeiling; 
     if(ceilingAdjustSpace < 0) ceilingSpace += ceilingAdjustSpace;
 
-    wallSpace       = (roomLength + roomWidth) * 2 * roomHeight - doorSurface - windowSpace + baybreastWall; 
+    wallSpace       = (room.roomLength + room.roomWidth) * 2 * room.roomHeight - doorSurface - windowSpace + baybreastWall; 
     if(wallAdjustSpace < 0) wallSpace += wallAdjustSpace;
     
-    skirtingSpace   = (roomLength + roomWidth) * 2 - doorsTotalWidth + baybreastSkirting;
+    skirtingSpace   = (room.roomLength + room.roomWidth) * 2 - doorsTotalWidth + baybreastSkirting;
     if(skirtingAdjustSpace < 0) skirtingSpace += skirtingAdjustSpace;
 
     var addRateHours = function(paint, space, hours){
@@ -666,7 +661,7 @@ function calculateWorkForRoom(roomPage){
 
     var ceilingPaint = getDefaultPaint('ceilings');
     ceilingHours += addRateHours(ceilingPaint, ceilingSpace, ceilingHours);
-    ceilingHours += ceilingAdjustSimple;
+    ceilingHours += room.ceilingAdjustSimple;
     ceilingHours += ceilingAdjustHours;
     if(ceilingPaint.unit_rate){
         ceilingUnitValue = ceilingSpace / ceilingPaint.unit_rate;
@@ -674,7 +669,7 @@ function calculateWorkForRoom(roomPage){
 
     var wallPaint = getDefaultPaint('walls');
     wallHours += addRateHours(wallPaint, wallSpace, wallHours);
-    wallHours += wallAdjustSimple;
+    wallHours += room.wallAdjustSimple;
     wallHours += wallAdjustHours;
     if(wallPaint.unit_rate > 0){
         wallUnitValue = wallSpace / wallPaint.unit_rate;
@@ -682,7 +677,7 @@ function calculateWorkForRoom(roomPage){
 
     var skirtingPaint = getDefaultPaint('isolated-surfaces');
     skirtingHours += addRateHours(skirtingPaint, skirtingSpace, skirtingHours);
-    skirtingHours += skirtingAdjustSimple;
+    skirtingHours += room.skirtingAdjustSimple;
     skirtingHours += skirtingAdjustHours;
     if(skirtingPaint.unit_rate > 0){
         skirtingUnitValue = skirtingSpace / skirtingPaint.unit_rate;
@@ -1506,29 +1501,15 @@ function onDeleteRoomClick(){
 function onSaveRoomClick(){
 
     var $page = $(this).closest('.caro-item');
-    var getf = function(elemId){
-        return parseFloat($page.find(elemId).val());
-    }
-
-    groupItems = getRoomGroupData($page);
 
     if(isObjectEmpty(CURRENT_PROJECT)){
         alert('Please select a project first.');
     }else{
-        saveRoom({
-            key:                    $page.find('.room-key').val(),
-            name:                   $page.find('.room-title').val(),
-            room_hours_adjust:      getf('.room-hours-adjust'),
-            room_length:            getf('.room-length'),
-            room_width:             getf('.room-width'),
-            room_height:            getf('.room-height'),
-            ceiling_adjust_simple:  getf('.ceiling-adjust-simple'),
-            wall_adjust_simple:     getf('.wall-adjust-simple'),
-            skirting_adjust_simple: getf('.skirting-adjust-simple'),
-            group_items:            groupItems,
-            is_default:             false,
-            project:                CURRENT_PROJECT.key
-        }, '.room-key');
+        room            = getRoomData($page);
+        room.key        = $page.find('.room-key').val();
+        room.name       = $page.find('.room-title').val();
+        room.project    = CURRENT_PROJECT.key;
+        saveRoom(room, '.room-key');
     }
 
 }

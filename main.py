@@ -199,14 +199,14 @@ class SaveRoom(webapp2.RequestHandler):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
         room.name                   = obj_room['name']
-        room.room_hours_adjust      = obj_room['room_hours_adjust']
-        room.room_width             = obj_room['room_width']
-        room.room_length            = obj_room['room_length']
-        room.room_height            = obj_room['room_height']
-        room.ceiling_adjust_simple  = obj_room['ceiling_adjust_simple']
-        room.wall_adjust_simple     = obj_room['wall_adjust_simple']
-        room.skirting_adjust_simple = obj_room['skirting_adjust_simple']
-        room.group_items            = obj_room['group_items']
+        room.room_hours_adjust      = obj_room['roomHoursAdjust']
+        room.room_width             = obj_room['roomWidth']
+        room.room_length            = obj_room['roomLength']
+        room.room_height            = obj_room['roomHeight']
+        room.ceiling_adjust_simple  = obj_room['ceilingAdjustSimple']
+        room.wall_adjust_simple     = obj_room['wallAdjustSimple']
+        room.skirting_adjust_simple = obj_room['skirtingAdjustSimple']
+        room.group_items            = obj_room['groupItems']
 
         room = room.put().get()
 

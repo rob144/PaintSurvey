@@ -83,13 +83,17 @@ function Caro(elem){
 
     var removeSlideContaining = function(selector){
         var $slides = getSlides();
+        var $targetSlides = [];
         if($slides.length >= 1){
             $slides.each(function(i, elem){
                 var $slide = $(elem);
                 if($slide.find(selector).length >= 1){
-                    removeSlide(i+1);
+                    $targetSlides.push(getSlide(i+1));
                 };
             });
+            for(var i = 0; i < $targetSlides.length; i++){
+                $targetSlides[i].remove();
+            }
         }
     }
 
