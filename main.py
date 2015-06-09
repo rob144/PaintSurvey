@@ -25,12 +25,12 @@ def json_serial(obj):
 
 class Home(webapp2.RequestHandler):
     def get(self):
-        #init_data() #Uncomment to init data for first time
+        #initData() #Uncomment to init data for first time
         
         default_room = DefaultRoom.query().fetch(1)[0].to_dict()
         rooms        = [r.to_dict() for r in Room.query().fetch(300)]
         projects     = [p.to_dict() for p in Project.query().fetch(20)]
-        paints       = [p.to_dict() for p in Paint.query().order(Paint.surface_type, Paint.order).fetch(300)]
+        paints       = [p.to_dict() for p in Paint.query().order(Paint.surfaceType, Paint.order).fetch(300)]
 
         self.response.write(
             JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
@@ -50,7 +50,7 @@ class GetPaints(webapp2.RequestHandler):
 
 class SaveSpec(webapp2.RequestHandler):
     def post(self):
-        surface_type = self.request.POST.get('surface_type')
+        surfaceType = self.request.POST.get('surface_type')
         paints = json.loads(self.request.POST.get('paints'))
         resp_paints = []
         paint_keys = []
@@ -62,21 +62,21 @@ class SaveSpec(webapp2.RequestHandler):
                 paint = ndb.Key(urlsafe=obj['key']).get()
                 if(paint):
                     paint.name          = obj['name'];
-                    paint.prod_rate_one = float(obj['prod_rate_one']);
-                    paint.prod_rate_two = float(obj['prod_rate_two']);
-                    paint.unit_rate     = float(obj['unit_rate']);
+                    paint.prodRateOne   = float(obj['prodRateOne']);
+                    paint.prodRateTwo   = float(obj['prodRateTwo']);
+                    paint.unitRate      = float(obj['unitRate']);
                     paint.order         = int(obj['order']);
                     resp_paints.append(paint.put().get())
             else:
                 #Create new paint
                 resp_paints.append(
                     Paint(
-                        name            = obj['name'],
-                        surface_type    = surface_type,
-                        prod_rate_one   = float(obj['prod_rate_one']),
-                        prod_rate_two   = float(obj['prod_rate_two']),
-                        unit_rate       = float(obj['unit_rate']),
-                        order           = Paint.query().order(-Paint.order).fetch(1)[0].order + 1
+                        name        = obj['name'],
+                        surfaceType = surfaceType,
+                        prodRateOne = float(obj['prodRateOne']),
+                        prodRateTwo = float(obj['prodRateTwo']),
+                        unitRate    = float(obj['unitRate']),
+                        order       = Paint.query().order(-Paint.order).fetch(1)[0].order + 1
                     ).put().get()
                 )
 
@@ -100,32 +100,32 @@ class SaveSpec(webapp2.RequestHandler):
         
 class CreateProject(webapp2.RequestHandler):
     def post(self):        
-        project_title = self.request.get('projectTitle')
-        project = Project(username='Test', title=project_title, date_created=datetime.now())
+        projectTitle = self.request.get('projectTitle')
+        project = Project(username='Test', title=projectTitle, dateCreated=datetime.now())
         project = project.put().get()
         
         #Copy paints from existing spec to the new project
         for paint in Paint.query(Paint.project == None).fetch(200):
             project.paints.append(
                 Paint(
-                    name            = paint.name,
-                    prod_rate_one   = paint.prod_rate_one,
-                    prod_rate_two   = paint.prod_rate_two,
-                    unit_rate       = paint.unit_rate,
-                    surface_type    = paint.surface_type,
-                    order           = paint.order,
-                    project         = project.key
+                    name          = paint.name,
+                    prodRateOne   = paint.prodRateOne,
+                    prodRateTwo   = paint.prodRateTwo,
+                    unitRate      = paint.unitRate,
+                    surfaceType   = paint.surfaceType,
+                    order         = paint.order,
+                    project       = project.key
                 ).put()
             )
 
         projects = Project.query().fetch(500)
-        paints = Paint.query().order(Paint.project, Paint.surface_type, Paint.order).fetch(500)
+        paints = Paint.query().order(Paint.project, Paint.surfaceType, Paint.order).fetch(500)
 
-        #Append new project to response to deal with ds latency.
+        #Append new project to response to deal with datastore latency.
         if(project.key not in [p.key for p in projects]):
             projects.append(project)
 
-        #Append new project paints to response to deal with ds latency.
+        #Append new project paints to response to deal with datastore latency.
         for proj_paint in project.paints:
             if(proj_paint not in [p.key for p in paints]):
                 paints.append(proj_paint.get())
@@ -172,16 +172,16 @@ class SaveDefaultRoom(webapp2.RequestHandler):
         if(obj_room['key'] != ""):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
-        room.name               = obj_room['name']
-        room.room_width         = obj_room['room_width']
-        room.room_length        = obj_room['room_length']
-        room.room_height        = obj_room['room_height']
-        room.door_width         = obj_room['door_width']
-        room.door_height        = obj_room['door_height']
-        room.window_width       = obj_room['window_width']
-        room.window_height      = obj_room['window_height']
-        room.radiator_width     = obj_room['radiator_width']
-        room.radiator_height    = obj_room['radiator_height']
+        room.name              = obj_room['name']
+        room.roomWidth         = obj_room['roomWidth']
+        room.roomLength        = obj_room['roomLength']
+        room.roomHeight        = obj_room['roomHeight']
+        room.doorWidth         = obj_room['doorWidth']
+        room.doorHeight        = obj_room['doorHeight']
+        room.windowWidth       = obj_room['windowWidth']
+        room.windowHeight      = obj_room['windowHeight']
+        room.radiatorWidth     = obj_room['radiatorWidth']
+        room.radiatorHeight    = obj_room['radiatorHeight']
         
         room = room.put().get()
 
@@ -198,15 +198,15 @@ class SaveRoom(webapp2.RequestHandler):
         if('key' in obj_room and obj_room['key'] != ""):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
-        room.name                   = obj_room['name']
-        room.room_hours_adjust      = obj_room['roomHoursAdjust']
-        room.room_width             = obj_room['roomWidth']
-        room.room_length            = obj_room['roomLength']
-        room.room_height            = obj_room['roomHeight']
-        room.ceiling_adjust_simple  = obj_room['ceilingAdjustSimple']
-        room.wall_adjust_simple     = obj_room['wallAdjustSimple']
-        room.skirting_adjust_simple = obj_room['skirtingAdjustSimple']
-        room.group_items            = obj_room['groupItems']
+        room.name                 = obj_room['name']
+        room.roomHoursAdjust      = obj_room['roomHoursAdjust']
+        room.roomWidth            = obj_room['roomWidth']
+        room.roomLength           = obj_room['roomLength']
+        room.roomHeight           = obj_room['roomHeight']
+        room.ceilingAdjustSimple  = obj_room['ceilingAdjustSimple']
+        room.wallAdjustSimple     = obj_room['wallAdjustSimple']
+        room.skirtingAdjustSimple = obj_room['skirtingAdjustSimple']
+        room.groupItems           = obj_room['groupItems']
 
         room = room.put().get()
 
@@ -235,13 +235,13 @@ class DeleteRoom(webapp2.RequestHandler):
         self.response.write(json.dumps(project.to_dict(), default=json_serial))   
 
 application = webapp2.WSGIApplication([
-    ('/', Home),
-    ('/createproject', CreateProject),
-    ('/getproject', GetProject),
-    ('/deleteproject', DeleteProject),
-    ('/saveroom', SaveRoom),
-    ('/savedefaultroom', SaveDefaultRoom),
-    ('/deleteroom', DeleteRoom),
-    ('/savespec', SaveSpec),
-    ('/getpaints', GetPaints)
+    ('/'                , Home            ),
+    ('/createproject'   , CreateProject   ),
+    ('/getproject'      , GetProject      ),
+    ('/deleteproject'   , DeleteProject   ),
+    ('/saveroom'        , SaveRoom        ),
+    ('/savedefaultroom' , SaveDefaultRoom ),
+    ('/deleteroom'      , DeleteRoom      ),
+    ('/savespec'        , SaveSpec        ),
+    ('/getpaints'       , GetPaints       )
 ], debug=True)

@@ -13,7 +13,18 @@ indexes:
 - kind: Paint
   properties:
   - name: project
+  - name: surfaceType
+  - name: order
+
+- kind: Paint
+  properties:
+  - name: project
   - name: surface_type
+  - name: order
+
+- kind: Paint
+  properties:
+  - name: surfaceType
   - name: order
 
 - kind: Paint
