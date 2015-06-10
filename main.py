@@ -50,7 +50,7 @@ class GetPaints(webapp2.RequestHandler):
 
 class SaveSpec(webapp2.RequestHandler):
     def post(self):
-        surfaceType = self.request.POST.get('surface_type')
+        surfaceType = self.request.POST.get('surfaceType')
         paints = json.loads(self.request.POST.get('paints'))
         resp_paints = []
         paint_keys = []
@@ -61,11 +61,11 @@ class SaveSpec(webapp2.RequestHandler):
                 #Update existing paint
                 paint = ndb.Key(urlsafe=obj['key']).get()
                 if(paint):
-                    paint.name          = obj['name'];
-                    paint.prodRateOne   = float(obj['prodRateOne']);
-                    paint.prodRateTwo   = float(obj['prodRateTwo']);
-                    paint.unitRate      = float(obj['unitRate']);
-                    paint.order         = int(obj['order']);
+                    paint.name          = obj['name']
+                    paint.prodRateOne   = float(obj['prodRateOne'])
+                    paint.prodRateTwo   = float(obj['prodRateTwo'])
+                    paint.unitRate      = float(obj['unitRate'])
+                    paint.order         = int(obj['order'])
                     resp_paints.append(paint.put().get())
             else:
                 #Create new paint
