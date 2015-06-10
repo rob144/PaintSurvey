@@ -713,7 +713,7 @@ function renderRoomCalculations(roomPage, tableData){
 }
 
 function buildResultsTable(tableData){
-    var results = '<table><tr><th>Part</th><th>Amount</th><th></th><th>Hours</th><th>Value</th></tr>';
+    var results = '<table class="room-calculations"><tr><th>Part</th><th>Amount</th><th></th><th>Hours</th><th>Value</th></tr>';
     var rowTemplate = '<tr><td>{0}</td><td class="tdRightAlign">{1}</td>';
     rowTemplate += '<td>{2}</td><td class="tdRightAlign">{3}</td><td class="tdRightAlign">{4}</td></tr>';
     var totalHours = 0;
@@ -1149,10 +1149,8 @@ function saveRoom(room, keyElem){
             if(status == 'success'){
               alert('Room saved.');
               MODEL.updateRoom(data);
-              //TODO: re-calculate project summary info
-              if(keyElem != null) {
-                  $(keyElem).val(data.key);
-              }
+              if(keyElem != null) $(keyElem).val(data.key);
+              initProjectSummaryPage();
             }else{
               alert('Error saving room.');
             }
@@ -1220,33 +1218,41 @@ function initProjectSummaryPage(){
 
     //Calculate work for each room and aggregate data.
     var $summaryPage = $('.caro-item .project-summary-page');
-    $summaryPage.find('.project-summary-info').html('');
+    var $box = $summaryPage.find('.project-summary-info');
+    var projectTotalHours = 0;
 
-    var totalHours = 0;
-    
+    $box.find('.project-total-rooms').html('');
+    $box.find('.project-total-hours').html('');
+    $box.find('.project-room-tables').html('');
+    $box.find('.project-room-list').html('');
+
     var getTotalHours = function(tableData){
-        for (i = 0; i < tableData.length; i++) {
+        var totalHours = 0;
+        for (var i = 0; i < tableData.length; i++) {
             row = tableData[i];
             totalHours += parseFloat(row.hours);  
         }
+        return totalHours;
     };
 
     if(CURRENT_PROJECT.rooms.length >= 1){
+        
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
-        var $box = $summaryPage.find('.project-summary-info');
 
         for(var i = 0; i < rooms.length; i++){
-            var room = rooms[i];
-
-            var $roomPage = $('.room-page:not(.hidden):eq('+ i +')');
-            var roomData = getRoomData($roomPage);
-            var tableData = calculateWorkForRoom(roomData);
             
-            $box.append('<p>' + getTotalHours(tableData) + '</p>');
-            $box.append('<p>' + room.dateCreated + '</p>');
-            $box.append('<p>' + buildResultsTable(tableData) + '</p>');
+            var tableData = calculateWorkForRoom(rooms[i]);
+            var table = buildResultsTable(tableData);            
+            projectTotalHours += getTotalHours(tableData);
 
+            $roomItem = $('<div class="room-summary-item"></div>');
+            $roomItem.append('<p>Room name: ' + rooms[i].name + '</p>');
+            $roomItem.append(table);
+            $box.find('.project-room-list').append($roomItem);
         }
+
+        $box.find('.project-total-rooms').html(rooms.length);
+        $box.find('.project-total-hours').html(projectTotalHours);
     }
 }
 
