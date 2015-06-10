@@ -440,6 +440,30 @@ input.spec-item-rate {
 #page-room-defaults input[type="number"] {
     text-align:center;
 }
+/* ********************* PROJECT SUMMARY PAGE ******************* */
+.project-summary-top {
+    background-color:#dff0d8;
+    border-radius:6px;
+    padding:0 10px 10px 10px;
+    overflow:auto;
+}
+.project-summary-info .row {
+    margin:10px 0 0 0;
+}
+.project-summary-info table.room-calculations {
+    width:100%;
+    border:none;
+    border-collapse:collapse;
+}
+.project-room-list {
+    margin:10px 0 0 0;
+}
+.room-summary-item {
+    background-color:#fff;
+    border-radius:6px;
+    margin:10px 0 0 0;
+    padding:10px;
+}
 /* ********************* ROOM PAGE ****************************** */
 .btn-add-room {
     float:right;
