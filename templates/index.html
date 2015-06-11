@@ -52,8 +52,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type='button' class='btn-save'>Save</button>
-                            <button type='button' class='btn-cancel'>Cancel</button>
+                            <div class='page-bottom-buttons'>
+                                <button type='button' class='btn-save'>Save</button>
+                                <button type='button' class='btn-cancel'>Cancel</button>
+                            </div>
                         </form>
 
                         <form id='form-view-spec'>
@@ -108,7 +110,9 @@
                                 <label>Radiator height</label>
                                 <input id='default-radiator-height' type='number' step='any' min='0' placeholder='height' class='decimal round-corners-input'/>
                             </div>
-                            <button type='button' class='btn-save'>Save</button>
+                            <div class='page-bottom-buttons'>
+                                <button type='button' class='btn-save'>Save</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -174,8 +178,7 @@
                               </div>
                               <div class='room-top-row-right'>
                                   <table class='input-pill'>
-                                      <tr>
-                                          
+                                      <tr>       
                                           <td class='last-child'>
                                               <input name='room-hours-adjust' class='room-hours-adjust decimal pos-neg' type='number' step='any' placeholder=''/>
                                           </td>
@@ -642,7 +645,7 @@
                               </div>
                           </div>
 
-                          <div class='room-bottom-buttons'>
+                          <div class='page-bottom-buttons'>
                               <button type='button' id='btn-calculate' class='btn-calculate-room'>Calculate</button>
                               <button type='button' class='btn-save-room'>Save</button>
                               <button type='button' class='btn-delete-room'>Delete</button>
