@@ -970,22 +970,22 @@ function swapElements(elm1, elm2) {
 function showEditSpecView(){
     var $clickedButton = $(this);
     
-    var surface_type = $clickedButton.closest('.spec-item-block')
+    var surfaceType = $clickedButton.closest('.spec-item-block')
                           .find('.spec-item-title').text();
     
-    $('#spec-surface-type').val(surface_type);
+    $('#spec-surface-type').val(surfaceType);
 
-    var paints = MODEL.getPaintsByType(surface_type, null);
+    var paints = MODEL.getPaintsByType(surfaceType, null);
     //For each paint of this surface type, build the edit inputs.
     $.each(paints, function(i, paint) {  
-        if (paint.surface_type.toLowerCase() == surface_type.toLowerCase()) {
+        if (paint.surfaceType.toLowerCase() == surfaceType.toLowerCase()) {
             var $newBlock = $('#form-edit-spec .input-block:first').clone();
             $newBlock.find('input.spec-item-key'    ) .val( paint.key             );
             $newBlock.find('input.spec-item-order'  ) .val( paint.order           );
             $newBlock.find('input.spec-item-name'   ) .val( paint.name            );
-            $newBlock.find('input.spec-item-pr1'    ) .val( paint.prod_rate_one   );
-            $newBlock.find('input.spec-item-pr2'    ) .val( paint.prod_rate_two   );
-            $newBlock.find('input.spec-item-rate'   ) .val( paint.unit_rate       );
+            $newBlock.find('input.spec-item-pr1'    ) .val( paint.prodRateOne   );
+            $newBlock.find('input.spec-item-pr2'    ) .val( paint.prodRateTwo   );
+            $newBlock.find('input.spec-item-rate'   ) .val( paint.unitRate       );
             $newBlock.removeClass('hidden');
             $newBlock.insertAfter('#form-edit-spec .input-block:last');
             $btnRemove = $newBlock.find('.btn-remove-row:first');
@@ -1096,13 +1096,13 @@ function onSpecSave(){
     $('#form-edit-spec .input-block:not(.hidden)').each( function(index, elem){
         var $elemBlock = $(elem);
         arrSpecItemData.push({ 
-            key:            $elemBlock.find('.spec-item-key').val(),
-            order:          $elemBlock.find('.spec-item-order').val(),
-            name:           $elemBlock.find('.spec-item-name').val().trim(),
-            prod_rate_one:  $elemBlock.find('.spec-item-pr1').val(),
-            prod_rate_two:  $elemBlock.find('.spec-item-pr2').val(),
-            unit_rate:      $elemBlock.find('.spec-item-rate').val(), 
-            surface_type:   $('#spec-surface-type').val()
+            key:          $elemBlock.find('.spec-item-key').val(),
+            order:        $elemBlock.find('.spec-item-order').val(),
+            name:         $elemBlock.find('.spec-item-name').val().trim(),
+            prodRateOne:  $elemBlock.find('.spec-item-pr1').val(),
+            prodRateTwo:  $elemBlock.find('.spec-item-pr2').val(),
+            unitRate:     $elemBlock.find('.spec-item-rate').val(), 
+            surfaceType:  $('#spec-surface-type').val()
         });
     });
 
@@ -1110,7 +1110,7 @@ function onSpecSave(){
         httpMethod: 'POST',
         url: '/savespec',
         data: { 
-          surface_type: $('#spec-surface-type').val(), 
+          surfaceType: $('#spec-surface-type').val(), 
           paints: JSON.stringify( arrSpecItemData ) 
         },
         dataType: 'json',
@@ -1122,15 +1122,15 @@ function onSpecSave(){
     
 }
 
-function deleteRoom(room_key){
+function deleteRoom(roomKey){
 
     //Do an ajax call to save the room data
     doXhr({
         httpMethod: 'POST',
         url: '/deleteroom',
-        data: { room_key: room_key },
+        data: { room_key: roomKey },
         successFunc: function(data){
-                          MODEL.deleteRoom(room_key);
+                          MODEL.deleteRoom(roomKey);
                           CURRENT_PROJECT = data;
                           selectProject(CURRENT_PROJECT.key, true);
                       }
@@ -1577,6 +1577,7 @@ function initDecimalInputs(){
 }
 
 function addInputBlock(context){
+
         //Buttons to add groups of inputs.
         //Set up events for various inputs in the new block if present.
         var $group = $(context).closest('.input-group');
@@ -1609,8 +1610,8 @@ function addInputBlock(context){
 
 function initAddInputBlockButtons(){
 
-    $('#btn-add-spec-item,.btn-add-row').off('click');
-    $('#btn-add-spec-item,.btn-add-row').click( function(){
+    $('.btn-add-spec-item,.btn-add-row').off('click');
+    $('.btn-add-spec-item,.btn-add-row').click( function(){
         addInputBlock(this);
     });
 }

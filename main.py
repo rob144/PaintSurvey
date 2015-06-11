@@ -50,26 +50,26 @@ class GetPaints(webapp2.RequestHandler):
 
 class SaveSpec(webapp2.RequestHandler):
     def post(self):
-        surfaceType = self.request.POST.get('surface_type')
+        surfaceType = self.request.POST.get('surfaceType')
         paints = json.loads(self.request.POST.get('paints'))
-        resp_paints = []
-        paint_keys = []
+        respRaints = []
+        paintKeys = []
 
         for obj in paints:
-            paint_keys.append(obj['key'])
+            paintKeys.append(obj['key'])
             if(obj['key'] != ''):
                 #Update existing paint
                 paint = ndb.Key(urlsafe=obj['key']).get()
                 if(paint):
-                    paint.name          = obj['name'];
-                    paint.prodRateOne   = float(obj['prodRateOne']);
-                    paint.prodRateTwo   = float(obj['prodRateTwo']);
-                    paint.unitRate      = float(obj['unitRate']);
-                    paint.order         = int(obj['order']);
-                    resp_paints.append(paint.put().get())
+                    paint.name          = obj['name']
+                    paint.prodRateOne   = float(obj['prodRateOne'])
+                    paint.prodRateTwo   = float(obj['prodRateTwo'])
+                    paint.unitRate      = float(obj['unitRate'])
+                    paint.order         = int(obj['order'])
+                    respRaints.append(paint.put().get())
             else:
                 #Create new paint
-                resp_paints.append(
+                respRaints.append(
                     Paint(
                         name        = obj['name'],
                         surfaceType = surfaceType,
@@ -81,22 +81,22 @@ class SaveSpec(webapp2.RequestHandler):
                 )
 
         #Do deletions
-        all_paints = Paint.query(Paint.surface_type == surface_type).fetch(500)
+        allPaints = Paint.query(Paint.surfaceType == surfaceType).fetch(500)
 
-        for p in all_paints:
-            if p.key.urlsafe() not in paint_keys:
+        for p in allPaints:
+            if p.key.urlsafe() not in paintKeys:
                 p.key.delete()
 
         #Combine the other types of paints so we send all the
         #most up to date data to the client
-        other_paints = Paint.query(Paint.surface_type != surface_type).order(Paint.surface_type, Paint.order).fetch(500)
-        for p in other_paints:
-            resp_paints.append(p)
+        otherPaints = Paint.query(Paint.surfaceType != surfaceType).order(Paint.surfaceType, Paint.order).fetch(500)
+        for p in otherPaints:
+            respRaints.append(p)
 
-        resp_paints.sort(key=lambda x:x.order)
+        respRaints.sort(key=lambda x:x.order)
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps([p.to_dict() for p in resp_paints], default=json_serial))
+        self.response.write(json.dumps([p.to_dict() for p in respRaints], default=json_serial))
         
 class CreateProject(webapp2.RequestHandler):
     def post(self):        
