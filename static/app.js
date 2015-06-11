@@ -1577,6 +1577,7 @@ function initDecimalInputs(){
 }
 
 function addInputBlock(context){
+
         //Buttons to add groups of inputs.
         //Set up events for various inputs in the new block if present.
         var $group = $(context).closest('.input-group');
@@ -1609,8 +1610,8 @@ function addInputBlock(context){
 
 function initAddInputBlockButtons(){
 
-    $('#btn-add-spec-item,.btn-add-row').off('click');
-    $('#btn-add-spec-item,.btn-add-row').click( function(){
+    $('.btn-add-spec-item,.btn-add-row').off('click');
+    $('.btn-add-spec-item,.btn-add-row').click( function(){
         addInputBlock(this);
     });
 }
