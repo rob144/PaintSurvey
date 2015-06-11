@@ -84,7 +84,7 @@ td.last-child {
     display:none;
 }
 .btn-save, .btn-cancel, #btn-create-project, .btn-calculate-room, 
-.btn-save-room, .btn-delete-room {
+.btn-save-room, .btn-delete-room, .btn-delete-data, .btn-init-data {
     display: inline-block;
     min-width: 100px;
     min-height: 40px;
@@ -95,6 +95,11 @@ td.last-child {
     cursor: pointer;
     border: 1px solid transparent;
     border-radius: 4px;
+}
+.btn-delete-data, .btn-init-data {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
 }
 .btn-save {
     color: #fff;
@@ -378,6 +383,10 @@ table.input-pill tr:first-child td:first-child {
     border-radius:6px;
     width:60px;
     height:40px;
+}
+/* ************************** ADMIN PAGE ************************ */
+.admin-box {
+    padding:10px;
 }
 /* ********************* SPECIFICATION PAGE ********************* */
 #form-edit-spec .input-block {

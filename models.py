@@ -62,12 +62,13 @@ def createDefaultRoom():
         radiatorHeight = 0.5
     )
 
-def initData():
-    #ndb.delete_multi(Project.query().fetch(keys_only=True))
-    #ndb.delete_multi(Room.query().fetch(keys_only=True))
-    #ndb.delete_multi(DefaultRoom.query().fetch(keys_only=True))
-    #ndb.delete_multi(Paint.query().fetch(keys_only=True))
+def deleteData():
+    ndb.delete_multi(Project.query().fetch(keys_only=True))
+    ndb.delete_multi(Room.query().fetch(keys_only=True))
+    ndb.delete_multi(DefaultRoom.query().fetch(keys_only=True))
+    ndb.delete_multi(Paint.query().fetch(keys_only=True))
 
+def initData():
     #Create room defaults if not there already.
     if(DefaultRoom.query().count() < 1):
         createDefaultRoom().put()

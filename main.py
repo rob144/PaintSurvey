@@ -24,9 +24,7 @@ def json_serial(obj):
         return obj.urlsafe()
 
 class Home(webapp2.RequestHandler):
-    def get(self):
-        #initData() #Uncomment to init data for first time
-        
+    def get(self):  
         default_room = DefaultRoom.query().fetch(1)[0].to_dict()
         rooms        = [r.to_dict() for r in Room.query().fetch(300)]
         projects     = [p.to_dict() for p in Project.query().fetch(20)]
@@ -40,6 +38,22 @@ class Home(webapp2.RequestHandler):
                 'paints':       json.dumps(paints,      indent=4, default=json_serial)
             }) 
         )
+
+class Admin(webapp2.RequestHandler):
+    def get(self):
+        self.response.write(
+            JINJA_ENV.get_template(TEMPLATES_DIR + 'admin.html').render()
+        )
+
+class DeleteData(webapp2.RequestHandler):
+    def post(self):
+        deleteData()
+        self.response.write('data deleted')
+
+class InitData(webapp2.RequestHandler):
+    def post(self):
+        initData()
+        self.response.write('data initialized')
 
 class GetPaints(webapp2.RequestHandler):
     def get(self):
@@ -243,5 +257,8 @@ application = webapp2.WSGIApplication([
     ('/savedefaultroom' , SaveDefaultRoom ),
     ('/deleteroom'      , DeleteRoom      ),
     ('/savespec'        , SaveSpec        ),
-    ('/getpaints'       , GetPaints       )
+    ('/getpaints'       , GetPaints       ),
+    ('/admin'           , Admin           ),
+    ('/deletedata'      , DeleteData      ),
+    ('/initdata'        , InitData        ),
 ], debug=True)
