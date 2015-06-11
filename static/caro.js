@@ -326,7 +326,7 @@ function Caro(elem){
     $caroWindow.off('mouseup').on('mouseup', function(e){ 
 
         CARO_INFO.mousedown = false; 
-        if(CARO_INFO.mouseupAnimation !== null){
+        if(CARO_INFO.mouseupAnimation instanceof Function){
             CARO_INFO.mouseupAnimation();
             CARO_INFO.mouseupAnimation = null;
         };

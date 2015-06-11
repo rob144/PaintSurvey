@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Paint Survey</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="/static/main.css" />
+        <script src="/static/lib/jquery-1.11.2.min.js"></script>
+    </head>
+    <body>
+        <h1 id='app-title'>Paint Survey Admin</h1>
+        
+        <div class='admin-box'>
+            <button class='btn-delete-data' type="button">Delete Data</button>
+            <button class='btn-init-data' type="button">Initialize Data</button>
+        </div>
+
+        <div class='loadingDivOuter'></div>
+
+        <div id='view-components'>
+            <div class='loadingDivOuter template'>
+                <span>LOADING</span>
+                <div class='loadingDiv'>
+                    <img src='/static/loading.gif' alt='loading' />
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+    <script src="/static/common.js"></script>
+    <script src="/static/admin.js"></script>
+</html>
