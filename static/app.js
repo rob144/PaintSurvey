@@ -535,7 +535,7 @@ function calculateWorkForRoom(room){
                 skirtingAdjustHours += (space / skirtingPaint.prodRateTwo);
             }  
             if(skirtingPaint.unitRate > 0){
-                skirtingUnitValue += (space / skirtingPaint.unitRate);
+                skirtingAdjustUnitValue += (space / skirtingPaint.unitRate);
             }  
         }
     }
@@ -656,7 +656,7 @@ function calculateWorkForRoom(room){
     ceilingHours += room.ceilingAdjustSimple;
     ceilingHours += ceilingAdjustHours;
     if(ceilingPaint.unitRate){
-        ceilingUnitValue = ceilingSpace / ceilingPaint.unitRate;
+        ceilingUnitValue += ceilingSpace / ceilingPaint.unitRate;
     }
 
     var wallPaint = getDefaultPaint('walls');
@@ -664,7 +664,7 @@ function calculateWorkForRoom(room){
     wallHours += room.wallAdjustSimple;
     wallHours += wallAdjustHours;
     if(wallPaint.unitRate > 0){
-        wallUnitValue = wallSpace / wallPaint.unitRate;
+        wallUnitValue += wallSpace / wallPaint.unitRate;
     }
 
     var skirtingPaint = getDefaultPaint('isolated-surfaces');
@@ -672,7 +672,7 @@ function calculateWorkForRoom(room){
     skirtingHours += room.skirtingAdjustSimple;
     skirtingHours += skirtingAdjustHours;
     if(skirtingPaint.unitRate > 0){
-        skirtingUnitValue = skirtingSpace / skirtingPaint.unitRate;
+        skirtingUnitValue += skirtingSpace / skirtingPaint.unitRate;
     }
 
     /* If there are positive adjustments, we add to ceiling, wall and skirting 
@@ -682,21 +682,21 @@ function calculateWorkForRoom(room){
     ceilingUnitValue += ceilingAdjustUnitValue;
 
     if(wallAdjustSpace > 0) wallSpace += wallAdjustSpace;
-    wallUnitValue += ceilingAdjustUnitValue;
+    wallUnitValue += wallAdjustUnitValue;
     
     if(skirtingAdjustSpace > 0) skirtingSpace += skirtingAdjustSpace;
     skirtingUnitValue += skirtingAdjustUnitValue;
 
     var tableData = [
-        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingHours,          rateValue: ceilingUnitValue },
-        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallHours,             rateValue: wallUnitValue },
-        { title: 'DOOR AREA',   amount: doorSurface,     units: 'm2', hours: doorSurfHours,         rateValue: doorSurfUnitValue },
+        { title: 'CEILING',     amount: ceilingSpace,    units: 'm2', hours: ceilingHours,          rateValue: ceilingUnitValue   },
+        { title: 'WALL',        amount: wallSpace,       units: 'm2', hours: wallHours,             rateValue: wallUnitValue      },
+        { title: 'DOOR AREA',   amount: doorSurface,     units: 'm2', hours: doorSurfHours,         rateValue: doorSurfUnitValue  },
         { title: 'DOOR FRAME',  amount: doorFrame,       units: 'm',  hours: doorFrameHours,        rateValue: doorFrameUnitValue },
-        { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowHours,           rateValue: windowUnitValue },
-        { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorHours,         rateValue: radiatorUnitValue },
-        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingHours,         rateValue: skirtingUnitValue },
-        { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours,    rateValue: genSurfUnitValue },
-        { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours,  rateValue: isolSurfUnitValue }
+        { title: 'WINDOW',      amount: windowSpace,     units: 'm2', hours: windowHours,           rateValue: windowUnitValue    },
+        { title: 'RADIATOR',    amount: radiatorSpace,   units: 'm2', hours: radiatorHours,         rateValue: radiatorUnitValue  },
+        { title: 'SKIRTING',    amount: skirtingSpace,   units: 'm2', hours: skirtingHours,         rateValue: skirtingUnitValue  },
+        { title: 'GENERAL SURFACE',    amount: genSurfSpace,   units: 'm2', hours: genSurfHours,    rateValue: genSurfUnitValue   },
+        { title: 'ISOLATED SURFACE',    amount: isolSurfSpace,   units: 'm', hours: isolSurfHours,  rateValue: isolSurfUnitValue  }
     ];
 
     return tableData;
@@ -721,6 +721,7 @@ function buildResultsTable(tableData){
     
     for (i = 0; i < tableData.length; ++i) {
         obj = tableData[i];
+        //TODO: check if the rate value is calculated correctly before buildResultsTable
         var rateValue = roundAndFix(obj.rateValue * obj.amount, 2);
         results += rowTemplate.format(
             obj.title,
@@ -1231,10 +1232,17 @@ function initProjectSummaryPage(){
     var getTotalHours = function(tableData){
         var totalHours = 0;
         for (var i = 0; i < tableData.length; i++) {
-            row = tableData[i];
-            totalHours += parseFloat(row.hours);  
+            totalHours += parseFloat(tableData[i].hours);  
         }
         return totalHours;
+    };
+
+    var getTotalValue = function(tableData){
+        var totalValue = 0;
+        for (var i = 0; i < tableData.length; i++) {
+            totalValue += parseFloat(tableData[i].rateValue);  
+        }
+        return totalValue;
     };
 
     if(CURRENT_PROJECT.rooms.length >= 1){
@@ -1242,10 +1250,11 @@ function initProjectSummaryPage(){
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
 
         for(var i = 0; i < rooms.length; i++){
-            
             var tableData = calculateWorkForRoom(rooms[i]);
-            var table = buildResultsTable(tableData);            
+            var table = buildResultsTable(tableData); 
+            projectTotalRooms++;           
             projectTotalHours += getTotalHours(tableData);
+            projectTotalValue += getTotalValue(tableData);
 
             $roomItem = $('<div class="room-summary-item"></div>');
             $roomItem.append('<p>Room name: ' + rooms[i].name + '</p>');
@@ -1254,7 +1263,7 @@ function initProjectSummaryPage(){
         }
     }
 
-    $box.find('.project-total-rooms').html(projectTotalRooms.toFixed(2));
+    $box.find('.project-total-rooms').html(projectTotalRooms);
     $box.find('.project-total-hours').html(projectTotalHours.toFixed(2));
     $box.find('.project-total-value').html(projectTotalValue.toFixed(2));
 }
