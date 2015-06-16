@@ -50,6 +50,7 @@ function Caro(elem){
 
     var resizeUi = function(forceScrollBar){
         
+        var caroLeftAdjust = 0;
         var $slides = $caroStage.find('.caro-item');
         $caroStage.width($slides.width() * $slides.length + 2);
         $slides.width( $caroWindow.width() );
@@ -57,10 +58,11 @@ function Caro(elem){
         //Realign stage
         var offset = $caroStage.offset();
         var $nearestSlide = getNearestSlide($caroWindow.offset().left);
-        var newLeft = ($nearestSlide) ? $nearestSlide.offset().left : 0;
+
+        caroLeftAdjust = ($nearestSlide) ? $nearestSlide.offset().left : 0;
         $caroStage.offset({
             top: offset.top, 
-            left: offset.left += (-1 * newLeft) 
+            left: offset.left += (-1 * caroLeftAdjust) 
         });
 
         //Set the height
@@ -136,16 +138,28 @@ function Caro(elem){
     };
 
     var getCurrentSlide = function(){
-        var $currSlide;
-        $caroStage.find('.caro-item').each(function(){
-            var $slide = $(this);
-            if( $slide.offset().left >= ($caroWindow.offset().left - 2)
-                && $slide.offset().left <= ($caroWindow.offset().left + 2)){
-                $currSlide = $slide;
-                return false;
+        
+        var targetIndex;
+        var minDiff = $caroStage.width();
+        var $slides = $caroStage.find('.caro-item');
+
+        //Find the slide with the most area inside the caro window
+        $slides.each(function(index, elem){
+
+            var $slide = $(elem);
+            var diffLeft = $slide.offset().left - $caroWindow.offset().left;
+            var diffRight = $slide.offset().left + $slide.width() 
+                            - ($caroWindow.offset().left + $caroWindow.width());
+            var diff = Math.abs(diffLeft) + Math.abs(diffRight);
+            
+            if(diff < minDiff){
+                minDiff = diff;
+                targetIndex = index;
             }
+
         });
-        return $currSlide;
+
+        return $slides.eq(targetIndex);
     }
 
     var moveSlide = function(vector, onComplete){
@@ -156,7 +170,7 @@ function Caro(elem){
 
         //Get the current slide.
         var $currSlide = getCurrentSlide();
-        
+
         //Check if the next or previous slide exists.
         if((vector < 0 && $currSlide.next().length) 
             || (vector > 0 && $currSlide.prev().length)){
@@ -286,9 +300,9 @@ function Caro(elem){
         var min = null;
         var $nearestElem = null;
 
-        if(position === null) position = $caroWindow.offset().left;
-        if(elems    === null) elems = $caroStage.find('.caro-item');
-        
+        if(position == null) position = $caroWindow.offset().left;
+        if(elems    == null) elems = $caroStage.find('.caro-item');
+
         if(elems){
             for(var i = 0; i < elems.length; i++){
                 var $elem = $(elems[i]);
@@ -335,8 +349,8 @@ function Caro(elem){
     });
 
     /* Add the nav controls */
-    $caro.prepend('<div class="caro-nav-btn caro-nav-next">Next</a>');
-    $caro.prepend('<div class="caro-nav-btn caro-nav-prev">Prev</a>');
+    $caro.prepend('<div class="caro-nav-btn caro-nav-next">Next</div>');
+    $caro.prepend('<div class="caro-nav-btn caro-nav-prev">Prev</div>');
     $caro.find('.caro-nav-prev').click(prevSlide);
     $caro.find('.caro-nav-next').click(nextSlide);
     $caroWindow.append('<p class="fix-height"></p>');
