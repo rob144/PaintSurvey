@@ -44,22 +44,24 @@ function Caro(elem){
             addSlide($(elem).html());
         });
         $(window).resize(function(){
-            resizeUi(true);
+            clearTimeout(this.id);
+            this.id = setTimeout(function(){ resizeUi(true); }, 400);
         })
     }
 
     var resizeUi = function(forceScrollBar){
         
         var caroLeftAdjust = 0;
+        var $nearestSlide = getNearestSlide($caroWindow.offset().left);
         var $slides = $caroStage.find('.caro-item');
-        $caroStage.width($slides.width() * $slides.length + 2);
+        
+        $caroStage.width($slides.width() * $slides.length + 10000);
         $slides.width( $caroWindow.width() );
         
         //Realign stage
         var offset = $caroStage.offset();
-        var $nearestSlide = getNearestSlide($caroWindow.offset().left);
-
         caroLeftAdjust = ($nearestSlide) ? $nearestSlide.offset().left : 0;
+
         $caroStage.offset({
             top: offset.top, 
             left: offset.left += (-1 * caroLeftAdjust) 
@@ -295,17 +297,15 @@ function Caro(elem){
         }
     });
 
-    var getNearestSlide = function(position, elems){
+    var getNearestSlide = function(position){
         
         var min = null;
         var $nearestElem = null;
+        elems = $caroStage.find('.caro-item');
 
-        if(position == null) position = $caroWindow.offset().left;
-        if(elems    == null) elems = $caroStage.find('.caro-item');
-
-        if(elems){
-            for(var i = 0; i < elems.length; i++){
-                var $elem = $(elems[i]);
+        for(var i = 0; i < elems.length; i++){
+            var $elem = $(elems[i]);
+            if($elem.offset().left >= (position - 100)){
                 var newMin = Math.abs(position - $elem.offset().left);
                 if(min == null || newMin < min){
                     $nearestElem = $elem;
@@ -363,6 +363,7 @@ function Caro(elem){
         removeSlide:    removeSlide,
         removeSlideContaining: removeSlideContaining,
         registerCallback: registerCallback,
+        getNearestSlide: getNearestSlide,
         getCurrentSlide: getCurrentSlide,
         nextSlide:      nextSlide,
         prevSlide:      prevSlide,
