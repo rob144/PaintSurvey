@@ -69,6 +69,7 @@ function Caro(elem){
 
         //Set the height
         $caroWindow.css('min-height', $caroStage.height() + 'px');
+        $slides.css('min-height', $caroStage.height() + 'px');
         if(forceScrollBar && $caroWindow.height() < $(window).height() + 1){
             $caroWindow.css('min-height', ($(window).height() + 1) + 'px');
         }
@@ -243,6 +244,38 @@ function Caro(elem){
         return null;
     };
 
+    var dragStage = function(pageX, currSlide){
+        
+        var $currSlide = $(currSlide);
+        var vector = pageX - CARO_INFO.startX;
+        var direction = 0;
+        var distance = Math.abs(vector);
+        var newLeft = $caroStage.position().left + pageX - CARO_INFO.trackX;
+
+        if(distance != 0){
+              
+            /* If distance >10px, slide all the way to the next or prev item */
+            if(distance > 10){
+
+                if(vector < 0) {
+                    direction = -1; //Moving stage from right to left
+                }else if(vector > 0){
+                    direction = 1; //Moving stage from left to right
+                }
+
+                var targetSlide = getTargetSlide($currSlide, direction);
+
+                if(targetSlide !== null){
+                    CARO_INFO.mouseupAnimation = function(){
+                        animateToSlide(targetSlide);
+                    }
+                    $caroStage.css({ left: newLeft });
+                    CARO_INFO.trackX = pageX;
+                }
+            }
+        }
+    }
+
     /* Setup the touch and drag events */
     $caroWindow.off('mousedown').on('mousedown', function(e){
         
@@ -259,42 +292,9 @@ function Caro(elem){
         CARO_INFO.mouseupAnimation = function(){};
     });
 
-    var findElemByCoords = function(){
-
-    }
-
     $caroStage.off('mousemove').on('mousemove', function(event){
-
-        if(CARO_INFO.mousedown){
-            
-            var $currSlide = $(event.target).closest('.caro-item');
-            var newLeft = $caroStage.position().left + event.pageX - CARO_INFO.trackX;
-            var vector = event.pageX - CARO_INFO.startX;
-            var direction = 0;
-            
-            if(vector != 0){
-                
-                var distance = Math.abs(vector);
-               
-                /* If distance >10px, slide all the way to the next or prev item */
-                if(distance > 10){
-
-                    if(vector < 0) {
-                        direction = -1; //Moving stage from right to left
-                    }else if(vector > 0){
-                        direction = 1; //Moving stage from left to right
-                    }
-
-                    var targetSlide = getTargetSlide($currSlide, direction);
-                    if(targetSlide !== null){
-                        CARO_INFO.mouseupAnimation = function(){
-                            animateToSlide(targetSlide);
-                        }
-                        $caroStage.css({ left: newLeft });
-                        CARO_INFO.trackX = event.pageX;
-                    }
-                }
-            }
+        if(CARO_INFO.mousedown){ 
+            dragStage(event.pageX, $(event.target).closest('.caro-item'));
         }
     });
 
@@ -359,20 +359,20 @@ function Caro(elem){
     init();
 
     return { 
-        caroElem:       $caro,
-        addSlide:       addSlide, 
-        removeSlide:    removeSlide,
-        removeSlideContaining: removeSlideContaining,
-        registerCallback: registerCallback,
-        getNearestSlide: getNearestSlide,
-        getCurrentSlide: getCurrentSlide,
-        nextSlide:      nextSlide,
-        prevSlide:      prevSlide,
-        isLastSlide:    isLastSlide,
-        getSlides:      getSlides,
-        getSlide:       getSlide,
-        getLast:        getLast,
-        resizeUi:       resizeUi
+        caroElem:               $caro,
+        addSlide:               addSlide, 
+        removeSlide:            removeSlide,
+        removeSlideContaining:  removeSlideContaining,
+        registerCallback:       registerCallback,
+        getNearestSlide:        getNearestSlide,
+        getCurrentSlide:        getCurrentSlide,
+        nextSlide:              nextSlide,
+        prevSlide:              prevSlide,
+        isLastSlide:            isLastSlide,
+        getSlides:              getSlides,
+        getSlide:               getSlide,
+        getLast:                getLast,
+        resizeUi:               resizeUi
     };
 };
 
