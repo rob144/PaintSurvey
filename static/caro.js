@@ -228,16 +228,16 @@ function Caro(elem){
         }
     };
 
-    var getTargetSlide = function(direction){
+    var getTargetSlide = function(currSlide, direction){
         
-        var $currElem = $(CARO_INFO.draggedSlide);
+        var $currSlide = $(currSlide);
 
-        if(direction < 0 && $currElem.next().length){
-            return $currElem.next();
+        if(direction < 0 && $currSlide.next().length){
+            return $currSlide.next();
         }
             
-        if(direction > 0 && $currElem.prev().length){
-            return $currElem.prev();
+        if(direction > 0 && $currSlide.prev().length){
+            return $currSlide.prev();
         }
 
         return null;
@@ -259,39 +259,40 @@ function Caro(elem){
         CARO_INFO.mouseupAnimation = function(){};
     });
 
-    $caroWindow.off('mousemove').on('mousemove', function(e){
+    var findElemByCoords = function(){
+
+    }
+
+    $caroStage.off('mousemove').on('mousemove', function(event){
+
         if(CARO_INFO.mousedown){
             
-            var newLeft = $caroStage.position().left + e.pageX - CARO_INFO.trackX;
-            var vector = e.pageX - CARO_INFO.startX;
+            var $currSlide = $(event.target).closest('.caro-item');
+            var newLeft = $caroStage.position().left + event.pageX - CARO_INFO.trackX;
+            var vector = event.pageX - CARO_INFO.startX;
             var direction = 0;
+            
             if(vector != 0){
                 
                 var distance = Math.abs(vector);
                
                 /* If distance >10px, slide all the way to the next or prev item */
                 if(distance > 10){
+
                     if(vector < 0) {
                         direction = -1; //Moving stage from right to left
                     }else if(vector > 0){
                         direction = 1; //Moving stage from left to right
                     }
-                    /* Work out distance to target slide left position */
-                    var targetSlide = getTargetSlide(direction);
+
+                    var targetSlide = getTargetSlide($currSlide, direction);
                     if(targetSlide !== null){
                         CARO_INFO.mouseupAnimation = function(){
                             animateToSlide(targetSlide);
                         }
+                        $caroStage.css({ left: newLeft });
+                        CARO_INFO.trackX = event.pageX;
                     }
-                }
-
-                //Drag stage if still within bounds
-                if(direction == 1 && $caroStage.offset().left < $caroWindow.offset().left
-                    || direction == -1 && $caroStage.offset().left + $caroStage.outerWidth() 
-                    > $caroWindow.offset().left + $caroWindow.outerWidth()){
-                    
-                    $caroStage.css({ left: newLeft });
-                    CARO_INFO.trackX = e.pageX;
                 }
             }
         }
