@@ -259,10 +259,6 @@ function Caro(elem){
         CARO_INFO.mouseupAnimation = function(){};
     });
 
-    var findElemByCoords = function(){
-
-    }
-
     $caroStage.off('mousemove').on('mousemove', function(event){
 
         if(CARO_INFO.mousedown){
@@ -359,20 +355,20 @@ function Caro(elem){
     init();
 
     return { 
-        caroElem:       $caro,
-        addSlide:       addSlide, 
-        removeSlide:    removeSlide,
-        removeSlideContaining: removeSlideContaining,
-        registerCallback: registerCallback,
-        getNearestSlide: getNearestSlide,
-        getCurrentSlide: getCurrentSlide,
-        nextSlide:      nextSlide,
-        prevSlide:      prevSlide,
-        isLastSlide:    isLastSlide,
-        getSlides:      getSlides,
-        getSlide:       getSlide,
-        getLast:        getLast,
-        resizeUi:       resizeUi
+        caroElem:               $caro,
+        addSlide:               addSlide, 
+        removeSlide:            removeSlide,
+        removeSlideContaining:  removeSlideContaining,
+        registerCallback:       registerCallback,
+        getNearestSlide:        getNearestSlide,
+        getCurrentSlide:        getCurrentSlide,
+        nextSlide:              nextSlide,
+        prevSlide:              prevSlide,
+        isLastSlide:            isLastSlide,
+        getSlides:              getSlides,
+        getSlide:               getSlide,
+        getLast:                getLast,
+        resizeUi:               resizeUi
     };
 };
 
