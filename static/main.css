@@ -201,6 +201,7 @@ td.last-child {
     border-radius: 4px;
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    cursor:pointer;
 }
 .open > .dropdown-menu {
     display: block;
@@ -629,8 +630,10 @@ td.result {
     border:none;
     border-collapse:collapse;
 }
-.results table td, .results table th {
-    padding:2px 6px; 2px 0;
+.results table td, .results table th,
+table.room-calculations th, 
+table.room-calculations td {
+    padding:2px 6px 2px 0;
 }
 .room-item-top-row {
     overflow:auto;
