@@ -460,7 +460,7 @@ function calculateWorkForRoom(room){
                 ceilingAdjustHours += (space / paint.prodRateTwo);
             }
             if(paint.unitRate > 0){
-                ceilingAdjustUnitValue += (space / paint.unitRate);
+                ceilingAdjustUnitValue += (space * paint.unitRate);
             }   
         }
     }
@@ -481,7 +481,7 @@ function calculateWorkForRoom(room){
                 wallAdjustHours += (space / paint.prodRateTwo);
             }
             if(paint.unitRate > 0){
-                wallAdjustUnitValue += (space / paint.unitRate);
+                wallAdjustUnitValue += (space * paint.unitRate);
             }
         }
     }
@@ -503,7 +503,7 @@ function calculateWorkForRoom(room){
                 doorSurfHours += (surface / surfacePaint.prodRateTwo);
             }
             if(surfacePaint.unitRate > 0){
-                doorSurfUnitValue += (surface / surfacePaint.unitRate);
+                doorSurfUnitValue += (surface * surfacePaint.unitRate);
             } 
             var framePaint = MODEL.getPaint(room.groupItems.doorVals[i][4]);
             var frameLength = 2 * dim2 + dim1;
@@ -515,7 +515,7 @@ function calculateWorkForRoom(room){
                 doorFrameHours += (frameLength / framePaint.prodRateTwo);
             }  
             if(framePaint.unitRate > 0){
-                doorFrameUnitValue += (frameLength / framePaint.unitRate);
+                doorFrameUnitValue += (frameLength * framePaint.unitRate);
             }  
         }
     }
@@ -535,7 +535,7 @@ function calculateWorkForRoom(room){
                 skirtingAdjustHours += (space / skirtingPaint.prodRateTwo);
             }  
             if(skirtingPaint.unitRate > 0){
-                skirtingAdjustUnitValue += (space / skirtingPaint.unitRate);
+                skirtingAdjustUnitValue += (space * skirtingPaint.unitRate);
             }  
         }
     }
@@ -556,7 +556,7 @@ function calculateWorkForRoom(room){
                 windowHours += (space / windowPaint.prodRateTwo);
             }
             if(windowPaint.unitRate > 0){
-                windowUnitValue += (space / windowPaint.unitRate);
+                windowUnitValue += (space * windowPaint.unitRate);
             }
         }
     }
@@ -577,7 +577,7 @@ function calculateWorkForRoom(room){
                 radiatorHours += (space / radiatorPaint.prodRateTwo);
             }
             if(radiatorPaint.unitRate > 0){
-                radiatorUnitValue += (space / radiatorPaint.unitRate);
+                radiatorUnitValue += (space * radiatorPaint.unitRate);
             }
         }
     }
@@ -598,7 +598,7 @@ function calculateWorkForRoom(room){
                 genSurfHours += (space / genSurfPaint.prodRateTwo);
             }
             if(genSurfPaint.unitRate > 0){
-                genSurfUnitValue += (space / genSurfPaint.unitRate);
+                genSurfUnitValue += (space * genSurfPaint.unitRate);
             }
         }
     }
@@ -618,7 +618,7 @@ function calculateWorkForRoom(room){
                 isolSurfHours += (space / isolSurfPaint.prodRateTwo);
             }
             if(isolSurfPaint.unitRate > 0){
-                isolSurfUnitValue += (space / isolSurfPaint.unitRate);
+                isolSurfUnitValue += (space * isolSurfPaint.unitRate);
             }
         }
     }
@@ -656,7 +656,7 @@ function calculateWorkForRoom(room){
     ceilingHours += room.ceilingAdjustSimple;
     ceilingHours += ceilingAdjustHours;
     if(ceilingPaint.unitRate){
-        ceilingUnitValue += ceilingSpace / ceilingPaint.unitRate;
+        ceilingUnitValue += ceilingSpace * ceilingPaint.unitRate;
     }
 
     var wallPaint = getDefaultPaint('walls');
@@ -664,7 +664,7 @@ function calculateWorkForRoom(room){
     wallHours += room.wallAdjustSimple;
     wallHours += wallAdjustHours;
     if(wallPaint.unitRate > 0){
-        wallUnitValue += wallSpace / wallPaint.unitRate;
+        wallUnitValue += wallSpace * wallPaint.unitRate;
     }
 
     var skirtingPaint = getDefaultPaint('isolated-surfaces');
@@ -672,7 +672,7 @@ function calculateWorkForRoom(room){
     skirtingHours += room.skirtingAdjustSimple;
     skirtingHours += skirtingAdjustHours;
     if(skirtingPaint.unitRate > 0){
-        skirtingUnitValue += skirtingSpace / skirtingPaint.unitRate;
+        skirtingUnitValue += skirtingSpace * skirtingPaint.unitRate;
     }
 
     /* If there are positive adjustments, we add to ceiling, wall and skirting 
@@ -721,17 +721,16 @@ function buildResultsTable(tableData){
     
     for (i = 0; i < tableData.length; ++i) {
         obj = tableData[i];
-        //TODO: check if the rate value is calculated correctly before buildResultsTable
-        var rateValue = roundAndFix(obj.rateValue * obj.amount, 2);
+
         results += rowTemplate.format(
             obj.title,
             roundAndFix(obj.amount, 2),
             obj.units,
             roundAndFix(obj.hours, 2),
-            rateValue
+            roundAndFix(obj.rateValue, 2)
         );
         totalHours += parseFloat(obj.hours);  
-        totalValue += parseFloat(rateValue);
+        totalValue += parseFloat(obj.rateValue);
     }
 
     results += '<tr class="rowTotalHours"><td>TOTAL:</td><td></td><td></td>';
