@@ -1644,7 +1644,8 @@ $(document).ready(function() {
         '.btn-reorder-item-down',
         '.loadingDivOuter',
         '.dialog-background',
-        '.dialog'
+        '.dialog',
+        '.button-box'
     ]);
 
     initInputCursorPos();
