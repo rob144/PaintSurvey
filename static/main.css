@@ -564,8 +564,13 @@ td.room-width-cell {
     border-bottom-left-radius:4px;
     border-bottom-right-radius:4px;
 }
-td.room-length-cell, 
-td.room-width-cell, td.baybreast-width-cell, 
+table.baybreast-table {
+    width:100%;
+    border:none;
+}
+td.room-length-cell,
+td.room-width-cell,
+td.baybreast-width-cell,
 td.baybreast-depth-cell {
     background-color:#7AA7DD;
 }
@@ -588,9 +593,26 @@ td.btn-pos-neg-table {
     font-weight:bold;
     cursor:pointer;
 }
+.baybreast-label > label {
+    height:32px;
+}
 .baybreast-depth, .baybreast-width {
     border:none;
 }
+.baybreast-depth, .ceiling-adjust-dim2, .wall-adjust-dim2 {
+    border-top-right-radius:4px;
+    border-bottom-right-radius:4px;
+    border-left:none;
+}
+.baybreast-label {
+    width:100px;
+    height:34px;
+    vertical-align:top;
+    text-align:left;
+}
+td.room-length-cell, 
+td.room-width-cell, 
+td.baybreast-width-cell, 
 .ceiling-adjust-dim1, .ceiling-adjust-dim2,
 .wall-adjust-dim1, .wall-adjust-dim2,
 .skirting-adjust-length, 
@@ -599,19 +621,8 @@ td.btn-pos-neg-table {
 .radiator-width, .radiator-height,
 .general-surface-width, .general-surface-height,
 .isolated-surface-length {
-    float:left;
     width:50px;
     border:none;
-}
-.baybreast-depth, .ceiling-adjust-dim2, .wall-adjust-dim2 {
-    border-top-right-radius:4px;
-    border-bottom-right-radius:4px;
-    border-left:none;
-}
-div.baybreast-label {
-    display:table;
-    float:left;
-    height:34px;
 }
 td.result {
     text-align: right;
