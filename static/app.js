@@ -891,7 +891,7 @@ function initCarousel(){
         }
     }
 
-    CARO.registerCallback(['prevslide','nextslide'], toggleNavButton);
+    CARO.registerCallback(['animateStage'], toggleNavButton);
 
     var $pages = $('#owl-pages .owl-page')
         .not('.room-page-template')
