@@ -103,11 +103,11 @@ function Caro(elem){
     }
 
     var nextSlide = function(){ 
-        moveSlide(-1, getCallback('nextslide'));
+        moveSlide(-1);
     };
 
     var prevSlide = function(){
-        moveSlide(1, getCallback('prevslide'));
+        moveSlide(1);
     };
 
     var getSlides = function(){
@@ -124,7 +124,7 @@ function Caro(elem){
         return $caro.find('.caro-item:last');
     }
 
-    var animateStage = function(newLeft, onComplete){
+    var animateStage = function(newLeft){
         if(!$caroStage.hasClass('sliding')){
             $caroStage.addClass('sliding');
             $caroStage.animate(
@@ -132,8 +132,8 @@ function Caro(elem){
                 300, 
                 function(){ 
                     $caroStage.removeClass('sliding');
-                    if(onComplete != null){
-                        onComplete();
+                    if(getCallback('animateStage') != null){
+                        getCallback('animateStage')();
                     }
                 }
             );
@@ -179,8 +179,7 @@ function Caro(elem){
             || (vector > 0 && $currSlide.prev().length)){
             animateStage( 
                 (vector < 0 ? '-=' : vector > 0 ? '+=' : '') 
-                    + $caro.find('.caro-item').outerWidth(),
-                onComplete
+                    + $caro.find('.caro-item').outerWidth()
             );
         }
     };
