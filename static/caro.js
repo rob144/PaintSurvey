@@ -251,37 +251,38 @@ function Caro(elem){
         var direction = 0;
         var distance = Math.abs(vector);
         var newLeft = $caroStage.position().left + pageX - CARO_INFO.trackX;
+        
+        /* If distance >10px, slide all the way to the next or prev item */
+        if(distance > 20){
 
-        if(distance != 0){
-              
-            /* If distance >10px, slide all the way to the next or prev item */
-            if(distance > 10){
+            if(vector < 0) {
+                direction = -1; //Moving stage from right to left
+            }else if(vector > 0){
+                direction = 1; //Moving stage from left to right
+            }
 
-                if(vector < 0) {
-                    direction = -1; //Moving stage from right to left
-                }else if(vector > 0){
-                    direction = 1; //Moving stage from left to right
+            var targetSlide = getTargetSlide($currSlide, direction);
+
+            if(targetSlide !== null){
+                CARO_INFO.mouseupAnimation = function(){
+                    animateToSlide(targetSlide);
                 }
-
-                var targetSlide = getTargetSlide($currSlide, direction);
-
-                if(targetSlide !== null){
-                    CARO_INFO.mouseupAnimation = function(){
-                        animateToSlide(targetSlide);
-                    }
-                    $caroStage.css({ left: newLeft });
-                    CARO_INFO.trackX = pageX;
-                }
+                $caroStage.css({ left: newLeft });
+                CARO_INFO.trackX = pageX;
             }
         }
     }
 
     /* Setup the touch and drag events */
-    $caroWindow.off('mousedown').on('mousedown', function(e){
-        
-        var $elem = $(e.target);
+    $caroWindow.off('mousedown touchstart').on('mousedown touchstart', function(event){
+
+        var $elem = $(event.target);
+        var pageX = (event.type == 'touchstart') 
+            ? event.originalEvent.touches[0].pageX 
+            : event.pageX;
+
         CARO_INFO.mousedown = true;
-        CARO_INFO.startX = e.pageX;
+        CARO_INFO.startX = pageX;
         CARO_INFO.trackX = CARO_INFO.startX;
 
         if($elem.hasClass('caro-item') != true){
@@ -292,9 +293,14 @@ function Caro(elem){
         CARO_INFO.mouseupAnimation = function(){};
     });
 
-    $caroStage.off('mousemove').on('mousemove', function(event){
+    $caroStage.off('mousemove touchmove').on('mousemove touchmove', function(e){
+
+        var pageX = (e.type == 'touchmove') 
+            ? e.originalEvent.touches[0].pageX 
+            : e.pageX;
+
         if(CARO_INFO.mousedown){ 
-            dragStage(event.pageX, $(event.target).closest('.caro-item'));
+            dragStage(pageX, $(e.target).closest('.caro-item'));
         }
     });
 
@@ -338,7 +344,7 @@ function Caro(elem){
         return (index == getSlides().length - 1);
     }
 
-    $caroWindow.off('mouseup').on('mouseup', function(e){ 
+    $caroWindow.off('mouseup touchend').on('mouseup touchend', function(e){ 
 
         CARO_INFO.mousedown = false; 
         if(CARO_INFO.mouseupAnimation instanceof Function){
