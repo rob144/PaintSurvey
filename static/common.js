@@ -115,10 +115,17 @@ function isObjectEmpty(object){
     }
 }
 
-var makeComponent = function(selector){
-    var $elem = $('#view-components ' + selector + '.template').clone();
-    $elem = $elem.removeClass('template');
-    $(selector + ':not(.template)').replaceWith($elem);
+var makeComponent = function(selector, initFunc){
+    var $template = $('#view-components ' + selector + '.template').clone();
+    var $newElems = $(selector + ':not(.template)');
+    $newElems.each( 
+        function(i, elem){
+            $(elem).html($template.html());
+        }
+    );
+    if(initFunc != null){
+        $newElems.each( initFunc );
+    }
 }
 
 var makeComponents = function(arrComponents){

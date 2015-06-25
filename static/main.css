@@ -137,6 +137,7 @@ td.last-child {
     clear: both;
 }
 .dropdown, .dropup {
+    display:inline;
     position:relative;
     overflow:visible;
 }

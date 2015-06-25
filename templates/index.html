@@ -62,14 +62,14 @@
                             <h2>Specification</h2>
                             <div class='form-row spec-item-block hidden'>
                                 <label class='spec-item-title'>Surface Type Title</label>
-                                <div class='dropdown'>
+                                <div class='dropdown' data-dropdown-id='select-paint-prod-rate'>
                                     <button class='dropdown-btn' type='button' >
                                         <span class='dropdown-text'>Dropdown</span>
                                         <input type='hidden' id='select-paint-prod-rate' class='dropdown-value'/>
                                     </button>
                                     <ul class='dropdown-menu' role='menu'></ul>
-                                    <button type='button' class='btn-edit-spec'></button>
                                 </div>
+                                <button type='button' class='btn-edit-spec'></button>
                             </div>
                         </form>
 
@@ -180,7 +180,7 @@
                                   <table class='input-pill'>
                                       <tr>       
                                           <td class='last-child'>
-                                              <input name='room-hours-adjust' class='room-hours-adjust decimal pos-neg' type='number' step='any' placeholder=''/>
+                                              <input name='room-hours-adjust' class='room-hours-adjust decimal pos-neg' type='number' step='any' />
                                           </td>
                                       </tr>
                                   </table>                
@@ -198,7 +198,7 @@
                                           <label class='control-label'>Height</label>
                                       </td>
                                       <td class='room-height-cell col2'>
-                                          <input name='room-height' class='room-height form-control decimal' type='number' step='any' min='0' placeholder='' >
+                                          <input name='room-height' class='room-height form-control decimal' type='number' step='any' min='0'  >
                                       </td>    
                                   </tr>
                                   <tr>
@@ -206,7 +206,7 @@
                                           <label class='control-label'>Length</label>
                                       </td>
                                       <td class='room-length-cell col2'>
-                                           <input name='room-length' class='room-length form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                           <input name='room-length' class='room-length form-control decimal' type='number' step='any' min='0' >
                                       </td>    
                                   </tr>
                                   <tr>
@@ -214,7 +214,7 @@
                                           <label class='control-label'>Width</label>
                                       </td>
                                       <td class='room-width-cell col2'>
-                                          <input name='room-width' class='room-width form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                          <input name='room-width' class='room-width form-control decimal' type='number' step='any' min='0' >
                                       </td>    
                                   </tr>
                               </table>
@@ -237,11 +237,11 @@
                                               <table class='input-pill'>
                                                   <tr>
                                                       <td class='baybreast-width-cell'>
-                                                          <input name='baybreast-width' class='form-control baybreast-width decimal' type='number' step='any' placeholder=''/>
+                                                          <input name='baybreast-width' class='form-control baybreast-width decimal' type='number' step='any' />
                                                       </td> 
                                                       
                                                       <td class='baybreast-depth-cell last-child'>
-                                                          <input name='baybreast-depth' class='form-control baybreast-depth decimal pos-neg' type='number' step='any' min='0' placeholder=''/>
+                                                          <input name='baybreast-depth' class='form-control baybreast-depth decimal pos-neg' type='number' step='any' min='0' />
                                                       </td>   
                                                   </tr>
                                               </table>
@@ -260,7 +260,7 @@
                                   <table class='input-pill'>
                                       <tr>
                                           <td class='last-child'>
-                                              <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal pos-neg' type='number' step='any' placeholder=''/>
+                                              <input name='ceiling-adjust-simple' class='ceiling-adjust-simple decimal pos-neg' type='number' step='any' />
                                           </td>
                                       </tr>
                                   </table>
@@ -269,15 +269,15 @@
                               <div class='input-block'>
                                       
                                   <div class='left'>
-                                      <div class="dropdown">
-                                          <button class="dropdown-btn" type="button" >
+                                      <div class='dropdown'>
+                                          <button class='dropdown-btn' type='button' >
                                               <span class='dropdown-text'>Select...</span>
                                               <input type='hidden' class='dropdown-value ceiling-adjust-paint-key' value=''/>
                                               
                                           </button>
-                                          <ul class="dropdown-menu" role="menu">
+                                          <ul class='dropdown-menu' role='menu'>
                                               <li role='presentation'>
-                                                  <a role='menuitem' tabindex="-1" href="#">Menu Item</a>
+                                                  <a role='menuitem' tabindex='-1' href='#'>Menu Item</a>
                                               </li>
                                           </ul>
                                       </div>
@@ -287,14 +287,14 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                <input name='ceiling-adjust-qty' type='number' min='0' step='1' placeholder='' class='ceiling-adjust-qty integer' data-default-value='1'/>
+                                                <input name='ceiling-adjust-qty' type='number' min='0' step='1'  class='ceiling-adjust-qty integer' data-default-value='1'/>
                                               </td>
                                               
                                               <td>
-                                                  <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal pos-neg' type='number' step='any' placeholder='' tabindex="-1"/>
+                                                  <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal pos-neg' type='number' step='any'  tabindex="-1"/>
                                               </td>
                                               <td class='last-child'>
-                                                  <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any' placeholder='' tabindex="-1"/>
+                                                  <input name='ceiling-adjust-dim2' class='ceiling-adjust-dim2 decimal' type='number' min='0' step='any'  tabindex="-1"/>
                                               </td>
                                           </tr>
                                       </table>
@@ -311,9 +311,8 @@
                                   <div class='group-label'>Wall Adjusts</div>
                                   <table class='input-pill'>
                                       <tr>
-                                          
                                           <td class='last-child'>
-                                              <input name='wall-adjust-simple' type='number' step='any' placeholder='' class='wall-adjust-simple decimal pos-neg'/>
+                                              <input name='wall-adjust-simple' type='number' step='any'  class='wall-adjust-simple decimal pos-neg'/>
                                           </td>
                                       </tr>
                                   </table>
@@ -340,7 +339,7 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='wall-adjust-qty' type='number' min='0' step='1' placeholder='' class='wall-adjust-qty integer' data-default-value='1'/>
+                                                  <input name='wall-adjust-qty' type='number' min='0' step='1'  class='wall-adjust-qty integer' data-default-value='1'/>
                                               </td>
                                               
                                               <td>
@@ -392,14 +391,14 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
+                                                  <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0'  data-default-value='1'>
                                               </td>
                                               
                                               <td class='default-value'>
-                                                  <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                                  <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' >
                                               </td>
                                               <td class='default-value last-child'>
-                                                 <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                                 <input name='door-height' class='door-height form-control decimal' type='number' step='any' min='0' >
                                               </td>
                                           </tr>
                                       </table>
@@ -417,7 +416,7 @@
                                       <tr>
                                           
                                           <td class='last-child'>
-                                              <input name='skirting-adjust-simple' type='number' step='any' placeholder='' class='skirting-adjust-simple decimal pos-neg'/>
+                                              <input name='skirting-adjust-simple' type='number' step='any'  class='skirting-adjust-simple decimal pos-neg'/>
                                           </td>
                                       </tr>
                                   </table>
@@ -447,7 +446,7 @@
                                               </td>
                                               
                                               <td class='last-child'>
-                                                  <input name='skirting-adjust-length' class='skirting-adjust-length decimal pos-neg' type='number' min='0' step='any' placeholder=''/>
+                                                  <input name='skirting-adjust-length' class='skirting-adjust-length decimal pos-neg' type='number' min='0' step='any' />
                                               </td>
                                           </tr>
                                       </table>
@@ -482,14 +481,14 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
+                                                  <input name='window-qty' class='window-qty form-control integer' type='number' step='1' min='0'  data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-fake-cell'></td>
                                               <td class='default-value'>
-                                                  <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                                  <input name='window-width' class='window-width form-control decimal' type='number' step='any' min='0' >
                                               </td>
                                               <td class='default-value last-child'>
-                                                 <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                                 <input name='window-height' class='window-height form-control decimal' type='number' step='any' min='0' >
                                               </td>
                                           </tr>
                                       </table>
@@ -523,14 +522,14 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
+                                                  <input name='radiator-qty' class='radiator-qty form-control integer' type='number' step='1' min='0'  data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-fake-cell'></td>
                                               <td class='default-value'>
-                                                  <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                                  <input name='radiator-width' class='radiator-width form-control decimal' type='number' step='any' min='0' >
                                               </td>
                                               <td class='default-value last-child'>
-                                                 <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                                 <input name='radiator-height' class='radiator-height form-control decimal' type='number' step='any' min='0' >
                                               </td>
                                           </tr>
                                       </table>
@@ -563,14 +562,14 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='general-surface-qty' class='general-surface-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
+                                                  <input name='general-surface-qty' class='general-surface-qty form-control integer' type='number' step='1' min='0'  data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-fake-cell'></td>
                                               <td>
-                                                  <input name='general-surface-width' class='general-surface-width form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                                  <input name='general-surface-width' class='general-surface-width form-control decimal' type='number' step='any' min='0' >
                                               </td>
                                               <td class='last-child'>
-                                                 <input name='general-surface-height' class='general-surface-height form-control decimal' type='number' step='any' min='0' placeholder=''>
+                                                 <input name='general-surface-height' class='general-surface-height form-control decimal' type='number' step='any' min='0' >
                                               </td>
                                           </tr>
                                       </table>
@@ -605,11 +604,11 @@
                                       <table class='input-pill'>
                                           <tr>
                                               <td>
-                                                  <input name='isolated-surface-qty' class='isolated-surface-qty form-control integer' type='number' step='1' min='0' placeholder='' data-default-value='1'>
+                                                  <input name='isolated-surface-qty' class='isolated-surface-qty form-control integer' type='number' step='1' min='0'  data-default-value='1'>
                                               </td>
                                               <td class='positive-negative-fake-cell'></td>
                                               <td class='last-child'>
-                                                 <input class='form-control isolated-surface-length decimal' name='isolated-surface-length' type='number' step='any' min='0' placeholder=''/>
+                                                 <input class='form-control isolated-surface-length decimal' name='isolated-surface-length' type='number' step='any' min='0' />
                                               </td>
                                           </tr>
                                       </table>
@@ -692,6 +691,15 @@
             <div class='button-box template'>
                 <button type='button' class='btn-add-row'></button>
                 <button type='button' class='btn-remove-row'></button>
+            </div>
+            <div class='dropdown template'>
+                <button class='dropdown-btn' type='button' >
+                    <span class='dropdown-text'>Select...</span>
+                    <input type='hidden' class='dropdown-value' value=''/>
+                </button>
+                <ul class='dropdown-menu' role='menu'>
+                    <li role='presentation'></li>
+                </ul>
             </div>
         </div>
 

@@ -932,11 +932,12 @@ function initDropdown(elem){
 
     var $elem = $(elem);
     var selectedValue = $elem.find('.dropdown-value').val();
-    var dropdownText = $elem.find('.dropdown-text').text().toLowerCase();
+    var dropdownText = $elem.find('.dropdown-text').text().toLowerCase().trim();
 
     if (dropdownText == 'dropdown' 
-    	|| dropdownText == 'menu item' 
-    	|| dropdownText.trim() == ''){
+    	|| dropdownText == 'select...' 
+        || dropdownText == 'menu item' 
+    	|| dropdownText == ''){
         var defaultItem = $elem.find('.dropdown-menu a:first');
         $elem.find('.dropdown-value').val( defaultItem.data('value') );
         $elem.find('.dropdown-text').text( defaultItem.text() );
@@ -1629,13 +1630,6 @@ function initAddInputBlockButtons(){
 
 $(document).ready(function() {
 
-    initCarousel();
-    initSpecificationPage();
-    initRoomDefaultsPage();
-    initProjectsPage();
-
-    $('body').bind('touchstart click', blurInputFocus );
-
     makeComponents([
         '.btn-add-row',
         '.btn-add-spec-item',
@@ -1647,6 +1641,23 @@ $(document).ready(function() {
         '.dialog',
         '.button-box'
     ]);
+
+    makeComponent(
+        '.dropdown',
+        function(){
+            $elem = $(this);
+            $elem.find('input.dropdown-value').attr(
+                'id', $elem.data('dropdown-id')
+            );
+        }
+    );
+
+    initCarousel();
+    initSpecificationPage();
+    initRoomDefaultsPage();
+    initProjectsPage();
+
+    $('body').bind('touchstart click', blurInputFocus );
 
     initInputCursorPos();
     initIntegerInputs();
