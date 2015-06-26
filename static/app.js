@@ -624,7 +624,7 @@ function calculateWorkForRoom(room){
     }
 
     var getDefaultPaint = function(surface_type){
-        var key = $('.select-' + surface_type + '-spec').val();
+        var key = $('#select-' + surface_type + '-spec').val();
         var paint = MODEL.getPaint(key);
         return paint;
     };
