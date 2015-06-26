@@ -624,7 +624,7 @@ function calculateWorkForRoom(room){
     }
 
     var getDefaultPaint = function(surface_type){
-        var key = $('#select-' + surface_type + '-spec').val();
+        var key = $('.select-' + surface_type + '-spec').val();
         var paint = MODEL.getPaint(key);
         return paint;
     };
@@ -1646,8 +1646,8 @@ $(document).ready(function() {
         '.dropdown',
         function(){
             $elem = $(this);
-            $elem.find('input.dropdown-value').attr(
-                'id', $elem.data('dropdown-id')
+            $elem.find('input.dropdown-value').addClass(
+                $elem.data('dropdown-id')
             );
         }
     );
