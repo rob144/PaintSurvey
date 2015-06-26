@@ -490,6 +490,7 @@ input.spec-item-rate {
     cursor:pointer;
     padding:0px;
 }
+
 td.default-value {
     background-color:#eee;
 }
@@ -706,10 +707,20 @@ div.page-bottom-buttons {
     margin:60px 0 0 0;
     text-align:center;
 }
-.btn-calculate-room, .btn-save-room, .btn-delete-room {
+.btn-calculate-room {
     color:#333;
     background-color:#fff;
     border-color:#ccc;
+}
+.btn-save-room {
+    color:#fff;
+    background-color:#5cb85c;
+    border-color:#4cae4c;
+}
+.btn-delete-room {
+    color:#fff;
+    background-color:#d9534f;
+    border-color:#d43f3a;
 }
 /* ********************* PROJECTS PAGE ********************* */
 ul#projects-list {
@@ -735,9 +746,9 @@ input#new-project-title {
     border-radius:4px;
 }
 #btn-create-project {
-    color:#333;
-    background-color:#fff;
-    border-color:#ccc;
+    color:#fff;
+    background-color:#5cb85c;
+    border-color:#4cae4c;
     margin:5px 0 10px 0;
 }
 input#new-project-title{
