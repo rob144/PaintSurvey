@@ -9,11 +9,14 @@
     clear: both;
 }
 .caro-window {
+    position:relative;
     clear:both;
     overflow-x:hidden;
     overflow-y:visible;
     width:100%;
     background-color:#eee;
+    margin:5px 0 5px 0;
+	border:1px solid grey;
 }
 .caro-window:after {
     content: "";
@@ -21,6 +24,7 @@
     clear: both;
 }
 .caro-stage {
+    position:relative;
     overflow:auto;
 }
 .caro-stage:after {
