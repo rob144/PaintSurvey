@@ -864,7 +864,8 @@ function switchSign(inpElem){
 
 function initCarousel(){
     
-    CARO = Caro('#carousel');
+    CARO = new Caro('#carousel');
+    CARO.init('#caro-pages');
 
     var $btnAdd = $('.btn-add-room.template').clone();
     $btnAdd = $btnAdd.removeClass('template');
