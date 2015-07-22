@@ -55,6 +55,7 @@ Caro.prototype.resizeUi = function(forceScrollBar){
     var caro = this;
     var slides = caro.getSlides();
     var windowWidth = caro.caroWindow.width();
+    var currSlide = caro.getCurrentSlide();
 
     //Make the stage width big enough to contain all the slides
     caro.caroStage.width(slides.length * caro.caroWindow.width());
@@ -62,6 +63,10 @@ Caro.prototype.resizeUi = function(forceScrollBar){
     //Set the width of the slides to match caro window width
     //I.e. show one slide in the caro window
     slides.width(windowWidth);
+
+    //Realign stage after resize
+    var newLeft = caro.caroStage.offset().left - currSlide.offset().left;
+    caro.caroStage.css('margin-left', newLeft);
 }
 
 Caro.prototype.getSlide = function(slideIndex){
@@ -304,12 +309,11 @@ Caro.prototype.init = function(slidesContainer){
                     .on('mousedown touchstart', function(event){
 
         var dragElem = $(event.target);
-        var pageX = (event.type == 'touchstart') 
-            ? event.originalEvent.touches[0].pageX 
-            : event.pageX;
 
         caro.mouseIsDown = true;
-        caro.startX = pageX;
+        caro.startX = (event.type == 'touchstart') 
+            ? event.originalEvent.touches[0].pageX 
+            : event.pageX;
         caro.trackX = caro.startX;
 
         if(dragElem.hasClass('caro-item') != true){
