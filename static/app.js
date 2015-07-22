@@ -209,7 +209,7 @@ function addProjectPages(){
 }
 
 function selectProject(projectKey, reload){
-console.log('selectProject');
+
     if(CURRENT_PROJECT.key == projectKey && reload != true){
         CARO.nextSlide();
         return;
