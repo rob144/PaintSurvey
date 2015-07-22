@@ -142,7 +142,9 @@ Caro.prototype.getSlideAtPos = function(xPos){
 }
 
 Caro.prototype.addSlide = function(slideHtml){
-    this.caroStage.append("<div class='caro-item'>" + slideHtml + "</div>");
+    var caro = this;
+    caro.caroStage.append("<div class='caro-item'>" + slideHtml + "</div>");
+    caro.resizeUi();
 }
 
 Caro.prototype.removeSlide = function(index){
@@ -210,7 +212,6 @@ Caro.prototype.moveSlide = function(vector, onComplete){
     //Get the current slide.
     var currSlide = caro.getCurrentSlide();
     var operator = (vector < 0 ? '-=' : vector > 0 ? '+=' : '');
-
     //Check if the next or previous slide exists.
     if((vector < 0 && currSlide.next().length) 
         || (vector > 0 && currSlide.prev().length)){
@@ -298,9 +299,7 @@ Caro.prototype.init = function(slidesContainer){
 
     var caro = this; 
     $(slidesContainer).find('div.caro-page').each(function(i, elem){
-        $(elem).remove();
         caro.addSlide($(elem).html());
-        caro.resizeUi();
     });
 
     var resizeHandler = function(caroObj){
@@ -363,8 +362,13 @@ Caro.prototype.init = function(slidesContainer){
     caro.caroWindow.off('mouseup touchend')
                     .on('mouseup touchend', function(e){ 
 
+        var xPos = (event.type == 'touchend') 
+            ? event.originalEvent.touches[0].pageX 
+            : event.pageX;
+
         caro.mouseIsDown = false; 
-        if(caro.mouseupAnimation instanceof Function){
+        if(xPos != caro.startX 
+            && caro.mouseupAnimation instanceof Function){
             caro.mouseupAnimation();
             caro.mouseupAnimation = null;
         };
