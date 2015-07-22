@@ -122,6 +122,25 @@ Caro.prototype.getCurrentSlide = function(){
     return slides.eq(targetIndex);
 }
 
+Caro.prototype.getSlideAtPos = function(xPos){
+
+    var caro = this;
+    var slides = caro.getSlides();
+    var targetIndex;
+
+    //Find the slide with bounds containing the x position
+    slides.each(function(index, elem){
+        var slide = $(elem);
+        var left = slide.offset().left;
+        var right = left + slide.width();
+        if(xPos >= left && xPos <= right){
+            targetIndex = index;
+        }
+    });
+
+    return slides.eq(targetIndex);
+}
+
 Caro.prototype.addSlide = function(slideHtml){
     this.caroStage.append("<div class='caro-item'>" + slideHtml + "</div>");
 }
@@ -208,10 +227,10 @@ Caro.prototype.animateToSlide = function(targetSlide){
     }
 };
 
-Caro.prototype.dragStage = function(pageX, currSlide){
+Caro.prototype.dragStage = function(pageX){
         
     var caro = this;
-    var currSlide = $(currSlide);
+    var currSlide = caro.getSlideAtPos(pageX);
     var vector = pageX - caro.startX;
     var direction = 0;
     var distance = Math.abs(vector);
@@ -335,7 +354,7 @@ Caro.prototype.init = function(slidesContainer){
 
         if(caro.mouseIsDown){
             caro.caroWindow.css('cursor','-webkit-grabbing');
-            caro.dragStage(pageX, $(e.target).closest('.caro-item'));
+            caro.dragStage(pageX);
         }else{
             caro.caroWindow.css('cursor','default');
         }
