@@ -363,8 +363,8 @@ Caro.prototype.init = function(slidesContainer){
                     .on('mouseup touchend', function(e){ 
 
         var xPos = (event.type == 'touchend') 
-            ? event.originalEvent.touches[0].pageX 
-            : event.pageX;
+            ? e.originalEvent.changedTouches[0].pageX 
+            : e.pageX;
 
         caro.mouseIsDown = false; 
         if(xPos != caro.startX 
