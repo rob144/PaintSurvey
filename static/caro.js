@@ -81,6 +81,15 @@ Caro.prototype.getLastSlide = function(){
     return this.caroStage.find('.caro-item:last');
 }
 
+Caro.prototype.isLastSlide = function(){
+    
+    var caro      = this;
+    var currSlide = caro.getCurrentSlide();
+    var lastSlide = caro.getLastSlide();
+    
+    return currSlide.is(lastSlide);
+}
+
 Caro.prototype.getTargetSlide = function(currSlide, direction){
     
     var currSlide = $(currSlide);
@@ -184,17 +193,17 @@ Caro.prototype.prevSlide = function(){
 
 Caro.prototype.animateStage = function(newLeft){
     var caro = this;
+    var funcName = 'animateStage';
     if(!caro.caroStage.hasClass('sliding')){
         caro.caroStage.addClass('sliding');
         caro.caroStage.animate(
             { marginLeft: newLeft },
             300, 
-            function(){ 
+            function(){
                 caro.caroStage.removeClass('sliding');
-                /*
-                if(getCallback('animateStage') != null){
-                    getCallback('animateStage')();
-                }*/
+                if(caro.getCallback(funcName) != null){
+                    caro.getCallback(funcName)();
+                }
             }
         );
     }
