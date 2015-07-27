@@ -192,8 +192,10 @@ Caro.prototype.prevSlide = function(){
 };
 
 Caro.prototype.animateStage = function(newLeft){
+
     var caro = this;
     var funcName = 'animateStage';
+    
     if(!caro.caroStage.hasClass('sliding')){
         caro.caroStage.addClass('sliding');
         caro.caroStage.animate(
@@ -230,7 +232,7 @@ Caro.prototype.moveSlide = function(vector, onComplete){
 
 Caro.prototype.animateToSlide = function(targetSlide){
     var caro = this;
-    if(targetSlide != null){
+    if(targetSlide != null && targetSlide.html() != null){
         targetSlide = $(targetSlide);
         var newLeft = caro.caroStage.offset().left - targetSlide.offset().left;
         caro.animateStage(newLeft);
@@ -304,11 +306,25 @@ Caro.prototype.fixOvershoot = function(){
     }
 };
 
-Caro.prototype.init = function(slidesContainer){
+Caro.prototype.init = function(slidesContainer, ignoreSlides){
 
-    var caro = this; 
-    $(slidesContainer).find('div.caro-page').each(function(i, elem){
-        caro.addSlide($(elem).html());
+    var caro = this;
+    var slides = $(slidesContainer).find('.caro-page');
+/* TODO: fix filter */
+    if(ignoreSlides != null && ignoreSlides.length >= 1){
+        slides = slides.filter(function(){
+            var slide = $(this);
+            var ignore = false;
+            $.each(ignoreSlides, function(index, elem){
+                ignore = slide.is($(elem));
+            });
+            console.log('ingore' + ignore);
+            return !ignore;
+        });
+    }
+    
+    slides.each(function(){
+        caro.addSlide($(this).html());
     });
 
     var resizeHandler = function(caroObj){
@@ -332,9 +348,9 @@ Caro.prototype.init = function(slidesContainer){
     );
 
     /* Setup the touch and drag events */
-    caro.caroWindow.off('mousedown touchstart')
+    caro.caroBox.off('mousedown touchstart')
                     .on('mousedown touchstart', function(event){
-
+        
         var dragElem = $(event.target);
 
         caro.mouseIsDown = true;
@@ -368,7 +384,7 @@ Caro.prototype.init = function(slidesContainer){
         }
     });
 
-    caro.caroWindow.off('mouseup touchend')
+    caro.caroBox.off('mouseup touchend')
                     .on('mouseup touchend', function(e){ 
 
         var xPos = (event.type == 'touchend') 

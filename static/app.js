@@ -265,7 +265,7 @@ function deleteProject(projectKey){
 function getRoomData($page){
 
     var getf = function(inputElem, ancestor){
-        $parent = (ancestor != null) ? $(ancestor) : $page;
+        var $parent = (ancestor != null) ? $(ancestor) : $page;
         var floatVal = parseFloat($parent.find(inputElem).val());
         return Math.abs(floatVal) >= 0 ? floatVal : 0; 
     }
@@ -855,16 +855,17 @@ function roomDefaultsChange(){
 }
 
 function switchSign(inpElem){
-    $inpElem = $(inpElem);
+    var $inpElem = $(inpElem);
     $inpElem.val(-1 * $inpElem.val());
-    //$inpElem.blur();
     $inpElem.focus();
 }
 
 function initCarousel(){
     
     CARO = new Caro('#carousel');
-    CARO.init('#caro-pages');
+    CARO.init('#caro-pages', 
+        ['.room-page-template','.project-summary-template']
+    );
 
     var $btnAdd = $('.btn-add-room.template').clone();
     $btnAdd = $btnAdd.removeClass('template');
@@ -892,13 +893,6 @@ function initCarousel(){
     }
 
     CARO.registerCallback(['animateStage'], toggleNavButton);
-
-    var $pages = $('#owl-pages .owl-page')
-        .not('.room-page-template')
-        .not('.project-summary-template')
-        .each(function(){
-            CARO.addSlide($(this).html());
-    });
 }
 
 function resizeCarousel(){
@@ -931,7 +925,6 @@ function selectDropDownItem(){
 function initDropdown(elem){
 
     var $elem = $(elem);
-    var selectedValue = $elem.find('.dropdown-value').val();
     var dropdownText = $elem.find('.dropdown-text').text().toLowerCase().trim();
 
     if (dropdownText == 'dropdown' 
