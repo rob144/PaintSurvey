@@ -310,18 +310,10 @@ Caro.prototype.init = function(slidesContainer, ignoreSlides){
 
     var caro = this;
     var slides = $(slidesContainer).find('.caro-page');
-/* TODO: fix filter */
-    if(ignoreSlides != null && ignoreSlides.length >= 1){
-        slides = slides.filter(function(){
-            var slide = $(this);
-            var ignore = false;
-            $.each(ignoreSlides, function(index, elem){
-                ignore = slide.is($(elem));
-            });
-            console.log('ingore' + ignore);
-            return !ignore;
-        });
-    }
+    
+    $.each(ignoreSlides, function(index, elem){
+        slides = slides.not(elem);
+    });
     
     slides.each(function(){
         caro.addSlide($(this).html());
