@@ -1141,12 +1141,12 @@ function saveRoom(room, keyElem){
         dataType: 'json',
         successFunc:  function(data, status){
             if(status == 'success'){
-              alert('Room saved.');
-              MODEL.updateRoom(data);
-              if(keyElem != null) $(keyElem).val(data.key);
-              initProjectSummaryPage();
-            }else{
-              alert('Error saving room.');
+                alert('Room saved.');
+                MODEL.updateRoom(data);
+                if(keyElem != null) $(keyElem).val(data.key);
+                initProjectSummaryPage();
+            } else {
+                alert('Error saving room.');
             }
             $('html, body').animate({ scrollTop: 0 }, 'slow');
         }
@@ -1161,13 +1161,13 @@ function saveDefaultRoom(room){
         data: { room: JSON.stringify( room ) },
         dataType: 'json',
         successFunc:  function(data, status){
-                          if(status == 'success'){
-                              alert('Settings saved.');
-                          } else {
-                              alert('Error saving room.');
-                          }
-                          $('html, body').animate({ scrollTop: 0 }, 'slow');
-                      }
+            if(status == 'success'){
+                alert('Settings saved.');
+            } else {
+                alert('Error saving room.');
+            }
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        }
     });
 }
 
