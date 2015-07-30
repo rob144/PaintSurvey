@@ -1262,6 +1262,7 @@ function initProjectSummaryPage(){
 }
 
 function initRoomPage(room){
+
     var getf = function(elemId){
         return parseFloat($(elemId).val()).toFixed(2);
     }
@@ -1316,7 +1317,7 @@ function initRoomPage(room){
     $page.find('.skirting-adjust-simple') .val( room.skirtingAdjustSimple   );
     
     //Build input blocks and set the values for each group item.
-    if(room.group_items != null){    
+    if(room.groupItems != null){    
 
         for(var i = 0; i <= room.groupItems.bayBreastVals.length - 1; i++){
             
@@ -1326,7 +1327,7 @@ function initRoomPage(room){
             $block.find('.baybreast-depth').val( room.groupItems.bayBreastVals[i][1] );
         }
         
-        for(var i = 0; i <= room.group_items.ceilingAdjustVals.length - 1; i++){
+        for(var i = 0; i <= room.groupItems.ceilingAdjustVals.length - 1; i++){
             
             if(i >= 1) addInputBlock( $page.find('.ceiling-adjust-group .btn-add-row:last') );
             var $block = $page.find('.ceiling-adjust-group .input-block:last');
@@ -1350,7 +1351,7 @@ function initRoomPage(room){
             $block.find('.wall-adjust-dim2').val( room.groupItems.wallAdjustVals[i][3] );        
         }
 
-        for(var i = 0; i <= room.group_items.doorVals.length - 1; i++){
+        for(var i = 0; i <= room.groupItems.doorVals.length - 1; i++){
             
             if(i >= 1) addInputBlock( $page.find('.doors-group .btn-add-row:last') );
             var $block = $page.find('.doors-group .input-block:last');
