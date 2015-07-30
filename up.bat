@@ -1,1 +1,2 @@
 appcfg.py update .\
+pause
