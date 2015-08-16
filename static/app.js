@@ -26,7 +26,7 @@ var MODEL = {
     },
     getProject: function(project_key){
         var project = false;
-        for(var i = 0; i <= PROJECTS.length - 1; i++){ 
+        for(var i = 0; i <= PROJECTS.length - 1; i++){
             if(PROJECTS[i].key == project_key){
                 found = true;
                 project = PROJECTS[i];
@@ -36,12 +36,12 @@ var MODEL = {
     },
     updateProject: function(project){
         var found = false;
-        for(var i = 0; i <= PROJECTS.length - 1; i++){ 
+        for(var i = 0; i <= PROJECTS.length - 1; i++){
             if(PROJECTS[i].key == project.key){
                 found = true;
                 PROJECTS[i] = project;
                 for(var i=0; i < ROOMS.length - 1; i++){
-                    if(ROOMS[i].project == project.key 
+                    if(ROOMS[i].project == project.key
                       && $.inArray(ROOMS[i].key, project.rooms) == -1){
                         /* The project is no longer assocatiated with
                          the room, so remove the room -> project reference. */
@@ -63,7 +63,7 @@ var MODEL = {
     },
     updateRoom: function(room){
         var found = false;
-        for(var i = 0; i <= ROOMS.length - 1; i++){ 
+        for(var i = 0; i <= ROOMS.length - 1; i++){
             if(ROOMS[i].key == room.key){
                 ROOMS[i] = room;
                 found = true;
@@ -74,8 +74,8 @@ var MODEL = {
         }
         //Add the room to the project
         if(room.project != ''){
-            for(var i = 0; i <= PROJECTS.length - 1; i++){ 
-                if( PROJECTS[i].key == room.project 
+            for(var i = 0; i <= PROJECTS.length - 1; i++){
+                if( PROJECTS[i].key == room.project
                     && $.inArray(room.project, PROJECTS[i].rooms) == -1){
                         PROJECTS[i].rooms.push(room.key);
                 }
@@ -85,7 +85,7 @@ var MODEL = {
     deleteRoom: function(room_key){
         for(var i = 0; i <= ROOMS.length - 1; i++){
             if(ROOMS[i].key == room_key){
-                
+
                 for(var j=0; j < PROJECTS.length - 1; j++){
                     /* Remove the project -> room reference. */
                     var idx = $.inArray(ROOMS[i].key, PROJECTS[j].rooms);
@@ -132,7 +132,7 @@ var MODEL = {
 
 //Add the projects to the list
 function populateProjects(projects){
-    
+
     $('#projects-list').find('li:not(.hidden)').remove();
 
     if(projects.length <= 0){
@@ -149,15 +149,15 @@ function populateProjects(projects){
         $newBlock.removeClass('hidden');
 
         //Animate show/hide controls
-        $newBlock.click( 
+        $newBlock.click(
             function(){
                 $(this).find('.project-controls').slideToggle();
             }
-        ); 
+        );
         //Setup click events for the controls.
         $newBlock.find('.btn-select-project').click(
             function(event){
-                selectProject( 
+                selectProject(
                     $(this).closest('.project-item').find('.project-key').val()
                 );
             }
@@ -177,7 +177,7 @@ function populateProjects(projects){
                 );
             }
         );
-        $newBlock.appendTo('#projects-list'); 
+        $newBlock.appendTo('#projects-list');
     }
 }
 
@@ -201,7 +201,7 @@ function addProjectPages(){
     }
 
     initProjectSummaryPage();
-    
+
     //Stop the carousel from moving when user clicks input
     $('input').mousedown(function(event){
         event.stopPropagation();
@@ -231,12 +231,12 @@ function selectProject(projectKey, reload){
 
 function createProject(){
     if($('#new-project-title').val().match(/\S/g)){
-        doXhr({ 
-            httpMethod: 'POST', 
+        doXhr({
+            httpMethod: 'POST',
             url: '/createproject',
             data: { projectTitle: $('#new-project-title').val() },
             dataType: 'json',
-            successFunc: function(data){ 
+            successFunc: function(data){
                 PROJECTS = data.projects;
                 PAINTS = data.paints;
                 populateProjects(PROJECTS);
@@ -250,7 +250,7 @@ function createProject(){
 
 function deleteProject(projectKey){
     doXhr({
-        httpMethod: 'POST', 
+        httpMethod: 'POST',
         url: '/deleteproject',
         data: { project_key: projectKey },
         dataType: 'json',
@@ -267,7 +267,7 @@ function getRoomData($page){
     var getf = function(inputElem, ancestor){
         var $parent = (ancestor != null) ? $(ancestor) : $page;
         var floatVal = parseFloat($parent.find(inputElem).val());
-        return Math.abs(floatVal) >= 0 ? floatVal : 0; 
+        return Math.abs(floatVal) >= 0 ? floatVal : 0;
     }
 
     var notZero = function(ancestor){
@@ -309,45 +309,45 @@ function getRoomData($page){
 
     $page.find('.baybreast-group .input-block').each( function(index, elem){
         if(notZero(elem)){
-            room.groupItems.bayBreastVals.push([ 
-                getf('.baybreast-depth', elem), 
-                getf('.baybreast-width', elem) 
+            room.groupItems.bayBreastVals.push([
+                getf('.baybreast-depth', elem),
+                getf('.baybreast-width', elem)
             ]);
         }
     });
 
     $page.find('.ceiling-adjust-group .input-block').each( function(index, elem){
-        if($(elem).find('.ceiling-adjust-paint-key').val().length >= 1 
+        if($(elem).find('.ceiling-adjust-paint-key').val().length >= 1
             && notZero(elem)){
-            room.groupItems.ceilingAdjustVals.push([ 
+            room.groupItems.ceilingAdjustVals.push([
                 $(elem).find('.ceiling-adjust-paint-key').val(),
-                getf('.ceiling-adjust-qty', elem), 
-                getf('.ceiling-adjust-dim1', elem), 
-                getf('.ceiling-adjust-dim2', elem) 
+                getf('.ceiling-adjust-qty', elem),
+                getf('.ceiling-adjust-dim1', elem),
+                getf('.ceiling-adjust-dim2', elem)
             ]);
         }
     });
 
     $page.find('.wall-adjust-group .input-block').each( function(index, elem){
-        if($(elem).find('.wall-adjust-paint-key').val().length >= 1 
+        if($(elem).find('.wall-adjust-paint-key').val().length >= 1
             && notZero(elem)){
             room.groupItems.wallAdjustVals.push([
                 $(elem).find('.wall-adjust-paint-key').val(),
-                getf('.wall-adjust-qty', elem), 
-                getf('.wall-adjust-dim1', elem), 
-                getf('.wall-adjust-dim2', elem) 
+                getf('.wall-adjust-qty', elem),
+                getf('.wall-adjust-dim1', elem),
+                getf('.wall-adjust-dim2', elem)
             ]);
         }
     });
 
     $page.find('.doors-group .input-block').each( function(index, elem){
-        if($(elem).find('.door-surface-paint-key').val().length >= 1 
+        if($(elem).find('.door-surface-paint-key').val().length >= 1
             && $(elem).find('.door-frame-paint-key').val().length >= 1
             && notZero(elem)){
             room.groupItems.doorVals.push([
                 $(elem).find('.door-surface-paint-key').val(),
-                getf('.door-qty', elem), 
-                getf('.door-width', elem), 
+                getf('.door-qty', elem),
+                getf('.door-width', elem),
                 getf('.door-height', elem),
                 $(elem).find('.door-frame-paint-key').val(),
             ]);
@@ -355,54 +355,54 @@ function getRoomData($page){
     });
 
     $page.find('.skirting-adjust-group .input-block').each( function(index, elem){
-        if($(elem).find('.skirting-adjust-paint-key').val().length >= 1 
+        if($(elem).find('.skirting-adjust-paint-key').val().length >= 1
             && notZero(elem)){
             room.groupItems.skirtingVals.push([
                 $(elem).find('.skirting-adjust-paint-key').val(),
-                getf('.skirting-adjust-qty', elem), 
+                getf('.skirting-adjust-qty', elem),
                 getf('.skirting-adjust-length', elem)
             ]);
         }
     });
 
     $page.find('.windows-group .input-block').each( function(index, elem){
-        if($(elem).find('.window-paint-key').val().length >= 1 
+        if($(elem).find('.window-paint-key').val().length >= 1
             && notZero(elem)){
             room.groupItems.windowVals.push([
                 $(elem).find('.window-paint-key').val(),
-                getf('.window-qty', elem), 
-                getf('.window-width', elem), 
-                getf('.window-height', elem) 
+                getf('.window-qty', elem),
+                getf('.window-width', elem),
+                getf('.window-height', elem)
             ]);
         }
     });
 
     $page.find('.radiators-group .input-block').each( function(index, elem){
-        if($(elem).find('.radiator-paint-key').val().length >= 1 
+        if($(elem).find('.radiator-paint-key').val().length >= 1
             && notZero(elem)){
             room.groupItems.radiatorVals.push([
                 $(elem).find('.radiator-paint-key').val(),
-                getf('.radiator-qty', elem), 
-                getf('.radiator-width', elem), 
-                getf('.radiator-height', elem) 
+                getf('.radiator-qty', elem),
+                getf('.radiator-width', elem),
+                getf('.radiator-height', elem)
             ]);
         }
     });
 
     $page.find('.general-surface-group .input-block').each( function(index, elem){
-        if($(elem).find('.general-surface-paint-key').val().length >= 1 
+        if($(elem).find('.general-surface-paint-key').val().length >= 1
             && notZero(elem)){
             room.groupItems.genSurfaceVals.push([
                 $(elem).find('.general-surface-paint-key').val(),
                 getf('.general-surface-qty', elem),
                 getf('.general-surface-width', elem),
-                getf('.general-surface-height', elem) 
+                getf('.general-surface-height', elem)
             ]);
         }
     });
 
     $page.find('.isolated-surface-group .input-block').each( function(index, elem){
-        if($(elem).find('.isolated-surface-paint-key').val().length >= 1 
+        if($(elem).find('.isolated-surface-paint-key').val().length >= 1
             && notZero(elem)){
             room.groupItems.isolSurfaceVals.push([
                 $(elem).find('.isolated-surface-paint-key').val(),
@@ -460,7 +460,7 @@ function calculateWorkForRoom(room){
             }
             if(paint.unitRate > 0){
                 ceilingAdjustUnitValue += (space * paint.unitRate);
-            }   
+            }
         }
     }
 
@@ -503,7 +503,7 @@ function calculateWorkForRoom(room){
             }
             if(surfacePaint.unitRate > 0){
                 doorSurfUnitValue += (surface * surfacePaint.unitRate);
-            } 
+            }
             var framePaint = MODEL.getPaint(room.groupItems.doorVals[i][4]);
             var frameLength = 2 * dim2 + dim1;
             doorFrame += frameLength;
@@ -512,10 +512,10 @@ function calculateWorkForRoom(room){
             }
             if(framePaint.prodRateTwo > 0){
                 doorFrameHours += (frameLength / framePaint.prodRateTwo);
-            }  
+            }
             if(framePaint.unitRate > 0){
                 doorFrameUnitValue += (frameLength * framePaint.unitRate);
-            }  
+            }
         }
     }
 
@@ -532,10 +532,10 @@ function calculateWorkForRoom(room){
             }
             if(skirtingPaint.prodRateTwo > 0){
                 skirtingAdjustHours += (space / skirtingPaint.prodRateTwo);
-            }  
+            }
             if(skirtingPaint.unitRate > 0){
                 skirtingAdjustUnitValue += (space * skirtingPaint.unitRate);
-            }  
+            }
         }
     }
 
@@ -631,12 +631,12 @@ function calculateWorkForRoom(room){
     /* If there are negative adjustments we need to reduce the space for
     the ceiling, wall and skirting before calculating the hours for the main
     ceiling, wall and skirting areas */
-    ceilingSpace    = (room.roomLength * room.roomWidth) + baybreastCeiling; 
+    ceilingSpace    = (room.roomLength * room.roomWidth) + baybreastCeiling;
     if(ceilingAdjustSpace < 0) ceilingSpace += ceilingAdjustSpace;
 
-    wallSpace       = (room.roomLength + room.roomWidth) * 2 * room.roomHeight - doorSurface - windowSpace + baybreastWall; 
+    wallSpace       = (room.roomLength + room.roomWidth) * 2 * room.roomHeight - doorSurface - windowSpace + baybreastWall;
     if(wallAdjustSpace < 0) wallSpace += wallAdjustSpace;
-    
+
     skirtingSpace   = (room.roomLength + room.roomWidth) * 2 - doorsTotalWidth + baybreastSkirting;
     if(skirtingAdjustSpace < 0) skirtingSpace += skirtingAdjustSpace;
 
@@ -674,7 +674,7 @@ function calculateWorkForRoom(room){
         skirtingUnitValue += skirtingSpace * skirtingPaint.unitRate;
     }
 
-    /* If there are positive adjustments, we add to ceiling, wall and skirting 
+    /* If there are positive adjustments, we add to ceiling, wall and skirting
     after the main parts have been calculated above because the positive
     adjustments have their own production and unit rates. */
     if(ceilingAdjustSpace > 0) ceilingSpace += ceilingAdjustSpace;
@@ -682,7 +682,7 @@ function calculateWorkForRoom(room){
 
     if(wallAdjustSpace > 0) wallSpace += wallAdjustSpace;
     wallUnitValue += wallAdjustUnitValue;
-    
+
     if(skirtingAdjustSpace > 0) skirtingSpace += skirtingAdjustSpace;
     skirtingUnitValue += skirtingAdjustUnitValue;
 
@@ -706,7 +706,7 @@ function renderRoomCalculations(roomPage, tableData){
     $resultsElem.html(buildResultsTable(tableData));
     $resultsElem.fadeIn(500);
     $("html, body").animate(
-        { scrollTop: 0 }, 300, 
+        { scrollTop: 0 }, 300,
         function(){ CARO.resizeUi(true) }
     );
 }
@@ -717,7 +717,7 @@ function buildResultsTable(tableData){
     rowTemplate += '<td>{2}</td><td class="tdRightAlign">{3}</td><td class="tdRightAlign">{4}</td></tr>';
     var totalHours = 0;
     var totalValue = 0;
-    
+
     for (i = 0; i < tableData.length; ++i) {
         obj = tableData[i];
 
@@ -728,7 +728,7 @@ function buildResultsTable(tableData){
             roundAndFix(obj.hours, 2),
             roundAndFix(obj.rateValue, 2)
         );
-        totalHours += parseFloat(obj.hours);  
+        totalHours += parseFloat(obj.hours);
         totalValue += parseFloat(obj.rateValue);
     }
 
@@ -752,7 +752,7 @@ function keydownDecimalInput(event){
     // Allow: backspace, delete, tab, escape, enter, ctrl+A
     if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
          // Allow: Ctrl+A
-        (event.keyCode == 65 && event.ctrlKey === true) || 
+        (event.keyCode == 65 && event.ctrlKey === true) ||
          // Allow: home, end, left, right
         (event.keyCode >= 35 && event.keyCode <= 39)) {
              // let it happen, don't do anything
@@ -793,14 +793,14 @@ function keyupDecimalInput(event){
             $elem.css('color','red');
         }
     }
-    
+
 }
 
 function keydownIntegerInput(event){
     // Allow: backspace, delete, tab, escape, enter, ctrl+A
     if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
          // Allow: Ctrl+A
-        (event.keyCode == 65 && event.ctrlKey === true) || 
+        (event.keyCode == 65 && event.ctrlKey === true) ||
          // Allow: home, end, left, right
         (event.keyCode >= 35 && event.keyCode <= 39)) {
              // let it happen, don't do anything
@@ -810,19 +810,19 @@ function keydownIntegerInput(event){
     //If not number, prevent
     if(/[0-9]/.test(String.fromCharCode(event.keyCode))) return;
 
-    event.preventDefault();  
+    event.preventDefault();
 }
 
 function blurDecimal(event, inpElem){
     var $inpElem = $(this);
     if(inpElem != null) $inpElem = $(inpElem);
-   
+
     //Enforce 2 decimal places.
     if($inpElem.val().length == 0
         || $inpElem.val().trim() == '.'){
          $inpElem.val( '0.00' );
     }
-    
+
     $inpElem.val( parseFloat($inpElem.val()).toFixed(2) );
     //Set red color for negative values
      if($inpElem.val() >= 0){
@@ -842,9 +842,9 @@ function blurInputFocus(event){
       && $elem.hasAncestor('.dropdown-btn') == false){
        $('.dropdown.open').removeClass('open');
     }
-    if($elem.hasClass('pos-neg') == false 
-      && $elem.attr('id') != 'btn-pos-neg'){
-        $('#btn-pos-neg').hide();
+    if($elem.hasClass('pos-neg') == false
+      && $elem.hasClass('btn-pos-neg') == false){
+        $('.btn-pos-neg:not(.template)').hide();
     }
 }
 
@@ -861,9 +861,9 @@ function switchSign(inpElem){
 }
 
 function initCarousel(){
-    
+
     CARO = new Caro('#carousel');
-    CARO.init('#caro-pages', 
+    CARO.init('#caro-pages',
         ['.room-page-template','.project-summary-template']
     );
 
@@ -880,7 +880,7 @@ function initCarousel(){
     var toggleNavButton = function(){
         var $navButton = $('.caro-nav-next:not(.template)');
         var $addButton = $('.btn-add-room:not(.template)');
-        if(CARO.isLastSlide() 
+        if(CARO.isLastSlide()
             && CARO.getCurrentSlide().find('.room-page').length >= 1){
             //Hide the 'next slide' button and show 'add room' button
             $navButton.hide();
@@ -927,15 +927,15 @@ function initDropdown(elem){
     var $elem = $(elem);
     var dropdownText = $elem.find('.dropdown-text').text().toLowerCase().trim();
 
-    if (dropdownText == 'dropdown' 
-    	|| dropdownText == 'select...' 
-        || dropdownText == 'menu item' 
+    if (dropdownText == 'dropdown'
+    	|| dropdownText == 'select...'
+        || dropdownText == 'menu item'
     	|| dropdownText == ''){
         var defaultItem = $elem.find('.dropdown-menu a:first');
         $elem.find('.dropdown-value').val( defaultItem.data('value') );
         $elem.find('.dropdown-text').text( defaultItem.text() );
     }
-    
+
     $elem.find('.dropdown-btn').unbind('click');
     $elem.find('.dropdown-btn').click( toggleDropDown );
     $elem.find('.dropdown-menu a').bind( 'click touchstart', selectDropDownItem );
@@ -963,15 +963,15 @@ function swapElements(elm1, elm2) {
 
 function showEditSpecView(){
     var $clickedButton = $(this);
-    
+
     var surfaceType = $clickedButton.closest('.spec-item-block')
                           .find('.spec-item-title').text();
-    
+
     $('#spec-surface-type').val(surfaceType);
 
     var paints = MODEL.getPaintsByType(surfaceType, null);
     //For each paint of this surface type, build the edit inputs.
-    $.each(paints, function(i, paint) {  
+    $.each(paints, function(i, paint) {
         if (paint.surfaceType.toLowerCase() == surfaceType.toLowerCase()) {
             var $newBlock = $('#form-edit-spec .input-block:first').clone();
             $newBlock.find('input.spec-item-key'    ) .val( paint.key             );
@@ -987,7 +987,7 @@ function showEditSpecView(){
             $btnRemove.click(function(event){ $(event.target).closest('.input-block').remove(); });
             $btnReorderUp = $newBlock.find('.btn-reorder-item-up');
             $btnReorderDown = $newBlock.find('.btn-reorder-item-down');
-            $btnReorderUp.click( function(){ 
+            $btnReorderUp.click( function(){
                 var $thisBlock = $(this).closest('.input-block');
                 var $partnerBlock = $thisBlock.prev('.input-block:not(.hidden)');
                 if(typeof $partnerBlock.get(0) != 'undefined'){
@@ -998,7 +998,7 @@ function showEditSpecView(){
                     $partnerBlock.find('input.spec-item-order').val(order1);
                 }
             });
-            $btnReorderDown.click( function(){ 
+            $btnReorderDown.click( function(){
                 var $thisBlock = $(this).closest('.input-block');
                 var $partnerBlock = $thisBlock.next('.input-block:not(.hidden)');
                 if(typeof $partnerBlock.get(0) != 'undefined'){
@@ -1007,11 +1007,11 @@ function showEditSpecView(){
                     var order2 = $partnerBlock.find('input.spec-item-order').val();
                     $thisBlock.find('input.spec-item-order').val(order2)
                     $partnerBlock.find('input.spec-item-order').val(order1);
-                } 
+                }
             });
         }
     });
-    
+
     initDecimalInputs();
 
     $('#form-view-spec').fadeOut('fast', function(){
@@ -1040,7 +1040,7 @@ function populateSpecDropdowns(){
             $newBlock.find('.dropdown-value').attr('id',
                 'select-' + paint.surfaceType.toLowerCase().replace(' ', '-') + '-spec');
             $newBlock.find('ul.dropdown-menu').append(
-                '<li><a role="menuitem" data-value="' 
+                '<li><a role="menuitem" data-value="'
                 + paint.key + '" >' + paint.name + '</a></li>'
             );
         });
@@ -1089,13 +1089,13 @@ function onSpecSave(){
     /* Build up the json data making save call */
     $('#form-edit-spec .input-block:not(.hidden)').each( function(index, elem){
         var $elemBlock = $(elem);
-        arrSpecItemData.push({ 
+        arrSpecItemData.push({
             key:          $elemBlock.find('.spec-item-key').val(),
             order:        $elemBlock.find('.spec-item-order').val(),
             name:         $elemBlock.find('.spec-item-name').val().trim(),
             prodRateOne:  $elemBlock.find('.spec-item-pr1').val(),
             prodRateTwo:  $elemBlock.find('.spec-item-pr2').val(),
-            unitRate:     $elemBlock.find('.spec-item-rate').val(), 
+            unitRate:     $elemBlock.find('.spec-item-rate').val(),
             surfaceType:  $('#spec-surface-type').val()
         });
     });
@@ -1103,17 +1103,17 @@ function onSpecSave(){
     doXhr({
         httpMethod: 'POST',
         url: '/savespec',
-        data: { 
-          surfaceType: $('#spec-surface-type').val(), 
-          paints: JSON.stringify( arrSpecItemData ) 
+        data: {
+          surfaceType: $('#spec-surface-type').val(),
+          paints: JSON.stringify( arrSpecItemData )
         },
         dataType: 'json',
-        successFunc: function(data){ 
+        successFunc: function(data){
             PAINTS = data;
             fadeToViewSpec();
         }
     });
-    
+
 }
 
 function deleteRoom(roomKey){
@@ -1172,7 +1172,7 @@ function saveDefaultRoom(room){
 }
 
 function initRoomDefaultsPage(){
-    
+
     var defRoom = DEFAULT_ROOM;
 
     $('#default-room-key'         ).val( defRoom.key            );
@@ -1183,7 +1183,7 @@ function initRoomDefaultsPage(){
     $('#default-window-height'    ).val( defRoom.windowHeight   );
     $('#default-radiator-width'   ).val( defRoom.radiatorWidth  );
     $('#default-radiator-height'  ).val( defRoom.radiatorHeight );
-    
+
     $('#form-room-defaults input[type="number"]').change( roomDefaultsChange );
 
     $('#form-room-defaults .btn-save').click( function(){
@@ -1200,7 +1200,7 @@ function initRoomDefaultsPage(){
             radiatorWidth:         parseFloat($('#default-radiator-width').val()    ),
             radiatorHeight:        parseFloat($('#default-radiator-height').val()   )
         });
-    });      
+    });
 }
 
 function initProjectsPage(){
@@ -1225,7 +1225,7 @@ function initProjectSummaryPage(){
     var getTotalHours = function(tableData){
         var totalHours = 0;
         for (var i = 0; i < tableData.length; i++) {
-            totalHours += parseFloat(tableData[i].hours);  
+            totalHours += parseFloat(tableData[i].hours);
         }
         return totalHours;
     };
@@ -1233,19 +1233,19 @@ function initProjectSummaryPage(){
     var getTotalValue = function(tableData){
         var totalValue = 0;
         for (var i = 0; i < tableData.length; i++) {
-            totalValue += parseFloat(tableData[i].rateValue);  
+            totalValue += parseFloat(tableData[i].rateValue);
         }
         return totalValue;
     };
 
     if(CURRENT_PROJECT.rooms.length >= 1){
-        
+
         var rooms = MODEL.getRoomsForProject(CURRENT_PROJECT.key);
 
         for(var i = 0; i < rooms.length; i++){
             var tableData = calculateWorkForRoom(rooms[i]);
-            var table = buildResultsTable(tableData); 
-            projectTotalRooms++;           
+            var table = buildResultsTable(tableData);
+            projectTotalRooms++;
             projectTotalHours += getTotalHours(tableData);
             projectTotalValue += getTotalValue(tableData);
 
@@ -1271,7 +1271,7 @@ function initRoomPage(room){
 
     //Use the default room settings if room object not passed in.
     if(room == null){
-        room = {  
+        room = {
             'name'                  : '',
             'roomLength'           : 0,
             'roomWidth'            : 0,
@@ -1287,7 +1287,7 @@ function initRoomPage(room){
             'radiatorHeight'       : getf('#default-radiator-height'),
             'project'				: null
         }
-    } 
+    }
 
     $page.find('input[type=number]').val(0);
     //Set some defaults
@@ -1315,20 +1315,20 @@ function initRoomPage(room){
     $page.find('.ceiling-adjust-simple')  .val( room.ceilingAdjustSimple    );
     $page.find('.wall-adjust-simple')     .val( room.wallAdjustSimple       );
     $page.find('.skirting-adjust-simple') .val( room.skirtingAdjustSimple   );
-    
+
     //Build input blocks and set the values for each group item.
-    if(room.groupItems != null){    
+    if(room.groupItems != null){
 
         for(var i = 0; i <= room.groupItems.bayBreastVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.baybreast-group .btn-add-row:last') );
             var $block = $page.find('.baybreast-group .input-block:last');
             $block.find('.baybreast-width').val( room.groupItems.bayBreastVals[i][0] );
             $block.find('.baybreast-depth').val( room.groupItems.bayBreastVals[i][1] );
         }
-        
+
         for(var i = 0; i <= room.groupItems.ceilingAdjustVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.ceiling-adjust-group .btn-add-row:last') );
             var $block = $page.find('.ceiling-adjust-group .input-block:last');
             var paint = MODEL.getPaint(room.groupItems.ceilingAdjustVals[i][0]);
@@ -1338,9 +1338,9 @@ function initRoomPage(room){
             $block.find('.ceiling-adjust-dim1').val( room.groupItems.ceilingAdjustVals[i][2] );
             $block.find('.ceiling-adjust-dim2').val( room.groupItems.ceilingAdjustVals[i][3] );
         }
-        
+
         for(var i = 0; i <= room.groupItems.wallAdjustVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.wall-adjust-group .btn-add-row:last') );
             var $block = $page.find('.wall-adjust-group .input-block:last');
             var paint = MODEL.getPaint(room.groupItems.wallAdjustVals[i][0]);
@@ -1348,11 +1348,11 @@ function initRoomPage(room){
             $block.find('.dropdown-text').text( paint.name );
             $block.find('.wall-adjust-qty').val( room.groupItems.wallAdjustVals[i][1] );
             $block.find('.wall-adjust-dim1').val( room.groupItems.wallAdjustVals[i][2] );
-            $block.find('.wall-adjust-dim2').val( room.groupItems.wallAdjustVals[i][3] );        
+            $block.find('.wall-adjust-dim2').val( room.groupItems.wallAdjustVals[i][3] );
         }
 
         for(var i = 0; i <= room.groupItems.doorVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.doors-group .btn-add-row:last') );
             var $block = $page.find('.doors-group .input-block:last');
             var surfacePaint = MODEL.getPaint(room.groupItems.doorVals[i][0]);
@@ -1363,11 +1363,11 @@ function initRoomPage(room){
             $block.find('.dropdown.door-frame .dropdown-text').text( framePaint.name );
             $block.find('.door-qty').val( room.groupItems.doorVals[i][1] );
             $block.find('.door-width').val( room.groupItems.doorVals[i][2] );
-            $block.find('.door-height').val( room.groupItems.doorVals[i][3] );        
+            $block.find('.door-height').val( room.groupItems.doorVals[i][3] );
         }
 
         for(var i = 0; i <= room.groupItems.skirtingVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.skirting-adjust-group .btn-add-row:last') );
             var $block = $page.find('.skirting-adjust-group .input-block:last');
             var paint = MODEL.getPaint(room.groupItems.skirtingVals[i][0]);
@@ -1378,7 +1378,7 @@ function initRoomPage(room){
         }
 
         for(var i = 0; i <= room.groupItems.windowVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.windows-group .btn-add-row:last') );
             var $block = $page.find('.windows-group .input-block:last');
             var paint = MODEL.getPaint(room.groupItems.windowVals[i][0]);
@@ -1386,11 +1386,11 @@ function initRoomPage(room){
             $block.find('.dropdown-text').text( paint.name );
             $block.find('.window-qty').val( room.groupItems.windowVals[i][1] );
             $block.find('.window-width').val( room.groupItems.windowVals[i][2] );
-            $block.find('.window-height').val( room.groupItems.windowVals[i][3] );        
+            $block.find('.window-height').val( room.groupItems.windowVals[i][3] );
         }
 
         for(var i = 0; i <= room.groupItems.radiatorVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.radiators-group .btn-add-row:last') );
             var $block = $page.find('.radiators-group .input-block:last');
             var paint = MODEL.getPaint(room.groupItems.radiatorVals[i][0]);
@@ -1398,11 +1398,11 @@ function initRoomPage(room){
             $block.find('.dropdown-text').text( paint.name );
             $block.find('.radiator-qty').val( room.groupItems.radiatorVals[i][1] );
             $block.find('.radiator-width').val( room.groupItems.radiatorVals[i][2] );
-            $block.find('.radiator-height').val( room.groupItems.radiatorVals[i][3] );        
+            $block.find('.radiator-height').val( room.groupItems.radiatorVals[i][3] );
         }
 
         for(var i = 0; i <= room.groupItems.genSurfaceVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.general-surface-group .btn-add-row:last') );
             var $block = $page.find('.general-surface-group .input-block:last');
             var paint = MODEL.getPaint(room.groupItems.genSurfaceVals[i][0]);
@@ -1412,9 +1412,9 @@ function initRoomPage(room){
             $block.find('.general-surface-width').val( room.groupItems.genSurfaceVals[i][2] );
             $block.find('.general-surface-height').val( room.groupItems.genSurfaceVals[i][3] );
         }
-        
+
         for(var i = 0; i <= room.groupItems.isolSurfaceVals.length - 1; i++){
-            
+
             if(i >= 1) addInputBlock( $page.find('.isolated-surface-group .btn-add-row:last') );
             var $block = $page.find('.isolated-surface-group .input-block:last');
             var paint = MODEL.getPaint(room.groupItems.isolSurfaceVals[i][0]);
@@ -1434,7 +1434,7 @@ function initRoomPage(room){
         var paints = MODEL.getPaintsByType(paintType, CURRENT_PROJECT.key);
         $.each(paints, function(j, paint) {
             $dropdown.append(
-                '<li><a role="menuitem" data-value="' + paint.key + '" >' 
+                '<li><a role="menuitem" data-value="' + paint.key + '" >'
                 + paint.name + '</a></li>'
             );
         });
@@ -1470,7 +1470,7 @@ function initRoomPage(room){
                      the class for the grey background */
                      $cell.removeClass('default-value').addClass('default-value');
                 }else{
-                    /* The value is different from the default so 
+                    /* The value is different from the default so
                     remove the grey background. */
                     $cell.removeClass('default-value')
                 }
@@ -1500,18 +1500,18 @@ function initRoomPage(room){
 }
 
 function onPosNegInputFocus(event, secondCall){
-    /* Show/hide a hovering button above input to 
+    /* Show/hide a hovering button above input to
     allow user to switch +/- sign */
 
-    var $inp = $(this);  
-    var $btn = $('#btn-pos-neg');
+    var $inp = $(this);
+    var $btn = $('.btn-pos-neg:not(.template)');
 
     $btn.css('top',$inp.offset().top - $btn.outerHeight());
     $btn.css('left',$inp.offset().left);
     $btn.css('display','block');
-    $btn.off('click');
-    $btn.on('click', function(event){
-        switchSign($inp); 
+    $btn.css('z-index','1000');
+    $btn.off('click').on('click', function(event){
+        switchSign($inp);
         event.stopPropagation();
     });
 
@@ -1550,13 +1550,13 @@ function updateProjectSummary(){
 function initInputCursorPos(context){
 
     var $context = $('body');
-    if(context != null) $context = $(context); 
+    if(context != null) $context = $(context);
     /* Set the cursor position when input focussed */
     /* Does not work for number inputs in Google Chrome or Opera. */
     $('input[type="number"]').focus( function(event){
         if(this.setSelectionRange){
             var len = $(this).val().length * 2;
-            /* If input value is zero, select whole thing to make it 
+            /* If input value is zero, select whole thing to make it
             easy to overwrite, else set cursor to the end */
             var start = (parseFloat($(this).val()) == 0) ? 0 : len;
             this.setSelectionRange(start, len);
@@ -1604,9 +1604,9 @@ function addInputBlock(context){
         $newBlock.insertAfter($group.find('.input-block:last'));
         $btnRemove = $newBlock.find('.btn-remove-row:first');
         $btnRemove.css('display','block');
-        $btnRemove.click(function(event){ 
+        $btnRemove.click(function(event){
             $(event.target).closest('.input-block').remove();
-            resizeCarousel(); 
+            resizeCarousel();
         });
         $group.find('input.decimal').blur();
         initDropdowns($newBlock);
@@ -1633,7 +1633,8 @@ $(document).ready(function() {
         '.loadingDivOuter',
         '.dialog-background',
         '.dialog',
-        '.button-box'
+        '.button-box',
+        '.btn-pos-neg'
     ]);
 
     makeComponent(
@@ -1657,7 +1658,7 @@ $(document).ready(function() {
     initIntegerInputs();
     initDecimalInputs();
     initAddInputBlockButtons();
-    $('#btn-pos-neg').hide();
+    $('.btn-pos-neg:not(.template)').hide();
     initDialog();
 
     $('input').mousedown(function(event){

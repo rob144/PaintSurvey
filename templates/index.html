@@ -3,6 +3,7 @@
     <head>
         <title>Paint Survey</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="/static/main.css" />
         <link rel="stylesheet" type="text/css" href="/static/caro.css" />
         <script src="/static/lib/jquery-1.11.2.min.js"></script>
@@ -16,7 +17,7 @@
             <div id='page-specification' class='caro-page'>
                 <div class='pageContentOuter'>
                     <div class='pageContent'>
-                            
+
                         <form id='form-edit-spec'>
                             <div class='input-group'>
                                 <h2 class='group'>Edit Specification</h2>
@@ -45,7 +46,7 @@
                                                 <td>
                                                     <input class='spec-item-rate decimal' type='number' step='any' min='0'/>
                                                 </td>
-                                            </tr>                                           
+                                            </tr>
                                             <button type='button' class='btn-reorder-item-up'></button>
                                             <button type='button' class='btn-reorder-item-down'></button>
                                         </table>
@@ -80,11 +81,11 @@
                                 <label>Room height</label>
                                 <input id='default-room-height' type='number' step='any' min='0' placeholder='height' class='decimal round-corners-input'/>
                             </div>
-                            <div class='form-row'>  
+                            <div class='form-row'>
                                 <label>Door width</label>
                                 <input id='default-door-width' type='number' step='any' min='0' placeholder='width' class='decimal round-corners-input' />
                             </div>
-                            <div class='form-row'>  
+                            <div class='form-row'>
                                 <label>Door height</label>
                                 <input id='default-door-height' type='number' step='any' min='0' placeholder='height' class='decimal round-corners-input'/>
                             </div>
@@ -163,26 +164,26 @@
             <div id='page-room-1' class='caro-page room-page-template'>
                 <div class='pageContentOuter room-page'>
                     <div class='pageContent'>
-                      
+
                         <form class='room-form'>
-                          
+
                             <div class='room-top-row'>
                                 <div class='room-title-heading room-top-row-left' data-room-number="1">
                                     <input name='room-title' type='text' placeholder='Room Name' class='room-title'/>
                                 </div>
                                 <div class='room-top-row-right'>
                                     <table class='input-pill'>
-                                        <tr>       
+                                        <tr>
                                             <td class='last-child'>
                                                 <input name='room-hours-adjust' class='room-hours-adjust decimal pos-neg' type='number' step='any' />
                                             </td>
                                         </tr>
-                                    </table>                
+                                    </table>
                                 </div>
                             </div>
 
                             <input type='hidden' class='room-key' />
-                            
+
                             <div class='results'>RESULTS</div>
 
                             <div class='group'>
@@ -193,7 +194,7 @@
                                         </td>
                                         <td class='room-height-cell col2'>
                                             <input name='room-height' class='room-height form-control decimal' type='number' step='any' min='0'  >
-                                        </td>    
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class='col1'>
@@ -201,7 +202,7 @@
                                         </td>
                                         <td class='room-length-cell col2'>
                                              <input name='room-length' class='room-length form-control decimal' type='number' step='any' min='0' >
-                                        </td>    
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class='col1'>
@@ -209,15 +210,15 @@
                                         </td>
                                         <td class='room-width-cell col2'>
                                             <input name='room-width' class='room-width form-control decimal' type='number' step='any' min='0' >
-                                        </td>    
+                                        </td>
                                     </tr>
                                 </table>
-                                
+
                                 <div class='room-3d-image'>
                                     <img src='/static/room-3d-trans.png' />
                                 </div>
                             </div>
-                            
+
                             <div class='input-group baybreast-group'>
 
                                 <table class='baybreast-table'>
@@ -232,11 +233,11 @@
                                                     <tr>
                                                         <td class='baybreast-width-cell'>
                                                             <input name='baybreast-width' class='form-control baybreast-width decimal' type='number' step='any' />
-                                                        </td> 
-                                                        
+                                                        </td>
+
                                                         <td class='baybreast-depth-cell last-child'>
                                                             <input name='baybreast-depth' class='form-control baybreast-depth decimal pos-neg' type='number' step='any' min='0' />
-                                                        </td>   
+                                                        </td>
                                                     </tr>
                                                 </table>
                                                 <div class='button-box'></div>
@@ -248,7 +249,7 @@
                             </div>
 
                             <div class='input-group ceiling-adjust-group'>
-                                
+
                                 <div class='room-item-top-row'>
                                     <div class='group-label'>Ceiling Adjusts</div>
                                     <table class='input-pill'>
@@ -261,18 +262,18 @@
                                 </div>
 
                                 <div class='input-block'>
-                                        
+
                                     <div class='left'>
                                         <div class='dropdown' data-dropdown-id='ceiling-adjust-paint-key'></div>
                                     </div>
-                                    
+
                                     <div class='right'>
                                         <table class='input-pill'>
                                             <tr>
                                                 <td>
                                                   <input name='ceiling-adjust-qty' type='number' min='0' step='1'  class='ceiling-adjust-qty integer' data-default-value='1'/>
                                                 </td>
-                                                
+
                                                 <td>
                                                     <input name='ceiling-adjust-dim1' class='ceiling-adjust-dim1 decimal pos-neg' type='number' step='any'  tabindex="-1"/>
                                                 </td>
@@ -284,12 +285,12 @@
                                     </div>
 
                                     <div class='button-box'></div>
-                                        
+
                                 </div>
                             </div>
 
                             <div class='input-group wall-adjust-group'>
-                                
+
                                 <div class='room-item-top-row'>
                                     <div class='group-label'>Wall Adjusts</div>
                                     <table class='input-pill'>
@@ -302,18 +303,18 @@
                               </div>
 
                                 <div class='input-block'>
-                                    
+
                                     <div class='left'>
                                         <div class="dropdown" data-dropdown-id='wall-adjust-paint-key'></div>
                                     </div>
-                                
+
                                     <div class='right'>
                                         <table class='input-pill'>
                                             <tr>
                                                 <td>
                                                     <input name='wall-adjust-qty' type='number' min='0' step='1'  class='wall-adjust-qty integer' data-default-value='1'/>
                                                 </td>
-                                                
+
                                                 <td>
                                                     <input name='wall-adjust-dim1' class='wall-adjust-dim1 decimal pos-neg' type='number' step='any' placeholder='x'/>
                                                 </td>
@@ -330,10 +331,10 @@
                             </div>
 
                             <div class='input-group doors-group'>
-                                
+
                                 <div class='group-label'>Doors & Frames</div>
                                 <div class='input-block group'>
-                                    
+
                                     <div class='left'>
                                         <div class="dropdown door-surface" data-dropdown-id='door-surface-paint-key'></div>
                                         <div class='left dropdown door-frame' data-dropdown-id='door-frame-paint-key'></div>
@@ -345,7 +346,7 @@
                                                 <td>
                                                     <input name='door-qty' class='door-qty form-control integer' type='number' step='1' min='0'  data-default-value='1'>
                                                 </td>
-                                                
+
                                                 <td class='default-value'>
                                                     <input name='door-width' class='door-width form-control decimal' type='number' step='any' min='0' >
                                                 </td>
@@ -361,12 +362,12 @@
                             </div>
 
                             <div class='input-group skirting-adjust-group'>
-                                
+
                                 <div class='room-item-top-row'>
                                     <div class='group-label'>Skirting Adjusts</div>
                                     <table class='input-pill'>
                                         <tr>
-                                            
+
                                             <td class='last-child'>
                                                 <input name='skirting-adjust-simple' type='number' step='any'  class='skirting-adjust-simple decimal pos-neg'/>
                                             </td>
@@ -375,18 +376,18 @@
                                 </div>
 
                                 <div class='input-block'>
-                                        
+
                                     <div class='left'>
                                         <div class='dropdown' data-dropdown-id='skirting-adjust-paint-key'></div>
                                     </div>
-                                    
+
                                     <div class='right'>
                                         <table class='input-pill'>
                                             <tr>
                                                 <td>
                                                     <input name='skirting-adjust-qty' type='number' min='0' step='1' placeholder='0' class='skirting-adjust-qty integer' data-default-value='1'/>
                                                 </td>
-                                                
+
                                                 <td class='last-child'>
                                                     <input name='skirting-adjust-length' class='skirting-adjust-length decimal pos-neg' type='number' min='0' step='any' />
                                                 </td>
@@ -400,10 +401,10 @@
                             </div>
 
                             <div class='input-group windows-group'>
-                                
+
                                 <div class='group-label'>Windows</div>
                                 <div class='input-block'>
-                                    
+
                                     <div class='left'>
                                         <div class='dropdown' data-dropdown-id='window-paint-key'></div>
                                     </div>
@@ -430,10 +431,10 @@
                             </div>
 
                             <div class='input-group radiators-group'>
-                                
+
                                 <div class='group-label'>Radiators</div>
                                 <div class='input-block group'>
-                                    
+
                                     <div class='left'>
                                         <div class="dropdown" data-dropdown-id='radiator-paint-key'></div>
                                     </div>
@@ -462,7 +463,7 @@
                             <div class='input-group general-surface-group'>
                                 <div class='group-label'>General Surface</div>
                                 <div class='input-block group'>
-                                    
+
                                     <div class='left'>
                                         <div class='dropdown' data-dropdown-id='general-surface-paint-key'></div>
                                     </div>
@@ -490,10 +491,10 @@
                             </div>
 
                             <div class='input-group isolated-surface-group'>
-                                
+
                                 <div class='group-label'>Isolated Surface</div>
                                 <div class='input-block group'>
-                                    
+
                                     <div class='left'>
                                         <div class='dropdown' data-dropdown-id='isolated-surface-paint-key'></div>
                                     </div>
@@ -511,7 +512,7 @@
                                             </tr>
                                         </table>
                                     </div>
-                                                
+
                                     <div class='button-box'></div>
 
                                 </div>
@@ -532,6 +533,7 @@
         <div class='loadingDivOuter'></div>
         <div class='dialog-background'></div>
         <div class='dialog'></div>
+        <div class='btn-pos-neg'></div>
 
         <div id='view-components'>
             <div class="caro-nav-btn caro-nav-next template">Next</div>
@@ -549,7 +551,7 @@
                 <button type='button' class='btn-dialog-confirm'>Confirm</button>
                 <button type='button' class='btn-dialog-cancel'>Cancel</button>
             </div>
-            <div id='btn-pos-neg'>±</div>
+            <div class='btn-pos-neg template'>±</div>
             <button type='button' class='btn-add-row template'>
                 <svg width='30' height='30'>
                     <circle tagname='circle' cx='15' cy='15' r='15' fill='blue'></circle>

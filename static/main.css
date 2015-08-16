@@ -1,6 +1,6 @@
-body { 
+body {
     font:-webkit-small-control;
-    font-family:Arial,Helvetica Neue,Helvetica,sans-serif; 
+    font-family:Arial,Helvetica Neue,Helvetica,sans-serif;
     font-size:15px;
     margin:0;
     background-color:#eee;
@@ -24,20 +24,20 @@ label {
 }
 input[type="button"] {
     font:-webkit-small-control;
-    font-family:Arial,Helvetica Neue,Helvetica,sans-serif; 
+    font-family:Arial,Helvetica Neue,Helvetica,sans-serif;
     font-size:15pt;
     cursor:pointer;
 }
-input[type="number"]:disabled, 
+input[type="number"]:disabled,
 input[type="text"]:disabled {
     background:none;
 }
-input[type="number"]:not(:disabled), 
+input[type="number"]:not(:disabled),
 input[type="text"]:not(:disabled) {
     height:32px;
     padding:0 4px 0 4px;
 }
-input[type="number"]:focus, 
+input[type="number"]:focus,
 input[type="text"]:focus {
     background-color: yellow;
 }
@@ -83,7 +83,7 @@ td.last-child {
 #owl-pages{
     display:none;
 }
-.btn-save, .btn-cancel, #btn-create-project, .btn-calculate-room, 
+.btn-save, .btn-cancel, #btn-create-project, .btn-calculate-room,
 .btn-save-room, .btn-delete-room, .btn-delete-data, .btn-init-data {
     display: inline-block;
     min-width: 100px;
@@ -130,7 +130,7 @@ td.last-child {
     overflow:visible;
     clear:left;
 }
-.input-group:after, .input-block:after, 
+.input-group:after, .input-block:after,
 .form-row:after {
     content: "";
     display: table;
@@ -273,7 +273,7 @@ td.last-child {
 .form-control {
     float:left;
     width:50px;
-    border:none; 
+    border:none;
 }
 .form-row {
 	margin:10px 0 5px 0;
@@ -298,10 +298,10 @@ td.last-child {
     margin:3px 0 0 0;
     float:none;
 }
-.btn-add-row, 
-.btn-remove-row, 
-.btn-add-spec-item, 
-.btn-reorder-item-up, 
+.btn-add-row,
+.btn-remove-row,
+.btn-add-spec-item,
+.btn-reorder-item-up,
 .btn-reorder-item-down {
     float:right;
     margin:0 0 0 1px;
@@ -446,7 +446,7 @@ table.spec-item-rates th {
 table.spec-item-rates td {
     padding:0 5px 0 0;
 }
-input.spec-item-pr1, 
+input.spec-item-pr1,
 input.spec-item-pr2,
 input.spec-item-rate {
     width:60px;
@@ -546,10 +546,10 @@ table.room-dimension-table td.col2 {
     width:50px;
 }
 div.room-3d-image {
-    float:right; 
+    float:right;
     text-align:right;
 }
-div.room-3d-image img { 
+div.room-3d-image img {
     max-width:110px;
 }
 td.room-height-cell {
@@ -584,7 +584,7 @@ td.btn-pos-neg-table {
     text-align:center;
     background-color:#ccc;
 }
-#btn-pos-neg {
+.btn-pos-neg {
     display:none;
     position:absolute;
     border:1px solid #ddd;
@@ -616,12 +616,12 @@ td.btn-pos-neg-table {
     vertical-align:top;
     text-align:left;
 }
-td.room-length-cell, 
-td.room-width-cell, 
-td.baybreast-width-cell, 
+td.room-length-cell,
+td.room-width-cell,
+td.baybreast-width-cell,
 .ceiling-adjust-dim1, .ceiling-adjust-dim2,
 .wall-adjust-dim1, .wall-adjust-dim2,
-.skirting-adjust-length, 
+.skirting-adjust-length,
 .door-width, .door-height,
 .window-width, .window-height,
 .radiator-width, .radiator-height,
@@ -648,7 +648,7 @@ td.result {
     border-collapse:collapse;
 }
 .results table td, .results table th,
-table.room-calculations th, 
+table.room-calculations th,
 table.room-calculations td {
     padding:2px 6px 2px 0;
 }
@@ -671,9 +671,9 @@ table.room-calculations td {
 .room-item-top-row > .group-label {
     float:left;
 }
-.wall-adjust-qty, .ceiling-adjust-qty, 
+.wall-adjust-qty, .ceiling-adjust-qty,
 .door-qty, .window-qty, .radiator-qty,
-.skirting-adjust-qty,.general-surface-qty, 
+.skirting-adjust-qty,.general-surface-qty,
 .isolated-surface-qty {
     width:30px;
     float:left;
