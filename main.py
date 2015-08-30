@@ -6,7 +6,6 @@ from models import *
 from datetime import datetime
 import time
 import json
-from json2html import *
 from mytools import *
 
 TEMPLATES_DIR = 'templates/'

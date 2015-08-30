@@ -1323,8 +1323,8 @@ function initRoomPage(room){
 
             if(i >= 1) addInputBlock( $page.find('.baybreast-group .btn-add-row:last') );
             var $block = $page.find('.baybreast-group .input-block:last');
-            $block.find('.baybreast-width').val( room.groupItems.bayBreastVals[i][0] );
-            $block.find('.baybreast-depth').val( room.groupItems.bayBreastVals[i][1] );
+            $block.find('.baybreast-depth').val( room.groupItems.bayBreastVals[i][0] );
+            $block.find('.baybreast-width').val( room.groupItems.bayBreastVals[i][1] );
         }
 
         for(var i = 0; i <= room.groupItems.ceilingAdjustVals.length - 1; i++){
