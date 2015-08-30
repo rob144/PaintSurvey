@@ -1,0 +1,8 @@
+table.datastore-table {
+    border-collapse: collapse;
+}
+
+table.datastore-table th, td {
+    padding:4px;
+    border:1px solid grey;
+}

@@ -6,6 +6,8 @@ from models import *
 from datetime import datetime
 import time
 import json
+from json2html import *
+from mytools import *
 
 TEMPLATES_DIR = 'templates/'
 
@@ -24,25 +26,41 @@ def json_serial(obj):
         return obj.urlsafe()
 
 class Home(webapp2.RequestHandler):
-    def get(self):  
+    def get(self):
         default_room = DefaultRoom.query().fetch(1)[0].to_dict()
         rooms        = [r.to_dict() for r in Room.query().fetch(300)]
         projects     = [p.to_dict() for p in Project.query().fetch(20)]
         paints       = [p.to_dict() for p in Paint.query().order(Paint.surfaceType, Paint.order).fetch(300)]
 
         self.response.write(
-            JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({ 
+            JINJA_ENV.get_template(TEMPLATES_DIR + 'index.html').render({
                 'default_room': json.dumps(default_room, indent=4, default=json_serial),
                 'rooms':        json.dumps(rooms,       indent=4, default=json_serial),
                 'projects':     json.dumps(projects,    indent=4, default=json_serial),
                 'paints':       json.dumps(paints,      indent=4, default=json_serial)
-            }) 
+            })
         )
 
 class Admin(webapp2.RequestHandler):
     def get(self):
+        default_room = DefaultRoom.query().fetch(1)[0].to_dict()
+        rooms        = [r.to_dict() for r in Room.query().fetch(300)]
+        projects     = [p.to_dict() for p in Project.query().fetch(20)]
+        paints       = [p.to_dict() for p in Paint.query().order(Paint.surfaceType, Paint.order).fetch(300)]
+
+        cssClass = "datastore-table"
+        htmlDefaultRoom = dictToHtmlTable(default_room, cssClass)
+        htmlRooms       = listToHtmlTable(rooms, cssClass)
+        htmlProjects    = listToHtmlTable(projects, cssClass)
+        htmlPaints      = listToHtmlTable(paints, cssClass)
+
         self.response.write(
-            JINJA_ENV.get_template(TEMPLATES_DIR + 'admin.html').render()
+            JINJA_ENV.get_template(TEMPLATES_DIR + 'admin.html').render({
+                'default_room': htmlDefaultRoom,
+                'rooms':        htmlRooms,
+                'projects':     htmlProjects,
+                'paints':       htmlPaints
+            })
         )
 
 class DeleteData(webapp2.RequestHandler):
@@ -111,13 +129,13 @@ class SaveSpec(webapp2.RequestHandler):
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps([p.to_dict() for p in respRaints], default=json_serial))
-        
+
 class CreateProject(webapp2.RequestHandler):
-    def post(self):        
+    def post(self):
         projectTitle = self.request.get('projectTitle')
         project = Project(username='Test', title=projectTitle, dateCreated=datetime.now())
         project = project.put().get()
-        
+
         #Copy paints from existing spec to the new project
         for paint in Paint.query(Paint.project == None).fetch(200):
             project.paints.append(
@@ -164,7 +182,7 @@ class DeleteProject(webapp2.RequestHandler):
 
         proj_key = ndb.Key(urlsafe=self.request.get('project_key'))
         project = proj_key.get()
-        
+
         if(project):
             for room in project.rooms:
                 room.delete()
@@ -182,7 +200,7 @@ class SaveDefaultRoom(webapp2.RequestHandler):
     def post(self):
         obj_room = json.loads(self.request.POST.get('room'))
         room = DefaultRoom()
-        
+
         if(obj_room['key'] != ""):
             room = ndb.Key(urlsafe=obj_room['key']).get()
 
@@ -196,17 +214,17 @@ class SaveDefaultRoom(webapp2.RequestHandler):
         room.windowHeight      = obj_room['windowHeight']
         room.radiatorWidth     = obj_room['radiatorWidth']
         room.radiatorHeight    = obj_room['radiatorHeight']
-        
+
         room = room.put().get()
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(room.to_dict(), default=json_serial))   
+        self.response.write(json.dumps(room.to_dict(), default=json_serial))
 
 class SaveRoom(webapp2.RequestHandler):
     def post(self):
         obj_room = json.loads(self.request.POST.get('room'))
         room = Room()
-        
+
         print(obj_room)
 
         if('key' in obj_room and obj_room['key'] != ""):
@@ -233,20 +251,20 @@ class SaveRoom(webapp2.RequestHandler):
                 project.put()
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(room.to_dict(), default=json_serial))   
+        self.response.write(json.dumps(room.to_dict(), default=json_serial))
 
 class DeleteRoom(webapp2.RequestHandler):
     def post(self):
         room = ndb.Key(urlsafe=self.request.get('room_key')).get()
         project = room.project.get()
-        
+
         if room.key in project.rooms:
             idx = project.rooms.index(room.key)
             del project.rooms[idx]
             room.project = project.put()
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(project.to_dict(), default=json_serial))   
+        self.response.write(json.dumps(project.to_dict(), default=json_serial))
 
 application = webapp2.WSGIApplication([
     ('/'                , Home            ),
