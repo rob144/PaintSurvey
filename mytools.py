@@ -12,13 +12,16 @@ def dictToHtmlTable(dict, cssClass):
 
 def listToHtmlTable(list, cssClass):
     html = "<table class='" + cssClass + "'><tr>"
-    for key in list[0]:
-        html += "<th>" + str(key) + "</th>"
-    html += "</tr>"
-    for item in list:
-        dataRow = "<tr>"
-        for key, value in item.iteritems():
-            dataRow += "<td>" + str(value) + "</td>"
-        dataRow += "</tr>"
-        html += dataRow
+
+    if(len(list) >= 1):
+        for key in list[0]:
+            html += "<th>" + str(key) + "</th>"
+        html += "</tr>"
+        for item in list:
+            dataRow = "<tr>"
+            for key, value in item.iteritems():
+                dataRow += "<td>" + str(value) + "</td>"
+            dataRow += "</tr>"
+            html += dataRow
+
     return html + "</table>"

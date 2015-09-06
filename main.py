@@ -7,6 +7,7 @@ from datetime import datetime
 import time
 import json
 from mytools import *
+import logging
 
 TEMPLATES_DIR = 'templates/'
 
@@ -68,6 +69,9 @@ class DeleteData(webapp2.RequestHandler):
         self.response.write('data deleted')
 
 class InitData(webapp2.RequestHandler):
+    def get(self):
+        initData()
+        self.response.write('data initialized')
     def post(self):
         initData()
         self.response.write('data initialized')
@@ -148,6 +152,8 @@ class CreateProject(webapp2.RequestHandler):
                     project       = project.key
                 ).put()
             )
+        #Save project after paints have been attached
+        project.put()
 
         projects = Project.query().fetch(500)
         paints = Paint.query().order(Paint.project, Paint.surfaceType, Paint.order).fetch(500)
