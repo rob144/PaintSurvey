@@ -257,6 +257,8 @@ function deleteProject(projectKey){
         successFunc: function(data){
             PROJECTS = data;
             //TODO:update any orphan rooms.
+            CARO.removeSlideContaining('.project-summary-page:not(.hidden)');
+            CARO.removeSlideContaining('.room-page:not(.hidden)');
             populateProjects(PROJECTS);
         }
     });
@@ -1118,16 +1120,16 @@ function onSpecSave(){
 
 function deleteRoom(roomKey){
 
-    //Do an ajax call to save the room data
     doXhr({
         httpMethod: 'POST',
         url: '/deleteroom',
         data: { room_key: roomKey },
-        successFunc: function(data){
-                          MODEL.deleteRoom(roomKey);
-                          CURRENT_PROJECT = data;
-                          selectProject(CURRENT_PROJECT.key, true);
-                      }
+        successFunc:
+            function(data){
+                MODEL.deleteRoom(roomKey);
+                CURRENT_PROJECT = data;
+                selectProject(CURRENT_PROJECT.key, true);
+            }
     });
 
 }

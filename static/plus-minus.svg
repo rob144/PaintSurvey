@@ -1,4 +1,0 @@
-<svg height="30" width="30">
-	<circle cx="15" cy="15" r="15" fill="blue" />
-	<polygon points="12,6 18,6 18,12 24,12 24,18 18,18 18,24 12,24 12,18 12,18 6,18 6,12 12,12" fill="white" />
-</svg>

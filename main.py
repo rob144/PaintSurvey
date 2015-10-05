@@ -197,9 +197,16 @@ class DeleteProject(webapp2.RequestHandler):
 
         projects = Project.query().fetch(200)
         projects = [ p for p in projects if p.key is not proj_key ]
+        rooms = Room.query().fetch(300)
+        rooms = [ r for r in rooms if r.project is not proj_key ]
+
+        resp = {
+            'projects': [p.to_dict() for p in projects],
+            'rooms': [r.to_dict() for r in rooms]
+        }
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write( json.dumps([p.to_dict() for p in projects], default=json_serial) )
+        self.response.write( json.dumps(resp, indent=4, default=json_serial) )
 
 class SaveDefaultRoom(webapp2.RequestHandler):
     def post(self):
