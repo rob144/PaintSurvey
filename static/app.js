@@ -255,8 +255,8 @@ function deleteProject(projectKey){
         data: { project_key: projectKey },
         dataType: 'json',
         successFunc: function(data){
-            PROJECTS = data;
-            //TODO:update any orphan rooms.
+            PROJECTS = data.projects;
+            ROOMS = data.rooms;
             CARO.removeSlideContaining('.project-summary-page:not(.hidden)');
             CARO.removeSlideContaining('.room-page:not(.hidden)');
             populateProjects(PROJECTS);
