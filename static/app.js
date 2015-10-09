@@ -1556,19 +1556,27 @@ function initInputCursorPos(context){
     /* Set the cursor position when input focussed */
     /* Does not work for number inputs in Google Chrome or Opera. */
     $('input[type="number"]').focus( function(event){
-        if(this.setSelectionRange){
-            var len = $(this).val().length * 2;
-            /* If input value is zero, select whole thing to make it
-            easy to overwrite, else set cursor to the end */
-            var start = (parseFloat($(this).val()) == 0) ? 0 : len;
-            this.setSelectionRange(start, len);
+        try{
+            if(this.setSelectionRange){
+                var len = $(this).val().length * 2;
+                /* If input value is zero, select whole thing to make it
+                easy to overwrite, else set cursor to the end */
+                var start = (parseFloat($(this).val()) == 0) ? 0 : len;
+                this.setSelectionRange(start, len);
+            }
+        } catch(err){
+            //Some browsers don't support setSelectionRange()
         }
     });
     $('input[type="text"]').focus( function(event){
-        if(this.setSelectionRange){
-            var len = $(this).val().length * 2;
-            /* Set cursor to the end for easy backspace delete. */
-            this.setSelectionRange(len, len);
+        try{
+            if(this.setSelectionRange){
+                var len = $(this).val().length * 2;
+                /* Set cursor to the end for easy backspace delete. */
+                this.setSelectionRange(len, len);
+            }
+        } catch(err){
+            //Some browsers don't support setSelectionRange()
         }
     });
 }
