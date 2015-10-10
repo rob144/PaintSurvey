@@ -1534,14 +1534,20 @@ function onSaveRoomClick(){
 
     if(isObjectEmpty(CURRENT_PROJECT)){
         alert('Please select a project first.');
-    }else{
-        room            = getRoomData($page);
-        room.key        = $page.find('.room-key').val();
-        room.name       = $page.find('.room-title').val();
-        room.project    = CURRENT_PROJECT.key;
-        saveRoom(room, '.room-key');
+        return;
     }
+/*
+    if($.trim($page.find('.room-title').val()) == ''){
+        alert('Please enter a room name.');
+        return;
+    }
+*/
 
+    room            = getRoomData($page);
+    room.key        = $page.find('.room-key').val();
+    room.name       = $page.find('.room-title').val();
+    room.project    = CURRENT_PROJECT.key;
+    saveRoom(room, '.room-key');
 }
 
 function updateProjectSummary(){

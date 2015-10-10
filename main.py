@@ -3,11 +3,12 @@ import webapp2
 import jinja2
 from google.appengine.ext import ndb
 from models import *
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 import json
 from mytools import *
 import logging
+from google.appengine.api.logservice import logservice
 
 TEMPLATES_DIR = 'templates/'
 
@@ -62,6 +63,29 @@ class Admin(webapp2.RequestHandler):
                 'paints':       htmlPaints
             })
         )
+
+class Logs(webapp2.RequestHandler):
+    def get(self):
+        resp = ''
+        logs = logservice.fetch(start_time=time.time() - 1000,
+            end_time=time.time(), offset=None,
+            minimum_log_level=logservice.LOG_LEVEL_INFO, include_app_logs=True)
+        #resp += 'Total number of logs: %s' % len(logs)
+        numOfLogs = 0
+        for req_log in logs:
+            numOfLogs += 1
+            resp += '<br /> REQUEST LOG. '
+            resp += 'IP: %s %s %s ' % (req_log.ip, req_log.method, req_log.resource)
+            resp += '%s' % datetime.fromtimestamp(req_log.end_time)
+
+            for app_log in req_log.app_logs:
+                resp += '<br/><br/>APP LOG. '
+                resp += '%s ' % datetime.fromtimestamp(app_log.time)
+                resp += '<p>%s</p>' % app_log.message
+
+        resp = 'Total number of logs: ' +  str(numOfLogs) + '<br/>' + resp
+
+        self.response.out.write(resp)
 
 class DeleteData(webapp2.RequestHandler):
     def post(self):
@@ -267,9 +291,10 @@ class SaveRoom(webapp2.RequestHandler):
 
 class DeleteRoom(webapp2.RequestHandler):
     def post(self):
+        logging.info('TEST')
         room = ndb.Key(urlsafe=self.request.get('room_key')).get()
         project = room.project.get()
-
+        logging.info(room.project)
         if room.key in project.rooms:
             idx = project.rooms.index(room.key)
             del project.rooms[idx]
@@ -289,6 +314,7 @@ application = webapp2.WSGIApplication([
     ('/savespec'        , SaveSpec        ),
     ('/getpaints'       , GetPaints       ),
     ('/admin'           , Admin           ),
+    ('/logs'            , Logs            ),
     ('/deletedata'      , DeleteData      ),
     ('/initdata'        , InitData        ),
 ], debug=True)
