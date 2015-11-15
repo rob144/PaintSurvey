@@ -44,13 +44,18 @@ class Home(webapp2.RequestHandler):
 
 class Admin(webapp2.RequestHandler):
     def get(self):
-        default_room = DefaultRoom.query().fetch(1)[0].to_dict()
+        default_rooms = [r.to_dict() for r in DefaultRoom.query().fetch(1)]
         rooms        = [r.to_dict() for r in Room.query().fetch(300)]
         projects     = [p.to_dict() for p in Project.query().fetch(20)]
         paints       = [p.to_dict() for p in Paint.query().order(Paint.surfaceType, Paint.order).fetch(300)]
 
         cssClass = "datastore-table"
-        htmlDefaultRoom = dictToHtmlTable(default_room, cssClass)
+
+        htmlDefaultRoom = ""
+
+        if(len(default_rooms) >= 1):
+            htmlDefaultRoom = dictToHtmlTable(default_rooms[0], cssClass)
+
         htmlRooms       = listToHtmlTable(rooms, cssClass)
         htmlProjects    = listToHtmlTable(projects, cssClass)
         htmlPaints      = listToHtmlTable(paints, cssClass)
@@ -291,14 +296,13 @@ class SaveRoom(webapp2.RequestHandler):
 
 class DeleteRoom(webapp2.RequestHandler):
     def post(self):
-        logging.info('TEST')
         room = ndb.Key(urlsafe=self.request.get('room_key')).get()
         project = room.project.get()
-        logging.info(room.project)
         if room.key in project.rooms:
             idx = project.rooms.index(room.key)
             del project.rooms[idx]
-            room.project = project.put()
+            room.key.delete()
+            project = project.put().get()
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(project.to_dict(), default=json_serial))
