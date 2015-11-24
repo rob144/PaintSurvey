@@ -1,16 +1,24 @@
 Paint Survey
 App to help painting contractors estimate costs.
 
-    cd paint-survey
+````dos
+cd paint-survey
 
-    #To run
-    dev_appserver.py ./
+#To run
+dev_appserver.py ./
     
-    #Shortcut
-    ./run
+#Shortcut
+./run
 
-    #To upload
-    appcfg.py update ./
-  
-    #Shortcut
-    ./up
+#To upload
+appcfg.py update ./
+
+#Shortcut
+./up
+````
+
+Logging:
+
+````python
+logging.info("Some log text")
+````

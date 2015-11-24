@@ -186,7 +186,7 @@ function addProjectPages(){
     CARO.removeSlideContaining('.project-summary-page:not(.hidden)');
     CARO.removeSlideContaining('.room-page:not(.hidden)');
     CARO.addSlide($('.project-summary-template').html());
-    
+
     initProjectSummaryPage();
 
     //Add the room pages for this project
@@ -214,7 +214,7 @@ function selectProject(projectKey, reload){
         CARO.nextSlide();
         return;
     }
-    
+
     showLoadingBox();
 
     if(CURRENT_PROJECT.key != projectKey){
