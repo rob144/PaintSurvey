@@ -1,3 +1,4 @@
+import logging
 import os
 import webapp2
 import jinja2
@@ -7,17 +8,23 @@ from datetime import datetime, timedelta
 import time
 import json
 from mytools import *
-import logging
 from google.appengine.api.logservice import logservice
 
 TEMPLATES_DIR = 'templates/'
-
 loader = jinja2.FileSystemLoader(os.path.dirname(__file__))
 
 JINJA_ENV = jinja2.Environment(
     loader = loader,
     extensions = ['jinja2.ext.autoescape'],
     autoescape = True)
+
+def ToJson(strInput):
+    strOuput = strInput
+    try:
+        strOutput = json.dumps(strInput, sort_keys=True, indent=2, separators=(',', ': '))
+    except TypeError:
+        print("type error.")
+    return strOutput
 
 def json_serial(obj):
     #JSON serializer for objects not serializable by default json code
@@ -79,14 +86,14 @@ class Logs(webapp2.RequestHandler):
         numOfLogs = 0
         for req_log in logs:
             numOfLogs += 1
-            resp += '<br /> REQUEST LOG. '
+            resp += '<hr /><br /> REQUEST LOG. '
             resp += 'IP: %s %s %s ' % (req_log.ip, req_log.method, req_log.resource)
             resp += '%s' % datetime.fromtimestamp(req_log.end_time)
 
             for app_log in req_log.app_logs:
                 resp += '<br/><br/>APP LOG. '
                 resp += '%s ' % datetime.fromtimestamp(app_log.time)
-                resp += '<p>%s</p>' % app_log.message
+                resp += '<br/><textarea rows="30" cols="100">%s</textarea>' % app_log.message
 
         resp = 'Total number of logs: ' +  str(numOfLogs) + '<br/>' + resp
 
@@ -266,10 +273,10 @@ class SaveRoom(webapp2.RequestHandler):
         obj_room = json.loads(self.request.POST.get('room'))
         room = Room()
 
-        print(obj_room)
-
         if('key' in obj_room and obj_room['key'] != ""):
             room = ndb.Key(urlsafe=obj_room['key']).get()
+
+        logging.info(json.dumps(obj_room['groupItems'], sort_keys=True, indent=2, separators=(',', ': ')))
 
         room.name                 = obj_room['name']
         room.roomHoursAdjust      = obj_room['roomHoursAdjust']

@@ -1,4 +1,4 @@
-#Need to deal with lists of dicts as well
+import json
 
 def dictToHtmlTable(dict, cssClass):
     html = "<table class='" + cssClass + "'><tr>"
@@ -17,10 +17,19 @@ def listToHtmlTable(list, cssClass):
         for key in list[0]:
             html += "<th>" + str(key) + "</th>"
         html += "</tr>"
+
         for item in list:
             dataRow = "<tr>"
+
             for key, value in item.iteritems():
-                dataRow += "<td>" + str(value) + "</td>"
+                strItem = str(value)
+
+                try:
+                    strItem = json.dumps(value, sort_keys=True, indent=2, separators=(',', ': '))
+                except TypeError:
+                    print("type error.")
+
+                dataRow += "<td>" + strItem + "</td>"
             dataRow += "</tr>"
             html += dataRow
 

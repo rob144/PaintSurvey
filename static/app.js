@@ -62,6 +62,7 @@ var MODEL = {
         }
     },
     updateRoom: function(room){
+        console.log(room)
         var found = false;
         for(var i = 0; i <= ROOMS.length - 1; i++){
             if(ROOMS[i].key == room.key){
@@ -1148,6 +1149,8 @@ function deleteRoom(roomKey){
 }
 
 function saveRoom(room, keyElem){
+
+    console.log(room);
 
     doXhr({
         httpMethod: 'POST',
