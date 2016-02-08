@@ -1628,18 +1628,21 @@ function addInputBlock(context){
         $newBlock.find('.dropdown').removeClass('open');
         $newBlock.find('.positive-negative-cell').click( switchSign );
         $newBlock.find('.default-value').removeClass('default-value');
+        $newBlock.find('.dropdown-value').val( $group.find('.input-block:last .dropdown-value').val() );
         $newBlock.find('input[type="number"]').each(function(index, elem){
             var $elem = $(elem);
             $elem.val($elem.attr('data-default-value'));
         });
         $newBlock.removeClass('hidden');
         $newBlock.insertAfter($group.find('.input-block:last'));
+
         $btnRemove = $newBlock.find('.btn-remove-row:first');
         $btnRemove.css('display','block');
         $btnRemove.click(function(event){
             $(event.target).closest('.input-block').remove();
             resizeCarousel();
         });
+
         $group.find('input.decimal').blur();
         initDropdowns($newBlock);
         initInputCursorPos($newBlock);
