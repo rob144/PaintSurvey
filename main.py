@@ -93,7 +93,7 @@ class Logs(webapp2.RequestHandler):
             for app_log in req_log.app_logs:
                 resp += '<br/><br/>APP LOG. '
                 resp += '%s ' % datetime.fromtimestamp(app_log.time)
-                resp += '<br/><textarea rows="30" cols="100">%s</textarea>' % app_log.message
+                resp += '<br/><textarea rows="3" cols="100">%s</textarea>' % app_log.message
 
         resp = 'Total number of logs: ' +  str(numOfLogs) + '<br/>' + resp
 
@@ -153,9 +153,12 @@ class SaveSpec(webapp2.RequestHandler):
 
         #Do deletions
         allPaints = Paint.query(Paint.surfaceType == surfaceType).fetch(500)
+        for pk in paintKeys:
+            logging.info('Paint key: ' + pk)
 
         for p in allPaints:
             if p.key.urlsafe() not in paintKeys:
+                logging.info('Deleting paint: ' + p.key.urlsafe())
                 p.key.delete()
 
         #Combine the other types of paints so we send all the
