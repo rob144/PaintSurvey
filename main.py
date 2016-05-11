@@ -123,11 +123,10 @@ class SaveSpec(webapp2.RequestHandler):
     def post(self):
         surfaceType = self.request.POST.get('surfaceType')
         paints = json.loads(self.request.POST.get('paints'))
-        respRaints = []
+        respPaints = []
         paintKeys = []
 
-        for obj in paints:
-            paintKeys.append(obj['key'])
+        for obj in paints:  
             if(obj['key'] != ''):
                 #Update existing paint
                 paint = ndb.Key(urlsafe=obj['key']).get()
@@ -137,10 +136,10 @@ class SaveSpec(webapp2.RequestHandler):
                     paint.prodRateTwo   = float(obj['prodRateTwo'])
                     paint.unitRate      = float(obj['unitRate'])
                     paint.order         = int(obj['order'])
-                    respRaints.append(paint.put().get())
+                    respPaints.append(paint.put().get())
             else:
                 #Create new paint
-                respRaints.append(
+                respPaints.append(
                     Paint(
                         name        = obj['name'],
                         surfaceType = surfaceType,
@@ -150,12 +149,15 @@ class SaveSpec(webapp2.RequestHandler):
                         order       = Paint.query().order(-Paint.order).fetch(1)[0].order + 1
                     ).put().get()
                 )
+        
+        for p in respPaints:
+            paintKeys.append(p.key.urlsafe())
 
-        #Do deletions
         allPaints = Paint.query(Paint.surfaceType == surfaceType).fetch(500)
         for pk in paintKeys:
             logging.info('Paint key: ' + pk)
 
+        #Do deletions. respPaints contains those we are keeping.
         for p in allPaints:
             if p.key.urlsafe() not in paintKeys:
                 logging.info('Deleting paint: ' + p.key.urlsafe())
@@ -165,12 +167,12 @@ class SaveSpec(webapp2.RequestHandler):
         #most up to date data to the client
         otherPaints = Paint.query(Paint.surfaceType != surfaceType).order(Paint.surfaceType, Paint.order).fetch(500)
         for p in otherPaints:
-            respRaints.append(p)
+            respPaints.append(p)
 
-        respRaints.sort(key=lambda x:x.order)
+        respPaints.sort(key=lambda x:x.order)
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps([p.to_dict() for p in respRaints], default=json_serial))
+        self.response.write(json.dumps([p.to_dict() for p in respPaints], default=json_serial))
 
 class CreateProject(webapp2.RequestHandler):
     def post(self):
