@@ -1,7 +1,7 @@
 # Paint Survey
 
 App to help painting contractors estimate costs.  
-Build with Google App Engine.
+Build with Python and Google App Engine.
 
 ````dos
 cd paint-survey
