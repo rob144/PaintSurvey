@@ -1,6 +1,6 @@
 # Paint Survey
 
-App to help painting contractors estimate costs.
+App to help painting contractors estimate costs.  
 Build with Google App Engine.
 
 ````dos
