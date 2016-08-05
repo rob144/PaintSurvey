@@ -1,5 +1,7 @@
-Paint Survey
+# Paint Survey
+
 App to help painting contractors estimate costs.
+Build with Google App Engine.
 
 ````dos
 cd paint-survey
@@ -10,7 +12,7 @@ dev_appserver.py ./
 #Shortcut
 ./run
 
-#To upload
+#To deploy
 appcfg.py update ./
 
 #Shortcut
